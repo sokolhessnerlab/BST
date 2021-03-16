@@ -1,11 +1,17 @@
 
 default:
-  path:
-    data:
-        pss: "/Volumes/shlab/Projects/BST/data/Current_Dataframes/SurveyData/PSSData_noVarDescrip.csv"
-        bath_pleasantness: "/Volumes/shlab/Projects/BST/data/Current_Dataframes/bathPleasantness.csv"
-        bath_order: "/Volumes/shlab/Projects/BST/data/Current_Dataframes/bathOrder.csv"
-        tg: "/Volumes/shlab/Projects/BST/data/Current_Dataframes/allTGData_20200626.csv"
-        tr: "/Volumes/shlab/Projects/BST/data/Current_Dataframes/allTRData_20200626.csv"
-    code:
-        setup_data: "./bst_analysis/stress_and_trust/setup_data.R"
+    path:
+        data:
+            current: "/Volumes/shlab/Projects/BST/data/Current_Dataframes"
+            survey: "/Volumes/shlab/Projects/BST/data/Current_Dataframes/SurveyData"
+        code:
+            r_scripts: "./bst_analysis/stress_and_trust"
+    csvs:
+        pss: "PSSData_noVarDescrip.csv"
+        bath_pleasantness: "bathPleasantness.csv"
+        bath_order: "bathOrder.csv"
+        tg: "allTGData_20200626.csv"
+        tr: "allTRData_20200626.csv"
+    code_files:
+        setup_data: "setup_data.R"
+        main_analysis: "main_analysis.R"
