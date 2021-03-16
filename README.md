@@ -1,3 +1,3 @@
 # BST - Bias Stress and Trust
 
-This contains files related to the data analysis of BST
+Code and resources for analysis the BST project
