@@ -1,8 +1,9 @@
 
 #loads up the dataframes from setupData, also loads the plyr library (note this in case you use dply)
 #NOTE: this assumes that you are connected to the shlab drive, and it is attached under /Volumes
-#if this is not the case go to the top of setupData and change the path there
-source("./bst_analysis/stress_and_trust/setup_data.R")
+#if this is not the case, add your own configuration in the config.yml
+config <- config::get()
+source(config$path$code$setup_data)
 
 library(ggplot2)
 library(lme4)

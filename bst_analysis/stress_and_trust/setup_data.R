@@ -2,8 +2,8 @@
 #-aggregates data into additional data frames
 #-performs coding and computation of variables
 
-curwd <- getwd()
-setwd("/Volumes/shlab/Projects/BST/data/Current_Dataframes") #set this appropriately, this should work if you're on mac/connected to shlab drive, windows will have a different path
+# curwd <- getwd()
+# setwd("/Volumes/shlab/Projects/BST/data/Current_Dataframes") #set this appropriately, this should work if you're on mac/connected to shlab drive, windows will have a different path
 
 #loads up the necessary libraries
 library(plyr)
@@ -16,7 +16,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 #setting Up Stress DFs:#
 
 #PSS:
-bst_pss <- read.csv("./SurveyData/PSSData_noVarDescrip.csv") #reads in the .csv
+bst_pss <- read.csv(config$path$data$pss) #reads in the .csv
 #bst_pss <- bst_pss[-c(1),] #removes the first row which just has variable descriptions
 names(bst_pss)[names(bst_pss) == "subjectNumber"] <- 'subjectID' #renames the subject identification column to maintain consistency
 
@@ -36,8 +36,8 @@ bst_pss$pssSumCategorical <- ifelse(bst_pss$pssSum <= 13, 0,
 # count(bst_pss$pssSumcategorical)
 
 #Bath Ratings:
-bst_bathPleasantness <- read.csv("bathPleasantness.csv") #reads in the pleasantness ratings
-bst_bathOrder <- read.csv("bathOrder.csv") #reads in the bath ordering
+bst_bathPleasantness <- read.csv(config$path$data$bath_pleasantness) #reads in the pleasantness ratings
+bst_bathOrder <- read.csv(config$path$data$bath_order) #reads in the bath ordering
 names(bst_bathOrder)[names(bst_bathOrder) == "BST.."] <- 'subjectID'
 
 bst_bath <- merge(bst_bathPleasantness, bst_bathOrder, by = "subjectID") #merges the two bath DF's into a single one
@@ -61,7 +61,7 @@ bst_bath_pss <- merge(bst_bath, bst_pss, by = "subjectID")
 
 #Setting Up Trust DFs:#
 #Trust Game:
-bst_tg <- read.csv("allTGData_20200626.csv") #reads in trust game data
+bst_tg <- read.csv(config$path$data$tg) #reads in trust game data
 
 #renaming columns for clarity
 names(bst_tg)[names(bst_tg) == "condition"] <- "taskOrder"
@@ -118,7 +118,7 @@ bst_tg$sharedBool <- ifelse(bst_tg$shared == 0, 0, 1)
 bst_tg_pss <- merge(bst_pss, bst_tg, by = "subjectID") #merges with the pss for later analysis
 
 #Trust Rating:
-bst_tr <- read.csv("allTRData_20200626.csv")
+bst_tr <- read.csv(config$path$data$tr)
 
 #renaming columns for clarity
 names(bst_tr)[names(bst_tr) == "response"] <- "rating"
@@ -203,5 +203,5 @@ rm(i)
 #rm(bst_bath_pss)
 
 #finally, resets the working directory
-setwd(curwd)
+# setwd(curwd)
 
