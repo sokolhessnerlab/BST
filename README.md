@@ -2,4 +2,4 @@
 
 Code and resources for analysis the BST project
 
--created using r-poject-template
+-created using r-project-template
