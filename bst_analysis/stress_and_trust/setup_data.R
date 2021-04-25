@@ -45,17 +45,17 @@ bst_bath <- merge(bst_bathPleasantness, bst_bathOrder, by = "subjectID") #merges
 
 bst_bath$diffPleasantnessRating<- (bst_bath$STRESS - bst_bath$CONTROL) #calculates the rating difference between the stress and control ratings
 
-bst_bath$day2StressedBool <- ifelse(bst_bath$Day.2 == "CONTROL", 0, 1) #calculates a boolean for whether a participant was stressed on the second day or if they recieved the control
+bst_bath$day2StressedBool <- ifelse(bst_bath$Day.2 == "CONTROL", 0, 1) #calculates a boolean for whether a participant was stressed on the second day (1) or if they received the control on day 2 (0)
 
 #double checks the math worked out:
-# count(bst_bath$Day.2) #prints out how many recieved the control on day 2 and how many recieved the stressor on day (in string format)
-# count(bst_bath$day2Stressed) #prints out how many recieved the control on day 2 and how many recieved the stressor on day 2 (in numerical format)
+# count(bst_bath$Day.2) #prints out how many received the control on day 2 and how many received the stressor on day (in string format)
+# count(bst_bath$day2Stressed) #prints out how many received the control on day 2 and how many received the stressor on day 2 (in numerical format)
 
 #renaming columns for clarity
 names(bst_bath)[names(bst_bath) == "CONTROL"] <- "controlPleasantnessRating"
 names(bst_bath)[names(bst_bath) == "STRESS"] <- "stressPleasantnessRating"
-names(bst_bath)[names(bst_bath) == "Day.1"] <- "bathRecievedDay1"
-names(bst_bath)[names(bst_bath) == "Day.2"] <- "bathRecievedDay2"
+names(bst_bath)[names(bst_bath) == "Day.1"] <- "bathReceivedDay1"
+names(bst_bath)[names(bst_bath) == "Day.2"] <- "bathReceivedDay2"
 
 #combining acute and chronic stressors
 bst_bath_pss <- merge(bst_bath, bst_pss, by = "subjectID")
@@ -71,6 +71,15 @@ names(bst_tg)[names(bst_tg) == "RT"] <- "responseTime"
 
 #combines the trust game data with the bath data for calculation of variables and later analysis
 bst_tg <- merge(bst_tg, bst_bath, by = "subjectID")
+  # PSH NOTE: Careful with things like this. This puts data on two very different scales (e.g.
+  # the PSS with one sum value per person; TG data with many individual trials) together in
+  # a way that could create issues if someone forgets that... Put another way, this merge
+  # creates a dataframe that makes it look like the PSS was measured 152 times per person
+  # and it looked the same every time. 
+  #
+  # That issue makes this of limited utility to do; if you do want to relate acute or 
+  # chronic stressors to TG performance, you'll need to summarize TG data to the same space 
+  # (e.g. person-level summary stats) anyway. [PSH]
 
 #calculating new factors for whether a participant was stressed or not before doing the trust task
 bst_tg$stressedBool <- ifelse((bst_tg$day2StressedBool == 1 & bst_tg$day == 1), 0,
@@ -92,11 +101,11 @@ for(i in 1:nrow(bst_tg)) #iterates through the now ordered dataset
     if(bst_tg[(i-1), "shared"] >= 1) #if they shared any money on the previous trial
     {
       bst_tg[i, "prevTrialShared"] <- 1 #then the current trials prev trial shared amount can be set to 1 (ie they did share on the last trial)
-      if(bst_tg[(i-1), "received"] == 0) #of they didn't recieve any money back, the feedback is set to -1 (ie on the last trial they lost the money they shared)
+      if(bst_tg[(i-1), "received"] == 0) #if they didn't receive any money back, the feedback is set to -1 (ie on the last trial they lost the money they shared)
       {
         bst_tg[i, "prevTrialFeedback"] <- -1
       }
-      else #if they did recieve money back after sharing, their feedback is set to 1
+      else #if they did receive money back after sharing, their feedback is set to 1
       {
         bst_tg[i, "prevTrialFeedback"] <- 1
       }
@@ -116,7 +125,7 @@ for(i in 1:nrow(bst_tg)) #iterates through the now ordered dataset
 #setting up a categorical for if a participant shared any money at all
 bst_tg$sharedBool <- ifelse(bst_tg$shared == 0, 0, 1)
 
-#because merging with the PSS will remove 3 participants, this is a sperate DF for only those participants that have a PSS score
+#because merging with the PSS will remove 3 participants, this is a seperate DF for only those participants that have a PSS score
 bst_tg_pss <- merge(bst_pss, bst_tg, by = "subjectID") #merges with the pss for later analysis
 
 #Trust Rating:
@@ -139,7 +148,7 @@ bst_tr$stressedBool <- ifelse((bst_tr$day2StressedBool == 1 & bst_tr$day == 1), 
 #double checking the math above worked out (there should be no NA)
 count(bst_tg$stressedBool)
 
-#because merging with the PSS will remove 3 participants, this is a sperate DF for only those participants that have a PSS score
+#because merging with the PSS will remove 3 participants, this is a seperate DF for only those participants that have a PSS score
 bst_tr_pss <- merge(bst_pss, bst_tr, by = "subjectID") #for use when looking at pss x trust rating
 
 
@@ -150,6 +159,11 @@ bst_tg_part_avg <- aggregate(shared ~ subjectID, data = bst_tg, FUN = mean) #agg
 names(bst_tg_part_avg)[names(bst_tg_part_avg) == "shared"] <- "sharedAvg"
 bst_tg_part_avg$sharedSD <- (aggregate(shared ~ subjectID, data =bst_tg, FUN = sd))$shared #calculates each participants standard deviation shared amount
 bst_tg_part_avg$sharedSE <- (bst_tg_part_avg$sharedSD / sqrt(nrow(bst_tg_part_avg))) #calculates the standard error
+  # PSH NOTE: Don't think this is makes sense to do here. SD makes sense on a per-person level,
+  # but I'd only calculate the SE of the mean across people... but normalizing everyone's
+  # unique SD by the number of people isn't a useful quantity, I don't think. 
+  # i.e. I'd take the sd across everyone's means, and normalize that single number by 
+  # the sqrt of the number of participants. 
 bst_tg_part_avg$sharedHighSE <- bst_tg_part_avg$sharedAvg +  bst_tg_part_avg$sharedSE #calculates the standard error high bound
 bst_tg_part_avg$sharedLowSE <- bst_tg_part_avg$sharedAvg - bst_tg_part_avg$sharedSE #calculates the standard error low bound
 
@@ -158,6 +172,7 @@ bst_tr_part_avg <- aggregate(rating ~ subjectID, data = bst_tr, FUN = mean) #agg
 names(bst_tr_part_avg)[names(bst_tr_part_avg) == "rating"] <- "ratingAvg"
 bst_tr_part_avg$ratingSD <- aggregate(rating ~ subjectID, data = bst_tr, FUN = mean)$rating #calculates each particpant's standard deviation shared amount
 bst_tr_part_avg$ratingSE <- (bst_tr_part_avg$ratingSD / sqrt(nrow(bst_tr_part_avg)))
+  # PSH NOTE: same as above
 bst_tr_part_avg$ratingHighSE <- bst_tr_part_avg$ratingAvg + bst_tr_part_avg$ratingSE #calculates the standard error high bound
 bst_tr_part_avg$ratingLowSE <- bst_tr_part_avg$ratingAvg - bst_tr_part_avg$ratingSE #calculates the standard error low bound
 
