@@ -206,7 +206,7 @@ library(lmerTest) # adds more useful info to the output of lmer's
       # bst_tg$stressedBool <- as.numeric(bst_tg$stressedBool)
       # bst_tg$stressedBool <- ifelse(bst_tg$stressedBool == 0, -1, 1)
       tg_seq_mod3 <- lm(shared ~ 1 + prevTrialFeedback:stressedBool, data = bst_tg)
-        # PSH NOTE: this only includes the interact & no main effects
+        # PSH NOTE: this only includes the interaction & no main effects
       tg_seq_mod3 <- lmer(shared ~ 1 + prevTrialFeedback*stressrecode + (1 | subjectID), data = bst_tg)
       #                                 Estimate Std. Error         df t value Pr(>|t|)    
       # (Intercept)                     2.528e+00  1.845e-01  3.797e+01  13.699 2.84e-16 ***
@@ -438,3 +438,131 @@ library(lmerTest) # adds more useful info to the output of lmer's
       summary(tg_mod_pt_acuteCat_chronicCont_day)
       #Results: interesting here that there didn't really seem to be an effect of the outcome of a previous trial, and the patterns seen elsewhere held true
       #day, stressed, and pss:stressed were all signficant, with the interaction having the largest effect size when taking into account the min to max possibilities
+      
+      # PSH NOTE: Taking the best-performing TG regression from above, and adding prev. trial factors
+      tg_reg3 = lmer(shared ~ 1 + stressrecode*dayrecode*pssSumCategorical + 
+                       prevTrialFeedback*stressrecode*pssSumCategorical + 
+                       prevTrialShared*stressrecode*pssSumCategorical +
+                       (1 | subjectID), data = bst_tg_pss)
+      summary(tg_reg3)
+      #                                                    Estimate Std. Error         df t value Pr(>|t|)    
+      # (Intercept)                                       2.571e+00  3.544e-01  3.246e+01   7.254 2.81e-08 ***
+      # stressrecode                                      2.843e-01  3.815e-02  5.425e+03   7.453 1.05e-13 ***
+      # dayrecode                                        -7.228e-03  2.826e-02  5.424e+03  -0.256 0.798126    
+      # pssSumCategorical                                -3.043e-01  4.103e-01  3.248e+01  -0.742 0.463662    
+      # prevTrialFeedback                                -6.349e-03  2.930e-02  5.430e+03  -0.217 0.828476    
+      # prevTrialShared                                   5.184e-02  4.520e-02  5.450e+03   1.147 0.251439    
+      # stressrecode:dayrecode                            3.026e-01  3.530e-01  3.194e+01   0.857 0.397747    
+      # stressrecode:pssSumCategorical                   -2.924e-01  4.502e-02  5.425e+03  -6.495 9.05e-11 ***
+      # dayrecode:pssSumCategorical                       7.594e-02  3.220e-02  5.424e+03   2.358 0.018394 *  
+      # stressrecode:prevTrialFeedback                    1.697e-02  2.822e-02  5.425e+03   0.601 0.547611    
+      # pssSumCategorical:prevTrialFeedback              -4.336e-02  3.285e-02  5.430e+03  -1.320 0.186924    
+      # stressrecode:prevTrialShared                     -2.603e-01  3.662e-02  5.426e+03  -7.107 1.34e-12 ***
+      # pssSumCategorical:prevTrialShared                 1.979e-01  5.259e-02  5.449e+03   3.763 0.000170 ***
+      # stressrecode:dayrecode:pssSumCategorical         -5.696e-01  4.085e-01  3.192e+01  -1.394 0.172835    
+      # stressrecode:pssSumCategorical:prevTrialFeedback -2.302e-02  3.165e-02  5.425e+03  -0.727 0.467128    
+      # stressrecode:pssSumCategorical:prevTrialShared    1.677e-01  4.342e-02  5.426e+03   3.863 0.000113 ***
+      
+      # ONLY the significant portions (not incl. intercept):
+      # stressrecode                                      2.843e-01  3.815e-02  5.425e+03   7.453 1.05e-13 ***
+      # stressrecode:pssSumCategorical                   -2.924e-01  4.502e-02  5.425e+03  -6.495 9.05e-11 ***
+      # stressrecode:prevTrialShared                     -2.603e-01  3.662e-02  5.426e+03  -7.107 1.34e-12 ***
+      # pssSumCategorical:prevTrialShared                 1.979e-01  5.259e-02  5.449e+03   3.763 0.000170 ***
+      # stressrecode:pssSumCategorical:prevTrialShared    1.677e-01  4.342e-02  5.426e+03   3.863 0.000113 ***
+      # dayrecode:pssSumCategorical                       7.594e-02  3.220e-02  5.424e+03   2.358 0.018394 *  
+      
+      # Stress increases the amount shared, but... this effect is blunted w/ high PSS scores
+        # Low PSS: +0.28 for stress, -0.28 for control
+        # High PSS: -0.0081 for stress, 0.0081 for control 
+        # Oddly, acute stress only has its effect in people w/ low chronic stress
+      
+      # The effect of prev. trial shared significantly varies between acute & chronic stress
+        # pos. under high chronic stress (more sharing after sharing), but not low chronic stress
+        # People w/ low chronic stress have pos. effect in control but neg. under ACUTE stress
+        # 3-way interaction is... confusing
+        
+      # People with high chronic stress share much more on day 2 than day 1
+      
+      
+      # Because the categorical PSS is poorly distributed (so we might be overfitting that one person
+      # at the highest level of the PSS), let's also do the continuous version
+      tg_reg3b = lmer(shared ~ 1 + stressrecode*dayrecode*pssSum + 
+                       prevTrialFeedback*stressrecode*pssSum + 
+                       prevTrialShared*stressrecode*pssSum +
+                       (1 | subjectID), data = bst_tg_pss)
+      summary(tg_reg3b)
+      #                                         Estimate Std. Error         df t value Pr(>|t|)    
+      # (Intercept)                            2.711e+00  6.981e-01  3.222e+01   3.884 0.000481 ***
+      # stressrecode                           3.571e-01  6.631e-02  5.424e+03   5.385 7.54e-08 ***
+      # dayrecode                             -5.607e-02  5.464e-02  5.424e+03  -1.026 0.304823    
+      # pssSum                                -2.259e-02  4.190e-02  3.224e+01  -0.539 0.593529    
+      # prevTrialFeedback                     -3.786e-03  5.162e-02  5.428e+03  -0.073 0.941538    
+      # prevTrialShared                        3.612e-02  7.253e-02  5.452e+03   0.498 0.618498    
+      # stressrecode:dayrecode                 5.029e-01  6.964e-01  3.192e+01   0.722 0.475531    
+      # stressrecode:pssSum                   -1.854e-02  4.053e-03  5.425e+03  -4.575 4.87e-06 ***
+      # dayrecode:pssSum                       6.563e-03  3.260e-03  5.424e+03   2.013 0.044134 *  
+      # stressrecode:prevTrialFeedback        -8.174e-03  5.047e-02  5.426e+03  -0.162 0.871343    
+      # pssSum:prevTrialFeedback              -2.199e-03  3.029e-03  5.428e+03  -0.726 0.467854    
+      # stressrecode:prevTrialShared          -4.455e-01  5.736e-02  5.426e+03  -7.767 9.52e-15 ***
+      # pssSum:prevTrialShared                 1.046e-02  4.387e-03  5.451e+03   2.384 0.017157 *  
+      # stressrecode:dayrecode:pssSum         -3.879e-02  4.180e-02  3.192e+01  -0.928 0.360285    
+      # stressrecode:pssSum:prevTrialFeedback  6.287e-04  2.961e-03  5.426e+03   0.212 0.831847    
+      # stressrecode:pssSum:prevTrialShared    1.967e-02  3.521e-03  5.426e+03   5.586 2.44e-08 ***
+      
+      # JUST THE SIGNIFICANT BITS
+      # stressrecode                           3.571e-01  6.631e-02  5.424e+03   5.385 7.54e-08 ***
+      # stressrecode:pssSum                   -1.854e-02  4.053e-03  5.425e+03  -4.575 4.87e-06 ***
+      # stressrecode:prevTrialShared          -4.455e-01  5.736e-02  5.426e+03  -7.767 9.52e-15 ***
+      # pssSum:prevTrialShared                 1.046e-02  4.387e-03  5.451e+03   2.384 0.017157 *  
+      # stressrecode:pssSum:prevTrialShared    1.967e-02  3.521e-03  5.426e+03   5.586 2.44e-08 ***
+      # dayrecode:pssSum                       6.563e-03  3.260e-03  5.424e+03   2.013 0.044134 *  
+      
+      # Overall pattern is identical as categorical regression.
+      #
+      # Effect of acute stress on sharing varies by chronic stress
+      #    Low PSS: +.36 stress, -.36 control (more sharing under acute stress)
+      #   High PSS: -.18 stress, +.18 control (less sharing under acute stress)
+      #
+      # Effect of Prev. trial choice on current choice varies by acute & chronic stress
+      #    Low PSS: -.45 stress, +.45 control (less sharing after sharing under acute stress)
+      #   High PSS: +.37 stress, +.20 control (more sharing after sharing... all the time)
+      
+      # (if you re-format tg_reg3b to use stressedBool, it's a little simpler to see, but pattern
+      # is identical)
+      
+      
+      #                                         Estimate Std. Error         df t value Pr(>|t|)    
+      # (Intercept)                            2.354e+00  7.007e-01  3.271e+01   3.360    0.002 ** 
+      # stressedBool                           7.142e-01  1.326e-01  5.424e+03   5.385 7.54e-08 ***
+      # dayrecode                             -5.589e-01  6.987e-01  3.234e+01  -0.800    0.430    
+      # pssSum                                -4.047e-03  4.208e-02  3.280e+01  -0.096    0.924    
+      # prevTrialFeedback                      4.389e-03  7.368e-02  5.426e+03   0.060    0.953    
+      # prevTrialShared                        4.816e-01  9.171e-02  5.450e+03   5.252 1.56e-07 ***
+      # stressedBool:dayrecode                 1.006e+00  1.393e+00  3.192e+01   0.722    0.476    
+      # stressedBool:pssSum                   -3.708e-02  8.106e-03  5.425e+03  -4.575 4.87e-06 ***
+      # dayrecode:pssSum                       4.536e-02  4.193e-02  3.233e+01   1.082    0.287    
+      # stressedBool:prevTrialFeedback        -1.635e-02  1.009e-01  5.426e+03  -0.162    0.871    
+      # pssSum:prevTrialFeedback              -2.828e-03  4.308e-03  5.426e+03  -0.656    0.512    
+      # stressedBool:prevTrialShared          -8.910e-01  1.147e-01  5.426e+03  -7.767 9.52e-15 ***
+      # pssSum:prevTrialShared                -9.208e-03  5.646e-03  5.448e+03  -1.631    0.103    
+      # stressedBool:dayrecode:pssSum         -7.759e-02  8.359e-02  3.192e+01  -0.928    0.360    
+      # stressedBool:pssSum:prevTrialFeedback  1.257e-03  5.921e-03  5.426e+03   0.212    0.832    
+      # stressedBool:pssSum:prevTrialShared    3.934e-02  7.042e-03  5.426e+03   5.586 2.44e-08 ***
+      
+      # JUST SIG
+      # stressedBool                           7.142e-01  1.326e-01  5.424e+03   5.385 7.54e-08 ***
+      # stressedBool:pssSum                   -3.708e-02  8.106e-03  5.425e+03  -4.575 4.87e-06 ***
+      # prevTrialShared                        4.816e-01  9.171e-02  5.450e+03   5.252 1.56e-07 ***
+      # stressedBool:prevTrialShared          -8.910e-01  1.147e-01  5.426e+03  -7.767 9.52e-15 ***
+      # stressedBool:pssSum:prevTrialShared    3.934e-02  7.042e-03  5.426e+03   5.586 2.44e-08 ***
+      
+      # Effect of acute stress
+      #   more money shared under stress (+.71, vs. control)
+      #   but with high PSS, effect is wiped out/reversed (-.29 stress, vs. control)
+      #
+      # Effect of prev. trial
+      #   more shared after sharing (+.48 in control)
+      #   in low PSS, acute stress reverses the pattern (-.47)
+      #   in high PSS, acute stress does v. little (+.65)
+      
+      
