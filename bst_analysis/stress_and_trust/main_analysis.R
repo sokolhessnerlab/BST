@@ -121,12 +121,13 @@ library(lmerTest) # adds more useful info to the output of lmer's
           bst_tr$taskOrderrecode = bst_tr$taskOrder * 2 - 3; # Converts 1, 2 coding into -1/+1 
           bst_tr$dayrecode = bst_tr$day * 2 - 3; # Converts 1, 2 coding into -1/+1 coding
           bst_tr$stressrecode = bst_tr$stressedBool*2-1 # converts 0,1 coding into -1/+1 coding
+            # PSH follow-up: Not sure this last one was actually all that helpful. 
           
           # Below regression only includes day & stress. The logic is that many of these
           # regressors are too closely aligned (task order is the interaction of day & stress,
           # for example), so while it's good to check these things, focusing on regressors of
           # stress, day, and their interaction is the way to go
-          tr_confound_mod <- lmer(rating ~ 1 + dayrecode * stressrecode + 
+          tr_confound_mod <- lmer(rating ~ 1 + dayrecode * stressedBool + 
                                     ( 1 | subjectID), data = bst_tr)
           summary(tr_confound_mod)
           #                          Estimate Std. Error         df t value Pr(>|t|)    
@@ -325,7 +326,7 @@ library(lmerTest) # adds more useful info to the output of lmer's
     
     tr_reg1 = lmer(rating ~ 1 + stressrecode*dayrecode*pssSum + (1 | subjectID), data = bst_tr_pss)
     summary(tr_reg1)
-    
+
     #                      Estimate Std. Error         df t value Pr(>|t|)    
     # (Intercept)                    5.260e+00  5.994e-01  3.203e+01   8.774 4.99e-10 ***
     # stressrecode                   7.054e-02  5.806e-02  9.836e+03   1.215   0.2244    
@@ -372,6 +373,7 @@ library(lmerTest) # adds more useful info to the output of lmer's
     
     anova(tr_reg1,tr_reg2) # reg 2 (categorical) outperforms reg 1
     anova(tr_reg2,tr_reg3) # reg 2 (cat) outperforms reg 3 (exponential)
+    anova(tr_reg1,tr_reg3)
     
     # CATEGORICAL REGRESSION does best here.
     
