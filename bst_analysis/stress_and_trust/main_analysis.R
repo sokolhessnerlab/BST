@@ -78,6 +78,7 @@ library(lmerTest) # adds more useful info to the output of lmer's
       # mean(bst_tr$rating) # PSH NOTE: if everyone has the same # of trials, this is OK; if they don't, this is biased toward people with more trials
       mean(aggregate(rating ~ subjectID, data = bst_tr, FUN=mean)$rating)
       sd(bst_tr$rating) # Not a particularly useful quantity b/c it's collapsing across people
+      mean(aggregate(rating ~ subjectID, data = bst_tr, FUN=sd)$rating)
 
       #prelim looking at different effect
       # PSH NOTE: same problem below as a few lines above; this collapses across people.
@@ -162,6 +163,7 @@ library(lmerTest) # adds more useful info to the output of lmer's
       # mean(bst_tg$shared) # PSH NOTE: See above w/ TR, same issue, tho here it doesn't matter b/c # of trials is identical across people
       # sd(bst_tg$shared)
       mean(aggregate(shared ~ subjectID, data = bst_tg, FUN=mean)$shared)
+      mean(aggregate(shared ~ subjectID, data = bst_tg, FUN=sd)$shared)
 
       #prelim looking at different effect
         #underwent stressor
