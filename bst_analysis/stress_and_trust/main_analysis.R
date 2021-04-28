@@ -389,6 +389,28 @@ library(lmerTest) # adds more useful info to the output of lmer's
     #
     # FWIW 2, if you do the above regression with the categorical PSS, it's strongly significant,
     # (stress x PSScategorical), suggestive of a possible nonlinearity.
+    
+    tr_reg1b = lmer(rating ~ 1 + stressedBool*dayrecode*pssSum + (1 | subjectID), data = bst_tr_pss)
+    summary(tr_reg1b)
+    # Slightly easier regression to visualize. Numerically identical.
+    
+    # Extract fixed effects coefficient values for plotting
+    interceptcoef = fixef(tr_reg1b)['(Intercept)']
+    stresscoef = fixef(tr_reg1b)['stressedBool'];
+    psscoef = fixef(tr_reg1b)['pssSum'];
+    stressXpsscoef = fixef(tr_reg1b)['stressedBool:pssSum'];
+    
+    PSS = c(0,27); # possible PSS values
+    Ctrl = interceptcoef + PSS*psscoef;
+    Strs = Ctrl + stresscoef + PSS*stressXpsscoef;
+    tr_viz = data.frame(PSS = PSS, Control = Ctrl, Stress = Strs); # assemble data frame for plotting
+    ggplot(data = tr_viz, aes(x = PSS)) +
+      geom_line(aes(y = Control), color='#1a9988', size=2) + 
+      geom_line(aes(y = Stress), color = "#eb5600", size=2) +
+      scale_x_continuous(name = "PSS Score", breaks = c(0,5,10,15,20,25,30), limits = c(0,27), expand = c(0,0)) +
+      scale_y_continuous(name = "Trust Rating", expand = c(0,0), breaks = seq(1,9,1), limits = c(3.5,6)) +
+      theme_classic()
+      
 
     tr_reg2 = lmer(rating ~ 1 + stressrecode*dayrecode*pssSumCategorical + (1 | subjectID), data = bst_tr_pss)
     summary(tr_reg2)
