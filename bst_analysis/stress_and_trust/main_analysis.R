@@ -304,8 +304,8 @@ library(lmerTest) # adds more useful info to the output of lmer's
     #plot of correlation
       ggplot(data = bst_t_compiled_part_avg, aes(x = sharedAvg, y = ratingAvg)) +
         geom_point(size = 2) +
-        scale_x_continuous(name = "Shared Amount Average ($)") +
-        scale_y_continuous(name = "Trust Rating Average", limits = c(1,9), breaks = c(1,3,6,9)) +
+        scale_x_continuous(name = "Average Amount Shared ($)") +
+        scale_y_continuous(name = "Average Trust Rating", limits = c(1,9), breaks = c(1,3,6,9)) +
         geom_smooth(method = lm, se = FALSE) +
         geom_errorbarh(aes(xmin = sharedLowSE, xmax = sharedHighSE)) +
         geom_errorbar(aes(ymin = ratingLowSE, ymax = ratingHighSE)) +
@@ -400,7 +400,7 @@ library(lmerTest) # adds more useful info to the output of lmer's
     psscoef = fixef(tr_reg1b)['pssSum'];
     stressXpsscoef = fixef(tr_reg1b)['stressedBool:pssSum'];
     
-    PSS = c(0,27); # possible PSS values
+    PSS = c(0,27); # possible PSS values, focused on the range we observe in this study
     Ctrl = interceptcoef + PSS*psscoef;
     Strs = Ctrl + stresscoef + PSS*stressXpsscoef;
     tr_viz = data.frame(PSS = PSS, Control = Ctrl, Stress = Strs); # assemble data frame for plotting
@@ -463,8 +463,16 @@ library(lmerTest) # adds more useful info to the output of lmer's
       bst_tg_pss$dayrecode = bst_tg_pss$day * 2 - 3; # Converts 1, 2 coding into -1/+1 coding
       bst_tg_pss$stressrecode = bst_tg_pss$stressedBool*2-1 # converts 0,1 coding into -1/+1 coding
 
-      tg_reg1 = lmer(shared ~ 1 + stressrecode*dayrecode*pssSum + (1 | subjectID), data = bst_tg_pss)
-      summary(tg_reg1)
+      tg_reg1_withoutday = lmer(shared ~ 1 + stressrecode*pssSum + (1 | subjectID), data = bst_tg_pss)
+      summary(tg_reg1_withoutday)
+      #                       Estimate Std. Error         df t value Pr(>|t|)    
+      # (Intercept)          2.355e+00  6.102e-01  3.400e+01   3.860 0.000483 ***
+      # stressrecode         1.637e-01  4.432e-02  5.434e+03   3.694 0.000223 ***
+      # pssSum               9.938e-03  3.614e-02  3.400e+01   0.275 0.785022    
+      # stressrecode:pssSum -1.258e-02  2.625e-03  5.434e+03  -4.793 1.69e-06 ***
+      
+      tg_reg1_withday = lmer(shared ~ 1 + stressrecode*dayrecode*pssSum + (1 | subjectID), data = bst_tg_pss)
+      summary(tg_reg1_withday)
       #                                 Estimate Std. Error         df t value Pr(>|t|)
       # (Intercept)                    2.711e+00  7.409e-01  3.200e+01   3.659 0.000903 ***
       # stressrecode                   5.362e-02  5.308e-02  5.432e+03   1.010 0.312381
@@ -631,3 +639,45 @@ library(lmerTest) # adds more useful info to the output of lmer's
       #   more shared after sharing (+.48 in control)
       #   in low PSS, acute stress reverses the pattern (-.47)
       #   in high PSS, acute stress does v. little (+.65)
+
+      
+      tg_reg3b_withoutday = lmer(shared ~ 1 + stressrecode*pssSum +
+                        prevTrialFeedback*stressrecode*pssSum +
+                        prevTrialShared*stressrecode*pssSum +
+                        (1 | subjectID), data = bst_tg_pss)
+      summary(tg_reg3b_withoutday)
+      
+      #                                         Estimate Std. Error         df t value Pr(>|t|)    
+      # (Intercept)                            2.386e+00  5.744e-01  3.422e+01   4.154 0.000206 ***
+      # stressrecode                           4.059e-01  5.461e-02  5.426e+03   7.434 1.22e-13 ***
+      # pssSum                                -8.368e-04  3.404e-02  3.429e+01  -0.025 0.980529    
+      # prevTrialFeedback                     -1.721e-03  5.168e-02  5.432e+03  -0.033 0.973433    
+      # prevTrialShared                        3.774e-02  7.246e-02  5.458e+03   0.521 0.602486    
+      # stressrecode:pssSum                   -2.217e-02  3.380e-03  5.427e+03  -6.559 5.93e-11 ***
+      # stressrecode:prevTrialFeedback        -1.613e-02  5.025e-02  5.428e+03  -0.321 0.748290    
+      # pssSum:prevTrialFeedback              -2.425e-03  3.032e-03  5.432e+03  -0.800 0.423863    
+      # stressrecode:prevTrialShared          -4.477e-01  5.558e-02  5.428e+03  -8.056 9.64e-16 ***
+      # pssSum:prevTrialShared                 1.051e-02  4.383e-03  5.456e+03   2.398 0.016500 *  
+      # stressrecode:pssSum:prevTrialFeedback  1.372e-03  2.945e-03  5.428e+03   0.466 0.641256    
+      # stressrecode:pssSum:prevTrialShared    1.966e-02  3.438e-03  5.428e+03   5.717 1.14e-08 ***
+      
+      # JUST SIG
+      # stressrecode                           4.059e-01  5.461e-02  5.426e+03   7.434 1.22e-13 ***
+      # stressrecode:pssSum                   -2.217e-02  3.380e-03  5.427e+03  -6.559 5.93e-11 ***
+      # stressrecode:prevTrialShared          -4.477e-01  5.558e-02  5.428e+03  -8.056 9.64e-16 ***
+      # pssSum:prevTrialShared                 1.051e-02  4.383e-03  5.456e+03   2.398 0.016500 *  
+      # stressrecode:pssSum:prevTrialShared    1.966e-02  3.438e-03  5.428e+03   5.717 1.14e-08 ***
+      
+      # Running the regression _without_ Day produces VERY similar output. Only differences are...
+      # WITHOUT Day has no sig. main effect of prevTrialShared, and does have an interaction 
+      # between prevTrialShared and PSS.
+      
+      
+      # FeldmanHall found effects of previous feedback. We don't, above. Try to simplify the 
+      # regression to check. 
+      tg_reg3b_withoutdaywithoutPrevShared = lmer(shared ~ 1 + stressrecode*pssSum +
+                                   prevTrialFeedback*stressrecode*pssSum +
+                                   # prevTrialShared*stressrecode*pssSum +
+                                   (1 | subjectID), data = bst_tg_pss)
+      summary(tg_reg3b_withoutdaywithoutPrevShared)
+      
