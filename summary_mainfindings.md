@@ -7,13 +7,15 @@ Based on `main_analysis.R`
 
 ### Acute stressor
 
-It worked: the cold water bath was unpleasant (+4.1 on a scale of 1-7).
+It worked: the cold water bath was significantly more unpleasant (+4.1 on a scale of 1-7; t(38) = 13.7, p = 3e-16).
+
+Mean control (lukewarm) bath rating was 2.0 (s.d. 1.0), while mean stress (cold) bath was 6.1 (s.d. 1.3).
 
 _(Ratings did not appear to be affected by day, nor was the difference in ratings affected by the task order)_
 
 ### Chronic stressor
 
-Roughly normally-distributed, with mean of 15.9 on a scale of 0-40. **Mild-to-moderate chronic stress is present**.
+Roughly normally-distributed, with mean of 15.9 (s.d. = 5.7; range 3-27) on a scale of 0-40. **Mild-to-moderate chronic stress is present**.
 
 > 11 **low** chronic stress (0-13 PSS)
 >
