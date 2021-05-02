@@ -87,7 +87,7 @@ Effects of stress on sharing depend a lot on the inclusion of the **day** factor
 How acute & chronic stress alter the effects of context on sharing are complex, but analyses indicate that sharing overall is affected by **acute stress** and **chronic stress** (mirroring findings from analyses of stress & sharing, above); _and_ effects of recent sharing **actions** on subsequent sharing are modulated by **acute** and **chronic stress**.
 
 #### Stress alters trust actions:
-When chronic stress is low, more money is shared under acute stress. When chronic stress is high, less money is shared under acute stress. This is the same as identified above.
+When chronic stress is low, more money is shared under acute stress. When chronic stress is high, less money is shared under acute stress. **This replicates the findings reported above.**
 
 #### Stress modulates context effects:
 When chronic stress is low, people share more money after previous sharing, and acute stress reverses this effect. When chronic stress is high, there is little difference between acute stress and control.
