@@ -20,6 +20,7 @@ Data Frame and Variable Descriptions
     $(*)Recode: any of the aforementioned questions with a Recode on the end is simply a reverse scored version of the question, used in calculating the PSS score
     $pssSum: PSS score (0-40)
     $pssSumCategorical: using the "low" "moderate" "high" scoreing, a 3 way categorical version of the pssSum
+    $pssMedianSplit: a binary split on whether a participant's pssSum was above (1) or below (-1) the median across the dataset
 
 >bst_tg
   -this contains the Trust Game data
@@ -44,7 +45,7 @@ Data Frame and Variable Descriptions
 >bst_tr
   -this contains the Trust Rating data
     $taskOrder/day/blockNum/trialNum/cumtrialNum/stimuls/partnerRace/responseTime/startTime/stressedBool: all the same as previously described, only for the trust rating instead
-    $rating: what the trust rating was by a participant for a given trial was from untrustworthy (1) to trustworth (9)
+    $rating: what the trust rating was by a participant for a given trial was from untrustworthy (1) to trustworthy (9)
 
 >bst_t_compiled_part_avg
   -this contains the average data for each participant for each trust task (Game and Rating)

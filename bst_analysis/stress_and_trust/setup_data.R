@@ -33,6 +33,11 @@ bst_pss$pssSumCategorical <- ifelse(bst_pss$pssSum <= 13, 0,
 # count(bst_pss$pssSum)
 # count(bst_pss$pssSumcategorical)
 
+#median split for pss
+bst_pss$pssMedianSplit <- ifelse(bst_pss$pssSum < median(bst_pss$pssSum), -1, 1)
+#double checking the median split worked out.
+#count(bst_pss$pssMedianSplit)
+
 #Bath Ratings:
 bath_pleasantness_csv <- file.path(config$path$data$current, config$csvs$bath_pleasantness)
 bst_bathPleasantness <- read.csv(bath_pleasantness_csv) #reads in the pleasantness ratings
@@ -75,10 +80,10 @@ bst_tg <- merge(bst_tg, bst_bath, by = "subjectID")
   # the PSS with one sum value per person; TG data with many individual trials) together in
   # a way that could create issues if someone forgets that... Put another way, this merge
   # creates a dataframe that makes it look like the PSS was measured 152 times per person
-  # and it looked the same every time. 
+  # and it looked the same every time.
   #
-  # That issue makes this of limited utility to do; if you do want to relate acute or 
-  # chronic stressors to TG performance, you'll need to summarize TG data to the same space 
+  # That issue makes this of limited utility to do; if you do want to relate acute or
+  # chronic stressors to TG performance, you'll need to summarize TG data to the same space
   # (e.g. person-level summary stats) anyway. [PSH]
 
 #calculating new factors for whether a participant was stressed or not before doing the trust task
@@ -148,6 +153,7 @@ bst_tr$stressedBool <- ifelse((bst_tr$day2StressedBool == 1 & bst_tr$day == 1), 
 #double checking the math above worked out (there should be no NA)
 count(bst_tg$stressedBool)
 
+
 #because merging with the PSS will remove 3 participants, this is a seperate DF for only those participants that have a PSS score
 bst_tr_pss <- merge(bst_pss, bst_tr, by = "subjectID") #for use when looking at pss x trust rating
 
@@ -161,9 +167,9 @@ bst_tg_part_avg$sharedSD <- (aggregate(shared ~ subjectID, data =bst_tg, FUN = s
 bst_tg_part_avg$sharedSE <- (bst_tg_part_avg$sharedSD / sqrt(nrow(bst_tg_part_avg))) #calculates the standard error
   # PSH NOTE: Don't think this is makes sense to do here. SD makes sense on a per-person level,
   # but I'd only calculate the SE of the mean across people... but normalizing everyone's
-  # unique SD by the number of people isn't a useful quantity, I don't think. 
-  # i.e. I'd take the sd across everyone's means, and normalize that single number by 
-  # the sqrt of the number of participants. 
+  # unique SD by the number of people isn't a useful quantity, I don't think.
+  # i.e. I'd take the sd across everyone's means, and normalize that single number by
+  # the sqrt of the number of participants.
 bst_tg_part_avg$sharedHighSE <- bst_tg_part_avg$sharedAvg +  bst_tg_part_avg$sharedSE #calculates the standard error high bound
 bst_tg_part_avg$sharedLowSE <- bst_tg_part_avg$sharedAvg - bst_tg_part_avg$sharedSE #calculates the standard error low bound
 
