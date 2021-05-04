@@ -94,38 +94,26 @@ bst_tg$stressedBool <- ifelse((bst_tg$day2StressedBool == 1 & bst_tg$day == 1), 
 #double checking the math above worked out (there should be no NA)
 # count(bst_tg$stressedBool)
 
-#calculating results of previous trials
-bst_tg$prevTrialShared <- 0 #sets up as 'neutral condition'
-bst_tg$prevTrialFeedback <- 0 #sets up as 'neutral condition'
-#calculates what the previous trial was:
-bst_tg <- bst_tg[order(bst_tg$subjectID, bst_tg$day, bst_tg$cumTrialNum),] #orders dataset by cumulative trial (within a day and subjectID)
-for(i in 1:nrow(bst_tg)) #iterates through the now ordered dataset
-{
-  if(bst_tg[i, "cumTrialNum"] != 1) #if its the first trial, then there is nothing to change, as there was no 'previous trial'
-  {
-    if(bst_tg[(i-1), "shared"] >= 1) #if they shared any money on the previous trial
-    {
-      bst_tg[i, "prevTrialShared"] <- 1 #then the current trials prev trial shared amount can be set to 1 (ie they did share on the last trial)
-      if(bst_tg[(i-1), "received"] == 0) #if they didn't receive any money back, the feedback is set to -1 (ie on the last trial they lost the money they shared)
-      {
-        bst_tg[i, "prevTrialFeedback"] <- -1
-      }
-      else #if they did receive money back after sharing, their feedback is set to 1
-      {
-        bst_tg[i, "prevTrialFeedback"] <- 1
-      }
-    }
-    else #if they didn't share any money, the shared amount is set so, and the feedback isn't changed
-    {
-      bst_tg[i, "prevTrialShared"] <- -1
-    }
-  }
-}
+#calculating the previous trial sharing data (does the same as the for loop was here previously)
+bst_tg$prevTrialSharedAmt <- bst_tg$shared #sets up column
+bst_tg$prevTrialSharedAmt <- c(0, bst_tg$prevTrialSharedAmt[-nrow(bst_tg)]) #shifts column by 1, replacing the first element with a 0
+bst_tg$prevTrialSharedAmt <- ifelse(bst_tg$cumTrialNum == 1, 0, bst_tg$prevTrialSharedAmt) #replaces all trials without a previous element with a 0
+bst_tg$prevTrialShared <- ifelse(bst_tg$cumTrialNum == 1, 0,
+                                 ifelse(bst_tg$prevTrialSharedAmt > 0, 1, -1)) #creates the boolean coding
+#calculating feedback from previous trial
+bst_tg$prevTrialFeedback <- bst_tg$received
+bst_tg$prevTrialFeedback <- c(0, bst_tg$prevTrialFeedback[-nrow(bst_tg)])
+bst_tg$prevTrialFeedback <- ifelse(bst_tg$cumTrialNum == 1, 0,
+                                   ifelse(bst_tg$prevTrialShared == -1, 0,
+                                          ifelse(bst_tg$prevTrialFeedback > 0, 1, -1)))
+
 #make sure the counts are where they should be (the coding worked right)
 # count(bst_tg$shared)
 # count(bst_tg$prevTrialShared)
 # count(bst_tg$partnerChoice)
 # count(bst_tg$prevTrialFeedback)
+# count(bst_tg$prevTrialSharedAmt)
+
 
 #setting up a categorical for if a participant shared any money at all
 bst_tg$sharedBool <- ifelse(bst_tg$shared == 0, 0, 1)
@@ -153,6 +141,17 @@ bst_tr$stressedBool <- ifelse((bst_tr$day2StressedBool == 1 & bst_tr$day == 1), 
 #double checking the math above worked out (there should be no NA)
 count(bst_tg$stressedBool)
 
+#Previous trial stuff for the trust rating task
+bst_tr$prevTrialRatingAmt <- bst_tr$rating #sets up the previous amount as the current amount
+bst_tr$prevTrialRatingAmt <- c(0, bst_tr$prevTrialRatingAmt[-nrow(bst_tr)]) #shifts the previous rating column down by 1
+bst_tr$prevTrialRatingAmt <- ifelse(bst_tr$cumTrialNum == 1, 0, bst_tr$prevTrialRatingAmt) #converts all the first trials to 0
+bst_tr$prevTrialRating <- ifelse(bst_tr$cumTrialNum == 1, 0,
+                                 ifelse(bst_tr$prevTrialRatingAmt >= 5, 1,
+                                        ifelse(bst_tr$prevTrialRatingAmt < 5, -1, 0))) #converts the previous amount to the boolean coding
+#just checking to see whether the coding looks like it worked out
+# count(bst_tr$rating)
+# count(bst_tr$prevTrialRatingAmt)
+# count(bst_tr$prevTrialRating)
 
 #because merging with the PSS will remove 3 participants, this is a seperate DF for only those participants that have a PSS score
 bst_tr_pss <- merge(bst_pss, bst_tr, by = "subjectID") #for use when looking at pss x trust rating
@@ -219,7 +218,6 @@ rm(bst_tg_part_avg)
 rm(bst_tg_part_avg_stress)
 rm(bst_tr_part_avg)
 rm(bst_tr_part_avg_stress)
-rm(i)
 
 #you could also remove these if you really feel the need, the data is contained in other DFs, but I keep them for clarity in later analysis
 #rm(bst_pss)

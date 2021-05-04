@@ -39,6 +39,7 @@ Data Frame and Variable Descriptions
     $bonus: what the actual bonus was based on that randomly selected trial
     $stressedBool: whether a person had recieved the cold bath on the day this trust game was administered
     $prevTrialShared: whether a person shared anything on the previous trial (-1=they didn't, 0=no previous trial, 1=they did)
+    $prevTrialSharedAmt: how much a person shared on the previous trial, 0 also including if there was no previous trial
     $prevTrialFeedback: whether a person saw their trust reciprocated on the previous trial (-1=they didn't, 0=no previous trial/they didn't share anything in the first place, 1=they did)
     $sharedBool: whether a person actually shared money or not on a given trial
 
@@ -46,6 +47,8 @@ Data Frame and Variable Descriptions
   -this contains the Trust Rating data
     $taskOrder/day/blockNum/trialNum/cumtrialNum/stimuls/partnerRace/responseTime/startTime/stressedBool: all the same as previously described, only for the trust rating instead
     $rating: what the trust rating was by a participant for a given trial was from untrustworthy (1) to trustworthy (9)
+    $prevTrialRating: a lagged variable representing in boolean format whether a participant gave an untrustworthy (ie a rating from 1-4) (-1), trustworthy (ie a rating from 5-9) (1) rating for the previous trial, or whether there was no previous trial (0)
+    $prevTrialRatingAmt: the rating given to a person by the participant on a previous trial (1-9), 0 being if there was not previous trial
 
 >bst_t_compiled_part_avg
   -this contains the average data for each participant for each trust task (Game and Rating)
