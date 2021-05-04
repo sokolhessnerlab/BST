@@ -798,3 +798,27 @@ library(lmerTest) # adds more useful info to the output of lmer's
       summary(tg_reg4)
       #the story doesn't change a ton, however, previous trial feedback does have a weak interaction with stress
 
+      #added the pss median split to follow up more on nonlinearities in chronic stress
+      tg_reg5 = lmer(shared ~ 1 + stressrecode*pssMedianSplit +
+                        prevTrialFeedback*stressrecode*pssMedianSplit +
+                        prevTrialShared*stressrecode*pssMedianSplit +
+                        (1 | subjectID), data = bst_tg_pss)
+      summary(tg_reg5)
+
+                                                         # Estimate      Std. Error              df  t value   Pr(>|t|)
+      # (Intercept)                                    2.36502775e+00  1.92218671e-01  3.44547331e+01 12.30384 3.6602e-14 ***
+      # stressrecode                                   6.91443415e-02  2.08953185e-02  5.42775200e+03  3.30908 0.00094212 ***
+      # pssMedianSplit                                -8.50520873e-02  1.92218671e-01  3.44547331e+01 -0.44248 0.66091038
+      # prevTrialFeedback                             -3.93766248e-02  1.69461398e-02  5.43348266e+03 -2.32363 0.02018183 *
+      # prevTrialShared                                2.13627524e-01  2.60188735e-02  5.45398261e+03  8.21048 2.7252e-16 ***
+      # stressrecode:pssMedianSplit                    3.59513351e-03  2.08953185e-02  5.42775200e+03  0.17205 0.86340110
+      # stressrecode:prevTrialFeedback                 3.75916515e-03  1.60711916e-02  5.42662121e+03  0.23391 0.81506596
+      # pssMedianSplit:prevTrialFeedback              -2.26672858e-02  1.69461398e-02  5.43348266e+03 -1.33761 0.18108036
+      # stressrecode:prevTrialShared                  -1.54542139e-01  2.12970511e-02  5.42938363e+03 -7.25650 4.5311e-13 ***
+      # pssMedianSplit:prevTrialShared                 6.90002831e-02  2.60188735e-02  5.45398261e+03  2.65193 0.00802643 **
+      # stressrecode:pssMedianSplit:prevTrialFeedback  5.69448533e-03  1.60711916e-02  5.42662121e+03  0.35433 0.72310629
+      # stressrecode:pssMedianSplit:prevTrialShared    7.28209698e-02  2.12970511e-02  5.42938363e+03  3.41930 0.00063245 ***
+
+      #a few interesting things here although for how exploratory this is, I'm not sure how much it changes.
+      #Feedback and shared amounts are significant, albeit especially with the former, a small effect size. Stress*pss is no longer significant interstingly as well
+      #overall very similary though
