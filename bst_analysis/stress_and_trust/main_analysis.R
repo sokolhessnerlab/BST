@@ -447,12 +447,107 @@ library(lmerTest) # adds more useful info to the output of lmer's
     # This is pretty exploratory; wouldn't trust it too hard. but stress x pssExp is p = 0.0415 with
     # an exponent of 4. So this idea works, but hard to tell what it means.
 
+    tr_reg4 = lmer(rating ~ 1 + stressrecode*pssMedianSplit + (1 | subjectID), data = bst_tr_pss)
+    summary(tr_reg4)
+    #tried just using the median split, actually nothing was signficant here (other than the intercept)
+
     anova(tr_reg1,tr_reg2) # reg 2 (categorical) outperforms reg 1
     anova(tr_reg2,tr_reg3) # reg 2 (cat) outperforms reg 3 (exponential)
     anova(tr_reg1,tr_reg3)
 
     # CATEGORICAL REGRESSION does best here.
 
+    #including previous trial actions in the regressions
+
+    tr_reg1_prev_a <- lmer(rating ~ 1 + prevTrialRating*stressrecode*pssSum + (1 | subjectID), data = bst_tr_pss) #using the boolean version of previous trial ratings
+    summary(tr_reg1_prev_a)
+                                             # Estimate      Std. Error              df  t value   Pr(>|t|)
+    # (Intercept)                          5.07348310e+00  4.41991681e-01  3.38725616e+01 11.47868 3.2084e-13 ***
+    # prevTrialRating                      1.83041413e-01  5.32409290e-02  9.86031959e+03  3.43798 0.00058849 ***
+    # stressrecode                        -1.70117237e-03  4.89609500e-02  9.83275308e+03 -0.03475 0.97228339
+    # pssSum                              -2.77027519e-02  2.61770351e-02  3.38569945e+01 -1.05828 0.29741813
+    # prevTrialRating:stressrecode         2.02578000e-01  4.93777826e-02  9.83485756e+03  4.10261 4.1180e-05 ***
+    # prevTrialRating:pssSum               3.86053181e-03  3.13631246e-03  9.86081068e+03  1.23091 0.21838428
+    # stressrecode:pssSum                 -2.14995138e-03  2.87648302e-03  9.83246583e+03 -0.74742 0.45482576
+    # prevTrialRating:stressrecode:pssSum -1.05518246e-02  2.90585313e-03  9.83546310e+03 -3.63123 0.00028351 ***
+
+    #so using the previous trial ratings in boolean form doesn't appear to reallly shift the narrative. In and of itself it is signficant, but interestingly the pss*acute interaction disappears from trending,
+
+    tr_reg1_prev_b <- lmer(rating ~ 1 + prevTrialRatingAmt*stressrecode*pssSum + (1 | subjectID), data = bst_tr_pss) #using the actual rating on previous trials
+    summary(tr_reg1_prev_b)
+
+    #     Fixed effects:
+    #                                               Estimate      Std. Error              df  t value   Pr(>|t|)
+    # (Intercept)                             4.36247578e+00  4.44704895e-01  4.21503661e+01  9.80982 1.9095e-12 ***
+    # prevTrialRatingAmt                      1.52110260e-01  2.85947190e-02  9.86503523e+03  5.31952 1.0632e-07 ***
+    # stressrecode                           -4.37780215e-01  1.39916328e-01  9.83549242e+03 -3.12887 0.00175992 **
+    # pssSum                                 -2.77409606e-02  2.63010774e-02  4.18943627e+01 -1.05475 0.29758647
+    # prevTrialRatingAmt:stressrecode         9.53885569e-02  2.60071991e-02  9.83561283e+03  3.66778 0.00024596 ***
+    # prevTrialRatingAmt:pssSum               3.09726928e-04  1.69052630e-03  9.86593550e+03  0.18321 0.85463441
+    # stressrecode:pssSum                     2.09606434e-02  8.11548714e-03  9.83597256e+03  2.58280 0.00981465 **
+    # prevTrialRatingAmt:stressrecode:pssSum -4.96264955e-03  1.52062943e-03  9.83627202e+03 -3.26355 0.00110402 **
+
+    #things get kinda funky here, the acute*pss intereaction is significant again, the acute is as well, too
+
+    anova(tr_reg1_prev_a, tr_reg1_prev_b) #the second model, not using the boolean value performs better
+
+    #including day effects
+    tr_reg2_prev <- lmer(rating ~ 1 + dayrecode*prevTrialRatingAmt*stressrecode*pssSum + (1 | subjectID), data = bst_tr_pss)
+    summary(tr_reg2_prev)
+                                                            # Estimate      Std. Error              df  t value   Pr(>|t|)
+    # (Intercept)                                       4.61502399e+00  5.42795674e-01  4.23783747e+01  8.50232 1.0481e-10 ***
+    # dayrecode                                         6.43121135e-01  1.85053904e-01  9.82886718e+03  3.47532 0.00051245 ***
+    # prevTrialRatingAmt                                1.24484238e-01  3.74247548e-02  9.85600078e+03  3.32625 0.00088344 ***
+    # stressrecode                                     -1.66357093e-02  1.85053904e-01  9.82886716e+03 -0.08990 0.92837125
+    # pssSum                                           -3.89314413e-02  3.24134313e-02  4.15436198e+01 -1.20109 0.23651964
+    # dayrecode:prevTrialRatingAmt                     -1.22403853e-01  3.29134947e-02  9.82824231e+03 -3.71896 0.00020116 ***
+    # dayrecode:stressrecode                            4.79468312e-01  5.42795674e-01  4.23783747e+01  0.88333 0.38204112
+    # prevTrialRatingAmt:stressrecode                   1.99588095e-02  3.29134947e-02  9.82824229e+03  0.60640 0.54426184
+    # dayrecode:pssSum                                 -3.91898502e-02  1.09417175e-02  9.82900804e+03 -3.58169 0.00034303 ***
+    # prevTrialRatingAmt:pssSum                         1.71213897e-03  2.17824084e-03  9.85787181e+03  0.78602 0.43187517
+    # stressrecode:pssSum                              -5.00937899e-03  1.09417175e-02  9.82900802e+03 -0.45782 0.64708914
+    # dayrecode:prevTrialRatingAmt:stressrecode        -3.50479033e-02  3.74247548e-02  9.85600078e+03 -0.93649 0.34904398
+    # dayrecode:prevTrialRatingAmt:pssSum               7.19949224e-03  1.95990522e-03  9.82865156e+03  3.67339 0.00024063 ***
+    # dayrecode:stressrecode:pssSum                    -1.43312579e-02  3.24134313e-02  4.15436198e+01 -0.44214 0.66068155
+    # prevTrialRatingAmt:stressrecode:pssSum           -3.33694509e-04  1.95990522e-03  9.82865153e+03 -0.17026 0.86480875
+    # dayrecode:prevTrialRatingAmt:stressrecode:pssSum  1.62562711e-03  2.17824084e-03  9.85787181e+03  0.74630 0.45550235
+
+    #Lots of stuff going on and not going on, the only significant effects other than previous trial Amt include day, not exactly sure what to make of this
+
+    anova(tr_reg1_prev_b, tr_reg2_prev) #the model including day performs slightly better,
+
+    tr_reg3_prev_a <- lmer(rating ~ 1 + prevTrialRating*stressrecode*pssSumCategorical + (1 | subjectID), data = bst_tr_pss)
+    summary(tr_reg3_prev_a)
+    #couple things to note here, as before the categorical pss works better in conjunction with acute stress, but the final interactant of all the variables is no longer significant
+
+    tr_reg3_prev_b <- lmer(rating ~ 1 + prevTrialRatingAmt*stressrecode*pssMedianSplit + (1 | subjectID), data = bst_tr_pss)
+    summary(tr_reg3_prev_b)
+
+#     Fixed effects:
+    #                                                       Estimate      Std. Error              df
+    # (Intercept)                                     3.91863656e+00  1.45460089e-01  4.09740232e+01
+    # prevTrialRatingAmt                              1.58715072e-01  9.66087369e-03  9.86311775e+03
+    # stressrecode                                   -1.05405224e-01  4.18182410e-02  9.83687673e+03
+    # pssMedianSplit                                 -2.84614886e-01  1.45460089e-01  4.09740232e+01
+    # prevTrialRatingAmt:stressrecode                 1.58005031e-02  8.42787746e-03  9.83763940e+03
+    # prevTrialRatingAmt:pssMedianSplit               2.07712293e-02  9.66087369e-03  9.86311775e+03
+    # stressrecode:pssMedianSplit                     1.89745495e-01  4.18182410e-02  9.83687673e+03
+    # prevTrialRatingAmt:stressrecode:pssMedianSplit -3.91583164e-02  8.42787746e-03  9.83763940e+03
+    #                                                 t value   Pr(>|t|)
+    # (Intercept)                                    26.93960 < 2.22e-16 ***
+    # prevTrialRatingAmt                             16.42865 < 2.22e-16 ***
+    # stressrecode                                   -2.52056   0.011733 *
+    # pssMedianSplit                                 -1.95665   0.057227 .
+    # prevTrialRatingAmt:stressrecode                 1.87479   0.060851 .
+    # prevTrialRatingAmt:pssMedianSplit               2.15004   0.031577 *
+    # stressrecode:pssMedianSplit                     4.53739 5.7631e-06 ***
+    # prevTrialRatingAmt:stressrecode:pssMedianSplit -4.64628 3.4236e-06 ***
+
+    #again this is the most exploratory but all terms is significant or trending, there is a lot going on here
+
+    tr_reg4_prev <- lmer(rating ~ 1 + dayrecode*prevTrialRatingAmt*stressrecode*pssMedianSplit + (1 | subjectID), data = bst_tr_pss)
+    summary(tr_reg4_prev)
+    #this is most exploratory, the day stil does figure in though with significant terms though. Beyond that interpretation gets difficult
 
 #Trust Game:
     #basic modelling of stress and trust
@@ -694,3 +789,12 @@ library(lmerTest) # adds more useful info to the output of lmer's
       summary(tg_reg3b_withoutdaywithoutPrevShared)
 
       # no significant effects of prev. feedback.
+
+      #trying the above regression, the fullest version without day using the amount shared, rather than the boolean
+      tg_reg4 = lmer(shared ~ 1 + stressrecode*pssSum +
+                        prevTrialFeedback*stressrecode*pssSum +
+                        prevTrialSharedAmt*stressrecode*pssSum +
+                        (1 | subjectID), data = bst_tg_pss)
+      summary(tg_reg4)
+      #the story doesn't change a ton, however, previous trial feedback does have a weak interaction with stress
+
