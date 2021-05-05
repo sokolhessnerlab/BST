@@ -65,7 +65,9 @@ The inclusion of a _day_ effect doesn't alter this relationship (p = 0.059 with 
 
 This is consistent with a story in which chronic stress potentiates the effects of acute stress.
 
-Including previous trial ratings (binary version) doesn't change the story hugely, although the trending acute*pss interaction disappears. However, using the actual rating amount alters the story from both the binary version and the version without previous ratings. Here acute stress, and the acute*pss interaction become significant with fairly large effect sizes, and these effects are flipped from elsewhere (decreased sharing under acute, increase as chronic increases)
+Including previous trial ratings (binary version) doesn't change the story hugely, although the trending acute-pss interaction disappears. 
+However, using the actual rating amount alters the story from both the binary version and the version without previous ratings. 
+    Here acute stress, and the acute-pss interaction become significant with fairly large effect sizes, and these effects are flipped from elsewhere (decreased sharing under acute, increase as chronic increases)
 
 ### Sharing & Stress _(trust game)_
 
