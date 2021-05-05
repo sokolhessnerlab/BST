@@ -460,6 +460,10 @@ library(lmerTest) # adds more useful info to the output of lmer's
     #including previous trial actions in the regressions
 
     #most basic previous trial analysis
+    tr_prev_reg <- lmer(rating ~ 1 + prevTrialRatingAmt + (1 | subjectID), data = bst_tr)
+    summary(tr_prev_reg)
+
+    #expanding a bit to hypothezied predictors
     tr_reg1_prev_a <- lmer(rating ~ 1 + prevTrialRating*stressrecode*pssSum + (1 | subjectID), data = bst_tr_pss) #using the boolean version of previous trial ratings
     summary(tr_reg1_prev_a)
                                              # Estimate      Std. Error              df  t value   Pr(>|t|)

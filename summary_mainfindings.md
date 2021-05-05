@@ -33,9 +33,10 @@ Average rating of 4.7 on a scale from 1-9.
 
 A simple regression (with day & stress) finds lower ratings under stress (a small effect size: -0.075).
 
-**Sequential Effects:** ?
+**Sequential Effects:** 
 
-_Is it worth considering autocorrelation between ratings on one trial and the next, much like the analyses of trust game behavior analyze not just effect of prior feedback, but prior action too?_
+By itself, the previous trial rating is strongly signficiant and in the direction expected. If the previous rating given was 'unstrustowrthy', the current rating is predicted to shift by -.244, +.244 of the previous rating was trustworthy.
+Using the actual previous rating, the pattern remains the same, although the effect appears to be stronger
 
 ### Trust game
 
@@ -63,6 +64,8 @@ When analyzing ratings alone, there is a **marginal** (p = 0.06) interaction bet
 The inclusion of a _day_ effect doesn't alter this relationship (p = 0.059 with day included, p = 0.062 without day).
 
 This is consistent with a story in which chronic stress potentiates the effects of acute stress.
+
+Including previous trial ratings (binary version) doesn't change the story hugely, although the trending acute*pss interaction disappears. However, using the actual rating amount alters the story from both the binary version and the version without previous ratings. Here acute stress, and the acute*pss interaction become significant with fairly large effect sizes, and these effects are flipped from elsewhere (decreased sharing under acute, increase as chronic increases)
 
 ### Sharing & Stress _(trust game)_
 
