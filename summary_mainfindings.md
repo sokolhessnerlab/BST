@@ -15,7 +15,7 @@ _(Ratings did not appear to be affected by day, nor was the difference in rating
 
 ### Chronic stressor
 
-Roughly normally-distributed, with mean of 15.9 (s.d. = 5.7; range 3-27) on a scale of 0-40. **Mild-to-moderate chronic stress is present**.
+Roughly normally-distributed, with mean of 15.9 (s.d. = 5.7; range 3-27, median 16.5) on a scale of 0-40. **Mild-to-moderate chronic stress is present**.
 
 > 11 **low** chronic stress (0-13 PSS)
 >
@@ -33,9 +33,12 @@ Average rating of 4.7 on a scale from 1-9.
 
 A simple regression (with day & stress) finds lower ratings under stress (a small effect size: -0.075).
 
-**Sequential Effects:** 
+**Sequential Effects:**
 
-By itself, the previous trial rating is strongly signficiant and in the direction expected. If the previous rating given was 'unstrustowrthy', the current rating is predicted to shift by -.244, +.244 of the previous rating was trustworthy.
+By itself, the previous trial rating is strongly significant and positive indicating the presence of autocorrelation in trust ratings.
+
+If the previous rating given was 'untrustworthy', the current rating is predicted to shift by -0.244. If the previous rating was 'trustworthy', subsequent ratings shift by +0.244.
+
 Using the actual previous rating, the pattern remains the same, although the effect appears to be stronger
 
 ### Trust game
@@ -65,8 +68,8 @@ The inclusion of a _day_ effect doesn't alter this relationship (p = 0.059 with 
 
 This is consistent with a story in which chronic stress potentiates the effects of acute stress.
 
-Including previous trial ratings (binary version) doesn't change the story hugely, although the trending acute-pss interaction disappears. 
-However, using the actual rating amount alters the story from both the binary version and the version without previous ratings. 
+Including previous trial ratings (binary version) doesn't change the story hugely, although the trending acute-pss interaction disappears.
+However, using the actual rating amount alters the story from both the binary version and the version without previous ratings.
     Here acute stress, and the acute-pss interaction become significant with fairly large effect sizes, and these effects are flipped from elsewhere (decreased sharing under acute, increase as chronic increases)
 
 ### Sharing & Stress _(trust game)_
