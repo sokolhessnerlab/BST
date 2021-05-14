@@ -58,7 +58,7 @@ Ratings & choices were made about different people, but **average behavior in th
 ---
 ## STRESS AND TRUST
 
-_NOTE: because the categorical PSS is very non-normally-distributed (a single high stress person), I'm going to focus on continuous-PSS analyses below. If you want to pursue categorical takes on the PSS, then I'd recommend either doing a median split (high/low) or a tripartite split (low/med/high)._
+_NOTE: because the categorical PSS is very non-normally-distributed (a single high stress person), this document will focus on continuous-PSS analyses below. If one wanted to pursue categorical takes on the PSS, then either use the median split (high/low) or make a tripartite split (low/med/high)._
 
 ### Ratings & Stress _(trust ratings)_
 
@@ -86,7 +86,7 @@ Effects of stress on sharing depend a lot on the inclusion of the **day** factor
 >
 > Day effects were not _a priori_ expected, however, and given the design of the study (two days, stress one day and control the other), and the relatively limited sample size (N = 39), there is the possibility that day & stress effects might be partially confounded.
 >
-> Some evidence that this may be happening here is that the design was slightly unbalanced when collection stopped. Specifically, N = 16 participants experienced Control/Stress (Day 1/2), and N = 23 experienced Stress/Control. Thus, what looks like "sharing is higher on Day 1" could also be "stress increases sharing".
+> Some evidence that this may be happening here is that the design was slightly unbalanced when collection stopped. Specifically, N = 16 participants experienced Control/Stress (Day 1/2), and N = 23 experienced Stress/Control (a 41%/59% split). Thus, what looks like "sharing is higher on Day 1" could also be "stress increases sharing".
 >
 > A REASONABLE APPROACH might be to **first**, use the model without day as the hypothesis-related model, and **second** mention (briefly in the main text, and in more detail in a footnote? supplement?) that the pattern of results is affected by the inclusion of control variables (Day) that are slightly collinear with stress.
 
