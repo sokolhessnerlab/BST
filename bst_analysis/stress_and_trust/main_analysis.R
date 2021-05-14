@@ -401,7 +401,7 @@ library(lmerTest) # adds more useful info to the output of lmer's
     # FWIW 2, if you do the above regression with the categorical PSS, it's strongly significant,
     # (stress x PSScategorical), suggestive of a possible nonlinearity.
 
-    tr_reg1b = lmer(rating ~ 1 + stressedBool*dayrecode*pssSum + (1 | subjectID), data = bst_tr_pss)
+    tr_reg1b = lmer(rating ~ 1 + stressedBool*pssSum + (1 | subjectID), data = bst_tr_pss)
     summary(tr_reg1b)
     # Slightly easier regression to visualize. Numerically identical.
 
@@ -416,10 +416,10 @@ library(lmerTest) # adds more useful info to the output of lmer's
     Strs = Ctrl + stresscoef + PSS*stressXpsscoef;
     tr_viz = data.frame(PSS = PSS, Control = Ctrl, Stress = Strs); # assemble data frame for plotting
     ggplot(data = tr_viz, aes(x = PSS)) +
-      geom_line(aes(y = Control), color='#1a9988', size=2) +
+      geom_line(aes(y = Control), color='#111111', size=2) +
       geom_line(aes(y = Stress), color = "#eb5600", size=2) +
       scale_x_continuous(name = "PSS Score", breaks = c(0,5,10,15,20,25,30), limits = c(0,27), expand = c(0,0)) +
-      scale_y_continuous(name = "Trust Rating", expand = c(0,0), breaks = seq(1,9,1), limits = c(3.5,6)) +
+      scale_y_continuous(name = "Trust Rating", expand = c(0,0), breaks = seq(1,9,1), limits = c(3.8,5.5)) +
       theme_classic()
 
 
@@ -567,13 +567,37 @@ library(lmerTest) # adds more useful info to the output of lmer's
       bst_tg_pss$dayrecode = bst_tg_pss$day * 2 - 3; # Converts 1, 2 coding into -1/+1 coding
       bst_tg_pss$stressrecode = bst_tg_pss$stressedBool*2-1 # converts 0,1 coding into -1/+1 coding
 
-      tg_reg1_withoutday = lmer(shared ~ 1 + stressrecode*pssSum + (1 | subjectID), data = bst_tg_pss)
+      tg_reg1_withoutday = lmer(shared ~ 1 + stressedBool*pssSum + (1 | subjectID), data = bst_tg_pss)
       summary(tg_reg1_withoutday)
       #                       Estimate Std. Error         df t value Pr(>|t|)
       # (Intercept)          2.355e+00  6.102e-01  3.400e+01   3.860 0.000483 ***
       # stressrecode         1.637e-01  4.432e-02  5.434e+03   3.694 0.000223 ***
       # pssSum               9.938e-03  3.614e-02  3.400e+01   0.275 0.785022
       # stressrecode:pssSum -1.258e-02  2.625e-03  5.434e+03  -4.793 1.69e-06 ***
+      
+      # Alternative formulation using `stressedBool` for simplicity
+      #                       Estimate Std. Error         df t value Pr(>|t|)    
+      # (Intercept)            2.19163    0.61183   34.35962   3.582 0.001043 ** 
+      # stressedBool           0.32743    0.08864 5434.00000   3.694 0.000223 ***
+      # pssSum                 0.02252    0.03624   34.35962   0.621 0.538430    
+      # stressedBool:pssSum   -0.02516    0.00525 5434.00000  -4.793 1.69e-06 ***
+      
+      # Extract fixed effects coefficient values for plotting
+      interceptcoef = fixef(tg_reg1_withoutday)['(Intercept)']
+      stresscoef = fixef(tg_reg1_withoutday)['stressedBool'];
+      psscoef = fixef(tg_reg1_withoutday)['pssSum'];
+      stressXpsscoef = fixef(tg_reg1_withoutday)['stressedBool:pssSum'];
+      
+      PSS = c(0,27); # possible PSS values, focused on the range we observe in this study
+      Ctrl = interceptcoef + PSS*psscoef;
+      Strs = Ctrl + stresscoef + PSS*stressXpsscoef;
+      tg_viz = data.frame(PSS = PSS, Control = Ctrl, Stress = Strs); # assemble data frame for plotting
+      ggplot(data = tg_viz, aes(x = PSS)) +
+        geom_line(aes(y = Control), color='#111111', size=2) +
+        geom_line(aes(y = Stress), color = "#eb5600", size=2) +
+        scale_x_continuous(name = "PSS Score", breaks = c(0,5,10,15,20,25,30), limits = c(0,27), expand = c(0,0)) +
+        scale_y_continuous(name = "Dollars Shared", expand = c(0,0), breaks = seq(0,5,1), limits = c(1.75,3.25)) +
+        theme_classic()
 
       tg_reg1_withday = lmer(shared ~ 1 + stressrecode*dayrecode*pssSum + (1 | subjectID), data = bst_tg_pss)
       summary(tg_reg1_withday)
@@ -817,5 +841,5 @@ library(lmerTest) # adds more useful info to the output of lmer's
       # stressrecode:pssMedianSplit:prevTrialShared    7.28209698e-02  2.12970511e-02  5.42938363e+03  3.41930 0.00063245 ***
 
       #a few interesting things here although for how exploratory this is, I'm not sure how much it changes.
-      #Feedback and shared amounts are significant, albeit especially with the former, a small effect size. Stress*pss is no longer significant interstingly as well
-      #overall very similary though
+      #Feedback and shared amounts are significant, albeit especially with the former, a small effect size. Stress*pss is no 
+      # longer significant interestingly as well. overall very similar though
