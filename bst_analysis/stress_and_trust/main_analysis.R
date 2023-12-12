@@ -11,10 +11,12 @@ library(ggplot2)
 library(lme4)
 library(nlme)
 library(lmerTest) # adds more useful info to the output of lmer's
+options(scipen=999)  #EB NOTE: sci notation to decimal
 
 #Base Level Analysis#
 #Stress:
   #Acute
+head(bst_bath)  # EB NOTE: Looking at pleasantness control/stress and day bath received
 
     #descriptives
       mean(bst_bath$stressPleasantnessRating)
@@ -34,12 +36,14 @@ library(lmerTest) # adds more useful info to the output of lmer's
       #Key Results (p = 3.0e-16, mean difference = 4.1) - the ratings are statistically very probably different
       # PSH NOTE: This is a BIG difference. A diff of 4.1 when your scale goes 1-7 is huge.
       # PSH NOTE: use exact p-value estimates when possible; no reason not to.
+      # EB NOTE: t(38) = 13.66, p < .001; Mean diff = 4.10
+      # EB NOTE: Those in the stress condition reported significantly lower pleasantness compared to the stress condition (M = 4.10).
 
     #checking for an ORDER effect on the CHANGE in ratings
-      t.test(bst_bath$diffPleasantnessRating ~ bst_bath$day2StressedBool)
+      t.test(bst_bath$diffPleasantnessRating ~ bst_bath$day2StressedBool)  #EB : not sig different
       # t.test(bst_bath) # <-- doesn't run?
-      # t.test(bst_bath$stressPleasantnessRating ~ bst_bath$day2StressedBool)
-      # t.test(bst_bath$controlPleasantnessRating ~ bst_bath$day2StressedBool)
+      # t.test(bst_bath$stressPleasantnessRating ~ bst_bath$day2StressedBool)  #EB : not sig different
+      # t.test(bst_bath$controlPleasantnessRating ~ bst_bath$day2StressedBool)  #EB : not sig different
 
     # checking for an effect of DAY on change in ratings
       # Put the change in ratings into DAY space (Day 2 - Day 1)
@@ -50,6 +54,8 @@ library(lmerTest) # adds more useful info to the output of lmer's
       # No significant change in ratings overall from Day 1 to Day 2
 
   #Chronic
+      head(bst_pss)  # EB NOTE: Looking at PSS breakdown
+
     #descriptives of PSS
       mean(bst_pss$pssSum)
       sd(bst_pss$pssSum)
@@ -78,9 +84,9 @@ library(lmerTest) # adds more useful info to the output of lmer's
           theme_classic()
 
     #effect of acute stressor n chronic stressor
-        #t-test on if there was a difference in PSS scores based on what type of bath was recieved on day 2 (the PSS was only administered on day 2)
+        #t-test on if there was a difference in PSS scores based on what type of bath was received on day 2 (the PSS was only administered on day 2)
         t.test(bst_bath_pss$pssSum ~ bst_bath_pss$day2StressedBool)
-        #Key results (p = .94, t=-.075) received cold bath mean = 16, didn't recieved lukewarm bath mean = 15.86
+        #Key results (p = .94, t=-.075) received cold bath mean = 16, didn't received lukewarm bath mean = 15.86
         # the PSS scores are not significantly affected by the presence of the cold water bath on day 2
 
 #Trust:
@@ -127,7 +133,7 @@ library(lmerTest) # adds more useful info to the output of lmer's
           #note I include subjectID as a random effect, because without it, task order becomes close to a proxy for individual differences
           tr_confound_mod <- lme(rating ~ 1 + taskOrder + day + day2StressedBool, random = ~ 1 | subjectID, data = bst_tr_pss)
           summary(tr_confound_mod)
-          #results: while none of these were techinically significant, task order was trending (p=.058). That said the effect size was pretty small (~-.08)
+          #results: while none of these were technically significant, task order was trending (p=.058). That said the effect size was pretty small (~-.08)
 
           # PSH NOTE: Love the regression; the predictors aren't well set up for a regression situation though.
           bst_tr$taskOrderrecode = bst_tr$taskOrder * 2 - 3; # Converts 1, 2 coding into -1/+1
@@ -223,6 +229,7 @@ library(lmerTest) # adds more useful info to the output of lmer's
 
       tg_seq_mod2 <- lmer(shared ~ 1 + prevTrialShared + prevTrialFeedback +
                             (1 | subjectID), data = bst_tg)
+      summary(tg_seq_mod2)
       #                     Estimate Std. Error         df t value Pr(>|t|)
       # (Intercept)          2.37847    0.17532   38.62218  13.566 2.83e-16 ***
       # prevTrialShared      0.21346    0.02530 5918.56093   8.436  < 2e-16 ***
@@ -252,6 +259,7 @@ library(lmerTest) # adds more useful info to the output of lmer's
 
       tg_seq_mod4 <- lmer(shared ~ 1 + prevTrialShared*stressrecode + prevTrialFeedback*stressrecode +
                             (1 | subjectID), data = bst_tg)
+      summary(tg_seq_mod4)
       #                                  Estimate Std. Error         df t value Pr(>|t|)
       # (Intercept)                     2.375e+00  1.750e-01  3.862e+01  13.573 2.79e-16 ***
       # prevTrialShared                 2.182e-01  2.523e-02  5.916e+03   8.649  < 2e-16 ***
@@ -265,6 +273,8 @@ library(lmerTest) # adds more useful info to the output of lmer's
       # Stress REDUCES effect of prev. sharing, but does not interact w/ effects of feedback
 
     #response times
+      head(bst_tg)  # EB NOTE: Looking at recodes
+
       #trust game
         #descriptives
           mean(bst_tg$responseTime)
@@ -552,12 +562,11 @@ library(lmerTest) # adds more useful info to the output of lmer's
       # tg_mod_acuteRat_chronciCont <- lme(shared ~ 1 + diffPleasantnessRating * pssSum, random = ~ 1 | subjectID, data = bst_tg_pss) #pleasantness ratings
       tg_mod_acuteCat_chronicCat <- lme(shared ~ 1 + stressedBool * pssSumCategorical, random = ~ 1 | subjectID, data = bst_tg_pss) #categorical PSS scores
 
-       summary(tg_mod_acuteCat_chronicCont)
-      summary(tg_mod_acuteRat_chronciCont)
+      summary(tg_mod_acuteCat_chronicCont)
       summary(tg_mod_acuteCat_chronicCat)
-      #Results: like before the pleasantness ratings did not accont for anything significant
-      #however, the categorical stressed or not did have some interesting effects, it itself was signficant (and an effect of .32), and the interaction with PSS was significant (with an effect of -.25)
-      #also the continuous PSS scores were also not signficant
+      #Results: like before the pleasantness ratings did not account for anything significant
+      #however, the categorical stressed or not did have some interesting effects, it itself was significant (and an effect of .32), and the interaction with PSS was significant (with an effect of -.25)
+      #also the continuous PSS scores were also not significant
   #including day because in the prelim analysis that was significant
       tg_mod_acuteCat_chronicCont_day <- lme(shared ~ 1 + day + stressedBool * pssSum, random = ~ 1 | subjectID, data = bst_tg_pss)
 
@@ -574,20 +583,20 @@ library(lmerTest) # adds more useful info to the output of lmer's
       # stressrecode         1.637e-01  4.432e-02  5.434e+03   3.694 0.000223 ***
       # pssSum               9.938e-03  3.614e-02  3.400e+01   0.275 0.785022
       # stressrecode:pssSum -1.258e-02  2.625e-03  5.434e+03  -4.793 1.69e-06 ***
-      
+
       # Alternative formulation using `stressedBool` for simplicity
-      #                       Estimate Std. Error         df t value Pr(>|t|)    
-      # (Intercept)            2.19163    0.61183   34.35962   3.582 0.001043 ** 
+      #                       Estimate Std. Error         df t value Pr(>|t|)
+      # (Intercept)            2.19163    0.61183   34.35962   3.582 0.001043 **
       # stressedBool           0.32743    0.08864 5434.00000   3.694 0.000223 ***
-      # pssSum                 0.02252    0.03624   34.35962   0.621 0.538430    
+      # pssSum                 0.02252    0.03624   34.35962   0.621 0.538430
       # stressedBool:pssSum   -0.02516    0.00525 5434.00000  -4.793 1.69e-06 ***
-      
+
       # Extract fixed effects coefficient values for plotting
       interceptcoef = fixef(tg_reg1_withoutday)['(Intercept)']
       stresscoef = fixef(tg_reg1_withoutday)['stressedBool'];
       psscoef = fixef(tg_reg1_withoutday)['pssSum'];
       stressXpsscoef = fixef(tg_reg1_withoutday)['stressedBool:pssSum'];
-      
+
       PSS = c(0,27); # possible PSS values, focused on the range we observe in this study
       Ctrl = interceptcoef + PSS*psscoef;
       Strs = Ctrl + stresscoef + PSS*stressXpsscoef;
@@ -630,7 +639,7 @@ library(lmerTest) # adds more useful info to the output of lmer's
       # High chronic stress (PSS) reduces effect of acute stress and effect of day
       #   ... is this a blunting thing? Less reactive to things others respond to?
 
-      anova(tg_reg1, tg_reg2)
+      anova(tg_reg1_withday, tg_reg2)
       # CATEGORICAL regression outperforms continuous
 
   #modeling looking at gambler's fallacy/previous trial results (using the categorical stress)
@@ -841,5 +850,6 @@ library(lmerTest) # adds more useful info to the output of lmer's
       # stressrecode:pssMedianSplit:prevTrialShared    7.28209698e-02  2.12970511e-02  5.42938363e+03  3.41930 0.00063245 ***
 
       #a few interesting things here although for how exploratory this is, I'm not sure how much it changes.
-      #Feedback and shared amounts are significant, albeit especially with the former, a small effect size. Stress*pss is no 
+      #Feedback and shared amounts are significant, albeit especially with the former, a small effect size. Stress*pss is no
       # longer significant interestingly as well. overall very similar though
+
