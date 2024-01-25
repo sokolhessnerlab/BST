@@ -43,7 +43,9 @@ bst_pss$pssMedianSplit <- ifelse(bst_pss$pssSum < median(bst_pss$pssSum), -1, 1)
 
 #Bath Ratings:
 bath_pleasantness_csv <- file.path(config$path$data$current, config$csvs$bath_pleasantness)
-bst_bathPleasantness <- read.csv(bath_pleasantness_csv) #reads in the pleasantness ratings
+bst_bathPleasantness <- read.csv(bath_pleasantness_csv) #reads in the unpleasantness ratings
+# 1 = Very Pleasant
+# 7 = Very Unpleasant
 
 bath_order_csv <- file.path(config$path$data$current, config$csvs$bath_order)
 bst_bathOrder <- read.csv(bath_order_csv) #reads in the bath ordering
@@ -60,8 +62,8 @@ bst_bath$day2StressedBool <- ifelse(bst_bath$Day.2 == "CONTROL", 0, 1) #calculat
 # count(bst_bath$day2Stressed) #prints out how many received the control on day 2 and how many received the stressor on day 2 (in numerical format)
 
 #renaming columns for clarity
-names(bst_bath)[names(bst_bath) == "CONTROL"] <- "controlPleasantnessRating"
-names(bst_bath)[names(bst_bath) == "STRESS"] <- "stressPleasantnessRating"
+names(bst_bath)[names(bst_bath) == "CONTROL"] <- "controlUnpleasantnessRating"
+names(bst_bath)[names(bst_bath) == "STRESS"] <- "stressUnpleasantnessRating"
 names(bst_bath)[names(bst_bath) == "Day.1"] <- "bathReceivedDay1"
 names(bst_bath)[names(bst_bath) == "Day.2"] <- "bathReceivedDay2"
 
