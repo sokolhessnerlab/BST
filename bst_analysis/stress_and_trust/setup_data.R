@@ -5,10 +5,13 @@
 #loads up the necessary libraries
 library(plyr)
 
+# ??? HOW to best collapse for the Trust Ratings and Game
+# ??? WHAT to do with missing values
+
 #Color Blind Palette for graphing
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
-##Start Data Retreival, Cleaning, Formatting: ##
+##Start Data Retrieval, Cleaning, Formatting: ##
 
 #setting Up Stress DFs:#
 
