@@ -6,6 +6,33 @@ library(lmerTest)
 
 options(scipen=999)  #sci notation to decimal
 
+config <- config::get()
+
+setup_path <- file.path(config$path$code$r_scripts, config$code_files$setup_data)
+source(setup_path)
+
+### Notes about Stress Data Sources & Structure ###
+
+# Everyone did stress & control water baths (order counterbalanced)
+# People rated the stressfulness of the bath on each day
+# People completed the PSS once (Day 2?)
+
+# For Bath Order & ratings: bst_bath
+
+# For PSS: bst_pss
+#  Scores can range from 0 (no chronic stress) to 40 (tons of chronic stress)
+#  Cutoffs: ≤13 = low; 14-26 = moderate; 27-40 = high
+
+# Does chronic stress influence perception of the stress water bath?
+plotdflkdsja;l
+cor.test
+# No, chronic stress appears unrelated to experience of stress water bath (HOWEVER, note that there are ceiling effects in stress water bath ratings)
+
+
+### CLEAN UP FROM HERE ON DOWN ###
+
+
+
 
 #Color Blind Palette for graphing
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
