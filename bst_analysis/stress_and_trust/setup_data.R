@@ -5,8 +5,8 @@
 #loads up the necessary libraries
 library(plyr)
 
-# ??? HOW to best collapse for the Trust Ratings and Game
-# ??? WHAT to do with missing values
+# ?HOW to best collapse for the Trust Ratings and Game
+# ?WHAT to do with missing values
 
 #Color Blind Palette for graphing
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
@@ -247,7 +247,7 @@ bst_amp <- read.csv(amp_csv) #reads in AMP data
 #renaming columns for clarity
 names(bst_amp)[names(bst_amp) == "RT"] <- "responseTime"
 names(bst_amp)[names(bst_amp) == "stimulusRace"] <- "stimulusRace_0w_1b_2o"
-names(bst_amp)[names(bst_amp) == "response"] <- "0_unPleasant_1_Pleasant"
-names(bst_amp)[names(bst_amp) == "condition"] <- "0_PleasOnLeft_1_PleasOnRight"
+names(bst_amp)[names(bst_amp) == "response"] <- "unPleasant0_Pleasant1"
+names(bst_amp)[names(bst_amp) == "condition"] <- "PleasOnLeft0_PleasOnRight`"
 names(bst_amp)[names(bst_amp) == "session"] <- "amp1_amp2"
-
+head(bst_amp)

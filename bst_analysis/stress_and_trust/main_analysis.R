@@ -15,12 +15,15 @@ options(scipen=999)  #EB NOTE: sci notation to decimal
 
 
 #Base Level Analysis#
+
+#### STRESS ####
+
 #Stress:
   #Acute
 #bst_bath EB NOTE: Looking at pleasantness control/stress and day bath received
 
     #descriptives
-mean(bst_bath$stressUnpleasantnessRating)
+      mean(bst_bath$stressUnpleasantnessRating)
       sd(bst_bath$stressUnpleasantnessRating)
       mean(bst_bath$controlUnpleasantnessRating)
       sd(bst_bath$controlUnpleasantnessRating)
@@ -87,6 +90,9 @@ mean(bst_bath$stressUnpleasantnessRating)
         t.test(bst_bath_pss$pssSum ~ bst_bath_pss$day2StressedBool)
         #Key results (p = .94, t=-.075) received cold bath mean = 16, didn't received lukewarm bath mean = 15.86
         # the PSS scores are not significantly affected by the presence of the cold water bath on day 2
+
+
+#### TRUST ####
 
 #Trust:
   #Trust Rating
@@ -297,7 +303,30 @@ mean(bst_bath$stressUnpleasantnessRating)
           bst_tg$responseTimeLow <- ifelse(bst_tg$responseTime < .25, 1, 0)
           count(bst_tg$responseTimeLow)
 
-#Var Associations#
+
+#### BIAS ####
+
+#AMP descriptives
+mean(bst_amp$responseTime)
+sd(bst_amp$responseTime)
+max(bst_amp$responseTime)  #CHECK FOR why Max HIGH
+min(bst_amp$responseTime)
+quantile(bst_amp$responseTime, c(.0001,.05,.125,.5,.875,.95,.9999))
+
+#plot distribution on low end
+ggplot(bst_amp, aes(x=responseTime)) +
+  geom_histogram() +
+  labs(title = "Density of AMP Response Time", y = "Density") +
+  scale_x_continuous(name = "Response Time (S)", limits = c(0,1)) +
+  theme_classic()
+
+#Breakdowns
+#stimRace by Pleasantness or Unpleasantness Ratings
+by(data = bst_amp$stimulusRace_0w_1b_2o, INDICES = bst_amp$unPleasant0_Pleasant1, FUN = mean)
+by(data = bst_amp$stimulusRace_0w_1b_2o, INDICES = bst_amp$unPleasant0_Pleasant1, FUN = sd)
+
+
+#### CORRELATIONS ####
 #stress
   #pss score and the pleasantness ratings correlations
     #normal
