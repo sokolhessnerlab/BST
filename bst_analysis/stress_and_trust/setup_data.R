@@ -246,4 +246,8 @@ bst_amp <- read.csv(amp_csv) #reads in AMP data
 
 #renaming columns for clarity
 names(bst_amp)[names(bst_amp) == "RT"] <- "responseTime"
+names(bst_amp)[names(bst_amp) == "stimulusRace"] <- "stimulusRace_0w_1b_2o"
+names(bst_amp)[names(bst_amp) == "response"] <- "0_unPleasant_1_Pleasant"
+names(bst_amp)[names(bst_amp) == "condition"] <- "0_PleasOnLeft_1_PleasOnRight"
+names(bst_amp)[names(bst_amp) == "session"] <- "amp1_amp2"
 
