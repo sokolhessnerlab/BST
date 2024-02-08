@@ -13,6 +13,8 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 
 ##Start Data Retrieval, Cleaning, Formatting: ##
 
+#### STRESS ####
+
 #setting Up Stress DFs:#
 
 #PSS:
@@ -61,6 +63,7 @@ bst_bath$day2StressedBool <- ifelse(bst_bath$Day.2 == "CONTROL", 0, 1) #calculat
 # count(bst_bath$Day.2) #prints out how many received the control on day 2 and how many received the stressor on day (in string format)
 # count(bst_bath$day2Stressed) #prints out how many received the control on day 2 and how many received the stressor on day 2 (in numerical format)
 
+bst_bath
 #renaming columns for clarity
 names(bst_bath)[names(bst_bath) == "CONTROL"] <- "controlUnpleasantnessRating"
 names(bst_bath)[names(bst_bath) == "STRESS"] <- "stressUnpleasantnessRating"
@@ -70,6 +73,8 @@ names(bst_bath)[names(bst_bath) == "Day.2"] <- "bathReceivedDay2"
 #combining acute and chronic stressors
 bst_bath_pss <- merge(bst_bath, bst_pss, by = "subjectID")
 
+
+#### TRUST ####
 #Setting Up Trust DFs:#
 #Trust Game:
 tg_csv <- file.path(config$path$data$current, config$csvs$tg)
@@ -90,6 +95,7 @@ bst_tg <- merge(bst_tg, bst_bath, by = "subjectID")
   # That issue makes this of limited utility to do; if you do want to relate acute or
   # chronic stressors to TG performance, you'll need to summarize TG data to the same space
   # (e.g. person-level summary stats) anyway. [PSH]
+
 
 #calculating new factors for whether a participant was stressed or not before doing the trust task
 bst_tg$stressedBool <- ifelse((bst_tg$day2StressedBool == 1 & bst_tg$day == 1), 0,
@@ -177,6 +183,8 @@ bst_tg_part_avg$sharedSE <- (bst_tg_part_avg$sharedSD / sqrt(nrow(bst_tg_part_av
 bst_tg_part_avg$sharedHighSE <- bst_tg_part_avg$sharedAvg +  bst_tg_part_avg$sharedSE #calculates the standard error high bound
 bst_tg_part_avg$sharedLowSE <- bst_tg_part_avg$sharedAvg - bst_tg_part_avg$sharedSE #calculates the standard error low bound
 
+bst_tg_part_avg
+
 #for the trust rating
 bst_tr_part_avg <- aggregate(rating ~ subjectID, data = bst_tr, FUN = mean) #aggregates the trust rating task for each participant
 names(bst_tr_part_avg)[names(bst_tr_part_avg) == "rating"] <- "ratingAvg"
@@ -228,4 +236,14 @@ rm(bst_tr_part_avg_stress)
 #rm(bst_pss)
 #rm(bst_bath)
 #rm(bst_bath_pss)
+
+
+
+#### BIAS ####
+
+amp_csv <- file.path(config$path$data$current, config$csvs$amp)
+bst_amp <- read.csv(amp_csv) #reads in AMP data
+
+#renaming columns for clarity
+names(bst_amp)[names(bst_amp) == "RT"] <- "responseTime"
 

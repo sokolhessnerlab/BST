@@ -13,22 +13,23 @@ library(nlme)
 library(lmerTest) # adds more useful info to the output of lmer's
 options(scipen=999)  #EB NOTE: sci notation to decimal
 
+
 #Base Level Analysis#
 #Stress:
   #Acute
-head(bst_bath)  # EB NOTE: Looking at pleasantness control/stress and day bath received
+#bst_bath EB NOTE: Looking at pleasantness control/stress and day bath received
 
     #descriptives
-      mean(bst_bath$stressPleasantnessRating)
-      sd(bst_bath$stressPleasantnessRating)
-      mean(bst_bath$controlPleasantnessRating)
-      sd(bst_bath$controlPleasantnessRating)
+mean(bst_bath$stressUnpleasantnessRating)
+      sd(bst_bath$stressUnpleasantnessRating)
+      mean(bst_bath$controlUnpleasantnessRating)
+      sd(bst_bath$controlUnpleasantnessRating)
 
     #effect of stressor on ratings
       #paired sample t-test (ie a test of differences)
-      t.test(bst_bath$stressPleasantnessRating - bst_bath$controlPleasantnessRating, mu = 0, var.equal = TRUE)
+      t.test(bst_bath$stressUnpleasantnessRating - bst_bath$controlUnpleasantnessRating, mu = 0, var.equal = TRUE)
       # PSH NOTE: This is run as a one-sample t-test, you could also run it as follows:
-      t.test(bst_bath$stressPleasantnessRating,bst_bath$controlPleasantnessRating, paired = T, var.equal = T)
+      t.test(bst_bath$stressUnpleasantnessRating,bst_bath$controlUnpleasantnessRating, paired = T, var.equal = T)
       # PSH NOTE: paired t-tests are reducible to one-sample t-tests against 0, so there's no
       # meaningful statistical difference here, but it can be easier/clearer to communicate and/or
       # think through b/c it's one less data-prep step.
@@ -54,8 +55,6 @@ head(bst_bath)  # EB NOTE: Looking at pleasantness control/stress and day bath r
       # No significant change in ratings overall from Day 1 to Day 2
 
   #Chronic
-      head(bst_pss)  # EB NOTE: Looking at PSS breakdown
-
     #descriptives of PSS
       mean(bst_pss$pssSum)
       sd(bst_pss$pssSum)
@@ -273,7 +272,7 @@ head(bst_bath)  # EB NOTE: Looking at pleasantness control/stress and day bath r
       # Stress REDUCES effect of prev. sharing, but does not interact w/ effects of feedback
 
     #response times
-      head(bst_tg)  # EB NOTE: Looking at recodes
+    #EB - bst_tg - Looking at recodes
 
       #trust game
         #descriptives

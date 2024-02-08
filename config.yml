@@ -12,6 +12,9 @@ default:
         bath_order: "bathOrder.csv"
         tg: "allTGData_20200626.csv"
         tr: "allTRData_20200626.csv"
+        amp: "allAMPData_20200626.csv"
     code_files:
         setup_data: "setup_data.R"
         main_analysis: "main_analysis.R"
+
+
