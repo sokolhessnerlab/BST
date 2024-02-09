@@ -248,6 +248,6 @@ bst_amp <- read.csv(amp_csv) #reads in AMP data
 names(bst_amp)[names(bst_amp) == "RT"] <- "responseTime"
 names(bst_amp)[names(bst_amp) == "stimulusRace"] <- "stimulusRace_0w_1b_2o"
 names(bst_amp)[names(bst_amp) == "response"] <- "unPleasant0_Pleasant1"
-names(bst_amp)[names(bst_amp) == "condition"] <- "PleasOnLeft0_PleasOnRight`"
+names(bst_amp)[names(bst_amp) == "condition"] <- "PleasOnLeft0_PleasOnRight1"
 names(bst_amp)[names(bst_amp) == "session"] <- "amp1_amp2"
 head(bst_amp)

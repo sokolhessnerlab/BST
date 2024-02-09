@@ -11,6 +11,7 @@ library(ggplot2)
 library(lme4)
 library(nlme)
 library(lmerTest) # adds more useful info to the output of lmer's
+
 options(scipen=999)  #EB NOTE: sci notation to decimal
 
 
@@ -41,13 +42,12 @@ options(scipen=999)  #EB NOTE: sci notation to decimal
       # PSH NOTE: This is a BIG difference. A diff of 4.1 when your scale goes 1-7 is huge.
       # PSH NOTE: use exact p-value estimates when possible; no reason not to.
       # EB NOTE: t(38) = 13.66, p < .001; Mean diff = 4.10
-      # EB NOTE: Those in the stress condition reported significantly lower pleasantness compared to the stress condition (M = 4.10).
+      # EB NOTE: Those in the stress condition reported significantly lower pleasantness compared to the control condition (M = 4.10).
 
     #checking for an ORDER effect on the CHANGE in ratings
-      t.test(bst_bath$diffPleasantnessRating ~ bst_bath$day2StressedBool)  #EB : not sig different
-      # t.test(bst_bath) # <-- doesn't run?
-      # t.test(bst_bath$stressPleasantnessRating ~ bst_bath$day2StressedBool)  #EB : not sig different
-      # t.test(bst_bath$controlPleasantnessRating ~ bst_bath$day2StressedBool)  #EB : not sig different
+      #t.test(bst_bath$diffPleasantnessRating ~ bst_bath$day2StressedBool)  #EB : not sig different
+      #t.test(bst_bath$stressUnpleasantnessRating ~ bst_bath$day2StressedBool)  #EB : not sig different
+      #t.test(bst_bath$controlUnpleasantnessRating ~ bst_bath$day2StressedBool)  #EB : not sig different
 
     # checking for an effect of DAY on change in ratings
       # Put the change in ratings into DAY space (Day 2 - Day 1)
@@ -72,8 +72,6 @@ options(scipen=999)  #EB NOTE: sci notation to decimal
       by(data = bst_pss$pssSum, INDICES = bst_pss$pssMedianSplit, FUN = median)
       by(data = bst_pss$pssSum, INDICES = bst_pss$pssMedianSplit, FUN = range)
 
-
-
       #histogram of PSS scores
         ggplot(bst_pss, aes(x=pssSum)) +
           geom_histogram(binwidth = 3, color = "black", fill = "gray") +
@@ -91,6 +89,7 @@ options(scipen=999)  #EB NOTE: sci notation to decimal
         #Key results (p = .94, t=-.075) received cold bath mean = 16, didn't received lukewarm bath mean = 15.86
         # the PSS scores are not significantly affected by the presence of the cold water bath on day 2
 
+        head(bst_bath_pss)
 
 #### TRUST ####
 
@@ -307,11 +306,22 @@ options(scipen=999)  #EB NOTE: sci notation to decimal
 #### BIAS ####
 
 #AMP descriptives
+summary(bst_amp)
+str(bst_amp)
 mean(bst_amp$responseTime)
 sd(bst_amp$responseTime)
-max(bst_amp$responseTime)  #CHECK FOR why Max HIGH
+max(bst_amp$responseTime)  #CHECK: Why Max high?
 min(bst_amp$responseTime)
+
+#low-end quantile
 quantile(bst_amp$responseTime, c(.0001,.05,.125,.5,.875,.95,.9999))
+
+#plot AMP distribution up to 3 for distribution
+ggplot(bst_amp, aes(x=responseTime)) +
+  geom_histogram() +
+  labs(title = "Density of AMP Response Time", y = "Density") +
+  scale_x_continuous(name = "Response Time (S)", limits = c(0,3)) +
+  theme_classic()
 
 #plot distribution on low end
 ggplot(bst_amp, aes(x=responseTime)) +
@@ -320,10 +330,52 @@ ggplot(bst_amp, aes(x=responseTime)) +
   scale_x_continuous(name = "Response Time (S)", limits = c(0,1)) +
   theme_classic()
 
-#Breakdowns
-#stimRace by Pleasantness or Unpleasantness Ratings
-by(data = bst_amp$stimulusRace_0w_1b_2o, INDICES = bst_amp$unPleasant0_Pleasant1, FUN = mean)
-by(data = bst_amp$stimulusRace_0w_1b_2o, INDICES = bst_amp$unPleasant0_Pleasant1, FUN = sd)
+#Breakdowns of stimRace by Pleasantness or Unpleasantness Ratings
+
+#stim race (white,black,other) by frequency of unpleasant (0) vs pleasant (1) rating
+xtabs(~stimulusRace_0w_1b_2o + unPleasant0_Pleasant1, data = bst_amp)
+# across stimuli (w,b,o), participants rated stimuli pleasant more times than unpleasant
+
+by(data = bst_amp$unPleasant0_Pleasant1, INDICES = bst_amp$stimulusRace_0w_1b_2o, FUN = mean)
+by(data = bst_amp$unPleasant0_Pleasant1, INDICES = bst_amp$stimulusRace_0w_1b_2o, FUN = sd)
+#white stim AMP unpleasantness .4947 mean
+#black stim AMP unpleasantness .4934 mean
+#other stim AMP unpleasantness .4932 mean
+#White stimuli were rated slightly more pleasant (.4947) than black stimuli (.4934)
+#or than other stimuli (.4932)
+
+bst_amp$unPleasant0_Pleasant1_F <- factor(bst_amp$unPleasant0_Pleasant1)
+bst_amp$stimRace_F <- factor(bst_amp$stimulusRace_0w_1b_2o)
+bst_amp$amp1amp2_F <- factor(bst_amp$amp1_amp2)
+
+str(bst_amp)
+
+#logistic regression to see if stim race affected frequency of unpleasant/pleas ratings
+amp_mod1 <- lmer(responseTime ~ 1 + stimRace_F * amp1amp2_F + ( 1 | subjectID), data = bst_amp)
+summary(amp_mod1)
+
+#logistic regression of unpleasant/pleasantness ratings by stimulus race and by AMP 1-AMP 2
+#AMP 1 is participant baseline AMP, AMP 2 is participant experiment/control AMP
+model.1 <- glmer(unPleasant0_Pleasant1_F ~ stimRace_F + amp1amp2_F + (1|subjectID), data=bst_amp, family="binomial")
+summary(model.1)
+#Seems to be a sig difference in pleasantness/unpleasantness ratings for baseline AMP vs Control AMP
+
+# !!! Q: Check AMP 1 vs 2 by whether or not they had control or exper on day 1 !!!
+
+xtabs(~amp1amp2_F + unPleasant0_Pleasant1, data = bst_amp)
+#In general, AMP 1 & 2 have more frequency of pleasant than unpleasant ratings of images
+#however, the difference between frequency of pleasant and unpleasant is greater on AMP2
+
+# !!! Q: Check breakdown with race, too.
+
+#interaction effects are not sig.
+model.2 <- glmer(unPleasant0_Pleasant1_F ~ stimRace_F + amp1amp2_F + stimRace_F:amp1amp2_F + (1|subjectID), data=bst_amp, family="binomial")
+summary(model.2)
+
+
+
+
+
 
 
 #### CORRELATIONS ####
