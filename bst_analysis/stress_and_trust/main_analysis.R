@@ -321,6 +321,8 @@ ggplot(bst_amp, aes(x=responseTime)) +
   scale_x_continuous(name = "Response Time (S)", limits = c(0,3)) +
   theme_classic()
 
+hist(bst_amp$responseTime, breaks = 50)
+
 #plot distribution on low end
 ggplot(bst_amp, aes(x=responseTime)) +
   geom_histogram() +
@@ -371,6 +373,124 @@ ggplot(bst_amp, aes(x = factor(stimRace_F), y = responseTime, fill = unPleasant0
 #white stim unPl RT < Pl RT
 #black stim unPl RT < Pl RT (more pronounced difference than with white stim)
 #other stim unPl RT > Pl RT
+
+# SUMMARY OF BASIC DESCRIPTIVES
+# Average pleasant/unpleasant judgments are pretty similar at the group-level, though RTs may be different.
+# There are excessively fast RTs and excessively slow RTs - will need to remove at least some trials and/or
+# participants. 
+
+
+# Subject-level Analyses
+
+# Set acceptable bounds for RTs
+lower_RT_bound = 50/1000; # Written in milliseconds, converted to seconds.
+upper_RT_bound = 6000/1000; # Written in milliseconds, converted to seconds.
+
+number_of_AMP_subjects = length(unique(bst_amp$subjectID));
+subject_IDs = unique(bst_amp$subjectID);
+
+amp_colnames = c('subjectID',
+             'judgments_mean_overall',
+             'judgments_mean_white',
+             'judgments_mean_black',
+             'judgments_mean_other',
+             'responseTime_mean_overall',
+             'responseTime_mean_white',
+             'responseTime_mean_black',
+             'responseTime_mean_other',
+             'RTs_outside_bounds');
+
+amp_summary_stats = array(data = NA, dim = c(number_of_AMP_subjects,length(amp_colnames)));
+colnames(amp_summary_stats) <- amp_colnames
+amp_summary_stats = as.data.frame(amp_summary_stats)
+
+for (s in 1:number_of_AMP_subjects){
+  sID = subject_IDs[s];
+  amp_summary_stats$subjectID[s] = sID;
+  
+  tmpdata = bst_amp[bst_amp$subjectID == sID,];
+  
+  amp_summary_stats$judgments_mean_overall[s] = mean(tmpdata$unPleasant0_Pleasant1);
+  amp_summary_stats$judgments_mean_white[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 0]);
+  amp_summary_stats$judgments_mean_black[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 1]);
+  amp_summary_stats$judgments_mean_other[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 2]);
+  
+  amp_summary_stats$responseTime_mean_overall[s] = mean(tmpdata$responseTime);
+  amp_summary_stats$responseTime_mean_white[s] = mean(tmpdata$responseTime[tmpdata$stimulusRace_0w_1b_2o == 0]);
+  amp_summary_stats$responseTime_mean_black[s] = mean(tmpdata$responseTime[tmpdata$stimulusRace_0w_1b_2o == 1]);
+  amp_summary_stats$responseTime_mean_other[s] = mean(tmpdata$responseTime[tmpdata$stimulusRace_0w_1b_2o == 2]);
+  
+  amp_summary_stats$RTs_outside_bounds[s] = sum(tmpdata$responseTime < lower_RT_bound) + sum(tmpdata$responseTime > upper_RT_bound)
+}
+
+# SUMMARY:
+# BST012, 030, and 035 have meaningful numbers of trials that are either excessively fast or slow (esp. 030 and 035). 
+# Judgments don't appear to be singular (i.e. all one response or one button). 
+
+bst_amp$unPleasant0_Pleasant1[bst_amp$responseTime < lower_RT_bound] = NA
+bst_amp$unPleasant0_Pleasant1[bst_amp$responseTime > upper_RT_bound] = NA
+
+bst_amp$responseTime[bst_amp$responseTime < lower_RT_bound] = NA
+bst_amp$responseTime[bst_amp$responseTime > upper_RT_bound] = NA
+
+# Calculate AMP Scores based on the judgments
+amp_scores_colnames = c('subjectID',
+                 'amp_overall',
+                 'amp_d1_s1',
+                 'amp_d1_s2',
+                 'amp_d2_s1',
+                 'amp_d2_s2',
+                 'change_amp_stress',
+                 'change_amp_control');
+
+amp_scores = array(data = NA, dim = c(number_of_AMP_subjects,length(amp_scores_colnames)));
+colnames(amp_scores) <- amp_scores_colnames
+amp_scores = as.data.frame(amp_scores)
+
+for (s in 1:number_of_AMP_subjects){
+  sID = subject_IDs[s];
+  amp_scores$subjectID[s] = sID;
+  
+  tmpdata = bst_amp[bst_amp$subjectID == sID,];
+  
+  amp_scores$amp_overall[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 0], na.rm = T) - 
+    mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 1], na.rm = T);
+  
+  amp_scores$amp_d1_s1[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 1)], na.rm = T) - 
+    mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 1)], na.rm = T);
+  amp_scores$amp_d1_s2[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 2)], na.rm = T) - 
+    mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 2)], na.rm = T);
+  amp_scores$amp_d2_s1[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 1)], na.rm = T) - 
+    mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 1)], na.rm = T);
+  amp_scores$amp_d2_s2[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 2)], na.rm = T) - 
+    mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 2)], na.rm = T);
+  
+  # Calculate change in AMP on a per-day basis
+  # AMP 2 - AMP 1
+  # Positive values = bias increased
+  # Negative values = bias decreased
+  
+  if (bst_bath$day2StressedBool[s] == 0) { # If they are stressed on day 1, control day 2
+    amp_scores$change_amp_stress[s] = amp_scores$amp_d1_s2[s] - amp_scores$amp_d1_s1[s]; # AMP num. 2 - AMP num. 1
+    amp_scores$change_amp_control[s] = amp_scores$amp_d2_s2[s] - amp_scores$amp_d2_s1[s];
+  } else { # control on day 1, stress on day 2
+    amp_scores$change_amp_control[s] = amp_scores$amp_d1_s2[s] - amp_scores$amp_d1_s1[s];
+    amp_scores$change_amp_stress[s] = amp_scores$amp_d2_s2[s] - amp_scores$amp_d2_s1[s];
+  }
+}
+
+# STOPPED HERE on 2/14/24
+# TO-DO:
+# 1. Did stress increase AMP scores?
+# 2. Did stress change AMP scores more than control did?
+# 3. Are changes in AMP scores within-day correlated? 
+# 4. How did AMP scores change (or not) across days & measurements? (e.g., D1S1 vs. D2S1, all S2s vs. all S1s, all D2s vs. all D1s...)
+
+
+
+
+
+
 
 
 #logistic regression to see if unpleasant/pleas ratings is affected by stim race and by AMP 1-AMP 2
