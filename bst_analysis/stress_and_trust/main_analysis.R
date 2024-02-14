@@ -485,8 +485,8 @@ for (s in 1:number_of_AMP_subjects){
 # 2. Did stress change AMP scores more than control did?
 # 3. Are changes in AMP scores within-day correlated? 
 # 4. How did AMP scores change (or not) across days & measurements? (e.g., D1S1 vs. D2S1, all S2s vs. all S1s, all D2s vs. all D1s...)
-
-
+# 5. Re-organize AMP scores into a long (not wide) matrix, with columns indicating day 1 or 2, measurement 1 or 2, control or stress, etc. 
+#   to facilitate regression on *scores* should we wish to do that (not just regression on choices).
 
 
 
