@@ -311,8 +311,8 @@ str(bst_amp)
 #Examine Response Times
   mean(bst_amp$responseTime) #0.912
   sd(bst_amp$responseTime) #0.7649 High compared to mean
-  max(bst_amp$responseTime)  #CHECK: Why Max high?
-  min(bst_amp$responseTime)  #CHECK: Why Min low?
+  max(bst_amp$responseTime)  #CHECK: Max high?
+  min(bst_amp$responseTime)  #CHECK: Min low?
 
 #low-end quantile
 quantile(bst_amp$responseTime, c(.0001,.05,.125,.5,.875,.95,.9999))
@@ -329,7 +329,6 @@ hist(bst_amp$responseTime, breaks = 100)
 
 
 #Examine Stimulus Race (image) by Pleasantness Ratings (of image)
-
 by(data = bst_amp$unPleasant0_Pleasant1, INDICES = bst_amp$stimulusRace_0w_1b_2o, FUN = mean)
 by(data = bst_amp$unPleasant0_Pleasant1, INDICES = bst_amp$stimulusRace_0w_1b_2o, FUN = sd)
 #white stim AMP unpleasantness .4947 mean
@@ -337,14 +336,15 @@ by(data = bst_amp$unPleasant0_Pleasant1, INDICES = bst_amp$stimulusRace_0w_1b_2o
 #other stim AMP unpleasantness .4932 mean
 #White stimuli (.4947), black stimuli (.4934), and other stimuli (.4932) rated approximately equally pleasant
 
-#stim race (white,black,other) by frequency of unpleasant (0) vs pleasant (1) rating
+#Stimulus race (white,black,other) by frequency of unpleasant (0) vs pleasant (1) rating
 xtabs(~stimulusRace_0w_1b_2o + unPleasant0_Pleasant1, data = bst_amp)
-# across stimuli race (w,b,o), participants rated stimuli pleasant more times than unpleasant
 #                   unPleasant0_Pleasant1
 #stimulusRace_0w_1b_2o        0    1
 #                   0       3332 4468
 #                   1       3266 4534
 #                   2       3256 4544
+# across stimuli race (w,b,o), participants rated stimuli pleasant more times than unpleasant
+
 
 #Factoring for use in ggplot
 bst_amp$unPleasant0_Pleasant1_F <- factor(bst_amp$unPleasant0_Pleasant1)
@@ -458,17 +458,19 @@ for (s in 1:number_of_AMP_subjects){
   # Positive values = bias increased
   # Negative values = bias decreased
 
+  #Creates participants' AMP change by session 1 and 2 AND by acute stress/control conditions
   if (bst_bath$day2StressedBool[s] == 0) { # If they are stressed on day 1, control day 2
-    amp_scores$change_amp_stress[s] = amp_scores$amp_d1_s2[s] - amp_scores$amp_d1_s1[s]; # AMP num. 2 - AMP num. 1
-    amp_scores$change_amp_control[s] = amp_scores$amp_d2_s2[s] - amp_scores$amp_d2_s1[s];
+    amp_scores$change_amp_stress[s] = amp_scores$amp_d1_s2[s] - amp_scores$amp_d1_s1[s]; # AMP num. 2 - AMP num. 1, if stress day 1
+    amp_scores$change_amp_control[s] = amp_scores$amp_d2_s2[s] - amp_scores$amp_d2_s1[s]; # control
   } else { # control on day 1, stress on day 2
-    amp_scores$change_amp_control[s] = amp_scores$amp_d1_s2[s] - amp_scores$amp_d1_s1[s];
-    amp_scores$change_amp_stress[s] = amp_scores$amp_d2_s2[s] - amp_scores$amp_d2_s1[s];
+    amp_scores$change_amp_control[s] = amp_scores$amp_d1_s2[s] - amp_scores$amp_d1_s1[s];  #control
+    amp_scores$change_amp_stress[s] = amp_scores$amp_d2_s2[s] - amp_scores$amp_d2_s1[s]; # AMP num. 2 - AMP num. 1, if stress day 2
   }
 }
 
 # STOPPED HERE on 2/14/24
 # TO-DO:
+
 # 1. Did stress increase AMP scores?
 
 #CPT/Control by frequency of AMP unpleasant (0)/pleasant (1) rating
@@ -478,43 +480,84 @@ xtabs(~day2StressedBool + unPleasant0_Pleasant1, data = bst_amp_bath)
 #             Control 0 5815 7909
 #                 CPT 1 3964 5561
 
+hist(amp_scores$change_amp_stress)
+hist(amp_scores$change_amp_control)
+#distribution of amp scores more normal under control condition, possible individual differences?
 
-#basic modelling of ACUTE stress and AMP scores
-chisq.test(bst_amp_bath$unPleasant0_Pleasant1, bst_amp_bath$day2StressedBool, correct = FALSE)
-#there is no sig diff between AMP unpleas (0)/pleasant (1) ratings whether or not participant had acute stressor
+#basic modelling of ACUTE stress vs Control conditions and AMP scores
+summary(amp_scores)
+sd(amp_scores$change_amp_control)
+sd(amp_scores$change_amp_stress)
+#mean (sd) change in AMP under stress condition = 0.0127 (0.1555)
+#mean (sd) change in AMP under control condition = -0.0049 (0.1444)
+#NOTE: large standard deviations
+
+t.test(amp_scores$change_amp_stress, amp_scores$change_amp_control)
+#no significant difference between AMP scores under stress vs control conditions
+#NOTE: possibly due to high SD?
 
 t.test(bst_amp_bath$diffPleasantnessRating ~ bst_amp_bath$unPleasant0_Pleasant1)
 #Significant Difference in acute stress Pleasantness (Lukewarm-CPT) Ratings and AMP unpleas/pleas ratings
+#Ratings of more unpleasantness for cold pressor vs lukewarm bath was significantly related to more positive AMP ratings
 
+# SUMMARY Acute Stress & AMP:
+# AMP score was not significantly effected by presence of acute stressor
+# however, a participants' subjective experience of unpleasant vs. pleasant after acute stressor was linke to AMP pleasantness ratings (t-test)
 
 #basic modelling of CHRONIC stress and AMP scores
 summary(bst_amp_bath_pss)
 
 t.test(bst_amp_bath_pss$pssSum ~ bst_amp_bath_pss$unPleasant0_Pleasant1)
-#Approaching significant difference in PSS sum (Chronic stress) and AMP unpleas/pleas ratings
+#No sig difference in AMP unpleas/pleas ratings with chronic stress (PSS)
 
-# SUMMARY:
-# AMP score of unpleasant/pleasant was not significantly effected by presence of acute stressor (chi-squ),
-# however, a participants' subjective experience of unpleasant vs. pleasant after acute stressor had significant impact on AMP pleasantness ratings (t-test)
+# SUMMARY Chronic Stress & AMP:
+# AMP score was not significantly effected by chronic stress levels
 # FOLLOW-UP: Effects of chronic stress with median split method on AMP ratings?
 
 
 # 2. Did stress change AMP scores more than control did?
 
 chisq.test(bst_amp_bath$unPleasant0_Pleasant1, bst_amp_bath$amp1_amp2, correct = FALSE)
-#there IS a sig diff between AMP unpleasant(0)/pleasant(1) ratings by AMP 1 (Control) and AMP 2 (after CPT/Lukewarm)
 
-# Results showed a significant difference between AMP unpleas (0)/pleasant (1) ratings by AMP 1 (Control) and AMP 2 (after CPT/Lukewarm) (chi-squ).
+# SUMMARY Acute Stressor Task & AMP:
+# Results showed a significant difference between AMP unpleas(0)/pleasant(1) ratings by AMP 1 (Control) and AMP 2 (after CPT/Lukewarm),
+# indicating stress did change AMP scores more than the control did.
 # FOLLOW-UP: Do these results change with acute stress (CPT/Lukewarm) AND AMP1 vs AMP2?
 
 
 # 3. Are changes in AMP scores within-day correlated?
 
-cor.test(bst_amp$amp1_amp2, bst_amp$unPleasant0_Pleasant1, method = 'pearson')
-#Results: Yes, changes in AMP scores are statistically significantly correlated with within-day AMP effects (AMP1/AMP2), effect is small (0.03)
+cor.test(amp_scores$amp_d1_s1, amp_scores$amp_d1_s2, method = 'pearson')
+#Results: No, changes in AMP scores are not significantly correlated for Day 1 within-day AMP effects
+cor.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2, method = 'pearson')
+#Results: Yes, changes in AMP scores ARE significantly correlated for Day 2 within-day AMP effects
+
+# SUMMARY AMP within day correlations:
+# Results showed a significant difference between AMP 1 and 2 on DAY 2 but not on DAY 1
+# FOLLOW-UP: WHY would this be the case?
 
 
 # 4. How did AMP scores change (or not) across days & measurements? (e.g., D1S1 vs. D2S1, all S2s vs. all S1s, all D2s vs. all D1s...)
+summary(amp_scores)
+#mean d1_s1  Day 1_AMP 1 mean =  0.00225
+#mean d1_s2  Day 1_AMP 2 mean =  0.01076
+#mean d2_s1  Day 2_AMP 1 mean = -0.02473
+#mean d2_s2  Day 2_AMP 2 mean = -0.02553
+
+#mean AMP change for stress =   0.01270
+#mean AMP change for control = -0.00499
+
+t.test(amp_scores$change_amp_stress, amp_scores$change_amp_control) #not sig diff
+t.test(amp_scores$amp_d1_s1, amp_scores$amp_d1_s2)  #Day 1, not sig diff
+t.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2)  #Day 2, not sig diff
+
+
+# SUMMARY AMP within day correlations:
+# Results showed that overall both AMP 1 and 2 scores were negative for Day 2 while both were positive for Day 1
+# there were no sig differences between Day 1 AMP 1 and 2 nor Day 2 AMP 1 and 2
+# FOLLOW-UP: WHY would both Day 2 means be negative and both Day 1 positive?
+
+
 
 # 5. Re-organize AMP scores into a long (not wide) matrix, with columns indicating day 1 or 2, measurement 1 or 2, control or stress, etc.
 #   to facilitate regression on *scores* should we wish to do that (not just regression on choices).
@@ -563,6 +606,8 @@ summary(model.2)
 #max(bst_amp_bath$diffPleasantnessRating)  #6
 #min(bst_amp_bath$diffPleasantnessRating)  #-3 (one person rated CPT more pleasant than lukewarm)
 
+#chisq.test(bst_amp_bath$unPleasant0_Pleasant1, bst_amp_bath$day2StressedBool, correct = FALSE)
+#there is no sig diff between AMP unpleas (0)/pleasant (1) ratings whether or not participant had acute stressor
 
 #### CORRELATIONS ####
 #stress
