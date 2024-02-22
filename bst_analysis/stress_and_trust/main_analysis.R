@@ -468,6 +468,17 @@ for (s in 1:number_of_AMP_subjects){
   }
 }
 
+amp_scores$pss = NA;
+
+for (s in 1:number_of_AMP_subjects){
+  amp_SID = amp_scores$subjectID[s];
+  for (subj_PSS in 1:length(bst_pss$subjectID)){
+    if (amp_SID == bst_pss$subjectID[subj_PSS]){
+      amp_scores$pss[s] = bst_pss$pssSum[subj_PSS];
+    }
+  }
+}
+
 # STOPPED HERE on 2/14/24
 # TO-DO:
 
@@ -492,45 +503,77 @@ sd(amp_scores$change_amp_stress)
 #mean (sd) change in AMP under control condition = -0.0049 (0.1444)
 #NOTE: large standard deviations
 
-t.test(amp_scores$change_amp_stress, amp_scores$change_amp_control)
-#no significant difference between AMP scores under stress vs control conditions
-#NOTE: possibly due to high SD?
+hist(amp_scores$change_amp_stress)
+t.test(amp_scores$change_amp_stress)
+wilcox.test(amp_scores$change_amp_stress)
+# Scores do not significantly increase under stress t(38) = 0.51, p = 0.61, even if they NUMERICALLY do
 
-t.test(bst_amp_bath$diffPleasantnessRating ~ bst_amp_bath$unPleasant0_Pleasant1)
-#Significant Difference in acute stress Pleasantness (Lukewarm-CPT) Ratings and AMP unpleas/pleas ratings
-#Ratings of more unpleasantness for cold pressor vs lukewarm bath was significantly related to more positive AMP ratings
+t.test(amp_scores$change_amp_stress, amp_scores$change_amp_control, paired = T)
+# There is also NOT a larger change under stress than under control t(38) = 0.52, p = 0.61
+plot(amp_scores$change_amp_stress, amp_scores$change_amp_control, xlim = c(-1, 1), ylim = c(-1, 1))
+lines(x = c(-1, 1), y = c(-1,1), col = 'red')
 
-# SUMMARY Acute Stress & AMP:
-# AMP score was not significantly effected by presence of acute stressor
-# however, a participants' subjective experience of unpleasant vs. pleasant after acute stressor was linke to AMP pleasantness ratings (t-test)
+
+# ANSWER:
+# AMP score was not significantly effected by presence of acute stressor (either absolutely or in comparison to control)
+
+
 
 #basic modelling of CHRONIC stress and AMP scores
 summary(bst_amp_bath_pss)
 
-t.test(bst_amp_bath_pss$pssSum ~ bst_amp_bath_pss$unPleasant0_Pleasant1)
-#No sig difference in AMP unpleas/pleas ratings with chronic stress (PSS)
+plot(amp_scores$pss,amp_scores$amp_overall) # one person is waaaaay out there with a low/neg. AMP score
+cor.test(amp_scores$pss,amp_scores$amp_overall)
+cor.test(amp_scores$pss,amp_scores$amp_overall, method = 'spearman')
+# No relationship between overall AMP scores (collapsing across the 4 measurements) and Chronic stress (PSS scores)
+# Same in parametric & non-parametric
 
-# SUMMARY Chronic Stress & AMP:
-# AMP score was not significantly effected by chronic stress levels
-# FOLLOW-UP: Effects of chronic stress with median split method on AMP ratings?
+plot(amp_scores$pss,amp_scores$change_amp_stress)
+cor.test(amp_scores$pss,amp_scores$change_amp_stress)
+# Also no relationship between chronic stress and CHANGE in AMP under acute stress
+
+# ANSWER:
+# AMP score was not significantly related to chronic stress levels
+
+
+## OVERALL TAKEAWAY: ##
+# AMP is not affected by acute stress, and levels of AMP or changes of AMP under acute stress are unrelated to chronic stress.
 
 
 # 2. Did stress change AMP scores more than control did?
 
-chisq.test(bst_amp_bath$unPleasant0_Pleasant1, bst_amp_bath$amp1_amp2, correct = FALSE)
-
-# SUMMARY Acute Stressor Task & AMP:
-# Results showed a significant difference between AMP unpleas(0)/pleasant(1) ratings by AMP 1 (Control) and AMP 2 (after CPT/Lukewarm),
-# indicating stress did change AMP scores more than the control did.
-# FOLLOW-UP: Do these results change with acute stress (CPT/Lukewarm) AND AMP1 vs AMP2?
+t.test(amp_scores$change_amp_stress, amp_scores$change_amp_control, paired = T)
+# ANSWER
+# NO. Change is numerically positive under stress and negative under control, but not diff. from each other.
 
 
 # 3. Are changes in AMP scores within-day correlated?
 
-cor.test(amp_scores$amp_d1_s1, amp_scores$amp_d1_s2, method = 'pearson')
-#Results: No, changes in AMP scores are not significantly correlated for Day 1 within-day AMP effects
-cor.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2, method = 'pearson')
-#Results: Yes, changes in AMP scores ARE significantly correlated for Day 2 within-day AMP effects
+cor.test(amp_scores$change_amp_stress, amp_scores$change_amp_control)
+# No, changes under stress are not correlated with changes under control
+
+
+plot(amp_scores$amp_d1_s1, amp_scores$amp_d1_s2, xlim = c(-0.6, 0.6), ylim = c(-0.6, 0.6)) # there are a few outlier (?) scores so try non-parametric too
+lines(x = c(-0.6, 0.6), y = c(-0.6, 0.6), col = 'red')
+cor.test(amp_scores$amp_d1_s1, amp_scores$amp_d1_s2, method = 'pearson') # p = 0.60
+cor.test(amp_scores$amp_d1_s1, amp_scores$amp_d1_s2, method = 'spearman') # p = 0.19
+#Results: No, AMP scores are not significantly correlated across measurements on Day 1
+
+
+
+plot(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2, xlim = c(-0.6, 0.6), ylim = c(-0.6, 0.6)) # there's a real outlier score so try non-parametric too
+lines(x = c(-0.6, 0.6), y = c(-0.6, 0.6), col = 'red')
+cor.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2, method = 'pearson') # p = 0.0008
+cor.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2, method = 'spearman') # p = 0.02
+#Results: Yes, AMP scores ARE significantly correlated across measurements on Day 2
+
+
+# Are the initial measurements of AMP scores correlated across days
+plot(amp_scores$amp_d1_s1, amp_scores$amp_d2_s1, xlim = c(-0.6, 0.6), ylim = c(-0.6, 0.6)) # there's a real outlier score so try non-parametric too
+lines(x = c(-0.6, 0.6), y = c(-0.6, 0.6), col = 'red')
+cor.test(amp_scores$amp_d1_s1, amp_scores$amp_d2_s1, method = 'pearson') # p = 0.0008
+cor.test(amp_scores$amp_d1_s1, amp_scores$amp_d2_s1, method = 'spearman') # p = 0.02
+
 
 # SUMMARY AMP within day correlations:
 # Results showed a significant difference between AMP 1 and 2 on DAY 2 but not on DAY 1
