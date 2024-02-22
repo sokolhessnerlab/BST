@@ -486,15 +486,10 @@ chisq.test(bst_amp_bath$unPleasant0_Pleasant1, bst_amp_bath$day2StressedBool, co
 t.test(bst_amp_bath$diffPleasantnessRating ~ bst_amp_bath$unPleasant0_Pleasant1)
 #Significant Difference in acute stress Pleasantness (Lukewarm-CPT) Ratings and AMP unpleas/pleas ratings
 
-chisq.test(bst_amp_bath$unPleasant0_Pleasant1, bst_amp_bath$amp1_amp2, correct = FALSE)
-#there IS a sig diff between AMP unpleasant(0)/pleasant(1) ratings by AMP 1 (Control) and AMP 2 (after CPT/Lukewarm)
 
 #basic modelling of CHRONIC stress and AMP scores
-
 summary(bst_amp_bath_pss)
-str(bst_amp_bath_pss)
 
-#basic modelling of chronic stress and AMP scores
 t.test(bst_amp_bath_pss$pssSum ~ bst_amp_bath_pss$unPleasant0_Pleasant1)
 #Approaching significant difference in PSS sum (Chronic stress) and AMP unpleas/pleas ratings
 
@@ -503,6 +498,7 @@ t.test(bst_amp_bath_pss$pssSum ~ bst_amp_bath_pss$unPleasant0_Pleasant1)
 # however, a participants' subjective experience of unpleasant vs. pleasant after acute stressor had significant impact on AMP pleasantness ratings (t-test)
 # FOLLOW-UP: Effects of chronic stress with median split method on AMP ratings?
 
+
 # 2. Did stress change AMP scores more than control did?
 
 chisq.test(bst_amp_bath$unPleasant0_Pleasant1, bst_amp_bath$amp1_amp2, correct = FALSE)
@@ -510,6 +506,7 @@ chisq.test(bst_amp_bath$unPleasant0_Pleasant1, bst_amp_bath$amp1_amp2, correct =
 
 # Results showed a significant difference between AMP unpleas (0)/pleasant (1) ratings by AMP 1 (Control) and AMP 2 (after CPT/Lukewarm) (chi-squ).
 # FOLLOW-UP: Do these results change with acute stress (CPT/Lukewarm) AND AMP1 vs AMP2?
+
 
 # 3. Are changes in AMP scores within-day correlated?
 
