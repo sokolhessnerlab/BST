@@ -306,60 +306,51 @@ options(scipen=999)  #EB NOTE: sci notation to decimal
 #AMP descriptives
 summary(bst_amp)
 str(bst_amp)
-mean(bst_amp$responseTime)
-sd(bst_amp$responseTime)
-max(bst_amp$responseTime)  #CHECK: Why Max high?
-min(bst_amp$responseTime)
+
+
+#Examine Response Times
+  mean(bst_amp$responseTime) #0.912
+  sd(bst_amp$responseTime) #0.7649 High compared to mean
+  max(bst_amp$responseTime)  #CHECK: Why Max high?
+  min(bst_amp$responseTime)  #CHECK: Why Min low?
 
 #low-end quantile
 quantile(bst_amp$responseTime, c(.0001,.05,.125,.5,.875,.95,.9999))
 
-#plot AMP distribution up to 3 for distribution
-ggplot(bst_amp, aes(x=responseTime)) +
-  geom_histogram() +
-  labs(title = "Density of AMP Response Time", y = "Density") +
-  scale_x_continuous(name = "Response Time (S)", limits = c(0,3)) +
-  theme_classic()
-
-hist(bst_amp$responseTime, breaks = 50)
+hist(bst_amp$responseTime, breaks = 100)
 
 #plot distribution on low end
-ggplot(bst_amp, aes(x=responseTime)) +
-  geom_histogram() +
-  labs(title = "Density of AMP Response Time", y = "Density") +
-  scale_x_continuous(name = "Response Time (S)", limits = c(0,1)) +
-  theme_classic()
+#ggplot(bst_amp, aes(x=responseTime)) +
+  #geom_histogram() +
+  #labs(title = "Density of AMP Response Time", y = "Density") +
+  #scale_x_continuous(name = "Response Time (S)", limits = c(0,1)) +
+  #theme_classic()
 
-#Breakdowns of stimRace by Pleasantness or Unpleasantness Ratings
 
+
+#Examine Stimulus Race (image) by Pleasantness Ratings (of image)
 
 by(data = bst_amp$unPleasant0_Pleasant1, INDICES = bst_amp$stimulusRace_0w_1b_2o, FUN = mean)
 by(data = bst_amp$unPleasant0_Pleasant1, INDICES = bst_amp$stimulusRace_0w_1b_2o, FUN = sd)
 #white stim AMP unpleasantness .4947 mean
 #black stim AMP unpleasantness .4934 mean
 #other stim AMP unpleasantness .4932 mean
-#White stimuli were rated slightly more pleasant (.4947) than black stimuli (.4934)
-#or than other stimuli (.4932)
+#White stimuli (.4947), black stimuli (.4934), and other stimuli (.4932) rated approximately equally pleasant
 
 #stim race (white,black,other) by frequency of unpleasant (0) vs pleasant (1) rating
 xtabs(~stimulusRace_0w_1b_2o + unPleasant0_Pleasant1, data = bst_amp)
-# across stimuli (w,b,o), participants rated stimuli pleasant more times than unpleasant
-
+# across stimuli race (w,b,o), participants rated stimuli pleasant more times than unpleasant
 #                   unPleasant0_Pleasant1
 #stimulusRace_0w_1b_2o        0    1
 #                   0       3332 4468
 #                   1       3266 4534
 #                   2       3256 4544
 
-
-#Factoring
+#Factoring for use in ggplot
 bst_amp$unPleasant0_Pleasant1_F <- factor(bst_amp$unPleasant0_Pleasant1)
 bst_amp$stimRace_F <- factor(bst_amp$stimulusRace_0w_1b_2o)
 bst_amp$amp1amp2_F <- factor(bst_amp$amp1_amp2)
-
-str(bst_amp)
-
-#Response Times by Stim Raxce & unPleasantness Ratings
+#Response Times by stimulus race & unPleasantness Ratings
 ggplot(bst_amp, aes(x = factor(stimRace_F), y = responseTime, fill = unPleasant0_Pleasant1_F, colour = unPleasant0_Pleasant1_F)) +
   labs(x="Stimulus Race", y="Response Time", fill = "unPleasnantness Rating") +
   scale_fill_discrete(labels = c("unPleasant", "Pleasant")) +
@@ -367,18 +358,15 @@ ggplot(bst_amp, aes(x = factor(stimRace_F), y = responseTime, fill = unPleasant0
   ggtitle("Response Time by Stimulus Race & unPleasantness Rating") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
  # 0, w; 1, b; 3, oth
-#For white stimuli, giving unpleasant ratings led to faster response time than when giving Pleasant ratings
-#A similar effect was observed for black stimuli, but with the effect more pronounced
-#For other stimuli, this effect is reversed, with slower response times for unpleasant ratings vs Pleasant
-#white stim unPl RT < Pl RT
-#black stim unPl RT < Pl RT (more pronounced difference than with white stim)
-#other stim unPl RT > Pl RT
+#For white and black stimuli, giving unpleasant ratings led to faster response time than when giving Pleasant ratings
+#However, for black stimuli, this effect was more pronounced with faster response time of UNpleasnat ratings for black stim vs. white
+#For "other" stimuli, this effect is reversed, with slower response times for unpleasant ratings vs Pleasant
+
 
 # SUMMARY OF BASIC DESCRIPTIVES
 # Average pleasant/unpleasant judgments are pretty similar at the group-level, though RTs may be different.
 # There are excessively fast RTs and excessively slow RTs - will need to remove at least some trials and/or
-# participants. 
-
+# participants.
 
 # Subject-level Analyses
 
@@ -407,25 +395,25 @@ amp_summary_stats = as.data.frame(amp_summary_stats)
 for (s in 1:number_of_AMP_subjects){
   sID = subject_IDs[s];
   amp_summary_stats$subjectID[s] = sID;
-  
+
   tmpdata = bst_amp[bst_amp$subjectID == sID,];
-  
+
   amp_summary_stats$judgments_mean_overall[s] = mean(tmpdata$unPleasant0_Pleasant1);
   amp_summary_stats$judgments_mean_white[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 0]);
   amp_summary_stats$judgments_mean_black[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 1]);
   amp_summary_stats$judgments_mean_other[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 2]);
-  
+
   amp_summary_stats$responseTime_mean_overall[s] = mean(tmpdata$responseTime);
   amp_summary_stats$responseTime_mean_white[s] = mean(tmpdata$responseTime[tmpdata$stimulusRace_0w_1b_2o == 0]);
   amp_summary_stats$responseTime_mean_black[s] = mean(tmpdata$responseTime[tmpdata$stimulusRace_0w_1b_2o == 1]);
   amp_summary_stats$responseTime_mean_other[s] = mean(tmpdata$responseTime[tmpdata$stimulusRace_0w_1b_2o == 2]);
-  
+
   amp_summary_stats$RTs_outside_bounds[s] = sum(tmpdata$responseTime < lower_RT_bound) + sum(tmpdata$responseTime > upper_RT_bound)
 }
 
 # SUMMARY:
-# BST012, 030, and 035 have meaningful numbers of trials that are either excessively fast or slow (esp. 030 and 035). 
-# Judgments don't appear to be singular (i.e. all one response or one button). 
+# BST012, 030, and 035 have meaningful numbers of trials that are either excessively fast or slow (esp. 030 and 035).
+# Judgments don't appear to be singular (i.e. all one response or one button).
 
 bst_amp$unPleasant0_Pleasant1[bst_amp$responseTime < lower_RT_bound] = NA
 bst_amp$unPleasant0_Pleasant1[bst_amp$responseTime > upper_RT_bound] = NA
@@ -450,26 +438,26 @@ amp_scores = as.data.frame(amp_scores)
 for (s in 1:number_of_AMP_subjects){
   sID = subject_IDs[s];
   amp_scores$subjectID[s] = sID;
-  
+
   tmpdata = bst_amp[bst_amp$subjectID == sID,];
-  
-  amp_scores$amp_overall[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 0], na.rm = T) - 
+
+  amp_scores$amp_overall[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 0], na.rm = T) -
     mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 1], na.rm = T);
-  
-  amp_scores$amp_d1_s1[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 1)], na.rm = T) - 
+
+  amp_scores$amp_d1_s1[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 1)], na.rm = T) -
     mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 1)], na.rm = T);
-  amp_scores$amp_d1_s2[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 2)], na.rm = T) - 
+  amp_scores$amp_d1_s2[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 2)], na.rm = T) -
     mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 2)], na.rm = T);
-  amp_scores$amp_d2_s1[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 1)], na.rm = T) - 
+  amp_scores$amp_d2_s1[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 1)], na.rm = T) -
     mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 1)], na.rm = T);
-  amp_scores$amp_d2_s2[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 2)], na.rm = T) - 
+  amp_scores$amp_d2_s2[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 2)], na.rm = T) -
     mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 2)], na.rm = T);
-  
+
   # Calculate change in AMP on a per-day basis
   # AMP 2 - AMP 1
   # Positive values = bias increased
   # Negative values = bias decreased
-  
+
   if (bst_bath$day2StressedBool[s] == 0) { # If they are stressed on day 1, control day 2
     amp_scores$change_amp_stress[s] = amp_scores$amp_d1_s2[s] - amp_scores$amp_d1_s1[s]; # AMP num. 2 - AMP num. 1
     amp_scores$change_amp_control[s] = amp_scores$amp_d2_s2[s] - amp_scores$amp_d2_s1[s];
@@ -482,10 +470,56 @@ for (s in 1:number_of_AMP_subjects){
 # STOPPED HERE on 2/14/24
 # TO-DO:
 # 1. Did stress increase AMP scores?
+
+#CPT/Control by frequency of AMP unpleasant (0)/pleasant (1) rating
+xtabs(~day2StressedBool + unPleasant0_Pleasant1, data = bst_amp_bath)
+#                unPleasant0_Pleasant1
+#     day2StressedBool    0    1
+#             Control 0 5815 7909
+#                 CPT 1 3964 5561
+
+
+#basic modelling of ACUTE stress and AMP scores
+chisq.test(bst_amp_bath$unPleasant0_Pleasant1, bst_amp_bath$day2StressedBool, correct = FALSE)
+#there is no sig diff between AMP unpleas (0)/pleasant (1) ratings whether or not participant had acute stressor
+
+t.test(bst_amp_bath$diffPleasantnessRating ~ bst_amp_bath$unPleasant0_Pleasant1)
+#Significant Difference in acute stress Pleasantness (Lukewarm-CPT) Ratings and AMP unpleas/pleas ratings
+
+chisq.test(bst_amp_bath$unPleasant0_Pleasant1, bst_amp_bath$amp1_amp2, correct = FALSE)
+#there IS a sig diff between AMP unpleasant(0)/pleasant(1) ratings by AMP 1 (Control) and AMP 2 (after CPT/Lukewarm)
+
+#basic modelling of CHRONIC stress and AMP scores
+
+summary(bst_amp_bath_pss)
+str(bst_amp_bath_pss)
+
+#basic modelling of chronic stress and AMP scores
+t.test(bst_amp_bath_pss$pssSum ~ bst_amp_bath_pss$unPleasant0_Pleasant1)
+#Approaching significant difference in PSS sum (Chronic stress) and AMP unpleas/pleas ratings
+
+# SUMMARY:
+# AMP score of unpleasant/pleasant was not significantly effected by presence of acute stressor (chi-squ),
+# however, a participants' subjective experience of unpleasant vs. pleasant after acute stressor had significant impact on AMP pleasantness ratings (t-test)
+# FOLLOW-UP: Effects of chronic stress with median split method on AMP ratings?
+
 # 2. Did stress change AMP scores more than control did?
-# 3. Are changes in AMP scores within-day correlated? 
+
+chisq.test(bst_amp_bath$unPleasant0_Pleasant1, bst_amp_bath$amp1_amp2, correct = FALSE)
+#there IS a sig diff between AMP unpleasant(0)/pleasant(1) ratings by AMP 1 (Control) and AMP 2 (after CPT/Lukewarm)
+
+# Results showed a significant difference between AMP unpleas (0)/pleasant (1) ratings by AMP 1 (Control) and AMP 2 (after CPT/Lukewarm) (chi-squ).
+# FOLLOW-UP: Do these results change with acute stress (CPT/Lukewarm) AND AMP1 vs AMP2?
+
+# 3. Are changes in AMP scores within-day correlated?
+
+cor.test(bst_amp$amp1_amp2, bst_amp$unPleasant0_Pleasant1, method = 'pearson')
+#Results: Yes, changes in AMP scores are statistically significantly correlated with within-day AMP effects (AMP1/AMP2), effect is small (0.03)
+
+
 # 4. How did AMP scores change (or not) across days & measurements? (e.g., D1S1 vs. D2S1, all S2s vs. all S1s, all D2s vs. all D1s...)
-# 5. Re-organize AMP scores into a long (not wide) matrix, with columns indicating day 1 or 2, measurement 1 or 2, control or stress, etc. 
+
+# 5. Re-organize AMP scores into a long (not wide) matrix, with columns indicating day 1 or 2, measurement 1 or 2, control or stress, etc.
 #   to facilitate regression on *scores* should we wish to do that (not just regression on choices).
 
 
@@ -522,8 +556,15 @@ summary(model.2)
 
 
 
+#AMP Misc.
 
+#AMP_unpl_pleas_acuteS <- lmer(diffPleasantnessRating ~ 1 + day2StressedBool * unPleasant0_Pleasant1 + ( 1 | subjectID), data = bst_amp_bath)
+#summary(AMP_unpl_pleas_acuteS)
 
+#mean(bst_amp_bath$diffPleasantnessRating) #4.1026
+#sd(bst_amp_bath$diffPleasantnessRating) #1.8508
+#max(bst_amp_bath$diffPleasantnessRating)  #6
+#min(bst_amp_bath$diffPleasantnessRating)  #-3 (one person rated CPT more pleasant than lukewarm)
 
 
 #### CORRELATIONS ####
