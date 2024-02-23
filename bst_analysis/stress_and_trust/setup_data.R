@@ -241,6 +241,7 @@ rm(bst_tr_part_avg_stress)
 
 #### BIAS ####
 
+#BST
 amp_csv <- file.path(config$path$data$current, config$csvs$amp)
 bst_amp <- read.csv(amp_csv) #reads in AMP data
 
@@ -255,4 +256,7 @@ names(bst_amp)[names(bst_amp) == "session"] <- "amp1_amp2"
 bst_amp_bath <- merge(bst_amp, bst_bath, by = "subjectID")
 bst_amp_bath_pss <- merge(bst_amp, bst_bath_pss, by = "subjectID")
 
+#IAT
 
+iat_csv <- file.path(config$path$data$current, config$csvs$iat)
+bst_iat <- read.csv(iat_csv) #reads in AMP data
