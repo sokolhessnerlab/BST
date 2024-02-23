@@ -303,6 +303,7 @@ options(scipen=999)
 
 #### BIAS ####
 
+# --- AMP --- #
 #AMP descriptives
 summary(bst_amp)
 str(bst_amp)
@@ -340,7 +341,6 @@ by(data = bst_amp$unPleasant0_Pleasant1, INDICES = bst_amp$stimulusRace_0w_1b_2o
 
 #xtabs(~stimulusRace_0w_1b_2o + unPleasant0_Pleasant1, data = bst_amp)
 prop.table(table(bst_amp$stimulusRace_0w_1b_2o, bst_amp$unPleasant0_Pleasant1),1)*100
-
 #                   unPleasant0_Pleasant1
 #stimulusRace_0w_1b_2o         0         1
 #                   0       42.72%    57.28%
@@ -615,41 +615,34 @@ t.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2)  #Day 2, not sig diff
 #logistic regression to see if unpleasant/pleas ratings is affected by stim race and by AMP 1-AMP 2
 #AMP 1 is participant baseline AMP, AMP 2 is participant experiment/control AMP
 
-amp_mod1 <- lmer(responseTime ~ 1 + stimRace_F * amp1amp2_F + ( 1 | subjectID), data = bst_amp)
+amp_mod1 <- lmer(responseTime ~ 1 + stimulusRace_0w_1b_2o * amp1_amp2 + ( 1 | subjectID), data = bst_amp)
 summary(amp_mod1)
-#stim race alone does not appear to have effect on response time, however there does seem to be an effect of AMP 1 vs 2
+#stim race alone does not appear to have effect on response time, however there is an effect of AMP 1 vs 2
 #the response times for baseline AMP and AMP after experimental task are sig. different
 
-amp_mod2 <- lmer(responseTime ~ 1 + stimRace_F + amp1amp2_F + ( 1 | subjectID), data = bst_amp)
+amp_mod2 <- lmer(responseTime ~ 1 + stimulusRace_0w_1b_2o+ amp1_amp2 + ( 1 | subjectID), data = bst_amp)
 summary(amp_mod2)
-#same results as amp_mod1 which included interaction effects
-#Seems to be a sig difference in pleasantness/unpleasantness ratings for baseline AMP vs Control AMP
+#simpler model, same results as amp_mod1 which included interaction effects
 
-#amp_mod3 <- glm(unPleasant0_Pleasant1_F ~ stimRace_F + amp1amp2_F, data = bst_amp)
-#summary(amp_mod3)
+amp_mod3 <- glm(unPleasant0_Pleasant1 ~ stimulusRace_0w_1b_2o + amp1_amp2, data = bst_amp)
+summary(amp_mod3)
+#when controlling for stimulus race, amp1/amp2 significantly related to unpleasant/pleasant AMP ratings.
 
-# !! Q: Check AMP 1 vs 2 by whether or not they had control or exper on day 1! Then compare with stimulus type.
+#To-DO: Check AMP 1 vs 2 by whether or not they had control or exper on day 1! Then compare with stimulus type.
 
-xtabs(~amp1amp2_F + unPleasant0_Pleasant1, data = bst_amp)
-#In general, AMP 1 & 2 have more frequency of pleasant than unpleasant ratings of images
-#however, the difference between frequency of pleasant and unpleasant is greater on AMP2
-#participants pleasant image rating frequency is higher on day 2 vs day 1
-
-#interaction effects are not sig.
-model.2 <- glmer(unPleasant0_Pleasant1_F ~ stimRace_F + amp1amp2_F + stimRace_F:amp1amp2_F + (1|subjectID), data=bst_amp, family="binomial")
-summary(model.2)
+prop.table(table(bst_amp$amp1_amp2, bst_amp$unPleasant0_Pleasant1),1)*100
+#                unPleasant0_Pleasant1
+#                           0     1
+#           AMP_1     43.79% 56.21%
+#           AMP_2     40.43% 59.57%
 
 
 
-#AMP Misc.
-
-#AMP_unpl_pleas_acuteS <- lmer(diffPleasantnessRating ~ 1 + day2StressedBool * unPleasant0_Pleasant1 + ( 1 | subjectID), data = bst_amp_bath)
-#summary(AMP_unpl_pleas_acuteS)
-
-#mean(bst_amp_bath$diffPleasantnessRating) #4.1026
-#sd(bst_amp_bath$diffPleasantnessRating) #1.8508
-#max(bst_amp_bath$diffPleasantnessRating)  #6
-#min(bst_amp_bath$diffPleasantnessRating)  #-3 (one person rated CPT more pleasant than lukewarm)
+# --- IAT --- #
+#IAT descriptives
+summary(bst_iat)
+str(bst_iat)
+dim(bst_iat) #15600 x 18
 
 
 
