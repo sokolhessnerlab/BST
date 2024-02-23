@@ -12,7 +12,7 @@ library(lme4)
 library(nlme)
 library(lmerTest) # adds more useful info to the output of lmer's
 
-options(scipen=999)  #EB NOTE: sci notation to decimal
+options(scipen=999)
 
 
 #Base Level Analysis#
@@ -337,14 +337,16 @@ by(data = bst_amp$unPleasant0_Pleasant1, INDICES = bst_amp$stimulusRace_0w_1b_2o
 #White stimuli (.4947), black stimuli (.4934), and other stimuli (.4932) rated approximately equally pleasant
 
 #Stimulus race (white,black,other) by frequency of unpleasant (0) vs pleasant (1) rating
-xtabs(~stimulusRace_0w_1b_2o + unPleasant0_Pleasant1, data = bst_amp)
-#                   unPleasant0_Pleasant1
-#stimulusRace_0w_1b_2o        0    1
-#                   0       3332 4468
-#                   1       3266 4534
-#                   2       3256 4544
-# across stimuli race (w,b,o), participants rated stimuli pleasant more times than unpleasant
 
+#xtabs(~stimulusRace_0w_1b_2o + unPleasant0_Pleasant1, data = bst_amp)
+prop.table(table(bst_amp$stimulusRace_0w_1b_2o, bst_amp$unPleasant0_Pleasant1),1)*100
+
+#                   unPleasant0_Pleasant1
+#stimulusRace_0w_1b_2o         0         1
+#                   0       42.72%    57.28%
+#                   1       41.87%    58.13%
+#                   2       41.74%    58.26%
+# across stimuli race (w,b,o), participants rated stimuli pleasant more than unpleasant
 
 #Factoring for use in ggplot
 bst_amp$unPleasant0_Pleasant1_F <- factor(bst_amp$unPleasant0_Pleasant1)
@@ -357,7 +359,7 @@ ggplot(bst_amp, aes(x = factor(stimRace_F), y = responseTime, fill = unPleasant0
   geom_bar(stat = "identity", position = "dodge") +
   ggtitle("Response Time by Stimulus Race & unPleasantness Rating") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
- # 0, w; 1, b; 3, oth
+# 0, w; 1, b; 3, oth
 #For white and black stimuli, giving unpleasant ratings led to faster response time than when giving Pleasant ratings
 #However, for black stimuli, this effect was more pronounced with faster response time of UNpleasnat ratings for black stim vs. white
 #For "other" stimuli, this effect is reversed, with slower response times for unpleasant ratings vs Pleasant
@@ -468,6 +470,7 @@ for (s in 1:number_of_AMP_subjects){
   }
 }
 
+#sets up column in amp_scores with pss_sum (matching subjID) and adds NA when missing pss_sum values
 amp_scores$pss = NA;
 
 for (s in 1:number_of_AMP_subjects){
@@ -485,11 +488,14 @@ for (s in 1:number_of_AMP_subjects){
 # 1. Did stress increase AMP scores?
 
 #CPT/Control by frequency of AMP unpleasant (0)/pleasant (1) rating
+prop.table(table(bst_amp_bath$day2StressedBool, bst_amp_bath$unPleasant0_Pleasant1),1)*100
+
 xtabs(~day2StressedBool + unPleasant0_Pleasant1, data = bst_amp_bath)
 #                unPleasant0_Pleasant1
-#     day2StressedBool    0    1
-#             Control 0 5815 7909
-#                 CPT 1 3964 5561
+#     day2StressedBool      0     1
+#           Control 0   42.42% 57.55%
+#               CPT 1   41.64% 58.36%
+# participants rated AMP stimuli pleasant more often than unpleasant for both control and experimental (CPT) conditions
 
 hist(amp_scores$change_amp_stress)
 hist(amp_scores$change_amp_control)
@@ -499,8 +505,8 @@ hist(amp_scores$change_amp_control)
 summary(amp_scores)
 sd(amp_scores$change_amp_control)
 sd(amp_scores$change_amp_stress)
-#mean (sd) change in AMP under stress condition = 0.0127 (0.1555)
-#mean (sd) change in AMP under control condition = -0.0049 (0.1444)
+#mean (sd) change in AMP under stress condition = 0.0127 (0.156)
+#mean (sd) change in AMP under control condition = -0.0049 (0.144)
 #NOTE: large standard deviations
 
 hist(amp_scores$change_amp_stress)
@@ -512,7 +518,6 @@ t.test(amp_scores$change_amp_stress, amp_scores$change_amp_control, paired = T)
 # There is also NOT a larger change under stress than under control t(38) = 0.52, p = 0.61
 plot(amp_scores$change_amp_stress, amp_scores$change_amp_control, xlim = c(-1, 1), ylim = c(-1, 1))
 lines(x = c(-1, 1), y = c(-1,1), col = 'red')
-
 
 # ANSWER:
 # AMP score was not significantly effected by presence of acute stressor (either absolutely or in comparison to control)
@@ -560,7 +565,6 @@ cor.test(amp_scores$amp_d1_s1, amp_scores$amp_d1_s2, method = 'spearman') # p = 
 #Results: No, AMP scores are not significantly correlated across measurements on Day 1
 
 
-
 plot(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2, xlim = c(-0.6, 0.6), ylim = c(-0.6, 0.6)) # there's a real outlier score so try non-parametric too
 lines(x = c(-0.6, 0.6), y = c(-0.6, 0.6), col = 'red')
 cor.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2, method = 'pearson') # p = 0.0008
@@ -574,10 +578,7 @@ lines(x = c(-0.6, 0.6), y = c(-0.6, 0.6), col = 'red')
 cor.test(amp_scores$amp_d1_s1, amp_scores$amp_d2_s1, method = 'pearson') # p = 0.0008
 cor.test(amp_scores$amp_d1_s1, amp_scores$amp_d2_s1, method = 'spearman') # p = 0.02
 
-
-# SUMMARY AMP within day correlations:
-# Results showed a significant difference between AMP 1 and 2 on DAY 2 but not on DAY 1
-# FOLLOW-UP: WHY would this be the case?
+# ANSWER - ??
 
 
 # 4. How did AMP scores change (or not) across days & measurements? (e.g., D1S1 vs. D2S1, all S2s vs. all S1s, all D2s vs. all D1s...)
@@ -595,10 +596,9 @@ t.test(amp_scores$amp_d1_s1, amp_scores$amp_d1_s2)  #Day 1, not sig diff
 t.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2)  #Day 2, not sig diff
 
 
-# SUMMARY AMP within day correlations:
-# Results showed that overall both AMP 1 and 2 scores were negative for Day 2 while both were positive for Day 1
-# there were no sig differences between Day 1 AMP 1 and 2 nor Day 2 AMP 1 and 2
-# FOLLOW-UP: WHY would both Day 2 means be negative and both Day 1 positive?
+# STOPPED HERE 2/22
+
+#ANSWER:
 
 
 
@@ -609,6 +609,8 @@ t.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2)  #Day 2, not sig diff
 
 
 
+
+#AMP Models
 
 #logistic regression to see if unpleasant/pleas ratings is affected by stim race and by AMP 1-AMP 2
 #AMP 1 is participant baseline AMP, AMP 2 is participant experiment/control AMP
@@ -649,8 +651,8 @@ summary(model.2)
 #max(bst_amp_bath$diffPleasantnessRating)  #6
 #min(bst_amp_bath$diffPleasantnessRating)  #-3 (one person rated CPT more pleasant than lukewarm)
 
-#chisq.test(bst_amp_bath$unPleasant0_Pleasant1, bst_amp_bath$day2StressedBool, correct = FALSE)
-#there is no sig diff between AMP unpleas (0)/pleasant (1) ratings whether or not participant had acute stressor
+
+
 
 #### CORRELATIONS ####
 #stress
