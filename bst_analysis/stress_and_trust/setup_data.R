@@ -4,9 +4,7 @@
 
 #loads up the necessary libraries
 library(plyr)
-
-# ?HOW to best collapse for the Trust Ratings and Game
-# ?WHAT to do with missing values
+library(car)
 
 #Color Blind Palette for graphing
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
@@ -55,7 +53,7 @@ names(bst_bathOrder)[names(bst_bathOrder) == "BST.."] <- 'subjectID'
 
 bst_bath <- merge(bst_bathPleasantness, bst_bathOrder, by = "subjectID") #merges the two bath DF's into a single one
 
-bst_bath$diffPleasantnessRating<- (bst_bath$STRESS - bst_bath$CONTROL) #calculates the rating difference between the stress and control ratings
+bst_bath$diffPleasantnessRating <- (bst_bath$STRESS - bst_bath$CONTROL) #calculates the rating difference between the stress and control ratings
 
 bst_bath$day2StressedBool <- ifelse(bst_bath$Day.2 == "CONTROL", 0, 1) #calculates a boolean for whether a participant was stressed on the second day (1) or if they received the control on day 2 (0)
 
@@ -266,29 +264,56 @@ bst_iat <- read.csv(iat_csv) #reads in AMP data
 
 #EXPLICIT Bias
 
+#MRS (Modern Racism Scale)
+#Measures how much you agree/disagree with statements on race
+mrs_csv <- file.path(config$path$data$explicit, config$csvs$mrs)
+bst_mrs <- read.csv(mrs_csv)
+
+#remove participant 1 (which was a trial run)
+bst_mrs <- bst_mrs[-c(1), ]
+
+#Reverse code 1st questionnaire item only
+bst_mrs$Q1_Easy_Understand_Recode = recode(bst_mrs$Q1_Easy_Understand, '-2=2; -1=1; 0=0; 1=-1; 2=-2')
+#sum MRS
+bst_mrs$mrsSum <- (bst_mrs$Q1_Easy_Understand_Recode + bst_mrs$Q2_Segregation_Influence + bst_mrs$Q3_Too_Demanding + bst_mrs$Q4_Economical_Help + bst_mrs$Q5_Press_Affinity + bst_mrs$Q6_Push_Unwanted + bst_mrs$Q7_Discim_Not_Prob)
+
+
+
 #SRS (Symbolic Racism Scale)
 #Measures "your thoughts" regarding race
-
 srs_csv <- file.path(config$path$data$explicit, config$csvs$srs)
 bst_srs <- read.csv(srs_csv)
 
+#remove participant 1 (which was a trial run)
+bst_srs <- bst_srs[-c(1), ]
 
-#MRS (Modern Racism Scale)
-#Measures how much you agree/disagree with statements on race
+#Reverse code items 1, 2, 4, 8
+bst_srs$Q1_try_more_recode = recode(bst_srs$Q1_try_more, '1=4; 2=3; 3=2; 4=1')
+bst_srs$Q2_other_minorities_recode = recode(bst_srs$Q2_other_minorities, '1=4; 2=3; 3=2; 4=1')
+bst_srs$Q4_blacks_responsible_recode = recode(bst_srs$Q4_blacks_responsible, '1=4; 2=3; 3=2; 4=1')
+bst_srs$Q8_more_than_deserve_recode = recode(bst_srs$Q8_more_than_deserve,'1=4; 2=3; 3=2; 4=1')
 
-mrs_csv <- file.path(config$path$data$explicit, config$csvs$mrs)
-bst_mrs <- read.csv(mrs_csv)
+#Reverse code item 3 (has only 3 response choices)
+bst_srs$Q3_push_too_hard_recode = recode(bst_srs$Q3_push_too_hard, '1=3; 2=1; 3=2')
+
+#sum SRS
+bst_srs$srsSum <- (bst_srs$Q1_try_more_recode + bst_srs$Q2_other_minorities_recode + bst_srs$Q3_push_too_hard_recode + bst_srs$Q4_blacks_responsible_recode + bst_srs$Q5_limit_chances + bst_srs$Q6_slavery_difficulty + bst_srs$Q7_less_than_deserve + bst_srs$Q8_more_than_deserve_recode)
+
+
 
 
 #IMS-EMS (Internal and External Motivation to Respond Without Prejudice)
 #Measures feelings towards statements on race
-
 ims_ems_csv <- file.path(config$path$data$explicit, config$csvs$ims_ems)
 bst_ims_ems <- read.csv(ims_ems_csv)
+
+#Reverse code
+
+#sum IMS-EMS
+
 
 
 #CM (Contact Measures)
 #Measures contact with same/other race
-
 #cm_csv <- file.path(config$path$data$explicit, config$csvs$cm)
 #bst_cm <- read.csv(cm_csv)

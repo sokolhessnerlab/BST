@@ -646,6 +646,45 @@ dim(bst_iat) #15600 x 18
 
 
 
+# --- Explicit Bias Measures --- #
+
+#MRS descriptives
+summary(bst_mrs)
+#NOTE: mrsSum from -14 (less bias) to 14 (more bias)
+
+#Examine Sums
+mean(bst_mrs$mrsSum) #-11.10 (across participants, results leaning heavily towards less explicit bias)
+sd(bst_mrs$mrsSum) #3.38
+max(bst_mrs$mrsSum)  #-3
+min(bst_mrs$mrsSum)  #-14 (lowest possible on the MRS scale reached)
+
+hist(bst_mrs$mrsSum, breaks = 10) #clear pos skew
+
+
+#SRS descriptives
+summary(bst_srs)
+#NOTE: srsSum from 8 (less bias) to 31 (more bias)
+
+#Examine Sums
+mean(bst_srs$srsSum) #11.97 (across participants, results leaning heavily towards less explicit bias)
+sd(bst_srs$srsSum) #3.26
+max(bst_srs$srsSum)  #21
+min(bst_srs$srsSum)  #8 (lowest possible on the SRS scale reached)
+
+hist(bst_srs$srsSum, breaks = 10) #clear pos skew
+
+
+
+cor.test(bst_srs$srsSum, bst_mrs$mrsSum, method = 'pearson')
+#SMS & MRS significantly, highly correlated r=.75, p < .001
+
+
+# SUMMARY OF EXPLICIT BASIC DESCRIPTIVES
+# Across participants, MRS and SRS sums leaned heavily towards a low explicit bias score
+# SRS scores were more widely distributed than MRS scores
+# As expected, SRS and MRS highly correlated
+
+
 
 #### CORRELATIONS ####
 #stress
