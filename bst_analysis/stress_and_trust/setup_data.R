@@ -301,15 +301,21 @@ bst_srs$srsSum <- (bst_srs$Q1_try_more_recode + bst_srs$Q2_other_minorities_reco
 
 
 
-
 #IMS-EMS (Internal and External Motivation to Respond Without Prejudice)
 #Measures feelings towards statements on race
 ims_ems_csv <- file.path(config$path$data$explicit, config$csvs$ims_ems)
 bst_ims_ems <- read.csv(ims_ems_csv)
+# NOTE - missing participant 43's IMS-EMS, not in scanned docs either
 
-#Reverse code
+#remove participant 1 (which was a trial run)
+bst_ims_ems <- bst_ims_ems[-c(1), ]
+
+#Reverse code item 7
+bst_ims_ems$Q7_StereotypesOK_recode = recode(bst_ims_ems$Q7_StereotypesOK, '1=10; 2=9; 3=8; 4=7; 5=6; 6=5; 7=4; 8=3; 9=2; 10=1')
 
 #sum IMS-EMS
+bst_ims_ems$imsEmsSum <- (bst_ims_ems$Q1_Try_to_be_PC + bst_ims_ems$Q2_HideThoughts + bst_ims_ems$Q3_OthersAngry + bst_ims_ems$Q4_AvoidDisapproval + bst_ims_ems$Q5_limit_chances +
+                            bst_ims_ems$Q6_PersonallyImp + bst_ims_ems$Q7_StereotypesOK_recode + bst_ims_ems$Q8_PersonallyMotiv + bst_ims_ems$Q9_StereotypesWrong + bst_ims_ems$Q10_SelfConcept)
 
 
 
