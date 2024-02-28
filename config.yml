@@ -4,6 +4,7 @@ default:
         data:
             current: "/Volumes/shlab/Projects/BST/data/Current_Dataframes"
             survey: "/Volumes/shlab/Projects/BST/data/Current_Dataframes/SurveyData"
+            explicit: "/Volumes/shlab/Projects/BST/data/scannedpaperdocs"
         code:
             r_scripts: "./bst_analysis/stress_and_trust"
     csvs:
@@ -14,6 +15,10 @@ default:
         tr: "allTRData_20200626.csv"
         amp: "allAMPData_20200626.csv"
         iat: "allIATData_20200626.csv"
+        srs: "BST_SymbolicRacismScale_Data.csv"
+        mrs: "BST_ModernRacismScale_Data.csv"
+        ims_ems: "BST_IMS_EMS_Data.csv"
+        cm: "BST_ContactMeas_Data"
     code_files:
         setup_data: "setup_data.R"
         main_analysis: "main_analysis.R"

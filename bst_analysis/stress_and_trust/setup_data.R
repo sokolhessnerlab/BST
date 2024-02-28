@@ -241,7 +241,9 @@ rm(bst_tr_part_avg_stress)
 
 #### BIAS ####
 
-#BST
+##IMPLICIT Bias
+
+#AMP
 amp_csv <- file.path(config$path$data$current, config$csvs$amp)
 bst_amp <- read.csv(amp_csv) #reads in AMP data
 
@@ -260,3 +262,33 @@ bst_amp_bath_pss <- merge(bst_amp, bst_bath_pss, by = "subjectID")
 
 iat_csv <- file.path(config$path$data$current, config$csvs$iat)
 bst_iat <- read.csv(iat_csv) #reads in AMP data
+
+
+#EXPLICIT Bias
+
+#SRS (Symbolic Racism Scale)
+#Measures "your thoughts" regarding race
+
+srs_csv <- file.path(config$path$data$explicit, config$csvs$srs)
+bst_srs <- read.csv(srs_csv)
+
+
+#MRS (Modern Racism Scale)
+#Measures how much you agree/disagree with statements on race
+
+mrs_csv <- file.path(config$path$data$explicit, config$csvs$mrs)
+bst_mrs <- read.csv(mrs_csv)
+
+
+#IMS-EMS (Internal and External Motivation to Respond Without Prejudice)
+#Measures feelings towards statements on race
+
+ims_ems_csv <- file.path(config$path$data$explicit, config$csvs$ims_ems)
+bst_ims_ems <- read.csv(ims_ems_csv)
+
+
+#CM (Contact Measures)
+#Measures contact with same/other race
+
+#cm_csv <- file.path(config$path$data$explicit, config$csvs$cm)
+#bst_cm <- read.csv(cm_csv)
