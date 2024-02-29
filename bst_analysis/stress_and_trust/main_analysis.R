@@ -674,9 +674,31 @@ min(bst_srs$srsSum)  #8 (lowest possible on the SRS scale reached)
 hist(bst_srs$srsSum, breaks = 10) #clear pos skew
 
 
+#IMS-EMS descriptives
+summary(bst_ims_ems)
+#NEG indicates more internally motivated to be less biased, POS score indicates more externally motivated to be less biased
 
+#Examine Sums
+mean(bst_ims_ems$EmsImsDiff) #-13.18 (across participants, results leaning heavily towards less explicit bias)
+sd(bst_ims_ems$EmsImsDiff) #9.66
+max(bst_ims_ems$EmsImsDiff)  #5
+min(bst_ims_ems$EmsImsDiff)  #-33
+#Mean = -13.18 (Range 5 to -33)
+
+hist(bst_ims_ems$EmsImsDiff, breaks = 10) #neg skew
+#participants overall are more internally motivated than externally motivated, but there is a wide range of distribution within negative scores
+
+
+
+
+#correlation btwn srs and mrs
 cor.test(bst_srs$srsSum, bst_mrs$mrsSum, method = 'pearson')
 #SMS & MRS significantly, highly correlated r=.75, p < .001
+
+#NOTE - can't cor.test EMS-IMS data against mrs and ems, b/c one participant missing from EMS-IMS data
+#cor.test(bst_mrs$mrsSum, bst_ims_ems$EmsImsDiff, method = 'pearson')
+
+
 
 
 # SUMMARY OF EXPLICIT BASIC DESCRIPTIVES

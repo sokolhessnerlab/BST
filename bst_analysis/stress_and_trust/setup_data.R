@@ -314,12 +314,18 @@ bst_ims_ems <- bst_ims_ems[-c(1), ]
 bst_ims_ems$Q7_StereotypesOK_recode = recode(bst_ims_ems$Q7_StereotypesOK, '1=10; 2=9; 3=8; 4=7; 5=6; 6=5; 7=4; 8=3; 9=2; 10=1')
 
 #sum IMS-EMS
-bst_ims_ems$imsEmsSum <- (bst_ims_ems$Q1_Try_to_be_PC + bst_ims_ems$Q2_HideThoughts + bst_ims_ems$Q3_OthersAngry + bst_ims_ems$Q4_AvoidDisapproval + bst_ims_ems$Q5_limit_chances +
+bst_ims_ems$imsEmsSum <- (bst_ims_ems$Q1_Try_to_be_PC + bst_ims_ems$Q2_HideThoughts + bst_ims_ems$Q3_OthersAngry + bst_ims_ems$Q4_AvoidDisapproval + bst_ims_ems$Q5_Due2Pressure +
                             bst_ims_ems$Q6_PersonallyImp + bst_ims_ems$Q7_StereotypesOK_recode + bst_ims_ems$Q8_PersonallyMotiv + bst_ims_ems$Q9_StereotypesWrong + bst_ims_ems$Q10_SelfConcept)
+
+bst_ims_ems$EmsSum <- (bst_ims_ems$Q1_Try_to_be_PC + bst_ims_ems$Q2_HideThoughts + bst_ims_ems$Q3_OthersAngry + bst_ims_ems$Q4_AvoidDisapproval + bst_ims_ems$Q5_Due2Pressure)
+bst_ims_ems$ImsSum <- (bst_ims_ems$Q6_PersonallyImp + bst_ims_ems$Q7_StereotypesOK_recode + bst_ims_ems$Q8_PersonallyMotiv + bst_ims_ems$Q9_StereotypesWrong + bst_ims_ems$Q10_SelfConcept)
+
+bst_ims_ems$EmsImsDiff <- (bst_ims_ems$EmsSum - bst_ims_ems$ImsSum) #calculates the difference in EMS and IMS scores per participant
+#NEG indicates more internally motivated to be less biased, POS score indicates more externally motivated to be less biased
 
 
 
 #CM (Contact Measures)
 #Measures contact with same/other race
-#cm_csv <- file.path(config$path$data$explicit, config$csvs$cm)
-#bst_cm <- read.csv(cm_csv)
+cm_csv <- file.path(config$path$data$explicit, config$csvs$cm)
+bst_cm <- read.csv(cm_csv)
