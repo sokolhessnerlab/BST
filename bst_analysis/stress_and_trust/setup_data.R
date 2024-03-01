@@ -4,6 +4,7 @@
 
 #loads up the necessary libraries
 library(plyr)
+library(dplyr)
 library(car)
 
 #Color Blind Palette for graphing
@@ -329,3 +330,33 @@ bst_ims_ems$EmsImsDiff <- (bst_ims_ems$EmsSum - bst_ims_ems$ImsSum) #calculates 
 #Measures contact with same/other race
 cm_csv <- file.path(config$path$data$explicit, config$csvs$cm)
 bst_cm <- read.csv(cm_csv)
+
+#remove participant 1 (which was a trial run)
+bst_cm <- bst_cm[-c(1), ]
+
+
+#Recode character values as integers for CM items 1-6
+bst_cm$Q1_close_white_recode  = recode(bst_cm$Q1_close_white , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
+bst_cm$Q2_aquaint_white_recode  = recode(bst_cm$Q2_aquaint_white , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
+bst_cm$Q3_dated_white_recode  = recode(bst_cm$Q3_dated_white , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
+bst_cm$Q4_close_black_recode  = recode(bst_cm$Q4_close_black , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
+bst_cm$Q5_aquaint_black_recode  = recode(bst_cm$Q5_aquaint_black , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
+bst_cm$Q6_dated_black_recode  = recode(bst_cm$Q6_dated_black , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
+
+#Recode character values as integers for CM items 7-9
+bst_cm$Q7_environ_USR_recode  = recode(bst_cm$Q7_environ_USR , "'urb'=0; 'sub'=1; 'rur'=2")
+bst_cm$Q8_environ_race_diverse_recode  = recode(bst_cm$Q8_environ_race_diverse , "'no'=0; 'yes'=1")
+bst_cm$Q9_envir_cult_diverse_recode  = recode(bst_cm$Q9_envir_cult_diverse , "'no'=0; 'yes'=1")
+
+#recode 10-17 as percentages?
+
+#recode character self-report race/ethnicity values
+#NOTE: 5 represents multiple entries (i.e., "mixed race" and "black")
+bst_cm <- mutate(bst_cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Report=="Wht", 0,
+                                                         ifelse(Race_Eth_Self_Report=="Hispan_Latin", 1,
+                                                                ifelse(Race_Eth_Self_Report=="AsianAm_PacIsl", 2,
+                                                                       ifelse(Race_Eth_Self_Report=="Black_Am", 3,
+                                                                              ifelse(Race_Eth_Self_Report=="BiRac_MultiRac", 4, 5))))))
+
+
+

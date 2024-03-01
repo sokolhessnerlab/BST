@@ -689,6 +689,31 @@ hist(bst_ims_ems$EmsImsDiff, breaks = 10) #neg skew
 #participants overall are more internally motivated than externally motivated, but there is a wide range of distribution within negative scores
 
 
+#CM descriptives
+summary(bst_cm)
+
+#---% of white/black contact analysis (items Q10-Q17)----
+#results indicate participants overall had more white contacts than black contacts.
+#this effect of more contacts for whites than blacks held for:
+#   "close" relationships - White (M=63.56); Black (M=12.82)
+#   "acquaintances" - White (M=62.94); Black (M=17.10)
+#   "daily" contacts - White (M=78.51); Black (M=10.73)
+#   "media" contacts - White (M=70.08); Black (M=20.81)
+#Overall, participants' black contacts was highest for "media" contacts
+
+hist(bst_cm$Q1_close_white_recode,breaks = 5)
+hist(bst_cm$Q4_close_black_recode, breaks = 5) #very positively skewed
+
+hist(bst_cm$Q2_aquaint_white_recode, breaks = 5)
+hist(bst_cm$Q5_aquaint_black_recode, breaks = 5) #not as skewed as close contacts
+
+hist(bst_cm$Q3_dated_white_recode, breaks = 5)
+hist(bst_cm$Q6_dated_black_recode, breaks = 5)
+
+hist(bst_cm$Q7_environ_USR_recode, breaks = 3)
+hist(bst_cm$Q8_environ_race_diverse_recode, breaks = 2)
+hist(bst_cm$Q9_envir_cult_diverse_recode = 2)
+
 
 
 #correlation btwn srs and mrs
