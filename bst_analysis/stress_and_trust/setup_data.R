@@ -253,6 +253,7 @@ names(bst_amp)[names(bst_amp) == "response"] <- "unPleasant0_Pleasant1"
 names(bst_amp)[names(bst_amp) == "condition"] <- "PleasOnLeft0_PleasOnRight1"
 names(bst_amp)[names(bst_amp) == "session"] <- "amp1_amp2"
 
+#NOTE: REDO data frames separately for trialed vs. per participant data
 #combines the trust rating data with the bath data for calculation of variables and later analysis
 bst_amp_bath <- merge(bst_amp, bst_bath, by = "subjectID")
 bst_amp_bath_pss <- merge(bst_amp, bst_bath_pss, by = "subjectID")

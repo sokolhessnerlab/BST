@@ -617,10 +617,10 @@ t.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2)  #Day 2, not sig diff
 
 amp_mod1 <- lmer(responseTime ~ 1 + stimulusRace_0w_1b_2o * amp1_amp2 + ( 1 | subjectID), data = bst_amp)
 summary(amp_mod1)
-#stim race alone does not appear to have effect on response time, however there is an effect of AMP 1 vs 2
-#the response times for baseline AMP and AMP after experimental task are sig. different
+#stim race alone does not have an effect on response time, however there is an effect of AMP 1 vs 2
+#Response times for baseline AMP and AMP after experimental task are sig. different
 
-amp_mod2 <- lmer(responseTime ~ 1 + stimulusRace_0w_1b_2o+ amp1_amp2 + ( 1 | subjectID), data = bst_amp)
+amp_mod2 <- lmer(responseTime ~ 1 + stimulusRace_0w_1b_2o + amp1_amp2 + ( 1 | subjectID), data = bst_amp)
 summary(amp_mod2)
 #simpler model, same results as amp_mod1 which included interaction effects
 
@@ -635,7 +635,7 @@ prop.table(table(bst_amp$amp1_amp2, bst_amp$unPleasant0_Pleasant1),1)*100
 #                           0     1
 #           AMP_1     43.79% 56.21%
 #           AMP_2     40.43% 59.57%
-
+#Collapsed across stimuli races, there were more pleasant ratings than unpleasant ratings for both AMP1 and AMP2
 
 
 # --- IAT --- #
@@ -644,6 +644,37 @@ summary(bst_iat)
 str(bst_iat)
 dim(bst_iat) #15600 x 18
 
+#Examine Response Times
+mean(bst_iat$RT) #0.647
+sd(bst_iat$RT) #0.320 Somewhat high compared to mean
+max(bst_iat$RT)  #10.65
+min(bst_iat$RT)  #0.20
+
+#distribution on low-end quantile for reaction times
+quantile(bst_iat$RT, c(.0001,.05,.125,.5,.875,.95,.9999))
+hist(bst_iat$RT, xlim = c(0, 3), breaks = 100) #normal distribution along mean
+
+prop.table(table(bst_iat$cattype, bst_iat$corrans),1)*100
+#              Black Pleasant Unpleasant White
+#CONGRUENT    25.0     25.0       25.0  25.0
+#INCONGRUENT  25.0     25.0       25.0  25.0
+#SINGLE       12.5     37.5       37.5  12.5
+# even trial bins for congruent/incongruint stimuli (words/images)
+
+#Factoring for use in ggplot
+bst_iat$stimulus.F <- factor(bst_iat$stimulus)
+bst_iat$corrans.F <- factor(bst_iat$corrans)
+
+#Response Times by stimulus & correct answers
+ggplot(bst_iat, aes(x = factor(corrans.F), y = RT, fill = stimulus.F, colour = stimulus.F)) +
+  labs(x="Correct Answer", y="Response Time", fill = "Stimulus") +
+  geom_bar(stat = "identity", position = "dodge") +
+  ggtitle("Response Time by Stimulus Type & Correct Answer") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+# When responding correctly to black stimuli, RTs are longer than when correctly responding to white stimuli
+# When responding correctly to pleasant vs unpleasant words, RTs seem fairly equally dispersed.
+
+#NOTE: Need to categorize and code all pos stim vs neg stim (words), all black faces, all white faces
 
 
 # --- Explicit Bias Measures --- #
@@ -671,7 +702,7 @@ sd(bst_srs$srsSum) #3.26
 max(bst_srs$srsSum)  #21
 min(bst_srs$srsSum)  #8 (lowest possible on the SRS scale reached)
 
-hist(bst_srs$srsSum, breaks = 10) #clear pos skew
+hist(bst_srs$srsSum, breaks = 10) #clear pos skew, but wider distribution than MRS
 
 
 #IMS-EMS descriptives
@@ -693,13 +724,13 @@ hist(bst_ims_ems$EmsImsDiff, breaks = 10) #neg skew
 summary(bst_cm)
 
 #---% of white/black contact analysis (items Q10-Q17)----
-#results indicate participants overall had more white contacts than black contacts.
+#results indicate participants overall had a higher percentage of white contacts than black contacts.
 #this effect of more contacts for whites than blacks held for:
 #   "close" relationships - White (M=63.56); Black (M=12.82)
 #   "acquaintances" - White (M=62.94); Black (M=17.10)
 #   "daily" contacts - White (M=78.51); Black (M=10.73)
 #   "media" contacts - White (M=70.08); Black (M=20.81)
-#Overall, participants' black contacts was highest for "media" contacts
+#Overall, participants' black contacts were highest for "media" contacts and "aquiantances"
 
 hist(bst_cm$Q1_close_white_recode,breaks = 5)
 hist(bst_cm$Q4_close_black_recode, breaks = 5) #very positively skewed
@@ -712,18 +743,15 @@ hist(bst_cm$Q6_dated_black_recode, breaks = 5)
 
 hist(bst_cm$Q7_environ_USR_recode, breaks = 3)
 hist(bst_cm$Q8_environ_race_diverse_recode, breaks = 2)
-hist(bst_cm$Q9_envir_cult_diverse_recode = 2)
-
+hist(bst_cm$Q9_envir_cult_diverse_recode, breaks = 2)
 
 
 #correlation btwn srs and mrs
 cor.test(bst_srs$srsSum, bst_mrs$mrsSum, method = 'pearson')
-#SMS & MRS significantly, highly correlated r=.75, p < .001
+#SMS & MRS significantly and strongly correlated r=.75, p < .001
 
 #NOTE - can't cor.test EMS-IMS data against mrs and ems, b/c one participant missing from EMS-IMS data
 #cor.test(bst_mrs$mrsSum, bst_ims_ems$EmsImsDiff, method = 'pearson')
-
-
 
 
 # SUMMARY OF EXPLICIT BASIC DESCRIPTIVES
