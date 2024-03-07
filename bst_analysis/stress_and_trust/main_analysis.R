@@ -490,12 +490,13 @@ for (s in 1:number_of_AMP_subjects){
 #CPT/Control by frequency of AMP unpleasant (0)/pleasant (1) rating
 prop.table(table(bst_amp_bath$day2StressedBool, bst_amp_bath$unPleasant0_Pleasant1),1)*100
 
-xtabs(~day2StressedBool + unPleasant0_Pleasant1, data = bst_amp_bath)
 #                unPleasant0_Pleasant1
 #     day2StressedBool      0     1
 #           Control 0   42.42% 57.55%
 #               CPT 1   41.64% 58.36%
 # participants rated AMP stimuli pleasant more often than unpleasant for both control and experimental (CPT) conditions
+
+#xtabs(~day2StressedBool + unPleasant0_Pleasant1, data = bst_amp_bath)
 
 hist(amp_scores$change_amp_stress)
 hist(amp_scores$change_amp_control)
@@ -607,37 +608,6 @@ t.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2)  #Day 2, not sig diff
 
 
 
-
-
-
-#AMP Models
-
-#logistic regression to see if unpleasant/pleas ratings is affected by stim race and by AMP 1-AMP 2
-#AMP 1 is participant baseline AMP, AMP 2 is participant experiment/control AMP
-
-amp_mod1 <- lmer(responseTime ~ 1 + stimulusRace_0w_1b_2o * amp1_amp2 + ( 1 | subjectID), data = bst_amp)
-summary(amp_mod1)
-#stim race alone does not have an effect on response time, however there is an effect of AMP 1 vs 2
-#Response times for baseline AMP and AMP after experimental task are sig. different
-
-amp_mod2 <- lmer(responseTime ~ 1 + stimulusRace_0w_1b_2o + amp1_amp2 + ( 1 | subjectID), data = bst_amp)
-summary(amp_mod2)
-#simpler model, same results as amp_mod1 which included interaction effects
-
-amp_mod3 <- glm(unPleasant0_Pleasant1 ~ stimulusRace_0w_1b_2o + amp1_amp2, data = bst_amp)
-summary(amp_mod3)
-#when controlling for stimulus race, amp1/amp2 significantly related to unpleasant/pleasant AMP ratings.
-
-#To-DO: Check AMP 1 vs 2 by whether or not they had control or exper on day 1! Then compare with stimulus type.
-
-prop.table(table(bst_amp$amp1_amp2, bst_amp$unPleasant0_Pleasant1),1)*100
-#                unPleasant0_Pleasant1
-#                           0     1
-#           AMP_1     43.79% 56.21%
-#           AMP_2     40.43% 59.57%
-#Collapsed across stimuli races, there were more pleasant ratings than unpleasant ratings for both AMP1 and AMP2
-
-
 # --- IAT --- #
 #IAT descriptives
 summary(bst_iat)
@@ -741,7 +711,7 @@ hist(bst_cm$Q5_aquaint_black_recode, breaks = 5) #not as skewed as close contact
 hist(bst_cm$Q3_dated_white_recode, breaks = 5)
 hist(bst_cm$Q6_dated_black_recode, breaks = 5)
 
-hist(bst_cm$Q7_environ_USR_recode, breaks = 3)
+hist(bst_cm$Q7_environ_USR_recode, breaks = 3) #0=urban, 1=suburban, 2=rural
 hist(bst_cm$Q8_environ_race_diverse_recode, breaks = 2)
 hist(bst_cm$Q9_envir_cult_diverse_recode, breaks = 2)
 
@@ -758,6 +728,38 @@ cor.test(bst_srs$srsSum, bst_mrs$mrsSum, method = 'pearson')
 # Across participants, MRS and SRS sums leaned heavily towards a low explicit bias score
 # SRS scores were more widely distributed than MRS scores
 # As expected, SRS and MRS highly correlated
+
+
+
+
+#BIAS Models
+
+#logistic regression to see if unpleasant/pleas ratings is affected by stim race and by AMP 1-AMP 2
+#AMP 1 is participant baseline AMP, AMP 2 is participant experiment/control AMP
+
+amp_mod1 <- lmer(responseTime ~ 1 + stimulusRace_0w_1b_2o * amp1_amp2 + ( 1 | subjectID), data = bst_amp)
+summary(amp_mod1)
+#stim race alone does not have an effect on response time, however there is an effect of AMP 1 vs 2
+#Response times for baseline AMP and AMP after experimental task are sig. different
+
+amp_mod2 <- lmer(responseTime ~ 1 + stimulusRace_0w_1b_2o + amp1_amp2 + ( 1 | subjectID), data = bst_amp)
+summary(amp_mod2)
+#simpler model, same results as amp_mod1 which included interaction effects
+
+amp_mod3 <- glm(unPleasant0_Pleasant1 ~ stimulusRace_0w_1b_2o + amp1_amp2, data = bst_amp)
+summary(amp_mod3)
+#when controlling for stimulus race, amp1/amp2 significantly related to unpleasant/pleasant AMP ratings.
+
+#To-DO: Check AMP 1 vs 2 by whether or not they had control or exper on day 1! Then compare with stimulus type.
+
+prop.table(table(bst_amp$amp1_amp2, bst_amp$unPleasant0_Pleasant1),1)*100
+#                unPleasant0_Pleasant1
+#                           0     1
+#           AMP_1     43.79% 56.21%
+#           AMP_2     40.43% 59.57%
+#Collapsed across stimuli races, there were more pleasant ratings than unpleasant ratings for both AMP1 and AMP2
+
+
 
 
 
