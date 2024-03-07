@@ -149,7 +149,7 @@ bst_tr$stressedBool <- ifelse((bst_tr$day2StressedBool == 1 & bst_tr$day == 1), 
                                      ifelse((bst_tr$day2StressedBool == 1 & bst_tr$day == 2), 1,
                                             ifelse((bst_tr$day2StressedBool == 0 & bst_tr$day == 2), 0, NA))))
 #double checking the math above worked out (there should be no NA)
-count(bst_tg$stressedBool)
+# count(bst_tg$stressedBool)
 
 #Previous trial stuff for the trust rating task
 bst_tr$prevTrialRatingAmt <- bst_tr$rating #sets up the previous amount as the current amount
