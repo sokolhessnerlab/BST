@@ -352,18 +352,6 @@ prop.table(table(bst_amp$stimulusRace_0w_1b_2o, bst_amp$unPleasant0_Pleasant1),1
 bst_amp$unPleasant0_Pleasant1_F <- factor(bst_amp$unPleasant0_Pleasant1)
 bst_amp$stimRace_F <- factor(bst_amp$stimulusRace_0w_1b_2o)
 bst_amp$amp1amp2_F <- factor(bst_amp$amp1_amp2)
-#Response Times by stimulus race & unPleasantness Ratings
-ggplot(bst_amp, aes(x = factor(stimRace_F), y = responseTime, fill = unPleasant0_Pleasant1_F, colour = unPleasant0_Pleasant1_F)) +
-  labs(x="Stimulus Race", y="Response Time", fill = "unPleasnantness Rating") +
-  scale_fill_discrete(labels = c("unPleasant", "Pleasant")) +
-  geom_bar(stat = "identity", position = "dodge") +
-  ggtitle("Response Time by Stimulus Race & unPleasantness Rating") +
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-# 0, w; 1, b; 3, oth
-#For white and black stimuli, giving unpleasant ratings led to faster response time than when giving Pleasant ratings
-#However, for black stimuli, this effect was more pronounced with faster response time of UNpleasnat ratings for black stim vs. white
-#For "other" stimuli, this effect is reversed, with slower response times for unpleasant ratings vs Pleasant
-
 
 # SUMMARY OF BASIC DESCRIPTIVES
 # Average pleasant/unpleasant judgments are pretty similar at the group-level, though RTs may be different.
@@ -422,6 +410,84 @@ bst_amp$unPleasant0_Pleasant1[bst_amp$responseTime > upper_RT_bound] = NA
 
 bst_amp$responseTime[bst_amp$responseTime < lower_RT_bound] = NA
 bst_amp$responseTime[bst_amp$responseTime > upper_RT_bound] = NA
+
+
+amp_rts_byRaceResp = array(data = NA, dim = c(6,3));
+
+for (race_category in 0:2){
+  for (response_type in 0:1){
+    subj_level_averages = array(data = NA, dim = c(number_of_AMP_subjects,1));
+    for (subj in 1:number_of_AMP_subjects){
+      tmp_index = (bst_amp$stimulusRace_0w_1b_2o == race_category) & 
+        (bst_amp$unPleasant0_Pleasant1 == response_type) & 
+        (bst_amp$subjectID == subject_IDs[subj]);
+      
+      subj_level_averages[subj] = mean(bst_amp$responseTime[tmp_index], na.rm = T) # NOTE: doing this with MEDIAN produces very similar pattern (maybe less diff. btwn pleas/unpleas for other?)
+    }
+    amp_rts_byRaceResp[race_category*2 + response_type+1,1] = mean(subj_level_averages);
+    amp_rts_byRaceResp[race_category*2 + response_type+1,2] = race_category;
+    amp_rts_byRaceResp[race_category*2 + response_type+1,3] = response_type;
+  }
+}
+
+colnames(amp_rts_byRaceResp) = c('responseTime', 'raceCategory', 'responseType')
+amp_rts_byRaceResp = as.data.frame(amp_rts_byRaceResp)
+amp_rts_byRaceResp$raceCategory = as.factor(amp_rts_byRaceResp$raceCategory)
+amp_rts_byRaceResp$responseType = as.factor(amp_rts_byRaceResp$responseType)
+
+
+#Response Times by stimulus race & unPleasantness Ratings [NOTE: THIS GRAPH BELOW IS JUST RTs - NOT MEAN RTs! EVRIM?]
+ggplot(amp_rts_byRaceResp, aes(x = raceCategory, y = responseTime, fill = responseType, colour = responseType)) +
+  labs(x="Stimulus Race", y="Response Time", fill = "unPleasnantness Rating") +
+  scale_fill_discrete(labels = c("unPleasant", "Pleasant")) +
+  geom_bar(stat = "identity", position = "dodge") +
+  ggtitle("Response Time by Stimulus Race & unPleasantness Rating") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+# 0, w; 1, b; 3, oth
+# mean RTs are slower for unpleasant vs. pleasant judgments in general. Unclear from the graph
+# if there would be any effects of stimulus race or interactions with stimulus race. 
+
+
+bst_amp$responseType = bst_amp$unPleasant0_Pleasant1*2-1; # +1 = pleasant, -1 = unpleasant
+
+bst_amp$isblack = (bst_amp$stimulusRace_0w_1b_2o == 1)*1;
+bst_amp$isother = (bst_amp$stimulusRace_0w_1b_2o == 2)*1;
+
+bst_amp$sqrtRT = sqrt(bst_amp$responseTime)
+
+rt_model = lmer(sqrtRT ~ 1 + responseType*isblack + responseType*isother + (1 | subjectID) , data = bst_amp);
+summary(rt_model)
+
+# strong main effect of judgment type (pleasant is faster than unpleasant), no main effects of stimulus race
+# or interactions btwn stimulus race & judgment type (pleasant or unpleasant).
+
+
+# Add acute & chronic stress indicators
+bst_amp$pss = NA;
+bst_amp$amponly_stressedBool = 0; # set the default stress bool to NOT STRESSED/CONTROL
+# IMPORTANT: THIS ONLY APPLIES TO AMP ANALYSIS, AND NOT OTHER TASKS WHICH DIDN'T HAVE PRE/POST
+
+for (s in 1:number_of_AMP_subjects){
+  amp_SID = subject_IDs[s];
+  for (subj_PSS in 1:length(bst_pss$subjectID)){
+    if (amp_SID == bst_pss$subjectID[subj_PSS]){
+      bst_amp$pss[bst_amp$subjectID == amp_SID] = bst_pss$pssSum[subj_PSS];
+    }
+  }
+  for (day in 1:2){
+    tmp_index = (bst_amp$subjectID == amp_SID) & (bst_amp$day == day) & (bst_amp$amp1_amp2 == 2);
+    bst_amp$amponly_stressedBool[tmp_index] = abs(bst_bath$day2StressedBool[s]-(-day+2))
+  }
+}
+
+rt_model_stress = lmer(sqrtRT ~ 1 + responseType*isblack*amponly_stressedBool + responseType*isother*amponly_stressedBool + (1 | subjectID) , data = bst_amp);
+summary(rt_model_stress)
+
+# Strong main effects of judgment type (pleasant is faster) and stressed indicating that BST responses after the stressor are
+# uniquely faster than all other AMPs (on control day, or on stress day BEFORE the stressor).
+# 
+# Difference is 120ms FASTER after stressor. No diff. by stim type or response type.
+
 
 # Calculate AMP Scores based on the judgments
 amp_scores_colnames = c('subjectID',
@@ -579,7 +645,7 @@ lines(x = c(-0.6, 0.6), y = c(-0.6, 0.6), col = 'red')
 cor.test(amp_scores$amp_d1_s1, amp_scores$amp_d2_s1, method = 'pearson') # p = 0.0008
 cor.test(amp_scores$amp_d1_s1, amp_scores$amp_d2_s1, method = 'spearman') # p = 0.02
 
-# ANSWER - ??
+# ANSWER - Yes, Initial AMP scores are correlated with each other on Day 1 and Day 2
 
 
 # 4. How did AMP scores change (or not) across days & measurements? (e.g., D1S1 vs. D2S1, all S2s vs. all S1s, all D2s vs. all D1s...)
@@ -589,17 +655,18 @@ summary(amp_scores)
 #mean d2_s1  Day 2_AMP 1 mean = -0.02473
 #mean d2_s2  Day 2_AMP 2 mean = -0.02553
 
-#mean AMP change for stress =   0.01270
-#mean AMP change for control = -0.00499
+#mean AMP change for stress =   0.01270 # Bias numerically increases under stress, but not sig.
+#mean AMP change for control = -0.00499 # Bias does not change much on the control day (may decrease numerically?)
 
-t.test(amp_scores$change_amp_stress, amp_scores$change_amp_control) #not sig diff
-t.test(amp_scores$amp_d1_s1, amp_scores$amp_d1_s2)  #Day 1, not sig diff
-t.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2)  #Day 2, not sig diff
+t.test(amp_scores$change_amp_stress, amp_scores$change_amp_control, paired = T) #not sig diff
+t.test(amp_scores$amp_d1_s1, amp_scores$amp_d1_s2, paired = T)  #Day 1, not sig diff
+t.test(amp_scores$amp_d2_s1, amp_scores$amp_d2_s2, paired = T)  #Day 2, not sig diff
+t.test(amp_scores$change_amp_control) # n.s.
+t.test(amp_scores$change_amp_stress) # n.s.
 
 
-# STOPPED HERE 2/22
-
-#ANSWER:
+#ANSWER: AMP scores do not significantly change at the group level between measurements on Day 1, on Day 2, 
+# on the control day, or on the stress day. 
 
 
 
