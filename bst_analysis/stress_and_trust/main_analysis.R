@@ -436,7 +436,7 @@ amp_rts_byRaceResp$raceCategory = as.factor(amp_rts_byRaceResp$raceCategory)
 amp_rts_byRaceResp$responseType = as.factor(amp_rts_byRaceResp$responseType)
 
 
-#Response Times by stimulus race & unPleasantness Ratings [NOTE: THIS GRAPH BELOW IS JUST RTs - NOT MEAN RTs! EVRIM?]
+#Response Times by stimulus race & unPleasantness Ratings 
 ggplot(amp_rts_byRaceResp, aes(x = raceCategory, y = responseTime, fill = responseType, colour = responseType)) +
   labs(x="Stimulus Race", y="Response Time", fill = "unPleasnantness Rating") +
   scale_fill_discrete(labels = c("unPleasant", "Pleasant")) +
@@ -488,6 +488,47 @@ summary(rt_model_stress)
 # 
 # Difference is 120ms FASTER after stressor. No diff. by stim type or response type.
 
+bst_amp$day_recode = bst_amp$day*2-3; # Day 1 = -1, Day 2 = +1
+bst_amp$amp1_amp2_recode = bst_amp$amp1_amp2*2-3; # AMP1 = -1, AMP 2 = +1
+
+rt_model_day_ampNum = lmer(sqrtRT ~ 1 + responseType*day_recode + responseType*amp1_amp2_recode + (1 | subjectID) , data = bst_amp);
+summary(rt_model_day_ampNum)
+# STRONG effects of...
+#   - response type (faster for pleasant)
+#   - day (faster on day 2)
+#   - AMP number (faster on AMP 2 on each day)
+#   - 2-way interactions:
+#     - less difference between pleasant/unpleasant on day 2
+#     - MORE difference between pleasant/unpleasant on AMP #2.
+#
+# TAKEAWAY: there are potentially strong effects of practice (across days and within day across measurements)
+
+rt_model_day_ampNum_stress = lmer(sqrtRT ~ 1 + responseType*day_recode*amponly_stressedBool + responseType*amp1_amp2_recode + (1 | subjectID) , data = bst_amp);
+summary(rt_model_day_ampNum_stress)
+# STRONG effects of...
+#   - response type (faster for pleasant)
+#   - day (faster on day 2)
+#   - AMP number (faster on AMP 2 on each day)
+#   - Stress (faster under stress)            <----- stress effect survives day & AMP # regressors!
+#   - 2-way interactions:
+#     - less difference between pleasant/unpleasant on day 2
+#     - stress effect stronger on day 1 (vs. day 2)
+#
+# TAKEAWAY: there appears to be an overall effect of stress on reaction times ABOVE & BEYOND the 
+# main effects of day & measurement number. 
+
+rt_model_day_ampNum_stress_race = lmer(sqrtRT ~ 1 + 
+                                         responseType*day_recode*amponly_stressedBool*isblack + 
+                                         responseType*day_recode*amponly_stressedBool*isother + 
+                                         responseType*amp1_amp2_recode*isblack + 
+                                         responseType*amp1_amp2_recode*isother + 
+                                         (1 | subjectID) , data = bst_amp);
+summary(rt_model_day_ampNum_stress_race)
+# Findings are identical to the same model WITHOUT race (isother & isblack don't seem to add anything!)
+# This model is WORSE
+anova(rt_model_day_ampNum_stress_race, rt_model_day_ampNum_stress) # p = 0.73 for more complex model
+AIC(rt_model_day_ampNum_stress_race) # AIC -5589
+AIC(rt_model_day_ampNum_stress)      # AIC -5791 <-- MUCH better
 
 # Calculate AMP Scores based on the judgments
 amp_scores_colnames = c('subjectID',
