@@ -55,7 +55,30 @@ A simple regression with day & stress suggests there may be a day effect in whic
 
 Ratings & choices were made about different people, but **average behavior in the two domains is correlated**. The average rating of trust and the average amount shared in the game are correlated (r(37) = .36, p = 0.02, spearman's rho). This suggests that there are consistent individual baseline differences in the average perception of trustworthiness.
 
+## Attitude assessments
+
+### Implicit Attitudes
+
+IAT
+
+AMP
+
+### Explicit Attitudes
+
+CM
+
+MRS
+
+SRS
+
+IMS-EMS
+
+## Post-Study Surveys
+
 ---
+
+## INTERACTION ANALYSES
+
 ## STRESS AND TRUST
 
 _NOTE: because the categorical PSS is very non-normally-distributed (a single high stress person), this document will focus on continuous-PSS analyses below. If one wanted to pursue categorical takes on the PSS, then either use the median split (high/low) or make a tripartite split (low/med/high)._
