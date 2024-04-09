@@ -242,6 +242,7 @@ rm(bst_tr_part_avg_stress)
 
 ##IMPLICIT Bias
 
+
 #AMP
 
 amp_csv <- file.path(config$path$data$current, config$csvs$amp)
@@ -254,22 +255,26 @@ names(bst_amp)[names(bst_amp) == "response"] <- "unPleasant0_Pleasant1"
 names(bst_amp)[names(bst_amp) == "condition"] <- "PleasOnLeft0_PleasOnRight1"
 names(bst_amp)[names(bst_amp) == "session"] <- "amp1_amp2"
 
-#NOTE: REDO data frames separately for trialed vs. per participant data
-#combines the trust rating data with the bath data for calculation of variables and later analysis
-bst_amp_bath <- merge(bst_amp, bst_bath, by = "subjectID")
-bst_amp_bath_pss <- merge(bst_amp, bst_bath_pss, by = "subjectID")
+amp_rt_mean <- aggregate(responseTime ~ subjectID, data = bst_amp, FUN=mean)
+amp_rt_sd <- aggregate(responseTime ~ subjectID, data = bst_amp, FUN=sd)
+bst_amp_sum <- merge(amp_rt_mean, amp_rt_sd)
+
+amp_list <- list(amp_rt_mean, amp_rt_sd)
+amp_reduced <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list) 
+
+
 
 #IAT
 
 iat_csv <- file.path(config$path$data$current, config$csvs$iat)
-bst_iat <- read.csv(iat_csv) #reads in AMP data
+bst_iat <- read.csv(iat_csv) #reads in iat data
 
 
 #EXPLICIT Bias
 
 #MRS (Modern Racism Scale)
 #Measures how much you agree/disagree with statements on race
-mrs_csv <- file.path(config$path$data$explicit, config$csvs$mrs)
+mrs_csv <- file.path(config$path$data$current, config$csvs$mrs)
 bst_mrs <- read.csv(mrs_csv)
 
 #remove participant 1 (which was a trial run)
@@ -280,11 +285,13 @@ bst_mrs$Q1_Easy_Understand_Recode = recode(bst_mrs$Q1_Easy_Understand, '-2=2; -1
 #sum MRS
 bst_mrs$mrsSum <- (bst_mrs$Q1_Easy_Understand_Recode + bst_mrs$Q2_Segregation_Influence + bst_mrs$Q3_Too_Demanding + bst_mrs$Q4_Economical_Help + bst_mrs$Q5_Press_Affinity + bst_mrs$Q6_Push_Unwanted + bst_mrs$Q7_Discim_Not_Prob)
 
+bst_mrs_sum <- bst_mrs[c(1,11) ]
+
 
 
 #SRS (Symbolic Racism Scale)
 #Measures "your thoughts" regarding race
-srs_csv <- file.path(config$path$data$explicit, config$csvs$srs)
+srs_csv <- file.path(config$path$data$current, config$csvs$srs)
 bst_srs <- read.csv(srs_csv)
 
 #remove participant 1 (which was a trial run)
@@ -302,11 +309,13 @@ bst_srs$Q3_push_too_hard_recode = recode(bst_srs$Q3_push_too_hard, '1=3; 2=1; 3=
 #sum SRS
 bst_srs$srsSum <- (bst_srs$Q1_try_more_recode + bst_srs$Q2_other_minorities_recode + bst_srs$Q3_push_too_hard_recode + bst_srs$Q4_blacks_responsible_recode + bst_srs$Q5_limit_chances + bst_srs$Q6_slavery_difficulty + bst_srs$Q7_less_than_deserve + bst_srs$Q8_more_than_deserve_recode)
 
+bst_srs_sum <- bst_srs[c(1,16) ]
+
 
 
 #IMS-EMS (Internal and External Motivation to Respond Without Prejudice)
 #Measures feelings towards statements on race
-ims_ems_csv <- file.path(config$path$data$explicit, config$csvs$ims_ems)
+ims_ems_csv <- file.path(config$path$data$current, config$csvs$ims_ems)
 bst_ims_ems <- read.csv(ims_ems_csv)
 # NOTE - missing participant 43's IMS-EMS, not in scanned docs either
 
@@ -325,6 +334,8 @@ bst_ims_ems$ImsSum <- (bst_ims_ems$Q6_PersonallyImp + bst_ims_ems$Q7_Stereotypes
 
 bst_ims_ems$EmsImsDiff <- (bst_ims_ems$EmsSum - bst_ims_ems$ImsSum) #calculates the difference in EMS and IMS scores per participant
 #NEG indicates more internally motivated to be less biased, POS score indicates more externally motivated to be less biased
+
+bst_ims_ems_sum <- bst_ims_ems[c(1,14:17) ]
 
 
 
@@ -361,4 +372,45 @@ bst_cm <- mutate(bst_cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Rep
                                                                               ifelse(Race_Eth_Self_Report=="BiRac_MultiRac", 4, 5))))))
 
 
+
+
+#### INTERACTIONS ####
+
+#create a data frame with a basic version of subject-level "wide" data
+
+bst_wide_list <- list(bst_mrs_sum, bst_srs_sum, bst_ims_ems_sum, amp_rt_mean)
+
+#merge all data frames together
+bst_wide_reduced <- Reduce(function(x, y) merge(x, y, all.x=TRUE), bst_wide_list) 
+
+#bst_WIDE <- bst_wide_reduced[c(1,11,25) ]
+
+
+#From stress
+  # chronic - add PSS score 
+  #         - add PSS median split
+  # acute   - bath unpleasantness
+  #         - bath order
+  #         - bath rating difference (on day of stress vs control)
+  #         - stressed bool
+#From trust
+  # trust perception
+  #         - average ratings
+  #         - average RTs
+  #         - average per ...
+  # trust behavior
+  #         - task order
+  #         - average RTs
+  #         - stressed book
+  #         - prev trial shared amount
+  #         - prev trial feedback
+  #         - shared/not bool
+  #         - shared amount avg.
+#From Bias
+  # implic. - add average IAT score
+  #         - add average AMP score
+  # explic. - SRS
+  #         - MRS
+  #         - IMS-EMS
+  #         - Contact Measures
 
