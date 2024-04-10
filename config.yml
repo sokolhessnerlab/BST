@@ -4,7 +4,7 @@ default:
         data:
             current: "/Volumes/shlab/Projects/BST/data/Current_Dataframes"
             survey: "/Volumes/shlab/Projects/BST/data/Current_Dataframes/SurveyData"
-            explicit: "/Volumes/shlab/Projects/BST/data/scannedpaperdocs"
+            explicit: "/Volumes/shlab/Projects/BST/data/Current_Dataframes"
         code:
             r_scripts: "./bst_analysis/stress_and_trust"
     csvs:
