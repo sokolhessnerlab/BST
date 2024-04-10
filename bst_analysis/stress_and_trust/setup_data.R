@@ -73,7 +73,7 @@ names(bst_bath)[names(bst_bath) == "Day.2"] <- "bathReceivedDay2"
 bst_bath_pss <- merge(bst_bath, bst_pss, by = "subjectID")
 
 #pss scores for wide data
-bst_stress_sum <- bst_bath_pss[c(1,6:7) ]
+bst_stress_sum <- bst_bath_pss[c(1,6:7,22:24) ]
 
 
 
@@ -378,7 +378,7 @@ bst_cm <- mutate(bst_cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Rep
 
 
 
-#### INTERACTIONS ####
+#### WIDE DATA ####
 
 #create a data frame with a basic version of subject-level "wide" data
 
