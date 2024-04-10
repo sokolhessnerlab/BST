@@ -72,6 +72,10 @@ names(bst_bath)[names(bst_bath) == "Day.2"] <- "bathReceivedDay2"
 #combining acute and chronic stressors
 bst_bath_pss <- merge(bst_bath, bst_pss, by = "subjectID")
 
+#pss scores for wide data
+bst_stress_sum <- bst_bath_pss[c(1,6:7) ]
+
+
 
 #### TRUST ####
 #Setting Up Trust DFs:#
@@ -260,7 +264,7 @@ amp_rt_sd <- aggregate(responseTime ~ subjectID, data = bst_amp, FUN=sd)
 bst_amp_sum <- merge(amp_rt_mean, amp_rt_sd)
 
 amp_list <- list(amp_rt_mean, amp_rt_sd)
-amp_reduced <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list) 
+amp_reduced <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list)
 
 
 
@@ -378,16 +382,19 @@ bst_cm <- mutate(bst_cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Rep
 
 #create a data frame with a basic version of subject-level "wide" data
 
-bst_wide_list <- list(bst_mrs_sum, bst_srs_sum, bst_ims_ems_sum, amp_rt_mean)
+bst_wide_list <- list(bst_stress_sum, bst_mrs_sum, bst_srs_sum, bst_ims_ems_sum, amp_rt_mean)
 
 #merge all data frames together
-bst_wide_reduced <- Reduce(function(x, y) merge(x, y, all.x=TRUE), bst_wide_list) 
+bst_wide <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), bst_wide_list)
 
-#bst_WIDE <- bst_wide_reduced[c(1,11,25) ]
 
+
+#Working Notes for creating the Wide data frame (erase when done)
+
+#bst_wide <- bst_wide_reduced[c(1,11,25) ]
 
 #From stress
-  # chronic - add PSS score 
+  # chronic - add PSS score
   #         - add PSS median split
   # acute   - bath unpleasantness
   #         - bath order
@@ -414,3 +421,4 @@ bst_wide_reduced <- Reduce(function(x, y) merge(x, y, all.x=TRUE), bst_wide_list
   #         - IMS-EMS
   #         - Contact Measures
 
+#Working Notes for creating the Wide data frame (erase when done)
