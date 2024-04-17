@@ -14,67 +14,82 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 
 #### STRESS ####
 
-#setting Up Stress DFs:#
+#setting Up Stress Data Frames#
 
-#PSS:
+# --- Chronic Stress Measures--- #
+
+# PSS DFs #
+
+#Loads in PSS .csv file
 pss_csv <- file.path(config$path$data$survey, config$csvs$pss)
-bst_pss <- read.csv(pss_csv) #reads in the .csv
-#bst_pss <- bst_pss[-c(1),] #removes the first row which just has variable descriptions
-names(bst_pss)[names(bst_pss) == "subjectNumber"] <- 'subjectID' #renames the subject identification column to maintain consistency
+pss <- read.csv(pss_csv) #reads in the .csv
+names(pss)[names(pss) == "subjectNumber"] <- 'subjectID' #renames the subject id column to maintain consistency across DFs
 
 #recode reverse coded values for the 4 questions that need it
-bst_pss$personalProblemConfidenceRecode <- 4 - bst_pss$personalProblemConfidence
-bst_pss$goingYourWayRecode <- 4 - (bst_pss$goingYourWay)
-bst_pss$irritationControlRecode <- 4 - bst_pss$irritationControl
-bst_pss$onTopOfThingsRecode <- 4 - bst_pss$onTopOfThings
-#calculate and check the sum of all the parts of the pss (the pss score)
-bst_pss$pssSum <- (bst_pss$unexpectedUpset + bst_pss$unableControl + bst_pss$nervous + bst_pss$personalProblemConfidenceRecode + bst_pss$goingYourWayRecode + bst_pss$couldNotCope + bst_pss$irritationControlRecode + bst_pss$onTopOfThingsRecode + bst_pss$outsideOfControl + bst_pss$diffPilingUp)
+pss$personalProblemConfidenceRecode <- 4 - pss$personalProblemConfidence
+pss$goingYourWayRecode <- 4 - (pss$goingYourWay)
+pss$irritationControlRecode <- 4 - pss$irritationControl
+pss$onTopOfThingsRecode <- 4 - pss$onTopOfThings
+#recoded items added as 4 new columns to DF
 
-bst_pss$pssSumCategorical <- ifelse(bst_pss$pssSum <= 13, 0,
-                                    ifelse(bst_pss$pssSum >= 27, 2, 1)) #calculates the pss score in the 3 level categorical version
+# PSS subject-level mean score, category, & median split #
 
-#checking the categorical math worked out:
-# count(bst_pss$pssSum)
-# count(bst_pss$pssSumcategorical)
+#PSS mean score: calculate and add new column with PSS numerical score
+pss$pssSum <- (pss$unexpectedUpset + pss$unableControl + pss$nervous + pss$personalProblemConfidenceRecode + pss$goingYourWayRecode + pss$couldNotCope + pss$irritationControlRecode + pss$onTopOfThingsRecode + pss$outsideOfControl + pss$diffPilingUp)
 
-#median split for pss
-bst_pss$pssMedianSplit <- ifelse(bst_pss$pssSum < median(bst_pss$pssSum), -1, 1)
-#double checking the median split worked out.
-#count(bst_pss$pssMedianSplit)
+#PSS category: calculate and add new column for PSS 3-level category
+pss$pssCat_0low_1mod_2high <- ifelse(pss$pssSum <= 13, 0,
+                                    ifelse(pss$pssSum >= 27, 2, 1)) #calculates the pss score in the 3 level categorical version
 
-#Bath Ratings:
+#PSS median split: calculate and add new column with pss median split -1/1
+pss$pssMedianSplit <- ifelse(pss$pssSum < median(pss$pssSum), -1, 1)
+
+#re-orders participant data (subjectID) in ascending order
+pss <- pss[order(pss$subjectID, decreasing = FALSE),] 
+
+#creates truncated PSS DF with main PSS scores (without PSS response categories as columns)
+Stress_Chronic <- pss[c(1,16:18) ]
+
+
+# --- Acute Stress Measures --- #
+
+# Bath Rating DFs #
+
+#Loads Bath Ratings .csv file
 bath_pleasantness_csv <- file.path(config$path$data$current, config$csvs$bath_pleasantness)
-bst_bathPleasantness <- read.csv(bath_pleasantness_csv) #reads in the unpleasantness ratings
-# 1 = Very Pleasant
-# 7 = Very Unpleasant
+bathUnpleasantness_1Pleas_7UnPleas <- read.csv(bath_pleasantness_csv) #reads in the unpleasantness ratings
+# Control & Stress conditions' bath unpleasantness ratings: 1 = Very Pleasant to 7 = Very Unpleasant
 
+#Loads Bath Order .csv file
 bath_order_csv <- file.path(config$path$data$current, config$csvs$bath_order)
-bst_bathOrder <- read.csv(bath_order_csv) #reads in the bath ordering
-names(bst_bathOrder)[names(bst_bathOrder) == "BST.."] <- 'subjectID'
+bathOrder <- read.csv(bath_order_csv) #reads in the bath ordering
+names(bathOrder)[names(bathOrder) == "BST.."] <- 'subjectID' #renames the subject id column to maintain consistency across DFs
 
-bst_bath <- merge(bst_bathPleasantness, bst_bathOrder, by = "subjectID") #merges the two bath DF's into a single one
+#merges the two bath DF's into one AND removes bath orders of participants who do not have an bath rating score
+bath <- merge(bathUnpleasantness_1Pleas_7UnPleas, bathOrder, by = "subjectID") #DF of bath order & rating for those who completed the study
 
-bst_bath$diffPleasantnessRating <- (bst_bath$STRESS - bst_bath$CONTROL) #calculates the rating difference between the stress and control ratings
+# Bath subject-level difference in bath unpleasantness score (between stress/control) & dat 2 stress/control boolean #
 
-bst_bath$day2StressedBool <- ifelse(bst_bath$Day.2 == "CONTROL", 0, 1) #calculates a boolean for whether a participant was stressed on the second day (1) or if they received the control on day 2 (0)
+#Difference in Bath Unpleasantness: calculates the difference between the stress and control bath unpleasantness ratings
+bath$diffUnPleasantnessRating <- (bath$STRESS - bath$CONTROL) 
 
-#double checks the math worked out:
-# count(bst_bath$Day.2) #prints out how many received the control on day 2 and how many received the stressor on day (in string format)
-# count(bst_bath$day2Stressed) #prints out how many received the control on day 2 and how many received the stressor on day 2 (in numerical format)
+#Stress Day 2 Boolean: calculates boolean for whether participant was given stressor (1) or control (0) on 2nd day
+bath$day2bool_0control_1stress <- ifelse(bath$Day.2 == "CONTROL", 0, 1) 
 
-bst_bath
 #renaming columns for clarity
-names(bst_bath)[names(bst_bath) == "CONTROL"] <- "controlUnpleasantnessRating"
-names(bst_bath)[names(bst_bath) == "STRESS"] <- "stressUnpleasantnessRating"
-names(bst_bath)[names(bst_bath) == "Day.1"] <- "bathReceivedDay1"
-names(bst_bath)[names(bst_bath) == "Day.2"] <- "bathReceivedDay2"
+names(bath)[names(bath) == "CONTROL"] <- "controlUnpleasantnessRating"
+names(bath)[names(bath) == "STRESS"] <- "stressUnpleasantnessRating"
+names(bath)[names(bath) == "Day.1"] <- "bathReceivedDay1"
+names(bath)[names(bath) == "Day.2"] <- "bathReceivedDay2"
 
-#combining acute and chronic stressors
-bst_bath_pss <- merge(bst_bath, bst_pss, by = "subjectID")
+#creates truncated Bath order & Bath rating DF 
+Stress_Acute <- bath[c(1,6:7) ]
 
-#pss scores for wide data
-bst_stress_sum <- bst_bath_pss[c(1,6:7,22:24) ]
 
+# --- Combining Acute & Chronic Stress Measures --- #
+
+#combining acute and chronic stressors for wide data
+STRESS <- merge(Stress_Acute, Stress_Chronic, by = "subjectID")
 
 
 #### TRUST ####
@@ -382,7 +397,7 @@ bst_cm <- mutate(bst_cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Rep
 
 #create a data frame with a basic version of subject-level "wide" data
 
-bst_wide_list <- list(bst_stress_sum, bst_mrs_sum, bst_srs_sum, bst_ims_ems_sum, amp_rt_mean)
+bst_wide_list <- list(STRESS, bst_mrs_sum, bst_srs_sum, bst_ims_ems_sum, amp_rt_mean)
 
 #merge all data frames together
 bst_wide <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), bst_wide_list)
