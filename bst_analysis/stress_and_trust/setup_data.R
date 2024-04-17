@@ -57,7 +57,7 @@ Stress_Chronic <- pss[c(1,16:18) ]
 
 #Loads Bath Ratings .csv file
 bath_pleasantness_csv <- file.path(config$path$data$current, config$csvs$bath_pleasantness)
-bathUnpleasantness_1Pleas_7UnPleas <- read.csv(bath_pleasantness_csv) #reads in the unpleasantness ratings
+bathRatingByCondition <- read.csv(bath_pleasantness_csv) #reads in the unpleasantness ratings
 # Control & Stress conditions' bath unpleasantness ratings: 1 = Very Pleasant to 7 = Very Unpleasant
 
 #Loads Bath Order .csv file
@@ -66,7 +66,7 @@ bathOrder <- read.csv(bath_order_csv) #reads in the bath ordering
 names(bathOrder)[names(bathOrder) == "BST.."] <- 'subjectID' #renames the subject id column to maintain consistency across DFs
 
 #merges the two bath DF's into one AND removes bath orders of participants who do not have an bath rating score
-bath <- merge(bathUnpleasantness_1Pleas_7UnPleas, bathOrder, by = "subjectID") #DF of bath order & rating for those who completed the study
+bath <- merge(bathRatingByCondition, bathOrder, by = "subjectID") #DF of bath order & rating for those who completed the study
 
 # Bath subject-level difference in bath unpleasantness score (between stress/control) & dat 2 stress/control boolean #
 
