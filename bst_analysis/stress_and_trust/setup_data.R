@@ -96,14 +96,15 @@ STRESS <- merge(Stress_Acute, Stress_Chronic, by = "subjectID")
 #Setting Up Trust DFs:#
 #Trust Game:
 tg_csv <- file.path(config$path$data$current, config$csvs$tg)
-bst_tg <- read.csv(tg_csv) #reads in trust game data
+trustGame <- read.csv(tg_csv) #reads in trust game data
 
 #renaming columns for clarity
-names(bst_tg)[names(bst_tg) == "condition"] <- "taskOrder"
-names(bst_tg)[names(bst_tg) == "RT"] <- "responseTime"
+names(trustGame)[names(trustGame) == "condition"] <- "taskOrder"
+names(trustGame)[names(trustGame) == "RT"] <- "responseTime"
 
+#EB - remove/edit this section
 #combines the trust game data with the bath data for calculation of variables and later analysis
-bst_tg <- merge(bst_tg, bst_bath, by = "subjectID")
+#trustGame_bath <- merge(trustGame, bath, by = "subjectID")
   # PSH NOTE: Careful with things like this. This puts data on two very different scales (e.g.
   # the PSS with one sum value per person; TG data with many individual trials) together in
   # a way that could create issues if someone forgets that... Put another way, this merge
@@ -114,144 +115,143 @@ bst_tg <- merge(bst_tg, bst_bath, by = "subjectID")
   # chronic stressors to TG performance, you'll need to summarize TG data to the same space
   # (e.g. person-level summary stats) anyway. [PSH]
 
-
 #calculating new factors for whether a participant was stressed or not before doing the trust task
-bst_tg$stressedBool <- ifelse((bst_tg$day2StressedBool == 1 & bst_tg$day == 1), 0,
-                              ifelse((bst_tg$day2StressedBool == 0 & bst_tg$day == 1), 1,
-                                     ifelse((bst_tg$day2StressedBool == 1 & bst_tg$day == 2), 1,
-                                            ifelse((bst_tg$day2StressedBool == 0 & bst_tg$day == 2), 0, NA))))
+trustGame$stressedBool <- ifelse((trustGame$day2StressedBool == 1 & trustGame$day == 1), 0,
+                              ifelse((trustGame$day2StressedBool == 0 & trustGame$day == 1), 1,
+                                     ifelse((trustGame$day2StressedBool == 1 & trustGame$day == 2), 1,
+                                            ifelse((trustGame$day2StressedBool == 0 & trustGame$day == 2), 0, NA))))
 #double checking the math above worked out (there should be no NA)
-# count(bst_tg$stressedBool)
+# count(trustGame$stressedBool)
 
 #calculating the previous trial sharing data (does the same as the for loop was here previously)
-bst_tg$prevTrialSharedAmt <- bst_tg$shared #sets up column
-bst_tg$prevTrialSharedAmt <- c(0, bst_tg$prevTrialSharedAmt[-nrow(bst_tg)]) #shifts column by 1, replacing the first element with a 0
-bst_tg$prevTrialSharedAmt <- ifelse(bst_tg$cumTrialNum == 1, 0, bst_tg$prevTrialSharedAmt) #replaces all trials without a previous element with a 0
-bst_tg$prevTrialShared <- ifelse(bst_tg$cumTrialNum == 1, 0,
-                                 ifelse(bst_tg$prevTrialSharedAmt > 0, 1, -1)) #creates the boolean coding
+trustGame$prevTrialSharedAmt <- trustGame$shared #sets up column
+trustGame$prevTrialSharedAmt <- c(0, trustGame$prevTrialSharedAmt[-nrow(trustGame)]) #shifts column by 1, replacing the first element with a 0
+trustGame$prevTrialSharedAmt <- ifelse(trustGame$cumTrialNum == 1, 0, trustGame$prevTrialSharedAmt) #replaces all trials without a previous element with a 0
+trustGame$prevTrialShared <- ifelse(trustGame$cumTrialNum == 1, 0,
+                                 ifelse(trustGame$prevTrialSharedAmt > 0, 1, -1)) #creates the boolean coding
 #calculating feedback from previous trial
-bst_tg$prevTrialFeedback <- bst_tg$received
-bst_tg$prevTrialFeedback <- c(0, bst_tg$prevTrialFeedback[-nrow(bst_tg)])
-bst_tg$prevTrialFeedback <- ifelse(bst_tg$cumTrialNum == 1, 0,
-                                   ifelse(bst_tg$prevTrialShared == -1, 0,
-                                          ifelse(bst_tg$prevTrialFeedback > 0, 1, -1)))
+trustGame$prevTrialFeedback <- trustGame$received
+trustGame$prevTrialFeedback <- c(0, trustGame$prevTrialFeedback[-nrow(trustGame)])
+trustGame$prevTrialFeedback <- ifelse(trustGame$cumTrialNum == 1, 0,
+                                   ifelse(trustGame$prevTrialShared == -1, 0,
+                                          ifelse(trustGame$prevTrialFeedback > 0, 1, -1)))
 
 #make sure the counts are where they should be (the coding worked right)
-# count(bst_tg$shared)
-# count(bst_tg$prevTrialShared)
-# count(bst_tg$partnerChoice)
-# count(bst_tg$prevTrialFeedback)
-# count(bst_tg$prevTrialSharedAmt)
+# count(trustGame$shared)
+# count(trustGame$prevTrialShared)
+# count(trustGame$partnerChoice)
+# count(trustGame$prevTrialFeedback)
+# count(trustGame$prevTrialSharedAmt)
 
 
 #setting up a categorical for if a participant shared any money at all
-bst_tg$sharedBool <- ifelse(bst_tg$shared == 0, 0, 1)
+trustGame$sharedBool <- ifelse(trustGame$shared == 0, 0, 1)
 
 #because merging with the PSS will remove 3 participants, this is a seperate DF for only those participants that have a PSS score
-bst_tg_pss <- merge(bst_pss, bst_tg, by = "subjectID") #merges with the pss for later analysis
+trustGame_pss <- merge(pss, trustGame, by = "subjectID") #merges with the pss for later analysis
 
 #Trust Rating:
 tr_csv <- file.path(config$path$data$current, config$csvs$tr)
-bst_tr <- read.csv(tr_csv)
+trustRating <- read.csv(tr_csv)
 
 #renaming columns for clarity
-names(bst_tr)[names(bst_tr) == "response"] <- "rating"
-names(bst_tr)[names(bst_tr) == "condition"] <- "taskOrder"
-names(bst_tr)[names(bst_tr) == "RT"] <- "responseTime"
+names(trustRating)[names(trustRating) == "response"] <- "rating"
+names(trustRating)[names(trustRating) == "condition"] <- "taskOrder"
+names(trustRating)[names(trustRating) == "RT"] <- "responseTime"
 
 #combines the trust rating data with the bath data for calculation of variables and later analysis
-bst_tr <- merge(bst_tr, bst_bath, by = "subjectID")
+trustRating <- merge(trustRating, bath, by = "subjectID")
 
 #calculating new factors for whether a participant was stressed or not before doing the trust task
-bst_tr$stressedBool <- ifelse((bst_tr$day2StressedBool == 1 & bst_tr$day == 1), 0,
-                              ifelse((bst_tr$day2StressedBool == 0 & bst_tr$day == 1), 1,
-                                     ifelse((bst_tr$day2StressedBool == 1 & bst_tr$day == 2), 1,
-                                            ifelse((bst_tr$day2StressedBool == 0 & bst_tr$day == 2), 0, NA))))
+trustRating$stressedBool <- ifelse((trustRating$day2StressedBool == 1 & trustRating$day == 1), 0,
+                              ifelse((trustRating$day2StressedBool == 0 & trustRating$day == 1), 1,
+                                     ifelse((trustRating$day2StressedBool == 1 & trustRating$day == 2), 1,
+                                            ifelse((trustRating$day2StressedBool == 0 & trustRating$day == 2), 0, NA))))
 #double checking the math above worked out (there should be no NA)
-# count(bst_tg$stressedBool)
+# count(trustGame$stressedBool)
 
 #Previous trial stuff for the trust rating task
-bst_tr$prevTrialRatingAmt <- bst_tr$rating #sets up the previous amount as the current amount
-bst_tr$prevTrialRatingAmt <- c(0, bst_tr$prevTrialRatingAmt[-nrow(bst_tr)]) #shifts the previous rating column down by 1
-bst_tr$prevTrialRatingAmt <- ifelse(bst_tr$cumTrialNum == 1, 0, bst_tr$prevTrialRatingAmt) #converts all the first trials to 0
-bst_tr$prevTrialRating <- ifelse(bst_tr$cumTrialNum == 1, 0,
-                                 ifelse(bst_tr$prevTrialRatingAmt >= 5, 1,
-                                        ifelse(bst_tr$prevTrialRatingAmt < 5, -1, 0))) #converts the previous amount to the boolean coding
+trustRating$prevTrialRatingAmt <- trustRating$rating #sets up the previous amount as the current amount
+trustRating$prevTrialRatingAmt <- c(0, trustRating$prevTrialRatingAmt[-nrow(trustRating)]) #shifts the previous rating column down by 1
+trustRating$prevTrialRatingAmt <- ifelse(trustRating$cumTrialNum == 1, 0, trustRating$prevTrialRatingAmt) #converts all the first trials to 0
+trustRating$prevTrialRating <- ifelse(trustRating$cumTrialNum == 1, 0,
+                                 ifelse(trustRating$prevTrialRatingAmt >= 5, 1,
+                                        ifelse(trustRating$prevTrialRatingAmt < 5, -1, 0))) #converts the previous amount to the boolean coding
 #just checking to see whether the coding looks like it worked out
-# count(bst_tr$rating)
-# count(bst_tr$prevTrialRatingAmt)
-# count(bst_tr$prevTrialRating)
+# count(trustRating$rating)
+# count(trustRating$prevTrialRatingAmt)
+# count(trustRating$prevTrialRating)
 
 #because merging with the PSS will remove 3 participants, this is a seperate DF for only those participants that have a PSS score
-bst_tr_pss <- merge(bst_pss, bst_tr, by = "subjectID") #for use when looking at pss x trust rating
+trustRating_pss <- merge(pss, trustRating, by = "subjectID") #for use when looking at pss x trust rating
 
 
 #setting up aggregated DFs:
 #overall:
 #for the trust game:
-bst_tg_part_avg <- aggregate(shared ~ subjectID, data = bst_tg, FUN = mean) #aggregates the trust game by participant
-names(bst_tg_part_avg)[names(bst_tg_part_avg) == "shared"] <- "sharedAvg"
-bst_tg_part_avg$sharedSD <- (aggregate(shared ~ subjectID, data =bst_tg, FUN = sd))$shared #calculates each participants standard deviation shared amount
-bst_tg_part_avg$sharedSE <- (bst_tg_part_avg$sharedSD / sqrt(nrow(bst_tg_part_avg))) #calculates the standard error
+trustGame_part_avg <- aggregate(shared ~ subjectID, data = trustGame, FUN = mean) #aggregates the trust game by participant
+names(trustGame_part_avg)[names(trustGame_part_avg) == "shared"] <- "sharedAvg"
+trustGame_part_avg$sharedSD <- (aggregate(shared ~ subjectID, data =trustGame, FUN = sd))$shared #calculates each participants standard deviation shared amount
+trustGame_part_avg$sharedSE <- (trustGame_part_avg$sharedSD / sqrt(nrow(trustGame_part_avg))) #calculates the standard error
   # PSH NOTE: Don't think this is makes sense to do here. SD makes sense on a per-person level,
   # but I'd only calculate the SE of the mean across people... but normalizing everyone's
   # unique SD by the number of people isn't a useful quantity, I don't think.
   # i.e. I'd take the sd across everyone's means, and normalize that single number by
   # the sqrt of the number of participants.
-bst_tg_part_avg$sharedHighSE <- bst_tg_part_avg$sharedAvg +  bst_tg_part_avg$sharedSE #calculates the standard error high bound
-bst_tg_part_avg$sharedLowSE <- bst_tg_part_avg$sharedAvg - bst_tg_part_avg$sharedSE #calculates the standard error low bound
+trustGame_part_avg$sharedHighSE <- trustGame_part_avg$sharedAvg +  trustGame_part_avg$sharedSE #calculates the standard error high bound
+trustGame_part_avg$sharedLowSE <- trustGame_part_avg$sharedAvg - trustGame_part_avg$sharedSE #calculates the standard error low bound
 
-bst_tg_part_avg
+trustGame_part_avg
 
 #for the trust rating
-bst_tr_part_avg <- aggregate(rating ~ subjectID, data = bst_tr, FUN = mean) #aggregates the trust rating task for each participant
-names(bst_tr_part_avg)[names(bst_tr_part_avg) == "rating"] <- "ratingAvg"
-bst_tr_part_avg$ratingSD <- aggregate(rating ~ subjectID, data = bst_tr, FUN = mean)$rating #calculates each particpant's standard deviation shared amount
-bst_tr_part_avg$ratingSE <- (bst_tr_part_avg$ratingSD / sqrt(nrow(bst_tr_part_avg)))
+trustRating_part_avg <- aggregate(rating ~ subjectID, data = trustRating, FUN = mean) #aggregates the trust rating task for each participant
+names(trustRating_part_avg)[names(trustRating_part_avg) == "rating"] <- "ratingAvg"
+trustRating_part_avg$ratingSD <- aggregate(rating ~ subjectID, data = trustRating, FUN = mean)$rating #calculates each particpant's standard deviation shared amount
+trustRating_part_avg$ratingSE <- (trustRating_part_avg$ratingSD / sqrt(nrow(trustRating_part_avg)))
   # PSH NOTE: same as above
-bst_tr_part_avg$ratingHighSE <- bst_tr_part_avg$ratingAvg + bst_tr_part_avg$ratingSE #calculates the standard error high bound
-bst_tr_part_avg$ratingLowSE <- bst_tr_part_avg$ratingAvg - bst_tr_part_avg$ratingSE #calculates the standard error low bound
+trustRating_part_avg$ratingHighSE <- trustRating_part_avg$ratingAvg + trustRating_part_avg$ratingSE #calculates the standard error high bound
+trustRating_part_avg$ratingLowSE <- trustRating_part_avg$ratingAvg - trustRating_part_avg$ratingSE #calculates the standard error low bound
 
 #compiles all the averaged participant data into one spot
-bst_t_compiled_part_avg <- merge(bst_tg_part_avg, bst_tr_part_avg, by = 'subjectID')
+bst_t_compiled_part_avg <- merge(trustGame_part_avg, trustRating_part_avg, by = 'subjectID')
 bst_t_compiled_part_avg <- merge(bst_t_compiled_part_avg, bst_bath, by = 'subjectID')
 
-bst_t_compiled_part_avg_pss <- merge(bst_t_compiled_part_avg, bst_pss, by = 'subjectID')
+bst_t_compiled_part_avg_pss <- merge(bst_t_compiled_part_avg, pss, by = 'subjectID')
 
 #split up by stressed or not
 #for the trust game:
-bst_tg_part_avg_stress <- aggregate(shared ~ subjectID + stressedBool, data = bst_tg, FUN = mean) #aggregates the trust game by participant
-names(bst_tg_part_avg_stress)[names(bst_tg_part_avg_stress) == "shared"] <- "sharedAvg"
-#names(bst_tg_part_avg_stress)[names(bst_tg_part_avg_stress) == "stressedBool"] <- ""
-bst_tg_part_avg_stress$sharedSD <- (aggregate(shared ~ subjectID + stressedBool, data =bst_tg, FUN = sd))$shared #calculates each participants standard deviation shared amount
-bst_tg_part_avg_stress$sharedSE <- (bst_tg_part_avg_stress$sharedSD / sqrt(nrow(bst_tg_part_avg_stress))) #calculates the standard error
-bst_tg_part_avg_stress$sharedHighSE <- bst_tg_part_avg_stress$sharedAvg +  bst_tg_part_avg_stress$sharedSE #calculates the standard error high bound
-bst_tg_part_avg_stress$sharedLowSE <- bst_tg_part_avg_stress$sharedAvg - bst_tg_part_avg_stress$sharedSE #calculates the standard error low bound
+trustGame_part_avg_stress <- aggregate(shared ~ subjectID + stressedBool, data = trustGame, FUN = mean) #aggregates the trust game by participant
+names(trustGame_part_avg_stress)[names(trustGame_part_avg_stress) == "shared"] <- "sharedAvg"
+#names(trustGame_part_avg_stress)[names(trustGame_part_avg_stress) == "stressedBool"] <- ""
+trustGame_part_avg_stress$sharedSD <- (aggregate(shared ~ subjectID + stressedBool, data =trustGame, FUN = sd))$shared #calculates each participants standard deviation shared amount
+trustGame_part_avg_stress$sharedSE <- (trustGame_part_avg_stress$sharedSD / sqrt(nrow(trustGame_part_avg_stress))) #calculates the standard error
+trustGame_part_avg_stress$sharedHighSE <- trustGame_part_avg_stress$sharedAvg +  trustGame_part_avg_stress$sharedSE #calculates the standard error high bound
+trustGame_part_avg_stress$sharedLowSE <- trustGame_part_avg_stress$sharedAvg - trustGame_part_avg_stress$sharedSE #calculates the standard error low bound
 
 #for the trust rating
-bst_tr_part_avg_stress <- aggregate(rating ~ subjectID + stressedBool, data = bst_tr, FUN = mean) #aggregates the trust rating task for each participant
-names(bst_tr_part_avg_stress)[names(bst_tr_part_avg_stress) == "rating"] <- "ratingAvg"
-bst_tr_part_avg_stress$ratingSD <- aggregate(rating ~ subjectID + stressedBool, data = bst_tr, FUN = mean)$rating #calculates each particpant's standard deviation shared amount
-bst_tr_part_avg_stress$ratingSE <- (bst_tr_part_avg_stress$ratingSD / sqrt(nrow(bst_tr_part_avg_stress)))
-bst_tr_part_avg_stress$ratingHighSE <- bst_tr_part_avg_stress$ratingAvg + bst_tr_part_avg_stress$ratingSE #calculates the standard error high bound
-bst_tr_part_avg_stress$ratingLowSE <- bst_tr_part_avg_stress$ratingAvg - bst_tr_part_avg_stress$ratingSE #calculates the standard error low bound
+trustRating_part_avg_stress <- aggregate(rating ~ subjectID + stressedBool, data = trustRating, FUN = mean) #aggregates the trust rating task for each participant
+names(trustRating_part_avg_stress)[names(trustRating_part_avg_stress) == "rating"] <- "ratingAvg"
+trustRating_part_avg_stress$ratingSD <- aggregate(rating ~ subjectID + stressedBool, data = trustRating, FUN = mean)$rating #calculates each particpant's standard deviation shared amount
+trustRating_part_avg_stress$ratingSE <- (trustRating_part_avg_stress$ratingSD / sqrt(nrow(trustRating_part_avg_stress)))
+trustRating_part_avg_stress$ratingHighSE <- trustRating_part_avg_stress$ratingAvg + trustRating_part_avg_stress$ratingSE #calculates the standard error high bound
+trustRating_part_avg_stress$ratingLowSE <- trustRating_part_avg_stress$ratingAvg - trustRating_part_avg_stress$ratingSE #calculates the standard error low bound
 
 #compiles all the averaged participant data into one spot
-bst_t_compiled_part_avg_stress <- merge(bst_tg_part_avg_stress, bst_tr_part_avg_stress, by = c('subjectID', 'stressedBool'))
+bst_t_compiled_part_avg_stress <- merge(trustGame_part_avg_stress, trustRating_part_avg_stress, by = c('subjectID', 'stressedBool'))
 bst_t_compiled_part_avg_stress <- merge(bst_t_compiled_part_avg_stress, bst_bath, by = 'subjectID')
 
-bst_t_compiled_part_avg_stress_pss <- merge(bst_t_compiled_part_avg_stress, bst_pss, by = 'subjectID')
+bst_t_compiled_part_avg_stress_pss <- merge(bst_t_compiled_part_avg_stress, pss, by = 'subjectID')
 
 #cleans up the strictly unnecessary DFs and vars
 rm(bst_bathOrder)
 rm(bst_bathPleasantness)
-rm(bst_tg_part_avg)
-rm(bst_tg_part_avg_stress)
-rm(bst_tr_part_avg)
-rm(bst_tr_part_avg_stress)
+rm(trustGame_part_avg)
+rm(trustGame_part_avg_stress)
+rm(trustRating_part_avg)
+rm(trustRating_part_avg_stress)
 
 #you could also remove these if you really feel the need, the data is contained in other DFs, but I keep them for clarity in later analysis
-#rm(bst_pss)
+#rm(pss)
 #rm(bst_bath)
 #rm(bst_bath_pss)
 
