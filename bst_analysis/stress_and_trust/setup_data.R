@@ -89,7 +89,7 @@ Stress_Acute <- bath[c(1,6:7) ]
 # --- Combining Acute & Chronic Stress Measures --- #
 
 #combining acute and chronic stressors for wide data
-STRESS <- merge(Stress_Acute, Stress_Chronic, by = "subjectID")
+STRESS <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = T)
 
 
 
@@ -127,11 +127,33 @@ names(trustGame)[names(trustGame) == "partnerRace"] <- "partnerRace_0w_1b_2o"
 # NOTE: - can't run trustGame$stressedBool until above is resolved.
 #create subject level stressed bool 
 #calculating new factors for whether a participant was stressed or not before doing the trust task
-trustGame$stressedBool <- ifelse((trustGame$day2StressedBool == 1 & trustGame$day == 1), 0,
-                              ifelse((trustGame$day2StressedBool == 0 & trustGame$day == 1), 1,
-                                     ifelse((trustGame$day2StressedBool == 1 & trustGame$day == 2), 1,
-                                            ifelse((trustGame$day2StressedBool == 0 & trustGame$day == 2), 0, NA))))
-# count(trustGame$stressedBool) #double check the math above worked out (there should be no NA)
+
+subjectIDs = unique(trustGame$subjectID);
+number_of_subjects = length(subjectIDs);
+trustGame$stressedBool = NA;
+trustGame$pssSum = NA;
+trustGame$pssMedianSplit = NA;
+trustGame$bathRating = NA;
+
+for (s in 1:number_of_subjects){
+  sID = subjectIDs[s];
+  
+  tmp_stress_conditions = c(1-STRESS$day2bool_0control_1stress[s], STRESS$day2bool_0control_1stress[s]);
+
+  for (d in 1:2){
+    trust_ind = (trustGame$subjectID == sID) & (trustGame$day == d);
+    trustGame$stressedBool[trust_ind] = tmp_stress_conditions[d]; # condition binary (0 = control, 1 = stress)
+    trustGame$pssSum[trust_ind] = STRESS$pssSum[s]; # include PSS sum score
+    trustGame$pssMedianSplit[trust_ind] = STRESS$pssMedianSplit[s]; # include median split based on PSS
+    
+    if(tmp_stress_conditions[d] == 0){
+      trustGame$bathRating[trust_ind] = bath$controlUnpleasantnessRating[s]; # correct bath rating by day
+    } else if(tmp_stress_conditions[d] == 1){
+      trustGame$bathRating[trust_ind] = bath$stressUnpleasantnessRating[s];
+    }
+  }
+}
+
 
 
 # ?? NOTE: Need some help understanding the code below
