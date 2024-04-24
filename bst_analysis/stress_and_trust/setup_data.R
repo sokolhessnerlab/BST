@@ -108,25 +108,8 @@ names(trustGame)[names(trustGame) == "condition"] <- "taskOrder"
 names(trustGame)[names(trustGame) == "RT"] <- "responseTime"
 names(trustGame)[names(trustGame) == "partnerRace"] <- "partnerRace_0w_1b_2o"
 
-# ?? NOTE: - remove/edit this section?  What variables should we average for the subject-level df?
-# ?? NOTE: - how should we bring in the stressed bool without combining long data (trust game) w wide data (stressed bool)?
 
-#combines the trust game data with the bath data for calculation of variables and later analysis
-#trustGame_bath <- merge(trustGame, bath, by = "subjectID")
-  # PSH NOTE: Careful with things like this. This puts data on two very different scales (e.g.
-  # the PSS with one sum value per person; TG data with many individual trials) together in
-  # a way that could create issues if someone forgets that... Put another way, this merge
-  # creates a dataframe that makes it look like the PSS was measured 152 times per person
-  # and it looked the same every time.
-  #
-  # That issue makes this of limited utility to do; if you do want to relate acute or
-  # chronic stressors to TG performance, you'll need to summarize TG data to the same space
-  # (e.g. person-level summary stats) anyway. [PSH]
-# NOTE: Remove these notes once above issues are resolved.
-
-# NOTE: - can't run trustGame$stressedBool until above is resolved.
-#create subject level stressed bool 
-#calculating new factors for whether a participant was stressed or not before doing the trust task
+# Create subject level stressed bool with stress data & Trust Game data
 
 subjectIDs = unique(trustGame$subjectID);
 number_of_subjects = length(subjectIDs);
@@ -153,7 +136,6 @@ for (s in 1:number_of_subjects){
     }
   }
 }
-
 
 
 # ?? NOTE: Need some help understanding the code below

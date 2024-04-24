@@ -46,3 +46,5 @@ by(data = trustGame$rating, INDICES = trustGame$taskOrder, FUN = sd)
 
 tmpvect = aggregate(rating ~ subjectID + taskOrder, data = trustGame, FUN=mean);
 by(data = tmpvect$rating, INDICES = tmpvect$taskOrder, FUN = mean) # order 1 = 4.69, order 2 = 4.84
+
+# Q: Were participants stressed before doing the trust task?
