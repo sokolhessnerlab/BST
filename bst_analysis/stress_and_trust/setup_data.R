@@ -140,11 +140,14 @@ for (s in 1:number_of_subjects){
 
 # ?? NOTE: Need some help understanding the code below
 #calculating the previous trial sharing data (does the same as the for loop was here previously)
-trustGame$prevTrialSharedAmt <- trustGame$shared #sets up column
-trustGame$prevTrialSharedAmt <- c(0, trustGame$prevTrialSharedAmt[-nrow(trustGame)]) #shifts column by 1, replacing the first element with a 0
-trustGame$prevTrialSharedAmt <- ifelse(trustGame$cumTrialNum == 1, 0, trustGame$prevTrialSharedAmt) #replaces all trials without a previous element with a 0
-trustGame$prevTrialShared <- ifelse(trustGame$cumTrialNum == 1, 0,
-                                 ifelse(trustGame$prevTrialSharedAmt > 0, 1, -1)) #creates the boolean coding
+trustGame$prevTrialSharedAmt <- NA #sets up column
+trustGame$prevTrialSharedAmt <- c(NA, trustGame$shared[-nrow(trustGame)]) #shifts column by 1, replacing the first element with a 0
+trustGame$prevTrialSharedAmt[trustGame$cumTrialNum == 0] = NA # Ensure everyone's first trial has an NA prev-trial-shared-amount (because there was NOT a previous trial)
+  # cumulative trial is the one to use here (as there are multiple blocks/person, and trialnumber resets on each block)
+
+trustGame$prevTrialSharedBool = ifelse(trustGame$prevTrialSharedAmt > 0, 1, -1) #creates the boolean coding
+
+
 #calculating feedback from previous trial
 trustGame$prevTrialFeedback <- trustGame$received
 trustGame$prevTrialFeedback <- c(0, trustGame$prevTrialFeedback[-nrow(trustGame)])
@@ -152,13 +155,6 @@ trustGame$prevTrialFeedback <- ifelse(trustGame$cumTrialNum == 1, 0,
                                    ifelse(trustGame$prevTrialShared == -1, 0,
                                           ifelse(trustGame$prevTrialFeedback > 0, 1, -1)))
 
-# ?? NOTE: remove these counts from script?
-#make sure the counts are where they should be (the coding worked right)
-# count(trustGame$shared)
-# count(trustGame$prevTrialShared)
-# count(trustGame$partnerChoice)
-# count(trustGame$prevTrialFeedback)
-# count(trustGame$prevTrialSharedAmt)
 
 
 # Set up a categorical for whether or not a participant shared any money at all
