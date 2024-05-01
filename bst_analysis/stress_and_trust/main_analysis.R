@@ -292,7 +292,7 @@ options(scipen=999)
           ggplot(bst_tg, aes(x=responseTime)) +
           geom_histogram(fill = "white", col = "black") +
           labs(title = "Density of TG Response Time", y = "Density") +
-          scale_x_continuous(name = "Response Time (S)", limits = c(0,1)) +
+          scale_x_continuous(name = "Response Time (S)", limits = c(0,`0`)) +
           theme_classic()
 
         #finding out who had the low times
@@ -341,6 +341,13 @@ by(data = bst_amp$unPleasant0_Pleasant1, INDICES = bst_amp$stimulusRace_0w_1b_2o
 #White stimuli (.4947), black stimuli (.4934), and other stimuli (.4932) rated approximately equally pleasant
 
 #Stimulus race (white,black,other) by frequency of unpleasant (0) vs pleasant (1) rating
+
+#library(gt)
+#library(gtExtras)
+#bst_amp %>%
+  #dplyr::select(responseTime) %>%
+  #head(100) %>%
+  #gt()
 
 #xtabs(~stimulusRace_0w_1b_2o + unPleasant0_Pleasant1, data = bst_amp)
 prop.table(table(bst_amp$stimulusRace_0w_1b_2o, bst_amp$unPleasant0_Pleasant1),1)*100
@@ -421,10 +428,10 @@ for (race_category in 0:2){
   for (response_type in 0:1){
     subj_level_averages = array(data = NA, dim = c(number_of_AMP_subjects,1));
     for (subj in 1:number_of_AMP_subjects){
-      tmp_index = (bst_amp$stimulusRace_0w_1b_2o == race_category) & 
-        (bst_amp$unPleasant0_Pleasant1 == response_type) & 
+      tmp_index = (bst_amp$stimulusRace_0w_1b_2o == race_category) &
+        (bst_amp$unPleasant0_Pleasant1 == response_type) &
         (bst_amp$subjectID == subject_IDs[subj]);
-      
+
       subj_level_averages[subj] = mean(bst_amp$responseTime[tmp_index], na.rm = T) # NOTE: doing this with MEDIAN produces very similar pattern (maybe less diff. btwn pleas/unpleas for other?)
     }
     amp_rts_byRaceResp[race_category*2 + response_type+1,1] = mean(subj_level_averages);
@@ -439,7 +446,7 @@ amp_rts_byRaceResp$raceCategory = as.factor(amp_rts_byRaceResp$raceCategory)
 amp_rts_byRaceResp$responseType = as.factor(amp_rts_byRaceResp$responseType)
 
 
-#Response Times by stimulus race & unPleasantness Ratings 
+#Response Times by stimulus race & unPleasantness Ratings
 ggplot(amp_rts_byRaceResp, aes(x = raceCategory, y = responseTime, fill = responseType, colour = responseType)) +
   labs(x="Stimulus Race", y="Response Time", fill = "unPleasnantness Rating") +
   scale_fill_discrete(labels = c("unPleasant", "Pleasant")) +
@@ -448,7 +455,7 @@ ggplot(amp_rts_byRaceResp, aes(x = raceCategory, y = responseTime, fill = respon
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 # 0, w; 1, b; 3, oth
 # mean RTs are slower for unpleasant vs. pleasant judgments in general. Unclear from the graph
-# if there would be any effects of stimulus race or interactions with stimulus race. 
+# if there would be any effects of stimulus race or interactions with stimulus race.
 
 
 bst_amp$responseType = bst_amp$unPleasant0_Pleasant1*2-1; # +1 = pleasant, -1 = unpleasant
@@ -488,7 +495,7 @@ summary(rt_model_stress)
 
 # Strong main effects of judgment type (pleasant is faster) and stressed indicating that BST responses after the stressor are
 # uniquely faster than all other AMPs (on control day, or on stress day BEFORE the stressor).
-# 
+#
 # Difference is 120ms FASTER after stressor. No diff. by stim type or response type.
 
 bst_amp$day_recode = bst_amp$day*2-3; # Day 1 = -1, Day 2 = +1
@@ -517,14 +524,14 @@ summary(rt_model_day_ampNum_stress)
 #     - less difference between pleasant/unpleasant on day 2
 #     - stress effect stronger on day 1 (vs. day 2)
 #
-# TAKEAWAY: there appears to be an overall effect of stress on reaction times ABOVE & BEYOND the 
-# main effects of day & measurement number. 
+# TAKEAWAY: there appears to be an overall effect of stress on reaction times ABOVE & BEYOND the
+# main effects of day & measurement number.
 
-rt_model_day_ampNum_stress_race = lmer(sqrtRT ~ 1 + 
-                                         responseType*day_recode*amponly_stressedBool*isblack + 
-                                         responseType*day_recode*amponly_stressedBool*isother + 
-                                         responseType*amp1_amp2_recode*isblack + 
-                                         responseType*amp1_amp2_recode*isother + 
+rt_model_day_ampNum_stress_race = lmer(sqrtRT ~ 1 +
+                                         responseType*day_recode*amponly_stressedBool*isblack +
+                                         responseType*day_recode*amponly_stressedBool*isother +
+                                         responseType*amp1_amp2_recode*isblack +
+                                         responseType*amp1_amp2_recode*isother +
                                          (1 | subjectID) , data = bst_amp);
 summary(rt_model_day_ampNum_stress_race)
 # Findings are identical to the same model WITHOUT race (isother & isblack don't seem to add anything!)
@@ -709,8 +716,8 @@ t.test(amp_scores$change_amp_control) # n.s.
 t.test(amp_scores$change_amp_stress) # n.s.
 
 
-#ANSWER: AMP scores do not significantly change at the group level between measurements on Day 1, on Day 2, 
-# on the control day, or on the stress day. 
+#ANSWER: AMP scores do not significantly change at the group level between measurements on Day 1, on Day 2,
+# on the control day, or on the stress day.
 
 
 
@@ -772,6 +779,11 @@ min(bst_mrs$mrsSum)  #-14 (lowest possible on the MRS scale reached)
 
 hist(bst_mrs$mrsSum, breaks = 10) #clear pos skew
 
+bst_mrs %>%
+  dplyr::select(subjectID,mrsSum) %>%
+  head(39) %>%
+  gt()
+
 
 #SRS descriptives
 summary(bst_srs)
@@ -784,6 +796,13 @@ max(bst_srs$srsSum)  #21
 min(bst_srs$srsSum)  #8 (lowest possible on the SRS scale reached)
 
 hist(bst_srs$srsSum, breaks = 10) #clear pos skew, but wider distribution than MRS
+
+#library(gt)
+#library(gtExtras)
+bst_srs %>%
+  dplyr::select(subjectID,srsSum) %>%
+  head(50) %>%
+  gt()
 
 
 #IMS-EMS descriptives
@@ -800,6 +819,11 @@ min(bst_ims_ems$EmsImsDiff)  #-33
 hist(bst_ims_ems$EmsImsDiff, breaks = 10) #neg skew
 #participants overall are more internally motivated than externally motivated, but there is a wide range of distribution within negative scores
 
+bst_cm %>%
+  dplyr::select(subjectID, Q10_PerCloseWhite:Q17_PerMediaBlack) %>%
+  head(39) %>%
+  gt()
+
 
 #CM descriptives
 summary(bst_cm)
@@ -812,6 +836,11 @@ summary(bst_cm)
 #   "daily" contacts - White (M=78.51); Black (M=10.73)
 #   "media" contacts - White (M=70.08); Black (M=20.81)
 #Overall, participants' black contacts were highest for "media" contacts and "aquiantances"
+
+bst_cm %>%
+  dplyr::select(subjectID,EmsImsDiff) %>%
+  head(39) %>%
+  gt()
 
 hist(bst_cm$Q1_close_white_recode,breaks = 5)
 hist(bst_cm$Q4_close_black_recode, breaks = 5) #very positively skewed
