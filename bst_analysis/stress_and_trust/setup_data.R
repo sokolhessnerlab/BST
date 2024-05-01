@@ -142,18 +142,23 @@ for (s in 1:number_of_subjects){
 
 trustGame$prevTrialSharedAmt <- NA #sets up column
 trustGame$prevTrialSharedAmt <- c(NA, trustGame$shared[-nrow(trustGame)]) #shifts column by 1, replacing the first element with a 0
-trustGame$prevTrialSharedAmt[trustGame$cumTrialNum == 0] = NA # Ensure everyone's first trial has an NA prev-trial-shared-amount (because there was NOT a previous trial)
+trustGame$prevTrialSharedAmt[trustGame$cumTrialNum == 1] = NA # Ensure everyone's first trial has an NA prev-trial-shared-amount (because there was NOT a previous trial)
   # cumulative trial is the one to use here (as there are multiple blocks/person, and trialnumber resets on each block)
 
 trustGame$prevTrialSharedBool = ifelse(trustGame$prevTrialSharedAmt > 0, 1, -1) #creates the boolean coding
 
 #calculating feedback from previous trial
-trustGame$prevTrialFeedback <- trustGame$received
-trustGame$prevTrialFeedback <- c(0, trustGame$prevTrialFeedback[-nrow(trustGame)])
-trustGame$prevTrialFeedback <- ifelse(trustGame$cumTrialNum == 1, 0,
-                                   ifelse(trustGame$prevTrialShared == -1, 0,
-                                          ifelse(trustGame$prevTrialFeedback > 0, 1, -1)))
+trustGame$prevTrialreceived = NA # sets up the column
+trustGame$prevTrialreceived = c(NA, trustGame$received[-nrow(trustGame)])
+trustGame$prevTrialreceived[trustGame$cumTrialNum == 1] = NA
 
+trustGame$reciprocatedTrust = 0; # zero if the participant does not trust and/or is the first trial
+trustGame$reciprocatedTrust[trustGame$partnerChoice == 1] = 1 # +1 if the partner reciprocates trust
+trustGame$reciprocatedTrust[trustGame$partnerChoice == 0] = -1 # -1 if the partner does NOT reciprocate trust
+
+# make the previous-trial version
+trustGame$prevTrialreciprocatedTrust = c(0, trustGame$reciprocatedTrust[-nrow(trustGame)])
+trustGame$prevTrialreciprocatedTrust[trustGame$cumTrialNum == 1] = 0;
 
 # Set up a categorical for whether or not a participant shared any money at all
 trustGame$sharedBool <- ifelse(trustGame$shared == 0, 0, 1)
