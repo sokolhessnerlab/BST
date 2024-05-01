@@ -2,6 +2,9 @@
 #loads up the dataframes from setupData, also loads the plyr library (note this in case you use dply)
 #NOTE: this assumes that you are connected to the shlab drive, and it is attached under /Volumes
 #if this is not the case, add your own configuration in the config.yml
+
+#setwd("/Users/shlab/Documents/GitHub/bst")
+
 config <- config::get()
 
 setup_path <- file.path(config$path$code$r_scripts, config$code_files$setup_data)

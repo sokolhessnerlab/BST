@@ -1,4 +1,7 @@
+
 # --- Trust Only Base Level Analysis Script --- #
+
+#setwd("/Users/shlab/Documents/GitHub/bst")
 
 #NOTE: Run this script while connected to the shlab drive, 
 # where the script's data sources are under /Volumes
@@ -48,3 +51,12 @@ tmpvect = aggregate(rating ~ subjectID + taskOrder, data = trustGame, FUN=mean);
 by(data = tmpvect$rating, INDICES = tmpvect$taskOrder, FUN = mean) # order 1 = 4.69, order 2 = 4.84
 
 # Q: Were participants stressed before doing the trust task?
+
+# Q: Did people choose to share or not more or less under acute stress?
+# Q: Did people choose to share or not more or less  under chronic stress?
+
+# Q: Did people choose to share or not more or less for black, white, other races?
+# Q: #Did people choose to share or not more or less for black, white, other races under stress?
+
+# Q: If the previous share was not unreciprocated, how did that affect subsequent sharing?
+# Q:  what if the unreciprocated share was not of white race vs. POC race?

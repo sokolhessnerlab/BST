@@ -1,4 +1,7 @@
+
 # --- Stress Only Base Level Analysis Script --- #
+
+#setwd("/Users/shlab/Documents/GitHub/bst")
 
 #NOTE: Run this script while connected to the shlab drive, 
 # where the script's data sources are under /Volumes
