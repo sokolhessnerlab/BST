@@ -140,7 +140,6 @@ for (s in 1:number_of_subjects){
 
 # Calculate the previous trial sharing data
 
-trustGame$prevTrialSharedAmt <- NA #sets up column
 trustGame$prevTrialSharedAmt <- c(NA, trustGame$shared[-nrow(trustGame)]) #shifts column by 1, replacing the first element with a 0
 trustGame$prevTrialSharedAmt[trustGame$cumTrialNum == 1] = NA # Ensure everyone's first trial has an NA prev-trial-shared-amount (because there was NOT a previous trial)
   # cumulative trial is the one to use here (as there are multiple blocks/person, and trialnumber resets on each block)
@@ -148,10 +147,10 @@ trustGame$prevTrialSharedAmt[trustGame$cumTrialNum == 1] = NA # Ensure everyone'
 trustGame$prevTrialSharedBool = ifelse(trustGame$prevTrialSharedAmt > 0, 1, -1) #creates the boolean coding
 
 #calculating feedback from previous trial
-trustGame$prevTrialreceived = NA # sets up the column
 trustGame$prevTrialreceived = c(NA, trustGame$received[-nrow(trustGame)])
 trustGame$prevTrialreceived[trustGame$cumTrialNum == 1] = NA
 
+# Did the partner reciprocate any offered trust? (+1, -1, 0)
 trustGame$reciprocatedTrust = 0; # zero if the participant does not trust and/or is the first trial
 trustGame$reciprocatedTrust[trustGame$partnerChoice == 1] = 1 # +1 if the partner reciprocates trust
 trustGame$reciprocatedTrust[trustGame$partnerChoice == 0] = -1 # -1 if the partner does NOT reciprocate trust
@@ -163,7 +162,29 @@ trustGame$prevTrialreciprocatedTrust[trustGame$cumTrialNum == 1] = 0;
 # Set up a categorical for whether or not a participant shared any money at all
 trustGame$sharedBool <- ifelse(trustGame$shared == 0, 0, 1)
 
+### MAKE PREVIOUS PARTNER REGRESSORS ###
+# Previous Partner Race
+trustGame$prevTrialpartnerRace_0w_1b_2o = c(NA, trustGame$partnerRace_0w_1b_2o[-nrow(trustGame)])
+trustGame$prevTrialpartnerRace_0w_1b_2o[trustGame$cumTrialNum == 1] = NA
 
+# Previous partner race (separate regressors)
+trustGame$prevTrialpartnerWhite = trustGame$prevTrialpartnerRace_0w_1b_2o == 0
+trustGame$prevTrialpartnerBlack = trustGame$prevTrialpartnerRace_0w_1b_2o == 1
+trustGame$prevTrialpartnerOther = trustGame$prevTrialpartnerRace_0w_1b_2o == 2
+
+# Previous partner black vs. white
+trustGame$prevTrialwhiteVSblack = trustGame$prevTrialpartnerWhite - trustGame$prevTrialpartnerBlack
+# Contrast regressor that captures difference in current trial behavior as a function of 
+# the racial identity of the partner on the previous trial (+1 when was white, -1 when was black).
+
+
+# GOAL: Make within-race previous-interaction variables
+# e.g., if current trial is black interaction, then how did previous black interaction go (regardless
+# of how far back it was), and same for current white interactions, etc. 
+# - Reciprocation binary
+# - received
+# - shared amount
+# 
 
 
 # --- Trust Rating Measures--- #
