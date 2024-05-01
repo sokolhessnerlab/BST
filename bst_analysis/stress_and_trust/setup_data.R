@@ -138,15 +138,14 @@ for (s in 1:number_of_subjects){
 }
 
 
-# ?? NOTE: Need some help understanding the code below
-#calculating the previous trial sharing data (does the same as the for loop was here previously)
+# Calculate the previous trial sharing data
+
 trustGame$prevTrialSharedAmt <- NA #sets up column
 trustGame$prevTrialSharedAmt <- c(NA, trustGame$shared[-nrow(trustGame)]) #shifts column by 1, replacing the first element with a 0
 trustGame$prevTrialSharedAmt[trustGame$cumTrialNum == 0] = NA # Ensure everyone's first trial has an NA prev-trial-shared-amount (because there was NOT a previous trial)
   # cumulative trial is the one to use here (as there are multiple blocks/person, and trialnumber resets on each block)
 
 trustGame$prevTrialSharedBool = ifelse(trustGame$prevTrialSharedAmt > 0, 1, -1) #creates the boolean coding
-
 
 #calculating feedback from previous trial
 trustGame$prevTrialFeedback <- trustGame$received
@@ -156,9 +155,10 @@ trustGame$prevTrialFeedback <- ifelse(trustGame$cumTrialNum == 1, 0,
                                           ifelse(trustGame$prevTrialFeedback > 0, 1, -1)))
 
 
-
 # Set up a categorical for whether or not a participant shared any money at all
 trustGame$sharedBool <- ifelse(trustGame$shared == 0, 0, 1)
+
+
 
 
 # --- Trust Rating Measures--- #
@@ -173,20 +173,15 @@ names(trustRating)[names(trustRating) == "condition"] <- "taskOrder"
 names(trustRating)[names(trustRating) == "RT"] <- "responseTime"
 names(trustRating)[names(trustRating) == "partnerRace"] <- "partnerRace_0w_1b_2o"
 
-# ?? NOTE: Same question as for trustGame, how to best merge wide bool data with long trust rating data?
-# ?? There is much overlap in trustRating & trustGame dfs, how to best merge?
 # Combines trust rating data with bath data for calculation of variables and later analysis
 #trustRating <- merge(trustRating, bath, by = "subjectID")
 
-# NOTE: Run trustRating$stressedBool after setting up stressedBool in this df.
+
 #calculating new factors for whether a participant was stressed or not before doing the trust task
 trustRating$stressedBool <- ifelse((trustRating$day2StressedBool == 1 & trustRating$day == 1), 0,
                               ifelse((trustRating$day2StressedBool == 0 & trustRating$day == 1), 1,
                                      ifelse((trustRating$day2StressedBool == 1 & trustRating$day == 2), 1,
                                             ifelse((trustRating$day2StressedBool == 0 & trustRating$day == 2), 0, NA))))
-# ?? NOTE: Remove count from script?
-# double checking the math above worked out (there should be no NA)
-# count(trustGame$stressedBool)
 
 #Previous trial stuff for the trust rating task
 trustRating$prevTrialRatingAmt <- trustRating$rating #sets up the previous amount as the current amount
@@ -195,11 +190,6 @@ trustRating$prevTrialRatingAmt <- ifelse(trustRating$cumTrialNum == 1, 0, trustR
 trustRating$prevTrialRating <- ifelse(trustRating$cumTrialNum == 1, 0,
                                  ifelse(trustRating$prevTrialRatingAmt >= 5, 1,
                                         ifelse(trustRating$prevTrialRatingAmt < 5, -1, 0))) #converts the previous amount to the boolean coding
-# ?? NOTE: Remove count from script?
-# count(trustRating$rating)
-# count(trustRating$prevTrialRatingAmt)
-# count(trustRating$prevTrialRating)
-
 
 # Setting up aggregated DFs:
 
@@ -208,6 +198,18 @@ trustRating$prevTrialRating <- ifelse(trustRating$cumTrialNum == 1, 0,
 
 # for Trust Game:
 
+
+
+
+
+
+
+
+
+
+
+
+# Change all this up/keep any?
 # trustGame_part_avg <- aggregate(shared ~ subjectID, data = trustGame, FUN = mean) #aggregates the trust game by participant
 # names(trustGame_part_avg)[names(trustGame_part_avg) == "shared"] <- "sharedAvg"
 # trustGame_part_avg$sharedSD <- (aggregate(shared ~ subjectID, data =trustGame, FUN = sd))$shared #calculates each participants standard deviation shared amount
