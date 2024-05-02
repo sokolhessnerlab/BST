@@ -52,8 +52,68 @@ by(data = tmpvect$rating, INDICES = tmpvect$taskOrder, FUN = mean) # order 1 = 4
 
 # Q: Were participants stressed before doing the trust task?
 
-# Q: Did people choose to share or not more or less under acute stress?
-# Q: Did people choose to share or not more or less  under chronic stress?
+#### TRUST GAME ####
+
+##### Subject-Level Loop #####
+tg_sub_level_colnames = c(
+  'tg_mean_shared',
+  'tg_mean_sharedW',
+  'tg_mean_sharedB',
+  'tg_mean_sharedO',
+  'tg_var_shared',
+  'tg_var_sharedW',
+  'tg_var_sharedB',
+  'tg_var_sharedO'
+)
+
+tg_sub_level = array(data = NA, dim = c(number_of_subjects,length(tg_sub_level_colnames)))
+tg_sub_level = as.data.frame(tg_sub_level)
+colnames(tg_sub_level) <- tg_sub_level_colnames
+
+for (s in 1:number_of_subjects){
+  sub_ind = trustGame$subjectID == subjectIDs[s];
+  tmp_data = trustGame[sub_ind,];
+  
+  tg_sub_level$tg_mean_shared[s] = mean(tmp_data$shared)
+  tg_sub_level$tg_mean_sharedW[s] = mean(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 0])
+  tg_sub_level$tg_mean_sharedB[s] = mean(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 1])
+  tg_sub_level$tg_mean_sharedO[s] = mean(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 2])
+  
+  tg_sub_level$tg_var_shared[s] = var(tmp_data$shared)
+  tg_sub_level$tg_var_sharedW[s] = var(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 0])
+  tg_sub_level$tg_var_sharedB[s] = var(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 1])
+  tg_sub_level$tg_var_sharedO[s] = var(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 2])
+}
+
+# Visualize Distributions of Mean Offers
+mean_shared_hist = hist(tg_sub_level$tg_mean_shared, breaks = seq(from = 0, to = 5, by = 0.5), col = rgb(0,0,0,.2), plot = F);
+mean_sharedW_hist = hist(tg_sub_level$tg_mean_sharedW, breaks = seq(from = 0, to = 5, by = 0.5), col = rgb(1,0,0,.2), plot = F)
+mean_sharedB_hist = hist(tg_sub_level$tg_mean_sharedB, breaks = seq(from = 0, to = 5, by = 0.5), col = rgb(0,1,0,.2), plot = F)
+mean_sharedO_hist = hist(tg_sub_level$tg_mean_sharedO, breaks = seq(from = 0, to = 5, by = 0.5), col = rgb(0,0,1,.2), plot = F)
+
+plot(mean_shared_hist$mids, mean_shared_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, ylim = c(0,.7), xlab = 'Mean Shared', ylab = 'Frequency')
+lines(mean_sharedW_hist$mids, mean_sharedW_hist$density, col = rgb(1,0,0), lwd = 3)
+lines(mean_sharedB_hist$mids, mean_sharedB_hist$density, col = rgb(0,1,0), lwd = 3)
+lines(mean_sharedO_hist$mids, mean_sharedO_hist$density, col = rgb(0,0,1), lwd = 3)
+
+t.test(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_var_sharedB, paired = T) # p = 0.0006      B > W
+t.test(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_var_sharedO, paired = T) # p = 0.000057    O > W
+t.test(tg_sub_level$tg_mean_sharedB, tg_sub_level$tg_var_sharedO, paired = T) # p = 0.00000015  B > O
+
+par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
+plot(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedB, bg = 'brown', pch = 21,
+     xlab = 'White', ylab = 'Black', main = 'Mean $ Shared')
+abline(a = 0, b = 1, col = 'black')
+plot(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedO, bg = 'purple', pch = 21,
+     xlab = 'White', ylab = 'Other', main = 'Mean $ Shared')
+abline(a = 0, b = 1, col = 'black')
+plot(tg_sub_level$tg_mean_sharedB, tg_sub_level$tg_mean_sharedO, bg = 'aquamarine', pch = 21,
+     xlab = 'Black', ylab = 'Other', main = 'Mean $ Shared')
+abline(a = 0, b = 1, col = 'black')
+par(mfrow = c(1,1)) # Returning graphs to plot 1 at a time
+
+# Q: Did people choose to share more or less under acute stress?
+# Q: Did people choose to share more or less  under chronic stress?
 
 # Q: Did people choose to share or not more or less for black, white, other races?
 # Q: #Did people choose to share or not more or less for black, white, other races under stress?
