@@ -184,7 +184,52 @@ trustGame$prevTrialwhiteVSblack = trustGame$prevTrialpartnerWhite - trustGame$pr
 # - Reciprocation binary
 # - received
 # - shared amount
-# 
+index_partnerWhite = which(trustGame$partnerRace_0w_1b_2o == 0)
+index_partnerBlack = which(trustGame$partnerRace_0w_1b_2o == 1)
+index_partnerOther = which(trustGame$partnerRace_0w_1b_2o == 2)
+
+trustGame$past_White_Reciprocation = 0
+trustGame$past_White_Received = 0
+trustGame$past_White_Shared = 0
+
+trustGame$past_Black_Reciprocation = 0
+trustGame$past_Black_Received = 0
+trustGame$past_Black_Shared = 0
+
+trustGame$past_Other_Reciprocation = 0
+trustGame$past_Other_Received = 0
+trustGame$past_Other_Shared = 0
+
+for (t in 2:length(index_partnerWhite)){
+  if (trustGame$subjectID[index_partnerWhite[t]] != trustGame$subjectID[index_partnerWhite[t-1]]){
+    next 
+  } else {
+    trustGame$past_White_Reciprocation[index_partnerWhite[t]] = trustGame$reciprocatedTrust[index_partnerWhite[t-1]];
+    trustGame$past_White_Received[index_partnerWhite[t]] = trustGame$received[index_partnerWhite[t-1]];
+    trustGame$past_White_Shared[index_partnerWhite[t]] = trustGame$shared[index_partnerWhite[t-1]];
+  }
+}
+
+for (t in 2:length(index_partnerBlack)){
+  if (trustGame$subjectID[index_partnerBlack[t]] != trustGame$subjectID[index_partnerBlack[t-1]]){
+    next 
+  } else {
+    trustGame$past_Black_Reciprocation[index_partnerBlack[t]] = trustGame$reciprocatedTrust[index_partnerBlack[t-1]];
+    trustGame$past_Black_Received[index_partnerBlack[t]] = trustGame$received[index_partnerBlack[t-1]];
+    trustGame$past_Black_Shared[index_partnerBlack[t]] = trustGame$shared[index_partnerBlack[t-1]];
+  }
+}
+
+for (t in 2:length(index_partnerOther)){
+  if (trustGame$subjectID[index_partnerOther[t]] != trustGame$subjectID[index_partnerOther[t-1]]){
+    next 
+  } else {
+    trustGame$past_Other_Reciprocation[index_partnerOther[t]] = trustGame$reciprocatedTrust[index_partnerOther[t-1]];
+    trustGame$past_Other_Received[index_partnerOther[t]] = trustGame$received[index_partnerOther[t-1]];
+    trustGame$past_Other_Shared[index_partnerOther[t]] = trustGame$shared[index_partnerOther[t-1]];
+  }
+}
+
 
 
 # --- Trust Rating Measures--- #
