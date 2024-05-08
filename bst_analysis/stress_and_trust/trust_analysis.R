@@ -27,8 +27,8 @@ options(scipen=999)
 #BST trust rating for the trust perception task.
 
 #Trust Rating descriptives (collapsed)
-mean(aggregate(rating ~ subjectID, data = trustRating, FUN=mean)$rating)
-mean(aggregate(rating ~ subjectID, data = trustRating, FUN=sd)$rating)
+mean(aggregate(rating ~ subjectID, data = trustRating, FUN=mean)$rating) #Mean Trust Rating = 4.703949
+mean(aggregate(rating ~ subjectID, data = trustRating, FUN=sd)$rating)  #SD Trust Rating = 1.50436
 
 
 # Trust Rating descriptives (subject level)
@@ -43,9 +43,15 @@ by(data = tmpvect$rating, INDICES = tmpvect$stressedBool, FUN = mean)
 # Trust Rating Day Effects
 #Q: What are the effects of day on peoples' trust perceptions? 
 tmpvect = aggregate(rating ~ subjectID + day, data = trustRating, FUN=mean);
+<<<<<<< Updated upstream
 by(data = tmpvect$rating, INDICES = tmpvect$day, FUN = mean) 
 #A: Participants' trust perceptions decrease from day 1 to day 2.
 # day 1 = 4.73, day 2 = 4.68
+=======
+by(data = tmpvect$rating, INDICES = tmpvect$day, FUN = mean) # day 1 = 4.73, day 2 = 4.68
+#Day 1: 4.730305
+#Day 2: 4.680925
+>>>>>>> Stashed changes
 
 
 #### TRUST GAME ####
