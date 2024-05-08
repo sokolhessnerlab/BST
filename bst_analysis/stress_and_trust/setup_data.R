@@ -248,19 +248,69 @@ names(trustRating)[names(trustRating) == "partnerRace"] <- "partnerRace_0w_1b_2o
 #trustRating <- merge(trustRating, bath, by = "subjectID")
 
 
-#calculating new factors for whether a participant was stressed or not before doing the trust task
-trustRating$stressedBool <- ifelse((trustRating$day2StressedBool == 1 & trustRating$day == 1), 0,
-                              ifelse((trustRating$day2StressedBool == 0 & trustRating$day == 1), 1,
-                                     ifelse((trustRating$day2StressedBool == 1 & trustRating$day == 2), 1,
-                                            ifelse((trustRating$day2StressedBool == 0 & trustRating$day == 2), 0, NA))))
+trustRating$stressedBool = NA;
+trustRating$pssSum = NA;
+trustRating$pssMedianSplit = NA;
+trustRating$bathRating = NA;
+
+for (s in 1:number_of_subjects){
+  sID = subjectIDs[s];
+  
+  tmp_stress_conditions = c(1-STRESS$day2bool_0control_1stress[s], STRESS$day2bool_0control_1stress[s]);
+  
+  for (d in 1:2){
+    trust_ind = (trustRating$subjectID == sID) & (trustRating$day == d);
+    trustRating$stressedBool[trust_ind] = tmp_stress_conditions[d]; # condition binary (0 = control, 1 = stress)
+    trustRating$pssSum[trust_ind] = STRESS$pssSum[s]; # include PSS sum score
+    trustRating$pssMedianSplit[trust_ind] = STRESS$pssMedianSplit[s]; # include median split based on PSS
+    
+    if(tmp_stress_conditions[d] == 0){
+      trustRating$bathRating[trust_ind] = bath$controlUnpleasantnessRating[s]; # correct bath rating by day
+    } else if(tmp_stress_conditions[d] == 1){
+      trustRating$bathRating[trust_ind] = bath$stressUnpleasantnessRating[s];
+    }
+  }
+}
+
 
 #Previous trial stuff for the trust rating task
-trustRating$prevTrialRatingAmt <- trustRating$rating #sets up the previous amount as the current amount
-trustRating$prevTrialRatingAmt <- c(0, trustRating$prevTrialRatingAmt[-nrow(trustRating)]) #shifts the previous rating column down by 1
-trustRating$prevTrialRatingAmt <- ifelse(trustRating$cumTrialNum == 1, 0, trustRating$prevTrialRatingAmt) #converts all the first trials to 0
-trustRating$prevTrialRating <- ifelse(trustRating$cumTrialNum == 1, 0,
-                                 ifelse(trustRating$prevTrialRatingAmt >= 5, 1,
-                                        ifelse(trustRating$prevTrialRatingAmt < 5, -1, 0))) #converts the previous amount to the boolean coding
+trustRating$past_Rating <- c(NA, trustRating$rating[-nrow(trustRating)]) #shifts the previous rating column down by 1
+trustRating$past_Rating[trustRating$cumTrialNum == 1] = NA;
+
+
+
+index_partnerWhite = which(trustRating$partnerRace_0w_1b_2o == 0)
+index_partnerBlack = which(trustRating$partnerRace_0w_1b_2o == 1)
+index_partnerOther = which(trustRating$partnerRace_0w_1b_2o == 2)
+
+trustRating$past_White_Rating = 0
+trustRating$past_Black_Rating = 0
+trustRating$past_Other_Rating = 0
+
+for (t in 2:length(index_partnerWhite)){
+  if (trustRating$subjectID[index_partnerWhite[t]] != trustRating$subjectID[index_partnerWhite[t-1]]){
+    next 
+  } else {
+    trustRating$past_White_Rating[index_partnerWhite[t]] = trustRating$rating[index_partnerWhite[t-1]];
+  }
+}
+
+for (t in 2:length(index_partnerBlack)){
+  if (trustRating$subjectID[index_partnerBlack[t]] != trustRating$subjectID[index_partnerBlack[t-1]]){
+    next 
+  } else {
+    trustRating$past_Black_Rating[index_partnerBlack[t]] = trustRating$rating[index_partnerBlack[t-1]];
+  }
+}
+
+for (t in 2:length(index_partnerOther)){
+  if (trustRating$subjectID[index_partnerOther[t]] != trustRating$subjectID[index_partnerOther[t-1]]){
+    next 
+  } else {
+    trustRating$past_Other_Rating[index_partnerOther[t]] = trustRating$rating[index_partnerOther[t-1]];
+  }
+}
+
 
 # Setting up aggregated DFs:
 
@@ -334,9 +384,9 @@ trustRating$prevTrialRating <- ifelse(trustRating$cumTrialNum == 1, 0,
 
 # ?? NOTE: rethink "compiling"
 #compiles all the averaged participant data into one spot
-t_compiled_part_avg_stress <- merge(trustGame_part_avg_stress, trustRating_part_avg_stress, by = c('subjectID', 'stressedBool'))
-t_compiled_part_avg_stress <- merge(t_compiled_part_avg_stress, bath, by = 'subjectID')
-t_compiled_part_avg_stress_pss <- merge(t_compiled_part_avg_stress, pss, by = 'subjectID')
+# t_compiled_part_avg_stress <- merge(trustGame_part_avg_stress, trustRating_part_avg_stress, by = c('subjectID', 'stressedBool'))
+# t_compiled_part_avg_stress <- merge(t_compiled_part_avg_stress, bath, by = 'subjectID')
+# t_compiled_part_avg_stress_pss <- merge(t_compiled_part_avg_stress, pss, by = 'subjectID')
 
 # NOTE: once dfs are finalized, edit this section
 #cleans up the strictly unnecessary DFs and vars

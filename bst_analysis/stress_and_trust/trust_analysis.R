@@ -43,12 +43,12 @@ by(data = tmpvect$rating, INDICES = tmpvect$stressedBool, FUN = mean)
 tmpvect = aggregate(rating ~ subjectID + day, data = trustRating, FUN=mean);
 by(data = tmpvect$rating, INDICES = tmpvect$day, FUN = mean) # day 1 = 4.73, day 2 = 4.68
 
-# Trust Rating Rask Order Effects
-by(data = trustGame$rating, INDICES = trustGame$taskOrder, FUN = mean)
-by(data = trustGame$rating, INDICES = trustGame$taskOrder, FUN = sd)
+# Trust Game Task Order Effects
+by(data = trustGame$shared, INDICES = trustGame$taskOrder, FUN = mean)
+by(data = trustGame$shared, INDICES = trustGame$taskOrder, FUN = sd)
 
-tmpvect = aggregate(rating ~ subjectID + taskOrder, data = trustGame, FUN=mean);
-by(data = tmpvect$rating, INDICES = tmpvect$taskOrder, FUN = mean) # order 1 = 4.69, order 2 = 4.84
+tmpvect = aggregate(shared ~ subjectID + taskOrder, data = trustGame, FUN=mean);
+by(data = tmpvect$shared, INDICES = tmpvect$taskOrder, FUN = mean) # order 1 = 4.69, order 2 = 4.84
 
 # Q: Were participants stressed before doing the trust task?
 
@@ -86,31 +86,58 @@ for (s in 1:number_of_subjects){
 }
 
 # Visualize Distributions of Mean Offers
-mean_shared_hist = hist(tg_sub_level$tg_mean_shared, breaks = seq(from = 0, to = 5, by = 0.5), col = rgb(0,0,0,.2), plot = F);
-mean_sharedW_hist = hist(tg_sub_level$tg_mean_sharedW, breaks = seq(from = 0, to = 5, by = 0.5), col = rgb(1,0,0,.2), plot = F)
-mean_sharedB_hist = hist(tg_sub_level$tg_mean_sharedB, breaks = seq(from = 0, to = 5, by = 0.5), col = rgb(0,1,0,.2), plot = F)
-mean_sharedO_hist = hist(tg_sub_level$tg_mean_sharedO, breaks = seq(from = 0, to = 5, by = 0.5), col = rgb(0,0,1,.2), plot = F)
+mean_shared_hist = hist(tg_sub_level$tg_mean_shared, breaks = seq(from = 0, to = 5, by = 0.5), plot = F);
+mean_sharedW_hist = hist(tg_sub_level$tg_mean_sharedW, breaks = seq(from = 0, to = 5, by = 0.5), plot = F)
+mean_sharedB_hist = hist(tg_sub_level$tg_mean_sharedB, breaks = seq(from = 0, to = 5, by = 0.5), plot = F)
+mean_sharedO_hist = hist(tg_sub_level$tg_mean_sharedO, breaks = seq(from = 0, to = 5, by = 0.5), plot = F)
 
-plot(mean_shared_hist$mids, mean_shared_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, ylim = c(0,.7), xlab = 'Mean Shared', ylab = 'Frequency')
+plot(mean_shared_hist$mids, mean_shared_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,5), ylim = c(0,.7), xlab = 'Mean Shared', ylab = 'Frequency')
 lines(mean_sharedW_hist$mids, mean_sharedW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(mean_sharedB_hist$mids, mean_sharedB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(mean_sharedO_hist$mids, mean_sharedO_hist$density, col = rgb(0,0,1), lwd = 3)
+legend(x = 3.5, y = .7, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
 
 t.test(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_var_sharedB, paired = T) # p = 0.0006      B > W
 t.test(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_var_sharedO, paired = T) # p = 0.000057    O > W
 t.test(tg_sub_level$tg_mean_sharedB, tg_sub_level$tg_var_sharedO, paired = T) # p = 0.00000015  B > O
 
 par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
-plot(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedB, bg = 'brown', pch = 21,
-     xlab = 'White', ylab = 'Black', main = 'Mean $ Shared')
+plot(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedB, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4,
+     xlab = 'White', ylab = 'Black', main = 'Mean $ Shared', xlim = c(0,5), ylim = c(0,5))
 abline(a = 0, b = 1, col = 'black')
-plot(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedO, bg = 'purple', pch = 21,
-     xlab = 'White', ylab = 'Other', main = 'Mean $ Shared')
+points(x = mean(tg_sub_level$tg_mean_sharedW), y = mean(tg_sub_level$tg_mean_sharedB), pch = 18, cex = 6)
+plot(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedO, bg = rgb(.6, .13, .94, .5), pch = 21, cex = 4,
+     xlab = 'White', ylab = 'Other', main = 'Mean $ Shared', xlim = c(0,5), ylim = c(0,5))
 abline(a = 0, b = 1, col = 'black')
-plot(tg_sub_level$tg_mean_sharedB, tg_sub_level$tg_mean_sharedO, bg = 'aquamarine', pch = 21,
-     xlab = 'Black', ylab = 'Other', main = 'Mean $ Shared')
+points(x = mean(tg_sub_level$tg_mean_sharedW), y = mean(tg_sub_level$tg_mean_sharedO), pch = 18, cex = 6)
+plot(tg_sub_level$tg_mean_sharedB, tg_sub_level$tg_mean_sharedO, bg = rgb(.5, 1, .83, .5), pch = 21, cex = 4,
+     xlab = 'Black', ylab = 'Other', main = 'Mean $ Shared', xlim = c(0,5), ylim = c(0,5))
 abline(a = 0, b = 1, col = 'black')
+points(x = mean(tg_sub_level$tg_mean_sharedB), y = mean(tg_sub_level$tg_mean_sharedO), pch = 18, cex = 6)
 par(mfrow = c(1,1)) # Returning graphs to plot 1 at a time
+
+# Patterns over time in sharing
+fit_shared_cumTrial = lmer(shared ~ 1 + cumTrialNum + (1 | subjectID), data = trustGame)
+summary(fit_shared_cumTrial)
+# with increasing trial number, people share less. 
+
+tmpdata = trustGame[1:2,]
+tmpdata$cumTrialNum = c(1, 138)
+x = predict(fit_shared_cumTrial, newdata = tmpdata)
+# On the first trial, mean shared is ~ $2.23, while on the last trial it's ~ $1.97
+# Trust declines over time. 
+
+
+
+# Reaction Times (decision speed)
+
+
+
+# Variances in decisions
+
+
+
+
 
 # Q: Did people choose to share more or less under acute stress?
 # Q: Did people choose to share more or less  under chronic stress?
