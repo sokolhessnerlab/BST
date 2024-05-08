@@ -130,7 +130,7 @@ plot(mean_shared_hist$mids, mean_shared_hist$density, col = rgb(0,0,0), type = '
 lines(mean_sharedW_hist$mids, mean_sharedW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(mean_sharedB_hist$mids, mean_sharedB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(mean_sharedO_hist$mids, mean_sharedO_hist$density, col = rgb(0,0,1), lwd = 3)
-legend(x = 3.5, y = .7, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
+legend(x = 4.5, y = .65, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
 
 #t-tests for Mean Offers
 t.test(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedB, paired = T) # p = 0.0006      B > W
@@ -189,13 +189,13 @@ plot(rt_shared_hist$mids, rt_shared_hist$density, col = rgb(0,0,0), type = 'l', 
 lines(rt_sharedW_hist$mids, rt_sharedW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(rt_sharedB_hist$mids, rt_sharedB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(rt_sharedO_hist$mids, rt_sharedO_hist$density, col = rgb(0,0,1), lwd = 3)
-legend(x = 7.5, y = .35, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
+legend(x = 9.2, y = .4, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
 
 
 #t-tests for Mean RTs (race comparisons)
-t.test(tg_sub_level$tg_rt_sharedW, tg_sub_level$tg_rt_sharedB, paired = T) # p = 0.9346     B = W
-t.test(tg_sub_level$tg_rt_sharedW, tg_sub_level$tg_rt_sharedO, paired = T) # p = 0.9143     O = W
-t.test(tg_sub_level$tg_rt_sharedB, tg_sub_level$tg_rt_sharedO, paired = T) # p = 0.9711     B = O
+t.test(tg_sub_level$tg_rt_sharedW, tg_sub_level$tg_rt_sharedB, paired = T) # p = 0.9346   B = W
+t.test(tg_sub_level$tg_rt_sharedW, tg_sub_level$tg_rt_sharedO, paired = T) # p = 0.9143   O = W
+t.test(tg_sub_level$tg_rt_sharedB, tg_sub_level$tg_rt_sharedO, paired = T) # p = 0.9711   B = O
 
 
 par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
@@ -236,11 +236,11 @@ var_sharedW_hist = hist(tg_sub_level$tg_var_sharedW, breaks = seq(from = 0, to =
 var_sharedB_hist = hist(tg_sub_level$tg_var_sharedB, breaks = seq(from = 0, to = 7, by = 0.5), plot = F)
 var_sharedO_hist = hist(tg_sub_level$tg_var_sharedO, breaks = seq(from = 0, to = 7, by = 0.5), plot = F)
 
-plot(var_shared_hist$mids, var_shared_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,5), ylim = c(0,.65), xlab = 'Variance in Shared', ylab = 'Frequency')
+plot(var_shared_hist$mids, var_shared_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0.1,4.5), ylim = c(0,.65), xlab = 'Variance in Shared', ylab = 'Frequency')
 lines(var_sharedW_hist$mids, var_sharedW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(var_sharedB_hist$mids, var_sharedB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(var_sharedO_hist$mids, var_sharedO_hist$density, col = rgb(0,0,1), lwd = 3)
-legend(x = 4, y = .6, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
+legend(x = 4.15, y = .65, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
 
 #t-tests for Offer Variances
 t.test(tg_sub_level$tg_var_sharedW, tg_sub_level$tg_var_sharedB, paired = T) # p = 0.314      B = W
