@@ -5,7 +5,7 @@
 #NOTE: Run this script while connected to the shlab drive,
 # script's data sources are under /Volumes
 # and set working directory via shlab Github
-# setwd("/Users/shlab/Documents/GitHub/bst/")
+#setwd("/Users/shlab/Documents/GitHub/bst/")
 
 
 #set up config: data & script sources
@@ -43,15 +43,10 @@ by(data = tmpvect$rating, INDICES = tmpvect$stressedBool, FUN = mean)
 # Trust Rating Day Effects
 #Q: What are the effects of day on peoples' trust perceptions? 
 tmpvect = aggregate(rating ~ subjectID + day, data = trustRating, FUN=mean);
-<<<<<<< Updated upstream
 by(data = tmpvect$rating, INDICES = tmpvect$day, FUN = mean) 
 #A: Participants' trust perceptions decrease from day 1 to day 2.
-# day 1 = 4.73, day 2 = 4.68
-=======
-by(data = tmpvect$rating, INDICES = tmpvect$day, FUN = mean) # day 1 = 4.73, day 2 = 4.68
 #Day 1: 4.730305
 #Day 2: 4.680925
->>>>>>> Stashed changes
 
 
 #### TRUST GAME ####
@@ -136,7 +131,7 @@ plot(mean_shared_hist$mids, mean_shared_hist$density, col = rgb(0,0,0), type = '
 lines(mean_sharedW_hist$mids, mean_sharedW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(mean_sharedB_hist$mids, mean_sharedB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(mean_sharedO_hist$mids, mean_sharedO_hist$density, col = rgb(0,0,1), lwd = 3)
-legend(x = 4.5, y = .65, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
+legend(x = 4, y = .675, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
 
 #t-tests for Mean Offers
 t.test(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedB, paired = T) # p = 0.0006      B > W
@@ -195,7 +190,7 @@ plot(rt_shared_hist$mids, rt_shared_hist$density, col = rgb(0,0,0), type = 'l', 
 lines(rt_sharedW_hist$mids, rt_sharedW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(rt_sharedB_hist$mids, rt_sharedB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(rt_sharedO_hist$mids, rt_sharedO_hist$density, col = rgb(0,0,1), lwd = 3)
-legend(x = 9.2, y = .4, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
+legend(x = 8.25, y = .375, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
 
 
 #t-tests for Mean RTs (race comparisons)
@@ -246,7 +241,7 @@ plot(var_shared_hist$mids, var_shared_hist$density, col = rgb(0,0,0), type = 'l'
 lines(var_sharedW_hist$mids, var_sharedW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(var_sharedB_hist$mids, var_sharedB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(var_sharedO_hist$mids, var_sharedO_hist$density, col = rgb(0,0,1), lwd = 3)
-legend(x = 4.15, y = .65, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
+legend(x = 3.7, y = .6, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
 
 #t-tests for Offer Variances
 t.test(tg_sub_level$tg_var_sharedW, tg_sub_level$tg_var_sharedB, paired = T) # p = 0.314      B = W
