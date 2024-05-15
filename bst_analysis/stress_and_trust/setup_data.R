@@ -138,6 +138,29 @@ for (s in 1:number_of_subjects){
 }
 
 
+# Data Quality: Response Times
+cutoff_upper = 8 # 8 seconds
+cutoff_lower = 0.1 # 100ms
+
+# Data to eliminate
+col_to_blank = c('shared','partnerChoice','received','responseTime')
+
+trials_to_remove = (trustGame$responseTime <= cutoff_lower) | 
+                   (trustGame$responseTime >= cutoff_upper)
+
+trustGame[trials_to_remove,col_to_blank] = NA;
+trials_removed = array(dim = number_of_subjects)
+percent_removed = array(dim = number_of_subjects)
+
+for (s in 1:number_of_subjects){
+  trials_removed[s] = sum(is.na(trustGame$responseTime[trustGame$subjectID == subjectIDs[s]]))
+  percent_removed[s] = trials_removed[s]/sum(trustGame$subjectID == subjectIDs[s])
+}
+
+# Some of these are very high! (30%, 37%) Should we remove those *people*?
+
+
+
 # Calculate the previous trial sharing data
 
 trustGame$prevTrialSharedAmt <- c(NA, trustGame$shared[-nrow(trustGame)]) #shifts column by 1, replacing the first element with a 0
@@ -229,7 +252,6 @@ for (t in 2:length(index_partnerOther)){
     trustGame$past_Other_Shared[index_partnerOther[t]] = trustGame$shared[index_partnerOther[t-1]];
   }
 }
-
 
 
 # --- Trust Rating Measures--- #
