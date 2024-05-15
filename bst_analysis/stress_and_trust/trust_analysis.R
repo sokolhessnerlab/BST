@@ -97,25 +97,25 @@ for (s in 1:number_of_subjects){
   sub_ind = trustGame$subjectID == subjectIDs[s];
   tmp_data = trustGame[sub_ind,];
   
-  tg_sub_level$tg_mean_shared[s] = mean(tmp_data$shared)
-  tg_sub_level$tg_mean_sharedW[s] = mean(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 0])
-  tg_sub_level$tg_mean_sharedB[s] = mean(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 1])
-  tg_sub_level$tg_mean_sharedO[s] = mean(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 2])
+  tg_sub_level$tg_mean_shared[s] = mean(tmp_data$shared, na.rm = T)
+  tg_sub_level$tg_mean_sharedW[s] = mean(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 0], na.rm = T)
+  tg_sub_level$tg_mean_sharedB[s] = mean(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 1], na.rm = T)
+  tg_sub_level$tg_mean_sharedO[s] = mean(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 2], na.rm = T)
   
-  tg_sub_level$tg_var_shared[s] = var(tmp_data$shared)
-  tg_sub_level$tg_var_sharedW[s] = var(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 0])
-  tg_sub_level$tg_var_sharedB[s] = var(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 1])
-  tg_sub_level$tg_var_sharedO[s] = var(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 2])
+  tg_sub_level$tg_var_shared[s] = var(tmp_data$shared, na.rm = T)
+  tg_sub_level$tg_var_sharedW[s] = var(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 0], na.rm = T)
+  tg_sub_level$tg_var_sharedB[s] = var(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 1], na.rm = T)
+  tg_sub_level$tg_var_sharedO[s] = var(tmp_data$shared[tmp_data$partnerRace_0w_1b_2o == 2], na.rm = T)
   
-  tg_sub_level$tg_rt_shared[s] = mean(tmp_data$responseTime)
-  tg_sub_level$tg_rt_sharedW[s] = mean(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 0])
-  tg_sub_level$tg_rt_sharedB[s] = mean(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 1])
-  tg_sub_level$tg_rt_sharedO[s] = mean(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 2])
+  tg_sub_level$tg_rt_shared[s] = mean(tmp_data$responseTime, na.rm = T)
+  tg_sub_level$tg_rt_sharedW[s] = mean(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 0], na.rm = T)
+  tg_sub_level$tg_rt_sharedB[s] = mean(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 1], na.rm = T)
+  tg_sub_level$tg_rt_sharedO[s] = mean(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 2], na.rm = T)
   
-  tg_sub_level$tg_rt_var_shared[s] = var(tmp_data$responseTime)
-  tg_sub_level$tg_rt_var_sharedW[s] = var(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 0])
-  tg_sub_level$tg_rt_var_sharedB[s] = var(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 1])
-  tg_sub_level$tg_rt_var_sharedO[s] = var(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 2])
+  tg_sub_level$tg_rt_var_shared[s] = var(tmp_data$responseTime, na.rm = T)
+  tg_sub_level$tg_rt_var_sharedW[s] = var(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 0], na.rm = T)
+  tg_sub_level$tg_rt_var_sharedB[s] = var(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 1], na.rm = T)
+  tg_sub_level$tg_rt_var_sharedO[s] = var(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 2], na.rm = T)
 }
 
 
@@ -127,7 +127,8 @@ mean_sharedW_hist = hist(tg_sub_level$tg_mean_sharedW, breaks = seq(from = 0, to
 mean_sharedB_hist = hist(tg_sub_level$tg_mean_sharedB, breaks = seq(from = 0, to = 5, by = 0.5), plot = F)
 mean_sharedO_hist = hist(tg_sub_level$tg_mean_sharedO, breaks = seq(from = 0, to = 5, by = 0.5), plot = F)
 
-plot(mean_shared_hist$mids, mean_shared_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,5), ylim = c(0,.7), xlab = 'Mean Shared', ylab = 'Frequency')
+plot(mean_shared_hist$mids, mean_shared_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,5), ylim = c(0,.7), 
+     xlab = 'Mean $ Shared', ylab = 'Frequency')
 lines(mean_sharedW_hist$mids, mean_sharedW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(mean_sharedB_hist$mids, mean_sharedB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(mean_sharedO_hist$mids, mean_sharedO_hist$density, col = rgb(0,0,1), lwd = 3)
@@ -186,10 +187,15 @@ rt_sharedB_hist = hist(tg_sub_level$tg_rt_sharedB, breaks = seq(from = 0, to = 1
 rt_sharedO_hist = hist(tg_sub_level$tg_rt_sharedO, breaks = seq(from = 0, to = 10, length.out = 12), plot = F)
 
 
-plot(rt_shared_hist$mids, rt_shared_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,10), ylim = c(0,.4), xlab = 'Response Time', ylab = 'Frequency')
+plot(rt_shared_hist$mids, rt_shared_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,10), ylim = c(0,.4), 
+     xlab = 'Response Time (seconds)', ylab = 'Frequency')
 lines(rt_sharedW_hist$mids, rt_sharedW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(rt_sharedB_hist$mids, rt_sharedB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(rt_sharedO_hist$mids, rt_sharedO_hist$density, col = rgb(0,0,1), lwd = 3)
+points(x = mean(tg_sub_level$tg_rt_shared), y = 0, lwd = 4, col = 'black')
+points(x = mean(tg_sub_level$tg_rt_sharedW), y = 0.025, lwd = 4, col = 'red')
+points(x = mean(tg_sub_level$tg_rt_sharedB), y = 0.05, lwd = 4, col = 'green')
+points(x = mean(tg_sub_level$tg_rt_sharedO), y = 0.075, lwd = 4, col = 'blue')
 legend(x = 8.25, y = .375, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
 
 
@@ -203,16 +209,24 @@ par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
 plot(tg_sub_level$tg_rt_sharedW, tg_sub_level$tg_rt_sharedB, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4,
      xlab = 'White', ylab = 'Black', main = 'Response Time', xlim = c(0,10), ylim = c(0,10))
 abline(a = 0, b = 1, col = 'black')
-#points(x = rt(tg_sub_level$tg_rt_sharedW), y = rt(tg_sub_level$tg_rt_sharedB), pch = 18, cex = 6)
+points(x = mean(tg_sub_level$tg_rt_sharedW), y = mean(tg_sub_level$tg_rt_sharedB), pch = 18, cex = 6)
 plot(tg_sub_level$tg_rt_sharedW, tg_sub_level$tg_rt_sharedO, bg = rgb(.6, .13, .94, .5), pch = 21, cex = 4,
      xlab = 'White', ylab = 'Other', main = 'Response Time', xlim = c(0,10), ylim = c(0,10))
 abline(a = 0, b = 1, col = 'black')
-#points(x = rt(tg_sub_level$tg_rt_sharedW), y = rt(tg_sub_level$tg_rt_sharedO), pch = 18, cex = 6)
+points(x = mean(tg_sub_level$tg_rt_sharedW), y = mean(tg_sub_level$tg_rt_sharedO), pch = 18, cex = 6)
 plot(tg_sub_level$tg_rt_sharedB, tg_sub_level$tg_rt_sharedO, bg = rgb(.5, 1, .83, .5), pch = 21, cex = 4,
      xlab = 'Black', ylab = 'Other', main = 'Response Time', xlim = c(0,10), ylim = c(0,10))
 abline(a = 0, b = 1, col = 'black')
-#points(x = rt(tg_sub_level$tg_rt_sharedB), y = rt(tg_sub_level$tg_rt_sharedO), pch = 18, cex = 6)
+points(x = mean(tg_sub_level$tg_rt_sharedB), y = mean(tg_sub_level$tg_rt_sharedO), pch = 18, cex = 6)
 par(mfrow = c(1,1)) # Returning graphs to plot 1 at a time
+
+for (s in 1:number_of_subjects){
+  fp = paste0(config$path$code$r_scripts,'/figures/responsetimes_trustGame',sprintf('/tg_rt_BST%03i.pdf',subjectIDs[s]))
+  pdf(file=fp)
+  hist(trustGame$responseTime[trustGame$subjectID == subjectIDs[s]], 
+       main = sprintf('RTs for BST%03i', subjectIDs[s]), xlab = 'response time (seconds)')
+  dev.off()
+}
 
 
 # Patterns over time in RT
