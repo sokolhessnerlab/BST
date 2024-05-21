@@ -618,3 +618,21 @@ bst_wide <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), bst_wide_
   #         - Contact Measures
 
 #Working Notes for creating the Wide data frame (erase when done)
+
+#### SURVEYS ####
+
+
+#Survey Data Day 1
+#Participants' experience with the study
+ptsD1_csv <- file.path(config$path$data$current, config$csvs$ptsD1)
+bst_post_task_survey_day1 <- read.csv(ptsD1_csv)
+
+#remove participant 1 (which was a trial run)
+#bst_srs <- bst_srs[-c(1), ]
+
+
+
+#sum SRS
+bst_srs$srsSum <- (bst_srs$Q1_try_more_recode + bst_srs$Q2_other_minorities_recode + bst_srs$Q3_push_too_hard_recode + bst_srs$Q4_blacks_responsible_recode + bst_srs$Q5_limit_chances + bst_srs$Q6_slavery_difficulty + bst_srs$Q7_less_than_deserve + bst_srs$Q8_more_than_deserve_recode)
+
+bst_srs_sum <- bst_srs[c(1,16) ]
