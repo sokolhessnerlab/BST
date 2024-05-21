@@ -19,6 +19,8 @@ default:
         mrs: "BST_ModernRacismScale_Data.csv"
         ims_ems: "BST_IMS_EMS_Data.csv"
         cm: "BST_ContactMeas_Data.csv"
+        ptsD1: "BST_Data_CPTRating_PostTaskSurvey_D1.csv"
+        ptsD2: "BST_Data_CPTRating_PostTaskSurvey_D2.csv"
     code_files:
         setup_data: "setup_data.R"
         main_analysis: "main_analysis.R"
