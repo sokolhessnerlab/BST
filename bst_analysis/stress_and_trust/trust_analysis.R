@@ -131,7 +131,7 @@ legend(x = 7, y = .4, c('Overall','White','Black','Other'), lwd = 2, col = c('bl
 t.test(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingB, paired = T) # p = 0.0001  B > W
 t.test(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingO, paired = T) # p = 0.0000  O > W
 t.test(tr_sub_level$tr_mean_ratingB, tr_sub_level$tr_mean_ratingO, paired = T) # p = 0.0743  O = B
-# Mean trust ratings across participants show B > W & O > W, but B = O.
+# Mean trust ratings across participants show B > W & O > W, but B = O (though other was numerically higher than black).
 
 par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
 plot(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingB, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4,
@@ -259,6 +259,22 @@ var.test(tr_sub_level$tr_mean_ratingB, tr_sub_level$tr_mean_ratingO) # p = 0.64 
 # ... but no significant differences in variance across subjects in mean ratings.
 
 ### Takeaways: Analyses of TR Rating Amounts, RTs, and Variance #####################################
+
+# Ratings: People rated B > O & B > W in trustworthiness, but B = O.  
+# Black and other were each rated more trustworthy than white, but no significant differences between black and other.
+# RTs: No differences in mean RTs or in the variance of RTs (by race) when rating trust.
+# Rating Variances (within): Order is W > O > B, but only W > B is significant.
+# Rating Variances (between): No differences in variance in mean ratings.
+
+# Participants' overall trust perceptions showed day effects with trust ratings decreasing from day 1 to day 2.
+# Day 1: 4.73, Day 2: 4.68
+# Acute stressor decreased peoples' trust perceptions.
+# control: 4.74, stressed: 4.67
+
+
+# TL;DR: People on average differ in trust ratings (O = B > W), and might be more variable
+# in their offers to white partners/less variable in their offers to black partners, 
+# but RTs suggest that similar processes might be at work here, on average.
 
 
 
@@ -553,6 +569,26 @@ firstlast_RT = x^2
 # $2.25 in 3.2s -> $1.99 in 1.7s
 # (decline of $0.26 and 1.6s!)
 
+
+# TRUST SUMMARY: TAKEAWAYS & FUTURE DIRECTIONS ##############################################################
+
+### Trust Key Takeaways #####################################
+
+# Participants rated black and other partners more trustworthy than white partners, and
+# shared more with black and other partners than with white partners.
+
+# Black and other partners ratings did not significantly differ, but black and other were both rated more trustworthy than white partners.
+# People shared most with black partners and least with white partners.
+# Other partners were shared with more than with white partner but less than with black partners.
+
+# On average, people seemed more varied when rating white partners than when rating black partners, 
+# but not when rating other vs. white and other vs. black partners.
+# Also, sharing on average was more varied for white vs. other partners, 
+# but not for black vs. other nor black vs. white partners.
+
+# Overall, it seems there is more variability when participants are trusting white partners.
+# Considering RTs were not significant across races for trust behavior nor trust ratings, 
+# on average, a similar process might be at work when participants were trusting partners.
 
 
 
