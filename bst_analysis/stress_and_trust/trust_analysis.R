@@ -5,7 +5,8 @@
 #NOTE: Run this script while connected to the shlab drive,
 # script's data sources are under /Volumes
 # and set working directory via shlab Github
-#setwd("/Users/shlab/Documents/GitHub/bst/")
+#setwd("/Users/shlab/Documents/GitHub/bst/") #in lab
+#setwd("~/Documents/GitHub/bst") #laptop
 
 
 #set up config: data & script sources
@@ -135,9 +136,9 @@ lines(mean_sharedO_hist$mids, mean_sharedO_hist$density, col = rgb(0,0,1), lwd =
 legend(x = 4, y = .675, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
 
 #t-tests for Mean Offers
-t.test(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedB, paired = T) # p = 0.0006      B > W
-t.test(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedO, paired = T) # p = 0.000057    O > W
-t.test(tg_sub_level$tg_mean_sharedB, tg_sub_level$tg_mean_sharedO, paired = T) # p = 0.00000015  B > O
+t.test(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedB, paired = T) # p = 0.00000000287  B > W
+t.test(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedO, paired = T) # p = 0.000311       O > W
+t.test(tg_sub_level$tg_mean_sharedB, tg_sub_level$tg_mean_sharedO, paired = T) # p = 0.00000959     B > O
 
 par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
 plot(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedB, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4,
@@ -163,7 +164,7 @@ summary(fit_shared_cumTrial)
 tmpdata = trustGame[1:2,]
 tmpdata$cumTrialNum = c(1, 138)
 x = predict(fit_shared_cumTrial, newdata = tmpdata)
-# A2: On the first trial, mean shared is ~ $2.23, while on the last trial it's ~ $1.97
+# A2: On the first trial, mean shared is ~ $2.246, while on the last trial it's ~ $1.985
 # Trust declines over time. 
 
 
@@ -171,9 +172,9 @@ x = predict(fit_shared_cumTrial, newdata = tmpdata)
 
 # Reaction Times (decision speed)
 
-tmp_data %>%
-  ggplot(aes(responseTime)) +
-  geom_density()
+#tmp_data %>%
+  #ggplot(aes(responseTime)) +
+  #geom_density()
 
 #tmp_data %>%
   #ggplot(aes(responseTime, fill = partnerRace_0w_1b_2o)) +
@@ -187,7 +188,7 @@ rt_sharedB_hist = hist(tg_sub_level$tg_rt_sharedB, breaks = seq(from = 0, to = 1
 rt_sharedO_hist = hist(tg_sub_level$tg_rt_sharedO, breaks = seq(from = 0, to = 10, length.out = 12), plot = F)
 
 
-plot(rt_shared_hist$mids, rt_shared_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,10), ylim = c(0,.4), 
+plot(rt_shared_hist$mids, rt_shared_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,10), ylim = c(0,.5), 
      xlab = 'Response Time (seconds)', ylab = 'Frequency')
 lines(rt_sharedW_hist$mids, rt_sharedW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(rt_sharedB_hist$mids, rt_sharedB_hist$density, col = rgb(0,1,0), lwd = 3)
@@ -282,9 +283,7 @@ par(mfrow = c(1,1)) # Returning graphs to plot 1 at a time
 
 
 
-# Q: Did people trust more in black, white, other races?
-# Q: Did people trust more in black, white, other races under stress (acute)?
-# Q: Did people trust more in black, white, other races under stress (chronic)?
+# Q: Did people trust more in black, white, other races under stress (acute/chronic stress)?
 
 # Q: If the previous share was not reciprocated, how did that affect subsequent sharing?
 # Q: If the previous share was not reciprocated, was subsequent sharing affected differently for white vs. black race partners?
