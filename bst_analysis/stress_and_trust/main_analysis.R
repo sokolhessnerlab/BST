@@ -828,7 +828,7 @@ bst_cm %>%
 #CM descriptives
 summary(bst_cm)
 
-#---% of white/black contact analysis (items Q10-Q17)----
+# % of white/black contact analysis (items Q10-Q17)
 #results indicate participants overall had a higher percentage of white contacts than black contacts.
 #this effect of more contacts for whites than blacks held for:
 #   "close" relationships - White (M=63.56); Black (M=12.82)
