@@ -446,18 +446,18 @@ for (t in 2:length(index_partnerOther)){
 #AMP
 
 amp_csv <- file.path(config$path$data$current, config$csvs$amp)
-bst_amp <- read.csv(amp_csv) #reads in AMP data
+amp <- read.csv(amp_csv) #reads in AMP data
 
 #renaming columns for clarity
-names(bst_amp)[names(bst_amp) == "RT"] <- "responseTime"
-names(bst_amp)[names(bst_amp) == "stimulusRace"] <- "stimulusRace_0w_1b_2o"
-names(bst_amp)[names(bst_amp) == "response"] <- "unPleasant0_Pleasant1"
-names(bst_amp)[names(bst_amp) == "condition"] <- "PleasOnLeft0_PleasOnRight1"
-names(bst_amp)[names(bst_amp) == "session"] <- "amp1_amp2"
+names(amp)[names(amp) == "RT"] <- "responseTime"
+names(amp)[names(amp) == "stimulusRace"] <- "stimulusRace_0w_1b_2o"
+names(amp)[names(amp) == "response"] <- "unPleasant0_Pleasant1"
+names(amp)[names(amp) == "condition"] <- "PleasOnLeft0_PleasOnRight1"
+names(amp)[names(amp) == "session"] <- "amp1_amp2"
 
-amp_rt_mean <- aggregate(responseTime ~ subjectID, data = bst_amp, FUN=mean)
-amp_rt_sd <- aggregate(responseTime ~ subjectID, data = bst_amp, FUN=sd)
-bst_amp_sum <- merge(amp_rt_mean, amp_rt_sd)
+amp_rt_mean <- aggregate(responseTime ~ subjectID, data = amp, FUN=mean)
+amp_rt_sd <- aggregate(responseTime ~ subjectID, data = amp, FUN=sd)
+amp_sum <- merge(amp_rt_mean, amp_rt_sd)
 
 amp_list <- list(amp_rt_mean, amp_rt_sd)
 amp_reduced <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list)
@@ -467,7 +467,7 @@ amp_reduced <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list)
 #IAT
 
 iat_csv <- file.path(config$path$data$current, config$csvs$iat)
-bst_iat <- read.csv(iat_csv) #reads in iat data
+iat <- read.csv(iat_csv) #reads in iat data
 
 
 #EXPLICIT Bias
@@ -475,97 +475,97 @@ bst_iat <- read.csv(iat_csv) #reads in iat data
 #MRS (Modern Racism Scale)
 #Measures how much you agree/disagree with statements on race
 mrs_csv <- file.path(config$path$data$current, config$csvs$mrs)
-bst_mrs <- read.csv(mrs_csv)
+mrs <- read.csv(mrs_csv)
 
 #remove participant 1 (which was a trial run)
-bst_mrs <- bst_mrs[-c(1), ]
+mrs <- mrs[-c(1), ]
 
 #Reverse code 1st questionnaire item only
-bst_mrs$Q1_Easy_Understand_Recode = recode(bst_mrs$Q1_Easy_Understand, '-2=2; -1=1; 0=0; 1=-1; 2=-2')
+mrs$Q1_Easy_Understand_Recode = recode(mrs$Q1_Easy_Understand, '-2=2; -1=1; 0=0; 1=-1; 2=-2')
 #sum MRS
-bst_mrs$mrsSum <- (bst_mrs$Q1_Easy_Understand_Recode + bst_mrs$Q2_Segregation_Influence + bst_mrs$Q3_Too_Demanding + bst_mrs$Q4_Economical_Help + bst_mrs$Q5_Press_Affinity + bst_mrs$Q6_Push_Unwanted + bst_mrs$Q7_Discim_Not_Prob)
+mrs$mrsSum <- (mrs$Q1_Easy_Understand_Recode + mrs$Q2_Segregation_Influence + mrs$Q3_Too_Demanding + mrs$Q4_Economical_Help + mrs$Q5_Press_Affinity + mrs$Q6_Push_Unwanted + mrs$Q7_Discim_Not_Prob)
 
-bst_mrs_sum <- bst_mrs[c(1,11) ]
+mrs_sum <- mrs[c(1,11) ]
 
 
 
 #SRS (Symbolic Racism Scale)
 #Measures "your thoughts" regarding race
 srs_csv <- file.path(config$path$data$current, config$csvs$srs)
-bst_srs <- read.csv(srs_csv)
+srs <- read.csv(srs_csv)
 
 #remove participant 1 (which was a trial run)
-bst_srs <- bst_srs[-c(1), ]
+srs <- srs[-c(1), ]
 
 #Reverse code items 1, 2, 4, 8
-bst_srs$Q1_try_more_recode = recode(bst_srs$Q1_try_more, '1=4; 2=3; 3=2; 4=1')
-bst_srs$Q2_other_minorities_recode = recode(bst_srs$Q2_other_minorities, '1=4; 2=3; 3=2; 4=1')
-bst_srs$Q4_blacks_responsible_recode = recode(bst_srs$Q4_blacks_responsible, '1=4; 2=3; 3=2; 4=1')
-bst_srs$Q8_more_than_deserve_recode = recode(bst_srs$Q8_more_than_deserve,'1=4; 2=3; 3=2; 4=1')
+srs$Q1_try_more_recode = recode(srs$Q1_try_more, '1=4; 2=3; 3=2; 4=1')
+srs$Q2_other_minorities_recode = recode(srs$Q2_other_minorities, '1=4; 2=3; 3=2; 4=1')
+srs$Q4_blacks_responsible_recode = recode(srs$Q4_blacks_responsible, '1=4; 2=3; 3=2; 4=1')
+srs$Q8_more_than_deserve_recode = recode(srs$Q8_more_than_deserve,'1=4; 2=3; 3=2; 4=1')
 
 #Reverse code item 3 (has only 3 response choices)
-bst_srs$Q3_push_too_hard_recode = recode(bst_srs$Q3_push_too_hard, '1=3; 2=1; 3=2')
+srs$Q3_push_too_hard_recode = recode(srs$Q3_push_too_hard, '1=3; 2=1; 3=2')
 
 #sum SRS
-bst_srs$srsSum <- (bst_srs$Q1_try_more_recode + bst_srs$Q2_other_minorities_recode + bst_srs$Q3_push_too_hard_recode + bst_srs$Q4_blacks_responsible_recode + bst_srs$Q5_limit_chances + bst_srs$Q6_slavery_difficulty + bst_srs$Q7_less_than_deserve + bst_srs$Q8_more_than_deserve_recode)
+srs$srsSum <- (srs$Q1_try_more_recode + srs$Q2_other_minorities_recode + srs$Q3_push_too_hard_recode + srs$Q4_blacks_responsible_recode + srs$Q5_limit_chances + srs$Q6_slavery_difficulty + srs$Q7_less_than_deserve + srs$Q8_more_than_deserve_recode)
 
-bst_srs_sum <- bst_srs[c(1,16) ]
+srs_sum <- srs[c(1,16) ]
 
 
 
 #IMS-EMS (Internal and External Motivation to Respond Without Prejudice)
 #Measures feelings towards statements on race
 ims_ems_csv <- file.path(config$path$data$current, config$csvs$ims_ems)
-bst_ims_ems <- read.csv(ims_ems_csv)
+ims_ems <- read.csv(ims_ems_csv)
 # NOTE - missing participant 43's IMS-EMS, not in scanned docs either
 
 #remove participant 1 (which was a trial run)
-bst_ims_ems <- bst_ims_ems[-c(1), ]
+ims_ems <- ims_ems[-c(1), ]
 
 #Reverse code item 7
-bst_ims_ems$Q7_StereotypesOK_recode = recode(bst_ims_ems$Q7_StereotypesOK, '1=10; 2=9; 3=8; 4=7; 5=6; 6=5; 7=4; 8=3; 9=2; 10=1')
+ims_ems$Q7_StereotypesOK_recode = recode(ims_ems$Q7_StereotypesOK, '1=10; 2=9; 3=8; 4=7; 5=6; 6=5; 7=4; 8=3; 9=2; 10=1')
 
 #sum IMS-EMS
-bst_ims_ems$imsEmsSum <- (bst_ims_ems$Q1_Try_to_be_PC + bst_ims_ems$Q2_HideThoughts + bst_ims_ems$Q3_OthersAngry + bst_ims_ems$Q4_AvoidDisapproval + bst_ims_ems$Q5_Due2Pressure +
-                            bst_ims_ems$Q6_PersonallyImp + bst_ims_ems$Q7_StereotypesOK_recode + bst_ims_ems$Q8_PersonallyMotiv + bst_ims_ems$Q9_StereotypesWrong + bst_ims_ems$Q10_SelfConcept)
+ims_ems$imsEmsSum <- (ims_ems$Q1_Try_to_be_PC + ims_ems$Q2_HideThoughts + ims_ems$Q3_OthersAngry + ims_ems$Q4_AvoidDisapproval + ims_ems$Q5_Due2Pressure +
+                            ims_ems$Q6_PersonallyImp + ims_ems$Q7_StereotypesOK_recode + ims_ems$Q8_PersonallyMotiv + ims_ems$Q9_StereotypesWrong + ims_ems$Q10_SelfConcept)
 
-bst_ims_ems$EmsSum <- (bst_ims_ems$Q1_Try_to_be_PC + bst_ims_ems$Q2_HideThoughts + bst_ims_ems$Q3_OthersAngry + bst_ims_ems$Q4_AvoidDisapproval + bst_ims_ems$Q5_Due2Pressure)
-bst_ims_ems$ImsSum <- (bst_ims_ems$Q6_PersonallyImp + bst_ims_ems$Q7_StereotypesOK_recode + bst_ims_ems$Q8_PersonallyMotiv + bst_ims_ems$Q9_StereotypesWrong + bst_ims_ems$Q10_SelfConcept)
+ims_ems$EmsSum <- (ims_ems$Q1_Try_to_be_PC + ims_ems$Q2_HideThoughts + ims_ems$Q3_OthersAngry + ims_ems$Q4_AvoidDisapproval + ims_ems$Q5_Due2Pressure)
+ims_ems$ImsSum <- (ims_ems$Q6_PersonallyImp + ims_ems$Q7_StereotypesOK_recode + ims_ems$Q8_PersonallyMotiv + ims_ems$Q9_StereotypesWrong + ims_ems$Q10_SelfConcept)
 
-bst_ims_ems$EmsImsDiff <- (bst_ims_ems$EmsSum - bst_ims_ems$ImsSum) #calculates the difference in EMS and IMS scores per participant
+ims_ems$EmsImsDiff <- (ims_ems$EmsSum - ims_ems$ImsSum) #calculates the difference in EMS and IMS scores per participant
 #NEG indicates more internally motivated to be less biased, POS score indicates more externally motivated to be less biased
 
-bst_ims_ems_sum <- bst_ims_ems[c(1,14:17) ]
+ims_ems_sum <- ims_ems[c(1,14:17) ]
 
 
 
 #CM (Contact Measures)
 #Measures contact with same/other race
 cm_csv <- file.path(config$path$data$explicit, config$csvs$cm)
-bst_cm <- read.csv(cm_csv)
+cm <- read.csv(cm_csv)
 
 #remove participant 1 (which was a trial run)
-bst_cm <- bst_cm[-c(1), ]
+cm <- cm[-c(1), ]
 
 
 #Recode character values as integers for CM items 1-6
-bst_cm$Q1_close_white_recode  = recode(bst_cm$Q1_close_white , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
-bst_cm$Q2_aquaint_white_recode  = recode(bst_cm$Q2_aquaint_white , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
-bst_cm$Q3_dated_white_recode  = recode(bst_cm$Q3_dated_white , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
-bst_cm$Q4_close_black_recode  = recode(bst_cm$Q4_close_black , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
-bst_cm$Q5_aquaint_black_recode  = recode(bst_cm$Q5_aquaint_black , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
-bst_cm$Q6_dated_black_recode  = recode(bst_cm$Q6_dated_black , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
+cm$Q1_close_white_recode  = recode(cm$Q1_close_white , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
+cm$Q2_aquaint_white_recode  = recode(cm$Q2_aquaint_white , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
+cm$Q3_dated_white_recode  = recode(cm$Q3_dated_white , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
+cm$Q4_close_black_recode  = recode(cm$Q4_close_black , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
+cm$Q5_aquaint_black_recode  = recode(cm$Q5_aquaint_black , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
+cm$Q6_dated_black_recode  = recode(cm$Q6_dated_black , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
 
 #Recode character values as integers for CM items 7-9
-bst_cm$Q7_environ_USR_recode  = recode(bst_cm$Q7_environ_USR , "'urb'=0; 'sub'=1; 'rur'=2")
-bst_cm$Q8_environ_race_diverse_recode  = recode(bst_cm$Q8_environ_race_diverse , "'no'=0; 'yes'=1")
-bst_cm$Q9_envir_cult_diverse_recode  = recode(bst_cm$Q9_envir_cult_diverse , "'no'=0; 'yes'=1")
+cm$Q7_environ_USR_recode  = recode(cm$Q7_environ_USR , "'urb'=0; 'sub'=1; 'rur'=2")
+cm$Q8_environ_race_diverse_recode  = recode(cm$Q8_environ_race_diverse , "'no'=0; 'yes'=1")
+cm$Q9_envir_cult_diverse_recode  = recode(cm$Q9_envir_cult_diverse , "'no'=0; 'yes'=1")
 
 #recode 10-17 as percentages?
 
 #recode character self-report race/ethnicity values
 #NOTE: 5 represents multiple entries (i.e., "mixed race" and "black")
-bst_cm <- mutate(bst_cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Report=="Wht", 0,
+cm <- mutate(cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Report=="Wht", 0,
                                                          ifelse(Race_Eth_Self_Report=="Hispan_Latin", 1,
                                                                 ifelse(Race_Eth_Self_Report=="AsianAm_PacIsl", 2,
                                                                        ifelse(Race_Eth_Self_Report=="Black_Am", 3,
@@ -578,7 +578,7 @@ bst_cm <- mutate(bst_cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Rep
 
 #create a data frame with a basic version of subject-level "wide" data
 
-bst_wide_list <- list(STRESS, bst_mrs_sum, bst_srs_sum, bst_ims_ems_sum, amp_rt_mean)
+bst_wide_list <- list(STRESS, mrs_sum, srs_sum, ims_ems_sum, amp_rt_mean)
 
 #merge all data frames together
 bst_wide <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), bst_wide_list)
@@ -628,11 +628,11 @@ ptsD1_csv <- file.path(config$path$data$current, config$csvs$ptsD1)
 bst_post_task_survey_day1 <- read.csv(ptsD1_csv)
 
 #remove participant 1 (which was a trial run)
-#bst_srs <- bst_srs[-c(1), ]
+#srs <- srs[-c(1), ]
 
 
 
 #sum SRS
-bst_srs$srsSum <- (bst_srs$Q1_try_more_recode + bst_srs$Q2_other_minorities_recode + bst_srs$Q3_push_too_hard_recode + bst_srs$Q4_blacks_responsible_recode + bst_srs$Q5_limit_chances + bst_srs$Q6_slavery_difficulty + bst_srs$Q7_less_than_deserve + bst_srs$Q8_more_than_deserve_recode)
+srs$srsSum <- (srs$Q1_try_more_recode + srs$Q2_other_minorities_recode + srs$Q3_push_too_hard_recode + srs$Q4_blacks_responsible_recode + srs$Q5_limit_chances + srs$Q6_slavery_difficulty + srs$Q7_less_than_deserve + srs$Q8_more_than_deserve_recode)
 
-bst_srs_sum <- bst_srs[c(1,16) ]
+srs_sum <- srs[c(1,16) ]
