@@ -24,5 +24,7 @@ default:
     code_files:
         setup_data: "setup_data.R"
         main_analysis: "main_analysis.R"
+        attitudes_analysis: "attitudes_analysis.R"
         stress_analysis: "stress_analysis.R"
         trust_analysis: "trust_analysis.R"
+        interactive_analysis: "interactive_analysis.R"
