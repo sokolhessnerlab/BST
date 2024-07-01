@@ -61,7 +61,18 @@ Ratings & choices were made about different people, but **average behavior in th
 
 IAT
 
-AMP
+**AMP:**
+
+Strong main effect of judgment type (pleasant is faster than unpleasant), no main effects of stimulus race or interactions between stimulus race & judgment type (pleasant or unpleasant).
+
+There are potentially strong effects of practice (across days and within day across measurements) on response times, however initial AMP scores are correlated with each other on Day 1 and Day 2, indicating people are having similar AMP responses across days.
+
+There is a strong main effect of judgment type (pleasant is faster than unpleasant), no main effects of stimulus race or interactions between stimulus race & judgment type (pleasant or unpleasant).
+
+There is a strong main effects of judgment type (pleasant is faster) and stressed indicating that BST responses after the stressor are uniquely faster than all other AMPs (on control day, or on stress day BEFORE the stressor). The difference is 120ms FASTER after stressor. No difference by stimulus type or response type.
+
+AMP score was not significantly effected by presence of acute stressor (either absolutely or in comparison to control), however there appears to be an overall effect of stress on AMP reaction times ABOVE & BEYOND the main effects of day & measurement number.
+
 
 ### Explicit Attitudes
 
