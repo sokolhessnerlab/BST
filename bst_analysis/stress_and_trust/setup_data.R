@@ -482,11 +482,15 @@ mrs <- mrs[-c(1), ]
 
 #Reverse code 1st questionnaire item only
 mrs$Q1_Easy_Understand_Recode = recode(mrs$Q1_Easy_Understand, '-2=2; -1=1; 0=0; 1=-1; 2=-2')
+
 #sum MRS
 mrs$mrsSum <- (mrs$Q1_Easy_Understand_Recode + mrs$Q2_Segregation_Influence + mrs$Q3_Too_Demanding + mrs$Q4_Economical_Help + mrs$Q5_Press_Affinity + mrs$Q6_Push_Unwanted + mrs$Q7_Discim_Not_Prob)
 
-mrs_sum <- mrs[c(1,11) ]
+#mean MRS
+mrs$mrsMean <-mrs$mrsSum/7
 
+#subject-level data frame
+mrs_Subj_Level <- mrs[c(1,11:12) ]
 
 
 #SRS (Symbolic Racism Scale)
@@ -506,10 +510,14 @@ srs$Q8_more_than_deserve_recode = recode(srs$Q8_more_than_deserve,'1=4; 2=3; 3=2
 #Reverse code item 3 (has only 3 response choices)
 srs$Q3_push_too_hard_recode = recode(srs$Q3_push_too_hard, '1=3; 2=1; 3=2')
 
-#sum SRS
+#sum SRS (8-31 range)
 srs$srsSum <- (srs$Q1_try_more_recode + srs$Q2_other_minorities_recode + srs$Q3_push_too_hard_recode + srs$Q4_blacks_responsible_recode + srs$Q5_limit_chances + srs$Q6_slavery_difficulty + srs$Q7_less_than_deserve + srs$Q8_more_than_deserve_recode)
 
-srs_sum <- srs[c(1,16) ]
+#mean SRS
+srs$srsMean <-srs$srsSum/8
+
+#subject-level data frame
+srs_Subj_Level <- srs[c(1,16:17) ]
 
 
 
