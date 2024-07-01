@@ -52,10 +52,11 @@ hist(amp$responseTime, breaks = 100)
 # (collapsed)
 by(data = amp$unPleasant0_Pleasant1, INDICES = amp$stimulusRace_0w_1b_2o, FUN = mean)
 by(data = amp$unPleasant0_Pleasant1, INDICES = amp$stimulusRace_0w_1b_2o, FUN = sd)
-#white AMP unpleasantness 0.57 mean
-#black AMP unpleasantness 0.58 mean
-#other AMP unpleasantness 0.58 mean
-#A: People rated white (.57), black (.58), and other (.58) faces as approximately equally pleasant
+#white AMP unpleasantness 0.57 mean (0.49 sd)
+#black AMP unpleasantness 0.58 mean (0.49 sd)
+#other AMP unpleasantness 0.58 mean (0.49 sd)
+#A: People rated white (.57), black (.58), and other (.58) faces as approximately equally pleasant,
+# but with a good deal of variability.
 
 prop.table(table(amp$stimulusRace_0w_1b_2o, amp$unPleasant0_Pleasant1),1)*100
 #                   unPleasant0_Pleasant1
@@ -183,7 +184,7 @@ for (s in 1:number_of_AMP_subjects){
   }
   for (day in 1:2){
     tmp_index = (amp$subjectID == amp_SID) & (amp$day == day) & (amp$amp1_amp2 == 2);
-    amp$amponly_stressedBool[tmp_index] = abs(bst_bath$day2StressedBool[s]-(-day+2))
+    amp$amponly_stressedBool[tmp_index] = abs(bath$day2StressedBool[s]-(-day+2))
   }
 }
 
@@ -275,7 +276,7 @@ for (s in 1:number_of_AMP_subjects){
   # Negative values = bias decreased
   
   #Creates participants' AMP change by session 1 and 2 AND by acute stress/control conditions
-  if (bst_bath$day2StressedBool[s] == 0) { # If they are stressed on day 1, control day 2
+  if (bath$day2StressedBool[s] == 0) { # If they are stressed on day 1, control day 2
     amp_scores$change_amp_stress[s] = amp_scores$amp_d1_s2[s] - amp_scores$amp_d1_s1[s]; # AMP num. 2 - AMP num. 1, if stress day 1
     amp_scores$change_amp_control[s] = amp_scores$amp_d2_s2[s] - amp_scores$amp_d2_s1[s]; # control
   } else { # control on day 1, stress on day 2
