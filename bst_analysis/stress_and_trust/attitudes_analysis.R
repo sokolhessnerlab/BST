@@ -468,43 +468,54 @@ ggplot(bst_iat, aes(x = factor(corrans.F), y = RT, fill = stimulus.F, colour = s
 #Modern Racism Scale
 
 #MRS descriptives
-summary(bst_mrs)
-#NOTE: mrsSum from -14 (less bias) to 14 (more bias)
+summary(mrs)
+#NOTE: Question 1 has been recoded to reflect a mrsSum range from -14 (less bias) to 14 (more bias)
 
 #Examine Sums
-mean(bst_mrs$mrsSum) #-11.10 (across participants, results leaning heavily towards less explicit bias)
-sd(bst_mrs$mrsSum) #3.38
-max(bst_mrs$mrsSum)  #-3
-min(bst_mrs$mrsSum)  #-14 (lowest possible on the MRS scale reached)
+mean(mrs$mrsSum) #-11.10 (across participants, results leaning heavily towards less explicit bias)
+sd(mrs$mrsSum) #3.38
+max(mrs$mrsSum)  #-3
+min(mrs$mrsSum)  #-14 (lowest possible on the MRS scale reached)
 
-hist(bst_mrs$mrsSum, breaks = 10) #clear pos skew
+hist(mrs$mrsSum, breaks = 10) #clear pos skew
 
-bst_mrs %>%
-  dplyr::select(subjectID,mrsSum) %>%
-  head(39) %>%
-  gt()
+#mrs %>%
+  #dplyr::select(subjectID,mrsSum) %>%
+  #head(39) %>%
+  #gt()
 
 ## SRS ########################################
 #Symbolic Racism Scale
 
 #SRS descriptives
-summary(bst_srs)
+summary(srs)
+
+#NOTE: Question 1 has been recoded to reflect a mrsSum range from -14 (less bias) to 14 (more bias)
+
 #NOTE: srsSum from 8 (less bias) to 31 (more bias)
 
 #Examine Sums
-mean(bst_srs$srsSum) #11.97 (across participants, results leaning heavily towards less explicit bias)
-sd(bst_srs$srsSum) #3.26
-max(bst_srs$srsSum)  #21
-min(bst_srs$srsSum)  #8 (lowest possible on the SRS scale reached)
+mean(srs$srsSum) #11.97 (across participants, results leaning heavily towards less explicit bias)
+sd(srs$srsSum) #3.26
+max(srs$srsSum)  #21
+min(srs$srsSum)  #8 (lowest possible on the SRS scale reached)
 
-hist(bst_srs$srsSum, breaks = 10) #clear pos skew, but wider distribution than MRS
+hist(srs$srsSum, breaks = 10) #clear pos skew, but wider distribution than MRS
+
+#Examine Averages
+mean(srs$srsMean) #1.50 (across participants, results leaning heavily towards less explicit bias)
+sd(srs$srsMean) #0.41
+max(srs$srsMean)  #2.63
+min(srs$srsMean)  #1 (lowest possible on the SRS scale reached)
+
+hist(srs$srsMean, breaks = 10) #clear pos skew, but wider distribution than MRS
 
 #library(gt)
 #library(gtExtras)
-bst_srs %>%
-  dplyr::select(subjectID,srsSum) %>%
-  head(50) %>%
-  gt()
+#srs %>%
+  #dplyr::select(subjectID,srsSum) %>%
+  #head(50) %>%
+  #gt()
 
 ## IMS-EMS ########################################
 # Internal & External Motivations
@@ -527,11 +538,11 @@ hist(bst_ims_ems$EmsImsDiff, breaks = 10) #neg skew
 # Explicit Interaction Analyses
 
 #correlation btwn srs and mrs
-cor.test(bst_srs$srsSum, bst_mrs$mrsSum, method = 'pearson')
+cor.test(srs$srsSum, mrs$mrsSum, method = 'pearson')
 #SMS & MRS significantly and strongly correlated r=.75, p < .001
 
 #NOTE - can't cor.test EMS-IMS data against mrs and ems, b/c one participant missing from EMS-IMS data
-#cor.test(bst_mrs$mrsSum, bst_ims_ems$EmsImsDiff, method = 'pearson')
+#cor.test(mrs$mrsSum, bst_ims_ems$EmsImsDiff, method = 'pearson')
 
 # SUMMARY OF EXPLICIT BASIC DESCRIPTIVES
 # Across participants, MRS and SRS sums leaned heavily towards a low explicit bias score
