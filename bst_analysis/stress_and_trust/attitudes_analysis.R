@@ -577,10 +577,10 @@ cor.test(srs$srsSum, mrs$mrsSum, method = 'pearson')
 
 # CONTACT MEASURES ######################
 
-bst_cm %>%
-  dplyr::select(subjectID, Q10_PerCloseWhite:Q17_PerMediaBlack) %>%
-  head(39) %>%
-  gt()
+#bst_cm %>%
+  #dplyr::select(subjectID, Q10_PerCloseWhite:Q17_PerMediaBlack) %>%
+  #head(39) %>%
+  #gt()
 
 #CM descriptives
 summary(bst_cm)
@@ -594,10 +594,10 @@ summary(bst_cm)
 #   "media" contacts - White (M=70.08); Black (M=20.81)
 # Overall, participants' black contacts were highest for "media" contacts and "aquiantances"
 
-bst_cm %>%
-  dplyr::select(subjectID,EmsImsDiff) %>%
-  head(39) %>%
-  gt()
+#bst_cm %>%
+  #dplyr::select(subjectID,EmsImsDiff) %>%
+  #head(39) %>%
+  #gt()
 
 hist(bst_cm$Q1_close_white_recode,breaks = 5)
 hist(bst_cm$Q4_close_black_recode, breaks = 5) #very positively skewed
