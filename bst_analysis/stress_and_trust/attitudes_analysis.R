@@ -426,21 +426,21 @@ t.test(amp_scores$change_amp_stress) # n.s.
 ## IAT ########################################
 
 #IAT descriptives
-summary(bst_iat)
-str(bst_iat)
-dim(bst_iat) #15600 x 18
+summary(iat)
+str(iat)
+dim(iat) #15600 x 18
 
 #Examine Response Times
-mean(bst_iat$RT) #0.647
-sd(bst_iat$RT) #0.320 Somewhat high compared to mean
-max(bst_iat$RT)  #10.65
-min(bst_iat$RT)  #0.20
+mean(iat$RT) #0.647
+sd(iat$RT) #0.320 Somewhat high compared to mean
+max(iat$RT)  #10.65
+min(iat$RT)  #0.20
 
 #distribution on low-end quantile for reaction times
-quantile(bst_iat$RT, c(.0001,.05,.125,.5,.875,.95,.9999))
-hist(bst_iat$RT, xlim = c(0, 3), breaks = 100) #normal distribution along mean
+quantile(iat$RT, c(.0001,.05,.125,.5,.875,.95,.9999))
+hist(iat$RT, xlim = c(0, 3), breaks = 100) #normal distribution along mean
 
-prop.table(table(bst_iat$cattype, bst_iat$corrans),1)*100
+prop.table(table(iat$cattype, iat$corrans),1)*100
 #              Black Pleasant Unpleasant White
 #CONGRUENT    25.0     25.0       25.0  25.0
 #INCONGRUENT  25.0     25.0       25.0  25.0
@@ -448,11 +448,11 @@ prop.table(table(bst_iat$cattype, bst_iat$corrans),1)*100
 # even trial bins for congruent/incongruint stimuli (words/images)
 
 #Factoring for use in ggplot
-bst_iat$stimulus.F <- factor(bst_iat$stimulus)
-bst_iat$corrans.F <- factor(bst_iat$corrans)
+iat$stimulus.F <- factor(iat$stimulus)
+iat$corrans.F <- factor(iat$corrans)
 
 #Response Times by stimulus & correct answers
-ggplot(bst_iat, aes(x = factor(corrans.F), y = RT, fill = stimulus.F, colour = stimulus.F)) +
+ggplot(iat, aes(x = factor(corrans.F), y = RT, fill = stimulus.F, colour = stimulus.F)) +
   labs(x="Correct Answer", y="Response Time", fill = "Stimulus") +
   geom_bar(stat = "identity", position = "dodge") +
   ggtitle("Response Time by Stimulus Type & Correct Answer") +
@@ -462,6 +462,7 @@ ggplot(bst_iat, aes(x = factor(corrans.F), y = RT, fill = stimulus.F, colour = s
 
 #NOTE: Need to categorize and code all pos stim vs neg stim (words), all black faces, all white faces
 
+
 # EXPLICIT Bias Measures ######################
 
 ## MRS ########################################
@@ -469,13 +470,14 @@ ggplot(bst_iat, aes(x = factor(corrans.F), y = RT, fill = stimulus.F, colour = s
 
 #MRS descriptives
 summary(mrs)
-#NOTE: Question 1 has been recoded to reflect a mrsSum range from -14 (less bias) to 14 (more bias)
+# NOTE: Question 1 has been recoded to reflect a mrsSum range from -14 (less bias) to 14 (more bias)
+# Q1_Easy_Understand_Recode was used in mrsSum
 
 #Examine Sums
-mean(mrs$mrsSum) #-11.10 (across participants, results leaning heavily towards less explicit bias)
+mean(mrs$mrsSum) #-11.10
 sd(mrs$mrsSum) #3.38
 max(mrs$mrsSum)  #-3
-min(mrs$mrsSum)  #-14 (lowest possible on the MRS scale reached)
+min(mrs$mrsSum)  #-14
 
 hist(mrs$mrsSum, breaks = 10) #clear pos skew
 
@@ -484,65 +486,88 @@ hist(mrs$mrsSum, breaks = 10) #clear pos skew
   #head(39) %>%
   #gt()
 
+#### Main Take-Aways MRS ####
+# Participants survey results leaned heavily towards low explicit bias when using the MRS scale.
+
+
 ## SRS ########################################
 #Symbolic Racism Scale
 
 #SRS descriptives
 summary(srs)
 
-#NOTE: Question 1 has been recoded to reflect a mrsSum range from -14 (less bias) to 14 (more bias)
-
 #NOTE: srsSum from 8 (less bias) to 31 (more bias)
 
 #Examine Sums
-mean(srs$srsSum) #11.97 (across participants, results leaning heavily towards less explicit bias)
+mean(srs$srsSum) #11.97 
 sd(srs$srsSum) #3.26
 max(srs$srsSum)  #21
-min(srs$srsSum)  #8 (lowest possible on the SRS scale reached)
+min(srs$srsSum)  #8 
 
 hist(srs$srsSum, breaks = 10) #clear pos skew, but wider distribution than MRS
 
 #Examine Averages
-mean(srs$srsMean) #1.50 (across participants, results leaning heavily towards less explicit bias)
+mean(srs$srsMean) #1.50 
 sd(srs$srsMean) #0.41
 max(srs$srsMean)  #2.63
-min(srs$srsMean)  #1 (lowest possible on the SRS scale reached)
+min(srs$srsMean)  #1 
 
-hist(srs$srsMean, breaks = 10) #clear pos skew, but wider distribution than MRS
+hist(srs$srsMean, breaks = 10)
 
-#library(gt)
-#library(gtExtras)
-#srs %>%
-  #dplyr::select(subjectID,srsSum) %>%
-  #head(50) %>%
-  #gt()
+#### Main Take-Aways SRS ####
+# Participants survey results leaned heavily towards low explicit bias when using the SRS scale.
+# There was more distribution of responses in the SRS vs. the MRS.
+
 
 ## IMS-EMS ########################################
-# Internal & External Motivations
+# Internal & External Motivations to Respond without Prejudice
 
 #IMS-EMS descriptives
-summary(bst_ims_ems)
-#NEG indicates more internally motivated to be less biased, POS score indicates more externally motivated to be less biased
+summary(ims_ems)
+#Note: Negative values indicate more internally motivated to be less prejudiced, while positive values indicate more externally motivated to be less prejudiced
 
-#Examine Sums
-mean(bst_ims_ems$EmsImsDiff) #-13.18 (across participants, results leaning heavily towards less explicit bias)
-sd(bst_ims_ems$EmsImsDiff) #9.66
-max(bst_ims_ems$EmsImsDiff)  #5
-min(bst_ims_ems$EmsImsDiff)  #-33
-#Mean = -13.18 (Range 5 to -33)
+# Question 7 was recoded, and the recoded values were used in the summary measures.
 
-hist(bst_ims_ems$EmsImsDiff, breaks = 10) #neg skew
-#participants overall are more internally motivated than externally motivated, but there is a wide range of distribution within negative scores
+# Examine EMS-IMS Differences
+mean(ims_ems$EmsImsDiff) # -13.18 (negative value indicates more internal vs. external motivations)
+sd(ims_ems$EmsImsDiff) # 9.66
+max(ims_ems$EmsImsDiff) # 5
+min(ims_ems$EmsImsDiff)  # -33
 
-## Additional ########################################
-# Explicit Interaction Analyses
+hist(ims_ems$EmsImsDiff, breaks = 10) #neg skew
+
+# Examine EMS 
+mean(ims_ems$EmsSum) # 26.29
+sd(ims_ems$EmsSum) # 9.67
+max(ims_ems$EmsSum)  # 42
+min(ims_ems$EmsSum)  # 11
+
+hist(ims_ems$EmsSum, breaks = 10) # ! Odd Distribution
+
+# Examine IMS 
+mean(ims_ems$ImsSum) # 39.47
+sd(ims_ems$ImsSum) # 7.16
+max(ims_ems$ImsSum)  # 46
+min(ims_ems$ImsSum)  # 21
+
+hist(ims_ems$ImsSum, breaks = 10) # Lots of high values, neg skew
+
+#### Main Take-Aways IMS-EMS ####
+# Overall, participants are more internally motivated than externally motivated to respond without prejudice, 
+# but there is a wide range of distribution within negative scores.
+# The distribution of internal motivations to respond without prejudice is more systematic and negatively skewed,
+# while the distribution of external motivations is non-normal.
+
+
+
+## Explicit Interaction ########################################
 
 #correlation btwn srs and mrs
 cor.test(srs$srsSum, mrs$mrsSum, method = 'pearson')
 #SMS & MRS significantly and strongly correlated r=.75, p < .001
 
 #NOTE - can't cor.test EMS-IMS data against mrs and ems, b/c one participant missing from EMS-IMS data
-#cor.test(mrs$mrsSum, bst_ims_ems$EmsImsDiff, method = 'pearson')
+#cor.test(mrs$mrsSum, ims_ems$EmsImsDiff, method = 'pearson')
 
 # SUMMARY OF EXPLICIT BASIC DESCRIPTIVES
 # Across participants, MRS and SRS sums leaned heavily towards a low explicit bias score
