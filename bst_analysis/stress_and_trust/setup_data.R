@@ -12,7 +12,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 
 ##Start Data Retrieval, Cleaning, Formatting: ##
 
-#### STRESS ####
+# STRESS ########
 
 #setting Up Stress Data Frames#
 
@@ -93,7 +93,7 @@ STRESS <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = T)
 
 
 
-#### TRUST ####
+# TRUST ########
 
 #setting Up Trust Data Frames#
 
@@ -438,18 +438,17 @@ for (t in 2:length(index_partnerOther)){
 
 
 
-#### BIAS ####
+# BIAS ######## 
 
-##IMPLICIT Bias
+## Implicit Bias ######## 
 
-
-#AMP
+### AMP ########
 
 amp_csv <- file.path(config$path$data$current, config$csvs$amp)
 amp <- read.csv(amp_csv) #reads in AMP data
 
 #renaming columns for clarity
-names(amp)[names(amp) == "RT"] <- "responseTime"
+names(amp)[names(amp) == "RT"] <- "responseTime_AMP"
 names(amp)[names(amp) == "stimulusRace"] <- "stimulusRace_0w_1b_2o"
 names(amp)[names(amp) == "response"] <- "unPleasant0_Pleasant1"
 names(amp)[names(amp) == "condition"] <- "PleasOnLeft0_PleasOnRight1"
@@ -463,17 +462,19 @@ amp_list <- list(amp_rt_mean, amp_rt_sd)
 amp_reduced <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list)
 
 
-
-#IAT
+### IAT ########
 
 iat_csv <- file.path(config$path$data$current, config$csvs$iat)
 iat <- read.csv(iat_csv) #reads in iat data
 
 
-#EXPLICIT Bias
+## Explicit Bias ######## 
 
-#MRS (Modern Racism Scale)
-#Measures how much you agree/disagree with statements on race
+
+### MRS ########
+# (Modern Racism Scale)
+# Measures how much you agree/disagree with statements on race
+
 mrs_csv <- file.path(config$path$data$current, config$csvs$mrs)
 mrs <- read.csv(mrs_csv)
 
@@ -493,8 +494,11 @@ mrs$mrsMean <-mrs$mrsSum/7
 mrs_Subj_Level <- mrs[c(1,11:12) ]
 
 
-#SRS (Symbolic Racism Scale)
-#Measures "your thoughts" regarding race
+
+### SRS ########
+# (Symbolic Racism Scale)
+# Measures "your thoughts" regarding race
+
 srs_csv <- file.path(config$path$data$current, config$csvs$srs)
 srs <- read.csv(srs_csv)
 
@@ -520,35 +524,45 @@ srs$srsMean <-srs$srsSum/8
 srs_Subj_Level <- srs[c(1,16:17) ]
 
 
+### IMS-EMS ########
+# (Internal and External Motivation to Respond Without Prejudice)
+# Measures feelings towards statements on what motivates to respond without prejudice
 
-#IMS-EMS (Internal and External Motivation to Respond Without Prejudice)
-#Measures feelings towards statements on race
 ims_ems_csv <- file.path(config$path$data$current, config$csvs$ims_ems)
 ims_ems <- read.csv(ims_ems_csv)
+
 # NOTE - missing participant 43's IMS-EMS, not in scanned docs either
 
-#remove participant 1 (which was a trial run)
+# Remove participant 1 (which was a trial run)
 ims_ems <- ims_ems[-c(1), ]
 
-#Reverse code item 7
+#NOTE: Question #7 - "According to my personal values, using stereotypes about Black people is OK" - in the survey is reverse-coded. 
+
+# Reverse code item 7
 ims_ems$Q7_StereotypesOK_recode = recode(ims_ems$Q7_StereotypesOK, '1=10; 2=9; 3=8; 4=7; 5=6; 6=5; 7=4; 8=3; 9=2; 10=1')
 
-#sum IMS-EMS
-ims_ems$imsEmsSum <- (ims_ems$Q1_Try_to_be_PC + ims_ems$Q2_HideThoughts + ims_ems$Q3_OthersAngry + ims_ems$Q4_AvoidDisapproval + ims_ems$Q5_Due2Pressure +
-                            ims_ems$Q6_PersonallyImp + ims_ems$Q7_StereotypesOK_recode + ims_ems$Q8_PersonallyMotiv + ims_ems$Q9_StereotypesWrong + ims_ems$Q10_SelfConcept)
+# NOTE: Questions 1-5 are external motivation items, while questions 6-10 are internal motivation items.
 
 ims_ems$EmsSum <- (ims_ems$Q1_Try_to_be_PC + ims_ems$Q2_HideThoughts + ims_ems$Q3_OthersAngry + ims_ems$Q4_AvoidDisapproval + ims_ems$Q5_Due2Pressure)
 ims_ems$ImsSum <- (ims_ems$Q6_PersonallyImp + ims_ems$Q7_StereotypesOK_recode + ims_ems$Q8_PersonallyMotiv + ims_ems$Q9_StereotypesWrong + ims_ems$Q10_SelfConcept)
 
 ims_ems$EmsImsDiff <- (ims_ems$EmsSum - ims_ems$ImsSum) #calculates the difference in EMS and IMS scores per participant
-#NEG indicates more internally motivated to be less biased, POS score indicates more externally motivated to be less biased
 
-ims_ems_sum <- ims_ems[c(1,14:17) ]
+# More negative values indicate more internally motivated to be less biased, more positive scores indicate more externally motivated to be less biased
+
+#sum IMS-EMS
+#ims_ems$imsEmsSum <- (ims_ems$Q1_Try_to_be_PC + ims_ems$Q2_HideThoughts + ims_ems$Q3_OthersAngry + ims_ems$Q4_AvoidDisapproval + ims_ems$Q5_Due2Pressure +
+#ims_ems$Q6_PersonallyImp + ims_ems$Q7_StereotypesOK_recode + ims_ems$Q8_PersonallyMotiv + ims_ems$Q9_StereotypesWrong + ims_ems$Q10_SelfConcept)
+
+#subject-level data frame
+
+ims_ems_Subj_Level <- ims_ems[c(1,14:16) ]
 
 
 
-#CM (Contact Measures)
-#Measures contact with same/other race
+## Contact Measures (CM) ######## 
+# Measures contact with same/other race
+
 cm_csv <- file.path(config$path$data$explicit, config$csvs$cm)
 cm <- read.csv(cm_csv)
 
@@ -581,16 +595,14 @@ cm <- mutate(cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Report=="Wh
 
 
 
-
-#### WIDE DATA ####
+# WIDE DATA ########
 
 #create a data frame with a basic version of subject-level "wide" data
 
-bst_wide_list <- list(STRESS, mrs_sum, srs_sum, ims_ems_sum, amp_rt_mean)
+bst_wide_list <- list(STRESS, mrs_Subj_Level, srs_Subj_Level, ims_ems_Subj_Level, amp_rt_mean)
 
 #merge all data frames together
-bst_wide <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), bst_wide_list)
-
+BST_SUBJ_LEVEL_DF <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), bst_wide_list)
 
 
 #Working Notes for creating the Wide data frame (erase when done)
@@ -620,27 +632,24 @@ bst_wide <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), bst_wide_
 #From Bias
   # implic. - add average IAT score
   #         - add average AMP score
-  # explic. - SRS
-  #         - MRS
-  #         - IMS-EMS
+  # explic. - SRS Sum X
+  #         - SRS Mean X
+  #         - MRS Sum X
+  #         - MRS Mean X
+  #         - IMS-EMS EMS Sum X
+  #         - IMS-EMS IMS Sum X
+  #         - IMS-EMS EMS-IMS Difference X
   #         - Contact Measures
 
 #Working Notes for creating the Wide data frame (erase when done)
 
-#### SURVEYS ####
 
+# SURVEYS ########
 
 #Survey Data Day 1
 #Participants' experience with the study
 ptsD1_csv <- file.path(config$path$data$current, config$csvs$ptsD1)
-bst_post_task_survey_day1 <- read.csv(ptsD1_csv)
-
-#remove participant 1 (which was a trial run)
-#srs <- srs[-c(1), ]
+post_task_survey_day1 <- read.csv(ptsD1_csv)
 
 
 
-#sum SRS
-srs$srsSum <- (srs$Q1_try_more_recode + srs$Q2_other_minorities_recode + srs$Q3_push_too_hard_recode + srs$Q4_blacks_responsible_recode + srs$Q5_limit_chances + srs$Q6_slavery_difficulty + srs$Q7_less_than_deserve + srs$Q8_more_than_deserve_recode)
-
-srs_sum <- srs[c(1,16) ]
