@@ -1,6 +1,6 @@
 # BST - Bias Stress and Trust
 
-Code and resources for analysis the BST project
+Code and resources for analysis of the BST project
 
 Trust is essential to successful social and economic transactions.
 
