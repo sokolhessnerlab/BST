@@ -87,9 +87,10 @@ Stress_Acute <- bath[c(1,6:7) ]
 
 
 # --- Combining Acute & Chronic Stress Measures --- #
+#combining acute and chronic stressor data into wide data
 
-#combining acute and chronic stressors for wide data
-STRESS <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = T)
+#subject-level data frame
+Stress_Subj_Level <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = T)
 
 
 
@@ -438,9 +439,9 @@ for (t in 2:length(index_partnerOther)){
 
 
 
-# BIAS ######## 
+# ATTITUDES ######## 
 
-## Implicit Bias ######## 
+## Implicit Attitudes ######## 
 
 ### AMP ########
 
@@ -454,12 +455,18 @@ names(amp)[names(amp) == "response"] <- "unPleasant0_Pleasant1"
 names(amp)[names(amp) == "condition"] <- "PleasOnLeft0_PleasOnRight1"
 names(amp)[names(amp) == "session"] <- "amp1_amp2"
 
-amp_rt_mean <- aggregate(responseTime ~ subjectID, data = amp, FUN=mean)
-amp_rt_sd <- aggregate(responseTime ~ subjectID, data = amp, FUN=sd)
-amp_sum <- merge(amp_rt_mean, amp_rt_sd)
+amp_rt_mean <- aggregate(responseTime_AMP ~ subjectID, data = amp, FUN=mean)
+amp_rt_sd <- aggregate(responseTime_AMP ~ subjectID, data = amp, FUN=sd)
 
-amp_list <- list(amp_rt_mean, amp_rt_sd)
-amp_reduced <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list)
+amp_bathrating_mean <- aggregate(unPleasant0_Pleasant1 ~ subjectID, data = amp, FUN=mean)
+amp_bathrating_sd <- aggregate(unPleasant0_Pleasant1 ~ subjectID, data = amp, FUN=sd)
+
+#amp_sum <- merge(amp_rt_mean, amp_rt_sd, amp_bathrating_mean, amp_bathrating_sd)
+
+#subject-level data frame
+amp_list <- list(amp_rt_mean, amp_rt_sd, amp_bathrating_mean, amp_bathrating_sd)
+amp_Subj_Level <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list)
+
 
 
 ### IAT ########
@@ -468,7 +475,8 @@ iat_csv <- file.path(config$path$data$current, config$csvs$iat)
 iat <- read.csv(iat_csv) #reads in iat data
 
 
-## Explicit Bias ######## 
+
+## Explicit Attitudes ######## 
 
 
 ### MRS ########
@@ -484,11 +492,14 @@ mrs <- mrs[-c(1), ]
 #Reverse code 1st questionnaire item only
 mrs$Q1_Easy_Understand_Recode = recode(mrs$Q1_Easy_Understand, '-2=2; -1=1; 0=0; 1=-1; 2=-2')
 
+
 #sum MRS
 mrs$mrsSum <- (mrs$Q1_Easy_Understand_Recode + mrs$Q2_Segregation_Influence + mrs$Q3_Too_Demanding + mrs$Q4_Economical_Help + mrs$Q5_Press_Affinity + mrs$Q6_Push_Unwanted + mrs$Q7_Discim_Not_Prob)
 
+
 #mean MRS
 mrs$mrsMean <-mrs$mrsSum/7
+
 
 #subject-level data frame
 mrs_Subj_Level <- mrs[c(1,11:12) ]
@@ -514,14 +525,18 @@ srs$Q8_more_than_deserve_recode = recode(srs$Q8_more_than_deserve,'1=4; 2=3; 3=2
 #Reverse code item 3 (has only 3 response choices)
 srs$Q3_push_too_hard_recode = recode(srs$Q3_push_too_hard, '1=3; 2=1; 3=2')
 
+
 #sum SRS (8-31 range)
 srs$srsSum <- (srs$Q1_try_more_recode + srs$Q2_other_minorities_recode + srs$Q3_push_too_hard_recode + srs$Q4_blacks_responsible_recode + srs$Q5_limit_chances + srs$Q6_slavery_difficulty + srs$Q7_less_than_deserve + srs$Q8_more_than_deserve_recode)
+
 
 #mean SRS
 srs$srsMean <-srs$srsSum/8
 
+
 #subject-level data frame
 srs_Subj_Level <- srs[c(1,16:17) ]
+
 
 
 ### IMS-EMS ########
@@ -543,20 +558,28 @@ ims_ems$Q7_StereotypesOK_recode = recode(ims_ems$Q7_StereotypesOK, '1=10; 2=9; 3
 
 # NOTE: Questions 1-5 are external motivation items, while questions 6-10 are internal motivation items.
 
+
+#IMS and EMS Sums
 ims_ems$EmsSum <- (ims_ems$Q1_Try_to_be_PC + ims_ems$Q2_HideThoughts + ims_ems$Q3_OthersAngry + ims_ems$Q4_AvoidDisapproval + ims_ems$Q5_Due2Pressure)
 ims_ems$ImsSum <- (ims_ems$Q6_PersonallyImp + ims_ems$Q7_StereotypesOK_recode + ims_ems$Q8_PersonallyMotiv + ims_ems$Q9_StereotypesWrong + ims_ems$Q10_SelfConcept)
 
-ims_ems$EmsImsDiff <- (ims_ems$EmsSum - ims_ems$ImsSum) #calculates the difference in EMS and IMS scores per participant
+#IMS/EMS Sum Difference
+ims_ems$EmsImsSumDiff <- (ims_ems$EmsSum - ims_ems$ImsSum) #calculates the difference in EMS and IMS scores per participant
+# Note: More negative values indicate more internally motivated to be less biased, more positive scores indicate more externally motivated to be less biased
 
-# More negative values indicate more internally motivated to be less biased, more positive scores indicate more externally motivated to be less biased
 
-#sum IMS-EMS
-#ims_ems$imsEmsSum <- (ims_ems$Q1_Try_to_be_PC + ims_ems$Q2_HideThoughts + ims_ems$Q3_OthersAngry + ims_ems$Q4_AvoidDisapproval + ims_ems$Q5_Due2Pressure +
-#ims_ems$Q6_PersonallyImp + ims_ems$Q7_StereotypesOK_recode + ims_ems$Q8_PersonallyMotiv + ims_ems$Q9_StereotypesWrong + ims_ems$Q10_SelfConcept)
+#IMS and EMS Means
+ims_ems$EmsMean <- (ims_ems$Q1_Try_to_be_PC + ims_ems$Q2_HideThoughts + ims_ems$Q3_OthersAngry + ims_ems$Q4_AvoidDisapproval + ims_ems$Q5_Due2Pressure)/5
+ims_ems$ImsMean <- (ims_ems$Q6_PersonallyImp + ims_ems$Q7_StereotypesOK_recode + ims_ems$Q8_PersonallyMotiv + ims_ems$Q9_StereotypesWrong + ims_ems$Q10_SelfConcept)/5
+
+#IMS/EMS Mean Difference
+ims_ems$EmsImsMeanDiff <- (ims_ems$EmsMean - ims_ems$ImsMean) #calculates the difference in EMS and IMS scores per participant
+# Note: More negative values indicate more internally motivated to be less biased, more positive scores indicate more externally motivated to be less biased
+
 
 #subject-level data frame
-
-ims_ems_Subj_Level <- ims_ems[c(1,14:16) ]
+ims_ems_Subj_Level <- ims_ems[c(1,14:19) ]
+# Includes IMS & EMS sums and averages, as well as differences between EMS/IMS for the sums and averages.
 
 
 
@@ -599,10 +622,10 @@ cm <- mutate(cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Report=="Wh
 
 #create a data frame with a basic version of subject-level "wide" data
 
-bst_wide_list <- list(STRESS, mrs_Subj_Level, srs_Subj_Level, ims_ems_Subj_Level, amp_rt_mean)
+bst_wide_list <- list(Stress_Subj_Level, mrs_Subj_Level, srs_Subj_Level, ims_ems_Subj_Level, amp_Subj_Level)
 
 #merge all data frames together
-BST_SUBJ_LEVEL_DF <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), bst_wide_list)
+BST_Subj_Level_DF <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), bst_wide_list)
 
 
 #Working Notes for creating the Wide data frame (erase when done)
@@ -610,12 +633,12 @@ BST_SUBJ_LEVEL_DF <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), 
 #bst_wide <- bst_wide_reduced[c(1,11,25) ]
 
 #From stress
-  # chronic - add PSS score
-  #         - add PSS median split
-  # acute   - bath unpleasantness
-  #         - bath order
-  #         - bath rating difference (on day of stress vs control)
-  #         - stressed bool
+  # chronic - add PSS score X
+  #         - add PSS median split X
+  # acute   - bath unpleasantness X
+  #         - bath order ___
+  #         - bath rating difference (on day of stress vs control) ___
+  #         - stressed bool X
 #From trust
   # trust perception
   #         - average ratings
@@ -630,18 +653,23 @@ BST_SUBJ_LEVEL_DF <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), 
   #         - shared/not bool
   #         - shared amount avg.
 #From Bias
-  # implic. - add average IAT score
-  #         - add average AMP score
+  # implic. - add average IAT score ___
+  #         - add average IAT RT ___
+  #         - add average AMP score X
+  #         - add average AMP RT X
   # explic. - SRS Sum X
   #         - SRS Mean X
   #         - MRS Sum X
   #         - MRS Mean X
   #         - IMS-EMS EMS Sum X
   #         - IMS-EMS IMS Sum X
-  #         - IMS-EMS EMS-IMS Difference X
-  #         - Contact Measures
+  #         - IMS-EMS Sum Difference X
+  #         - IMS-EMS EMS Avg X
+  #         - IMS-EMS IMS Avg X
+  #         - IMS-EMS Avg Difference X
+  #         - Contact Measures ___
 
-#Working Notes for creating the Wide data frame (erase when done)
+#W orking Notes for creating the Wide data frame (erase when done)
 
 
 # SURVEYS ########
