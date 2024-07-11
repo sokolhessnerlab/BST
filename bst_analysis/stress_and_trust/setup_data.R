@@ -122,13 +122,13 @@ trustGame$bathRating = NA;
 for (s in 1:number_of_subjects){
   sID = subjectIDs[s];
   
-  tmp_stress_conditions = c(1-STRESS$day2bool_0control_1stress[s], STRESS$day2bool_0control_1stress[s]);
+  tmp_stress_conditions = c(1-Stress_Subj_Level$day2bool_0control_1stress[s], Stress_Subj_Level$day2bool_0control_1stress[s]);
 
   for (d in 1:2){
     trust_ind = (trustGame$subjectID == sID) & (trustGame$day == d);
     trustGame$stressedBool[trust_ind] = tmp_stress_conditions[d]; # condition binary (0 = control, 1 = stress)
-    trustGame$pssSum[trust_ind] = STRESS$pssSum[s]; # include PSS sum score
-    trustGame$pssMedianSplit[trust_ind] = STRESS$pssMedianSplit[s]; # include median split based on PSS
+    trustGame$pssSum[trust_ind] = Stress_Subj_Level$pssSum[s]; # include PSS sum score
+    trustGame$pssMedianSplit[trust_ind] = Stress_Subj_Level$pssMedianSplit[s]; # include median split based on PSS
     
     if(tmp_stress_conditions[d] == 0){
       trustGame$bathRating[trust_ind] = bath$controlUnpleasantnessRating[s]; # correct bath rating by day
@@ -279,13 +279,13 @@ trustRating$bathRating = NA;
 for (s in 1:number_of_subjects){
   sID = subjectIDs[s];
   
-  tmp_stress_conditions = c(1-STRESS$day2bool_0control_1stress[s], STRESS$day2bool_0control_1stress[s]);
+  tmp_stress_conditions = c(1-Stress_Subj_Level$day2bool_0control_1stress[s], Stress_Subj_Level$day2bool_0control_1stress[s]);
   
   for (d in 1:2){
     trust_ind = (trustRating$subjectID == sID) & (trustRating$day == d);
     trustRating$stressedBool[trust_ind] = tmp_stress_conditions[d]; # condition binary (0 = control, 1 = stress)
-    trustRating$pssSum[trust_ind] = STRESS$pssSum[s]; # include PSS sum score
-    trustRating$pssMedianSplit[trust_ind] = STRESS$pssMedianSplit[s]; # include median split based on PSS
+    trustRating$pssSum[trust_ind] = Stress_Subj_Level$pssSum[s]; # include PSS sum score
+    trustRating$pssMedianSplit[trust_ind] = Stress_Subj_Level$pssMedianSplit[s]; # include median split based on PSS
     
     if(tmp_stress_conditions[d] == 0){
       trustRating$bathRating[trust_ind] = bath$controlUnpleasantnessRating[s]; # correct bath rating by day
@@ -593,7 +593,9 @@ cm <- read.csv(cm_csv)
 cm <- cm[-c(1), ]
 
 
-#Recode character values as integers for CM items 1-6
+# Recode all variables for CM dataframe 
+
+# Recode character values as integers for CM items 1-6
 cm$Q1_close_white_recode  = recode(cm$Q1_close_white , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
 cm$Q2_aquaint_white_recode  = recode(cm$Q2_aquaint_white , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
 cm$Q3_dated_white_recode  = recode(cm$Q3_dated_white , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
@@ -601,14 +603,12 @@ cm$Q4_close_black_recode  = recode(cm$Q4_close_black , "'0'=0; '1_2'=1; '3_4'=2;
 cm$Q5_aquaint_black_recode  = recode(cm$Q5_aquaint_black , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
 cm$Q6_dated_black_recode  = recode(cm$Q6_dated_black , "'0'=0; '1_2'=1; '3_4'=2; '5_9'=3; '10+'=4")
 
-#Recode character values as integers for CM items 7-9
-cm$Q7_environ_USR_recode  = recode(cm$Q7_environ_USR , "'urb'=0; 'sub'=1; 'rur'=2")
+# Recode character values as integers for CM items 7-9
+cm$Q7_environ_USR_recode  = recode(cm$Q7_environ_USR , "'urb'=2; 'sub'=1; 'rur'=0")
 cm$Q8_environ_race_diverse_recode  = recode(cm$Q8_environ_race_diverse , "'no'=0; 'yes'=1")
 cm$Q9_envir_cult_diverse_recode  = recode(cm$Q9_envir_cult_diverse , "'no'=0; 'yes'=1")
 
-#recode 10-17 as percentages?
-
-#recode character self-report race/ethnicity values
+# Recode character self-report race/ethnicity values
 #NOTE: 5 represents multiple entries (i.e., "mixed race" and "black")
 cm <- mutate(cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Report=="Wht", 0,
                                                          ifelse(Race_Eth_Self_Report=="Hispan_Latin", 1,
@@ -617,12 +617,24 @@ cm <- mutate(cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Report=="Wh
                                                                               ifelse(Race_Eth_Self_Report=="BiRac_MultiRac", 4, 5))))))
 
 
+# Create Numerical dataframe for CM
+# for use in PCA
+cm_num = cm[,c(12:19,21:29)]
+
+
+#subject-level data frame
+cm_Subj_Level <- cm[,c(1,30)] #update later
+# includes subject ID and self-report race-ethnicity item
+
+# cm_Subj_Level <- cm[,c(1,12:19,21:30)] #update later with what to include from PCA
+
 
 # WIDE DATA ########
 
 #create a data frame with a basic version of subject-level "wide" data
 
-bst_wide_list <- list(Stress_Subj_Level, mrs_Subj_Level, srs_Subj_Level, ims_ems_Subj_Level, amp_Subj_Level)
+bst_wide_list <- list(Stress_Subj_Level, mrs_Subj_Level, srs_Subj_Level, ims_ems_Subj_Level, amp_Subj_Level, cm_Subj_Level)
+#Note: cm_Subj_Level df only includes self-identified subject race-ethnicity.  Items to include in subj_level df can be updated after PCA.
 
 #merge all data frames together
 BST_Subj_Level_DF <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), bst_wide_list)
@@ -669,7 +681,7 @@ BST_Subj_Level_DF <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), 
   #         - IMS-EMS Avg Difference X
   #         - Contact Measures ___
 
-#W orking Notes for creating the Wide data frame (erase when done)
+# Working Notes for creating the Wide data frame (erase when done)
 
 
 # SURVEYS ########
