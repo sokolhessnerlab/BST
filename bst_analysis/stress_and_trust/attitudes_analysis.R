@@ -18,6 +18,7 @@ library(lme4)
 library(nlme)
 library(lmerTest) # adds more useful info to the output of lmer's
 
+
 #converts scientific notation to decimal
 options(scipen=999)
 
@@ -481,10 +482,6 @@ min(mrs$mrsSum)  #-14
 
 hist(mrs$mrsSum, breaks = 10) #clear pos skew
 
-#mrs %>%
-  #dplyr::select(subjectID,mrsSum) %>%
-  #head(39) %>%
-  #gt()
 
 #### Main Take-Aways MRS ####
 # Participants survey results leaned heavily towards low explicit bias when using the MRS scale.
@@ -577,13 +574,8 @@ cor.test(srs$srsSum, mrs$mrsSum, method = 'pearson')
 
 # CONTACT MEASURES ######################
 
-#bst_cm %>%
-  #dplyr::select(subjectID, Q10_PerCloseWhite:Q17_PerMediaBlack) %>%
-  #head(39) %>%
-  #gt()
-
 #CM descriptives
-summary(bst_cm)
+summary(cm_num)
 
 # % of white/black contact analysis (items Q10-Q17)
 # results indicate participants overall had a higher percentage of white contacts than black contacts.
@@ -592,25 +584,88 @@ summary(bst_cm)
 #   "acquaintances" - White (M=62.94); Black (M=17.10)
 #   "daily" contacts - White (M=78.51); Black (M=10.73)
 #   "media" contacts - White (M=70.08); Black (M=20.81)
-# Overall, participants' black contacts were highest for "media" contacts and "aquiantances"
+# Overall, participants' black contacts were highest for "media" contacts and "acquaintances"
 
-#bst_cm %>%
-  #dplyr::select(subjectID,EmsImsDiff) %>%
-  #head(39) %>%
-  #gt()
 
-hist(bst_cm$Q1_close_white_recode,breaks = 5)
-hist(bst_cm$Q4_close_black_recode, breaks = 5) #very positively skewed
+hist(cm_num$Q1_close_white_recode,breaks = 5)
+hist(cm_num$Q4_close_black_recode, breaks = 5) #positively skewed
+# Subjects in this data set had a greater frequency of white than black friends
 
-hist(bst_cm$Q2_aquaint_white_recode, breaks = 5)
-hist(bst_cm$Q5_aquaint_black_recode, breaks = 5) #not as skewed as close contacts
+hist(cm_num$Q2_aquaint_white_recode, breaks = 5)
+hist(cm_num$Q5_aquaint_black_recode, breaks = 5) #not as skewed as close contacts
+# While number subjects' black acquaintances was mixed, number of white acquaintances was universally high.
 
-hist(bst_cm$Q3_dated_white_recode, breaks = 5)
-hist(bst_cm$Q6_dated_black_recode, breaks = 5)
+hist(cm_num$Q3_dated_white_recode, breaks = 5, xlim = c(0,4))
+hist(cm_num$Q6_dated_black_recode, breaks = 5, xlim = c(0,4))
+# Overall, subjects had fewer black than white dating partners.
 
-hist(bst_cm$Q7_environ_USR_recode, breaks = 3) #0=urban, 1=suburban, 2=rural
-hist(bst_cm$Q8_environ_race_diverse_recode, breaks = 2)
-hist(bst_cm$Q9_envir_cult_diverse_recode, breaks = 2)
+hist(cm_num$Q7_environ_USR_recode, breaks = 3) #2=urban, 1=suburban, 0=rural
+
+hist(cm_num$Q8_environ_race_diverse_recode, breaks = 2) #1 = diverse, 0 = not diverse
+hist(cm_num$Q9_envir_cult_diverse_recode, breaks = 2) #1 = diverse, 0 = not diverse
+# Overall, participants rated their environments culturally and racially non-diverse vs. diverse.
+
+#### CM PCA Analysis ####
+
+pca_result_cm = prcomp(cm_num)
+hist(pca_result_cm$sdev)
+pca_result_cm$sdev
+
+barplot(pca_result_cm$sdev)
+pca_result_cm$x
+
+pca_result_cm$x[,'PC1']
+
+#pca_result_cm$x$PC1
+
+barplot(pca_result_cm$x[,'PC1'])
+length(pca_result_cm$x[,'PC1']) #39
+#?prcomp
+
+barplot(pca_result_cm$x[,'PC2'])
+barplot(pca_result_cm$x[,'PC3'])
+
+pca_result_cm = prcomp(t(cm_num))
+# Result: SD of PC1 is much higher than the rest of the PCs.
+
+pca_result_cm$x
+# TO-DO: Examine these results in terms of why % closeness inverse with count of closeness.
+
+barplot(pca_result_cm$sdev)
+
+pca_result_cm$x[,'PC1']
+# Result: Percentage of White contacts contributed a great deal to outcome
+
+pca_result_cm
+# PC per subject
+
+pca_result_cm$rotation[,1]
+
+cm_dimensionreduction_value = drop(pca_result_cm$rotation[,1])
+
+cm_dimensionreduction_value = as.numeric(pca_result_cm$rotation[,1])
+
+hist(cm_dimensionreduction_value)
+s
+
+#normalize
+pca_result_cm = prcomp(t(cm_num), scale = T, center = T)
+barplot(pca_result_cm$sdev)
+barplot(pca_result_cm$x[,'PC1'])
+cm_dimensionreduction_value = as.numeric(pca_result_cm$rotation[,1])
+hist(cm_dimensionreduction_value)
+pca_result_cm$rotation
+
+pca_result_cm = prcomp(t(cm_num), scale = T)
+
+barplot(pca_result_cm$sdev)
+barplot(pca_result_cm$x[,'PC1'])
+cm_dimensionreduction_value = as.numeric(pca_result_cm$rotation[,1])
+hist(cm_dimensionreduction_value)
+sort(cm_dimensionreduction_value)
+
+pca_result_cm$rotation
+
 
 
 # MODELS ######################
