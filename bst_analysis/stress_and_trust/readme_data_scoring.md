@@ -1,6 +1,6 @@
 #  BST/data/Current_Dataframes README 
 
-**Last updated: 2024.07.10**
+**Last updated: 2024.07.11**
 
 
 ### Folder Contents
@@ -61,10 +61,15 @@ Overall, this "Current_Dataframes" folder contains the most up-to-date compiled 
     
     
 - **Contact Measures Data** - BST_ContactMeas_Data.csv  - contains all the contact measures (CM) survey data.
-    - Description
-    - Scoring Procedures
-    - References.
+    - Description: Participants are asked to reflect on how many White and Black "contacts" they have.  Friends, acquaintances, dating partners are considered, as well as entertainers and neighborhood environment. The survey concludes with a self-identification of one's own race or ethnicity.
     
+    - Scoring Procedures:
+      (1) One possible approach: "We constructed intergroup contact difference scores by averaging the percentages for Black and White contact separately for each subject and then subtracting the percentage of Black contact from White contact." (Dunsmoor et al., 2016)
+    
+    - References:
+      (1) Dunsmoor, J. E., Kubota, J. T., Li, J., Coelho, C. A., & Phelps, E. A. (2016). Racial stereotypes impair flexibility of emotional learning. Social cognitive and affective neuroscience, 11(9), 1363–1373. https://doi.org/10.1093/scan/nsw053
+      (2) Pettigrew, T. F., & Tropp, L. R. (2006). A meta-analytic test of intergroup contact theory. Journal of personality and social psychology, 90(5), 751–783. https://doi.org/10.1037/0022-3514.90.5.751
+      
     
 - **IMS-EMS Data** - BST_IMS_EMS_Data.csv  - contains all the internal and external motivation (IMS-EMS) to respond without prejudice survey data.
     - Description: Participants are asked to honestly rate their racial motives in a survey of 10 scaled items. The IMS-EMS survey consists of two measures with 5 items each, half of which are "external motivation" and half "internal motivation" items for responding without prejudice.
