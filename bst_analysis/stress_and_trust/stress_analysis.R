@@ -107,7 +107,7 @@ by(data = pss$pssSum, INDICES = pss$pssMedianSplit, FUN = range)
 
 # Q: Was there a difference in PSS scores (self-reporting of chronic stress) based on what type of bath was received on day 2?
 # Note: PSS was only administered on day 2
-t.test(STRESS$pssSum ~ STRESS$day2bool_0control_1stress==0)
+t.test(Stress_Subj_Level$pssSum ~ Stress_Subj_Level$day2bool_0control_1stress==0)
 # A: The difference in self-reported PSS scores were not significantly affected by the presence of the cold water bath on day 2
 # Key results - Received cold bath mean = 16, Didn't received lukewarm bath mean = 15.86 (p = .94, t=-.075) 
 
