@@ -471,8 +471,27 @@ amp_Subj_Level <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list)
 
 ### IAT ########
 
+library(IATScore)
+
 iat_csv <- file.path(config$path$data$current, config$csvs$iat)
 iat <- read.csv(iat_csv) #reads in iat data
+
+#FISPPA Version
+
+# (1) Clean IAT - Remove from the dataset the pure practice blocks of the IAT
+iat_wrangled = filter(iat, trialtype != "PRAC")
+
+iat_wrangled_Dscoring <- iat_wrangled[, c("subjectID", "blockNum", "RT", "correct")]
+
+iat_wrangled_Dscoring <- iat_wrangled_Dscoring %>%
+  rename(participant = subjectID,
+         block = blockNum,
+         latency = RT,
+         correct = correct)
+
+
+# Storage version
+# IATScore(iat, Trials, First)
 
 
 
