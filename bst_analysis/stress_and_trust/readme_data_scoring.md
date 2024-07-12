@@ -1,11 +1,11 @@
-#  BST/data/Current_Dataframes README 
+#  Github/bst/data/bst_analysis/stress_and_trust README 
 
-**Last updated: 2024.07.11**
+**Last updated: 2024.07.12**
 
 
 ### Folder Contents
 
-The primary function of this Read Me file is to outline the methods for compiling the BST data, and provide additional helpful information and references on the data compiling methods.
+The primary function of this Read Me file is to outline the methods for compiling the BST data and provide additional helpful information and references on the data compiling methods.
 
 Overall, this "Current_Dataframes" folder contains the most up-to-date compiled dataframes, which are directly used in the BST setup_data.R script and subsequent scripts for analyses. These data are created from the "Create_Dataframes" and "scannedpaperdocs" folders. Note: this section will be updated as new data is compiled and readied for analysis.
 
@@ -35,17 +35,30 @@ Overall, this "Current_Dataframes" folder contains the most up-to-date compiled 
     
     - References: 
     (1) Payne, B. K., Cheng, C. M., Govorun, O., & Stewart, B. D. (2005). An inkblot for attitudes: affect misattribution as implicit measurement. Journal of personality and social psychology, 89(3), 277–293.
-    (2) Payne, K., & Lundberg, K.B. (2014). The Affect Misattribution Procedure: Ten Years of Evidence on Reliability, Validity, and Mechanisms. Social and Personality Psychology Compass, 8, 672-686.
+    (2) Kurdi, B., Melnikoff, D. E., Hannay, J. W., Korkmaz, A., Lee, K. M., Ritchie, E., Surdel, N., Vuletich, H. A., Yang, X., Payne, B. K., & Ferguson, M. J. (2024). Testing the automaticity features of the affect misattribution procedure: The roles of awareness and intentionality. Behavior research methods, 56(4), 3161–3194. https://doi.org/10.3758/s13428-023-02291-2
+    (3) Payne, K., & Lundberg, K.B. (2014). The Affect Misattribution Procedure: Ten Years of Evidence on Reliability, Validity, and Mechanisms. Social and Personality Psychology Compass, 8, 672-686.
     - Note: AMP is correlated with explicit race attitudes, but this effect is moderated by motives to control prejudice.
     
     
 - **IAT Data** - allIATData_20200626.csv  - Contains all the Implicit Association Test (IAT) data.
     - Description: The IAT evaluates a 2-choice task in which two highly associated and unassociated categories share a response key. For example, a group of black faces is paired with "good" words and "bad" words and response times differences are examined.
     
-    - Scoring Procedures: ADD
+    - "An implicit association test (IAT) measures differential association of 2 target concepts with an attribute" (Greenwald, 1998)
+    
+    - Scoring Procedures: Participants attribute stimuli "good" and "bad" word stimuli with images of Black and White individuals. Associative tasks are conducted with feedback following incorrect responses.
+    
+    "D is computed as the difference between mean latencies of the two BIAT blocks divided by the inclusive (not pooled) standard deviation of latencies in the two blocks. This measure has been shown to have psychometric properties superior to those of a wide variety of alternative strategies for using latencies from the IAT’s two tasks
+(Greenwald et al., 2003; Sriram, Nosek, & Greenwald, 2007)." (Sriram & Greeenwald, 2009)
+
     
     - References:
-    (1) Greenwald, A.G., McGhee,D.E., & Schwartz, J.L.K. (1998). Measuring Individual Differences in Implicit Cognition: ThenImplicit Association Test. Journal of Personality and Social Psychology, 74, 1464-1480.
+    (1) Greenwald, A.G., McGhee,D.E., & Schwartz, J.L.K. (1998). Measuring Individual Differences in Implicit Cognition: ThenImplicit Association Test. Journal of Personality and Social Psychology, 74, 1464-1480. *(Used in Stanley, 2011)
+    (2) https://fisppa.psy.unipd.it/DscoreApp/#
+    (3) https://cran.r-project.org/web/packages/IATScore/IATScore.pdf #(Storage, 2022)
+    (4) Sriram, N., & Greenwald, A. G. (2009). The brief implicit association test. Experimental Psychology, 56(4), 283–294. https://doi.org/10.1027/1618-3169.56.4.283
+    (5) Nosek, B. A., Bar-Anan, Y., Sriram, N., Axt, J., & Greenwald, A. G. (2014). Understanding and using the brief Implicit Association Test: recommended scoring procedures. PloS one, 9(12), e110938. https://doi.org/10.1371/journal.pone.0110938
+    
+    
     
     
 - **Trust Game Data** - allTGData_20200626.csv  - contains all the trust game (TG) data.
@@ -96,7 +109,7 @@ Overall, this "Current_Dataframes" folder contains the most up-to-date compiled 
     - Description: This scale was created in response to issues surrounding the Modern Racism Scale (MRS).  The SRS attempts to help prevent response biases and unreliable response patterns. 
     
     - Scoring Procedures: The following is the standard procedure for combining the items into a scale:
-    (1) After collecting the data, items 1, 2, 4, and 8 need to be recoded so that a 1 = 4, 2 = 3, 3 = 2, and 4 = 1.  
+    (1) After collecting the data, items 1, 2, 4, and 8 need to be recoded so that a 1 = 4, 2 = 3, 3 = 2, and 4 = 1.
     (2) Item 3 needs to be recoded so that 1 = 3, 2 = 1, and 3 = 2.  
     
     Scoring Options: For combining the items into a scale, there are several options, ranging from simplest to most precise.  
