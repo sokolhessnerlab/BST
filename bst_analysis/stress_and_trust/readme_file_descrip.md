@@ -3,7 +3,7 @@
 
 -- BST File Descriptions--
 
-**Last updated: 2024.07.10**
+**Last updated: 2024.07.12**
 
 
 ### R Scripts
@@ -40,6 +40,8 @@
 - **readme_data_scoring.md** -
 > contains descriptions of how individual meausures are scored and the references of those scoring procedures for subsequent use in the setup_data.R script. 
 
+- **readme_vars_of_interest_references.md** -
+> contains a list of references/key findings related to the variables of interest in the BST study.
 
 
 ### Legacy Scripts (No longer used in analysis)
