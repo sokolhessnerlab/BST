@@ -1,6 +1,6 @@
 #  Github/bst/data/bst_analysis/stress_and_trust README 
 
-**Last updated: 2024.07.12**
+**Last updated: 2024.07.15**
 
 
 ### Folder Contents
@@ -42,6 +42,7 @@ Overall, this "Current_Dataframes" folder contains the most up-to-date compiled 
     
 - **IAT Data** - allIATData_20200626.csv  - Contains all the Implicit Association Test (IAT) data.
     - Description: The IAT evaluates a 2-choice task in which two highly associated and unassociated categories share a response key. For example, a group of black faces is paired with "good" words and "bad" words and response times differences are examined.
+    -NOTE: Greenwald had a traditional IAT D-Scoring algorithm, then Greenwald updated his own scoring algorithm in 2003. Both methods are cited below.
     
     - "An implicit association test (IAT) measures differential association of 2 target concepts with an attribute" (Greenwald, 1998)
     
@@ -56,6 +57,7 @@ Overall, this "Current_Dataframes" folder contains the most up-to-date compiled 
     (2) Sriram, N., & Greenwald, A. G. (2009). The brief implicit association test. Experimental Psychology, 56(4), 283–294. https://doi.org/10.1027/1618-3169.56.4.283
     (3) Nosek, B. A., Bar-Anan, Y., Sriram, N., Axt, J., & Greenwald, A. G. (2014). Understanding and using the brief Implicit Association Test: recommended scoring procedures. PloS one, 9(12), e110938. https://doi.org/10.1371/journal.pone.0110938
     (4) Röhner, J., & Thoss, P. J. (2019). A tutorial on how to compute traditional IAT effects with R. The Quantitative Methods for Psychology, 15(2), 134–147.
+    (5) Greenwald, A. G., Nosek, B. A., & Banaji, M. R. (2003). Understanding and using the implicit association test: I. An improved scoring algorithm. Journal of personality and social psychology, 85(2), 197–216. https://doi.org/10.1037/0022-3514.85.2.197
     
     
     
