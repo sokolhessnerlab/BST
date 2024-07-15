@@ -53,10 +53,9 @@ Overall, this "Current_Dataframes" folder contains the most up-to-date compiled 
     
     - References:
     (1) Greenwald, A.G., McGhee,D.E., & Schwartz, J.L.K. (1998). Measuring Individual Differences in Implicit Cognition: ThenImplicit Association Test. Journal of Personality and Social Psychology, 74, 1464-1480. *(Used in Stanley, 2011)
-    (2) https://fisppa.psy.unipd.it/DscoreApp/#
-    (3) https://cran.r-project.org/web/packages/IATScore/IATScore.pdf #(Storage, 2022)
-    (4) Sriram, N., & Greenwald, A. G. (2009). The brief implicit association test. Experimental Psychology, 56(4), 283–294. https://doi.org/10.1027/1618-3169.56.4.283
-    (5) Nosek, B. A., Bar-Anan, Y., Sriram, N., Axt, J., & Greenwald, A. G. (2014). Understanding and using the brief Implicit Association Test: recommended scoring procedures. PloS one, 9(12), e110938. https://doi.org/10.1371/journal.pone.0110938
+    (2) Sriram, N., & Greenwald, A. G. (2009). The brief implicit association test. Experimental Psychology, 56(4), 283–294. https://doi.org/10.1027/1618-3169.56.4.283
+    (3) Nosek, B. A., Bar-Anan, Y., Sriram, N., Axt, J., & Greenwald, A. G. (2014). Understanding and using the brief Implicit Association Test: recommended scoring procedures. PloS one, 9(12), e110938. https://doi.org/10.1371/journal.pone.0110938
+    (4) Röhner, J., & Thoss, P. J. (2019). A tutorial on how to compute traditional IAT effects with R. The Quantitative Methods for Psychology, 15(2), 134–147.
     
     
     
