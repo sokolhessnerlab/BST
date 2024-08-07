@@ -1,6 +1,6 @@
 #  Github/bst/data/bst_analysis/stress_and_trust README 
 
-**Last updated: 2024.07.15**
+**Last updated: 2024.08.07**
 
 
 ### Folder Contents

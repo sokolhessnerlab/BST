@@ -1,6 +1,6 @@
 #  Github/bst/data/bst_analysis/stress_and_trust README 
 
-**Last updated: 2024.07.12**
+**Last updated: 2024.08.07**
 
 
 ### Folder Contents
@@ -27,7 +27,7 @@ The primary function of this Read Me file is to document important references fo
     - (1) The extent to which an individual invests in and trusts others with different racial backgrounds is related to the magnitude of that individual's implicit race bias. The core dimension of social trust can be shaped, to some degree, by attitudes that reside outside conscious awareness and intention.
       Reference: Stanley, D. A., Sokol-Hessner, P., Banaji, M. R., & Phelps, E. A. (2011). Implicit race attitudes predict trustworthiness judgments and economic trust decisions. Proceedings of the National Academy of Sciences of the United States of America, 108(19), 7710–7715. https://doi.org/10.1073/pnas.1014345108
     
-    - (2) We show that: (1) although political scientists use the BIAT and the AMP to measure the same thing, the relationship between them is substantively indistinguishable from zero; (2) both measures classify an unlikely proportion of whites as more favorable toward Black Americans than white Americans; and (3) substantial numbers of whites that either measure classifies as free of prejudice openly endorse anti-Black stereotypes. 
+    - (2) We show that: (a) although political scientists use the BIAT and the AMP to measure the same thing, the relationship between them is substantively indistinguishable from zero; (b) both measures classify an unlikely proportion of whites as more favorable toward Black Americans than white Americans; and (c) substantial numbers of whites that either measure classifies as free of prejudice openly endorse anti-Black stereotypes. 
       Reference:  Clayton, K., Horrillo, J., & Sniderman, P. M. (2023). The BIAT and the AMP as measures of racial prejudice in political science: A methodological assessment. Political Science Research and Methods, 11(2), 363–373. doi:10.1017/psrm.2022.56
 
 
