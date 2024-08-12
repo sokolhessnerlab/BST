@@ -86,12 +86,20 @@ names(bath)[names(bath) == "Day.2"] <- "bathReceivedDay2"
 Stress_Acute <- bath[c(1,6:7) ]
 
 
-# --- Combining Acute & Chronic Stress Measures --- #
-#combining acute and chronic stressor data into wide data
+# Cortisol DFs#
 
-#subject-level data frame
+#Loads in cortisol .csv file
+cort_csv <- file.path(config$path$data$cortisol, config$csvs$cort)
+cort <- read.csv(cort_csv) #reads in the .csv
+names(cort)[names(cort) == "Subject_ID"] <- 'subjectID' #renames the subject id column to maintain consistency across DFs
+cort[cort == ""] <- NA
+
+# TO-DO: Extract sampleID ?
+
+
+
+#STRESS subject-level data frame
 Stress_Subj_Level <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = T)
-
 
 
 # TRUST ########
@@ -471,7 +479,7 @@ amp_Subj_Level <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list)
 
 ### IAT ########
 
-library(IATScore)
+#library(IATScore)
 
 iat_csv <- file.path(config$path$data$current, config$csvs$iat)
 iat <- read.csv(iat_csv) #reads in iat data
