@@ -88,11 +88,28 @@ Stress_Acute <- bath[c(1,6:7) ]
 
 ### Cortisol DFs ########
 
+#### TRIAL Level ####
+
 #Loads in cortisol .csv file
 cort_csv <- file.path(config$path$data$cortisol, config$csvs$cort)
 cort <- read.csv(cort_csv) #reads in the .csv
 names(cort)[names(cort) == "Subject_ID"] <- 'subjectID' #renames the subject id column to maintain consistency across DFs
 cort[cort == ""] <- NA
+
+# Cortisol - split sample_ID into components - ALL participants #
+
+split_sample_ID <- strsplit(cort$sample_ID, "_")
+
+# Convert list to dataframe
+cort_split <- do.call(rbind, split_sample_ID)
+cort_split <- as.data.frame(cort_split)
+names(cort_split) <- c("subject", "day", "sample")
+
+# Combine with original dataframe
+cort <- cbind(cort, cort_split)
+
+
+#### SUBJECT Level ####
 
 # Mean cortisol values by subjectID
 subj_mean_cort <- aggregate(cortisol_mean_nmol_to_l ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
@@ -100,7 +117,7 @@ subj_mean_cort <- aggregate(cortisol_mean_nmol_to_l ~ subjectID, data = cort, FU
 # A: Subject 23 has a very high mean cortisol value
 
 # Cortisol subject-level mean cortisol readings
-mean(subj_mean_cort$cortisol_mean_nmol_to_l) #1.998
+mean(subj_mean_cort$cortisol_mean_nmol_to_l) #1.997
 
 # Mean of cort_1_value, cort_2_value, and COV by Subject_ID
 mean_cort1 <- aggregate(cort_1_value ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
@@ -133,6 +150,7 @@ Stress_Subj_Level <- Stress_Subj_Level_wCort[!is.na(Stress_Subj_Level_wCort$diff
 # TO-DO: 
 # (1) Extract sampleID ?
 # (2) Address one participant that has very high cort reading.
+# (3) Create day/sample at subj-level
 
 
 # TRUST ########
