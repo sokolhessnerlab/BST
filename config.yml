@@ -5,10 +5,12 @@ default:
             current: "/Volumes/shlab/Projects/BST/data/Current_Dataframes"
             survey: "/Volumes/shlab/Projects/BST/data/Current_Dataframes/SurveyData"
             explicit: "/Volumes/shlab/Projects/BST/data/Current_Dataframes"
+            cortisol: "/Volumes/shlab/Projects/BST/data/Current_Dataframes/CortisolData"
         code:
-            r_scripts: "./bst_analysis/stress_and_trust"
+            r_scripts: "./bst_analysis/bst_scripts"
     csvs:
         pss: "PSSData_noVarDescrip.csv"
+        cort: "Cortisol_Data.csv"
         bath_pleasantness: "bathPleasantness.csv"
         bath_order: "bathOrder.csv"
         tg: "allTGData_20200626.csv"
@@ -28,3 +30,4 @@ default:
         stress_analysis: "stress_analysis.R"
         trust_analysis: "trust_analysis.R"
         interactive_analysis: "interactive_analysis.R"
+        iat_analysis: "iat_analysis.R"
