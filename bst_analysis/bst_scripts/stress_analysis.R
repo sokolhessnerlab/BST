@@ -117,6 +117,41 @@ range(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) # 1.83 t
 
 
 
+# Day Effects on Cortisol (Across Trials)
+
+subj_cort_mean_day <- aggregate(cortisol_mean_nmol_to_l ~ day, data = cort, FUN = mean, na.rm = TRUE)
+# Q: Are there differences in cortisol levels between day 1 and day 2 of cort readings
+#  day cortisol_mean_nmol_to_l
+#   1                2.024031
+#   2                2.159193
+# A: There is a difference of 0.136 higher cort readings on day 2.
+# Could this slight bias towards higher cort on day 2 be from those who already experienced the stressor on day 1,
+# anticipating stress on day 2?
+
+
+# Sample Effects on Cortisol (Across Trials)
+
+subj_cort_mean_sample <- aggregate(cortisol_mean_nmol_to_l ~ sample, data = cort, FUN = mean, na.rm = TRUE)
+# Q: Are there differences in cortisol levels from reading 1 to 4
+#  sample cortisol_mean_nmol_to_l
+#      1                1.808261
+#      2                1.859425
+#      3                2.816782
+#      4                1.872442
+# A: There is an upward trend in cort readings from readings 1 to 3 with a spike between readings 2 and 3,
+# then a fall of cortisol level from reading 3 to 4.
+# Should cort be falling in reading 4?
+
+
+# Sample Effects on Cortisol (Across Subjects - collapsed)
+
+
+
+##### T0-DO ####
+
+# Should Cort be decreasing at reading 4?
+# Reviewed day effects but need to examine day with stress.
+# Rework sample and day with subj-level data.
 
 
 #### CHRONIC ####
