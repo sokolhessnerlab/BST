@@ -16,9 +16,9 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 
 #setting Up Stress Data Frames#
 
-# --- Chronic Stress Measures--- #
+## Chronic Stress Measures ########
 
-# PSS DFs #
+### PSS DFs ########
 
 #Loads in PSS .csv file
 pss_csv <- file.path(config$path$data$survey, config$csvs$pss)
@@ -51,9 +51,9 @@ pss <- pss[order(pss$subjectID, decreasing = FALSE),]
 Stress_Chronic <- pss[c(1,16:18) ]
 
 
-# --- Acute Stress Measures --- #
+## Acute Stress Measures ########
 
-# Bath Rating DFs #
+### Bath Rating DFs ########
 
 #Loads Bath Ratings .csv file
 bath_pleasantness_csv <- file.path(config$path$data$current, config$csvs$bath_pleasantness)
@@ -86,7 +86,7 @@ names(bath)[names(bath) == "Day.2"] <- "bathReceivedDay2"
 Stress_Acute <- bath[c(1,6:7) ]
 
 
-# Cortisol DFs#
+### Cortisol DFs ########
 
 #Loads in cortisol .csv file
 cort_csv <- file.path(config$path$data$cortisol, config$csvs$cort)
@@ -94,21 +94,55 @@ cort <- read.csv(cort_csv) #reads in the .csv
 names(cort)[names(cort) == "Subject_ID"] <- 'subjectID' #renames the subject id column to maintain consistency across DFs
 cort[cort == ""] <- NA
 
-# TO-DO: Extract sampleID ?
+# Mean cortisol values by subjectID
+subj_mean_cort <- aggregate(cortisol_mean_nmol_to_l ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
+# Q: Do any subject's have extreme cortisol mean values?
+# A: Subject 23 has a very high mean cortisol value
+
+# Cortisol subject-level mean cortisol readings
+mean(subj_mean_cort$cortisol_mean_nmol_to_l) #1.998
+
+# Mean of cort_1_value, cort_2_value, and COV by Subject_ID
+mean_cort1 <- aggregate(cort_1_value ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
+mean_cort2 <- aggregate(cort_2_value ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
+mean_COV <- aggregate(cort_coeff_of_variance_as_percent ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
+
+# Combine the results into a single data frame
+mean_cortisol_readings <- merge(mean_cort1, mean_cort2, by = "subjectID", all.x = TRUE)
+mean_cortisol_readings2 <- merge(mean_cortisol_readings, mean_COV, by = "subjectID", all.x = TRUE)
+subj_level_cortisol <- merge(mean_cortisol_readings2, subj_mean_cort, by = "subjectID", all.x = TRUE) 
+
+subj_level_cortisol$cort1_cort2_diff <- subj_level_cortisol$cort_1_value - subj_level_cortisol$cort_2_value
+#Q: Are there any very large differences in cort 1 and 2 readings
+#A: By first glance, there does not appear to be overtly large differences, but we can revisit this after a lit review.
 
 
 
-#STRESS subject-level data frame
-Stress_Subj_Level <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = T)
+## Subj-Level Stress ########
+
+#STRESS subject-level data frame with ALL participants
+Stress_Subj_noCort <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = TRUE)
+Stress_Subj_Level_wCort <- merge(Stress_Subj_noCort, subj_level_cortisol, by = "subjectID", all = TRUE)
+
+# STRESS subject-level dataframe with participants who completed BOTH days of the experiment
+Stress_Subj_Level <- Stress_Subj_Level_wCort[!is.na(Stress_Subj_Level_wCort$diffUnPleasantnessRating), ]
+
+
+## To-do Stress ########
+
+# TO-DO: 
+# (1) Extract sampleID ?
+# (2) Address one participant that has very high cort reading.
 
 
 # TRUST ########
 
 #setting Up Trust Data Frames#
 
-# --- Trust Game Measures--- #
+## Trust Game Measures ########
 
-# Trust Game DFs #
+### Trust Game DFs ########
+
 tg_csv <- file.path(config$path$data$current, config$csvs$tg)
 trustGame <- read.csv(tg_csv) #reads in trust game data
 
@@ -263,9 +297,10 @@ for (t in 2:length(index_partnerOther)){
 }
 
 
-# --- Trust Rating Measures--- #
+## Trust Rating Measures ########
 
-# Trust Rating DFs #
+### Trust Rating DFs ########
+
 tr_csv <- file.path(config$path$data$current, config$csvs$tr)
 trustRating <- read.csv(tr_csv)
 
@@ -429,11 +464,9 @@ for (t in 2:length(index_partnerOther)){
 #rm(trustRating_part_avg_stress)
 
 
+## Subj-Level Trust ########
 
 # --- Combining Trust Ratings & Trust Game Measures --- #
-
-
-# Setting up LONG df
 
 # Combine trial by trial trust measures - trust game & trust rating - for long data frame
 # NOTE:  Commented out until we decide which variables/specific columns to use for long df
@@ -444,6 +477,9 @@ for (t in 2:length(index_partnerOther)){
 # Combine subject-level trust measures - trust game & trust rating - for wide data frame
 # NOTE:  Commented out until we decide which variables/specific columns to use for wide df
 # TRUST <- merge(trustGame, trustRating by = "subjectID")  #use merge to not lose the 3 subjects who lack a PSS score
+
+
+## To-do Trust ########
 
 
 
@@ -654,6 +690,16 @@ cm_Subj_Level <- cm[,c(1,30)] #update later
 # includes subject ID and self-report race-ethnicity item
 
 # cm_Subj_Level <- cm[,c(1,12:19,21:30)] #update later with what to include from PCA
+
+
+## Subj-Level Attitudes ########
+
+# Add
+
+
+## To-do Attitudes ########
+
+
 
 
 # WIDE DATA ########
