@@ -1,7 +1,8 @@
 
 # --- Stress Only Base Level Analysis Script --- #
 
-#setwd("/Users/shlab/Documents/GitHub/bst")
+#setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
+#setwd("~/Documents/GitHub/bst") #laptop
 
 #NOTE: Run this script while connected to the shlab drive, 
 # where the script's data sources are under /Volumes
@@ -24,6 +25,8 @@ options(scipen=999)
 #### ACUTE ####
 
 #BST Acute Stressor measures include bath unpleasantness ratings & cortisol.
+
+##### BATH Ratings ####
 
 #Bath rating descriptives
 mean(bath$stressUnpleasantnessRating) #6.128
@@ -63,8 +66,58 @@ t.test(diffratings_byday)
 # p = 0.20, t(38) = 1.29, M = -0.92 
 # There do not appear to be significant day effects on bath ratings.
 
-# Cortisol descriptives
-# Add cortisol measures here.
+##### CORT Scores ####
+
+# Cortisol scores across readings - ALL participants #
+
+#Cort 1 Value Readings
+mean(cort$cort_1_value, na.rm = T) #2.12
+sd(cort$cort_1_value, na.rm = T) #2.56 
+range(cort$cort_1_value, na.rm = T) # 0 to 26.51
+
+#Cort 2 Value Readings
+mean(cort$cort_2_value, na.rm = T) #2.03
+sd(cort$cort_2_value, na.rm = T) #2.34 
+range(cort$cort_2_value, na.rm = T) # 0 to 18.66
+
+#Cort 1 & 2 Value Means
+mean(cort$cortisol_mean_nmol_to_l, na.rm = T) #2.09
+sd(cort$cortisol_mean_nmol_to_l, na.rm = T) #2.42
+range(cort$cortisol_mean_nmol_to_l, na.rm = T) # 0 to 21.66
+
+#Cort COV Percentage Means
+mean(cort$cort_coeff_of_variance_as_percent, na.rm = T) #7.33
+sd(cort$cort_coeff_of_variance_as_percent, na.rm = T) #6.50
+range(cort$cort_coeff_of_variance_as_percent, na.rm = T) # 0.0 to 38.6
+
+
+
+# Cortisol score means subject-level - ALL participants #
+# Note: Use Stress_Subj_Level for participants who completed BOTH days of the experiment.
+
+#Cort 1 Value Readings
+mean(subj_level_cortisol$cort_1_value, na.rm = T) #2.02
+sd(subj_level_cortisol$cort_1_value, na.rm = T) #1.73 
+range(subj_level_cortisol$cort_1_value, na.rm = T) # 0.00 to 11.87
+
+#Cort 2 Value Readings
+mean(subj_level_cortisol$cort_2_value, na.rm = T) #1.95
+sd(subj_level_cortisol$cort_2_value, na.rm = T) #1.61 
+range(subj_level_cortisol$cort_2_value, na.rm = T) # 0.00 to 10.86
+
+#Cort 1 & 2 Value Means
+mean(subj_level_cortisol$cortisol_mean_nmol_to_l, na.rm = T) #1.997
+sd(subj_level_cortisol$cortisol_mean_nmol_to_l, na.rm = T) #1.664
+range(subj_level_cortisol$cortisol_mean_nmol_to_l, na.rm = T) # 0 to 11.37
+
+#Cort COV Percentage Means
+mean(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) #7.298
+sd(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) #2.87
+range(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) # 1.83 to 14.24
+
+
+
+
 
 #### CHRONIC ####
 
@@ -110,6 +163,9 @@ by(data = pss$pssSum, INDICES = pss$pssMedianSplit, FUN = range)
 t.test(Stress_Subj_Level$pssSum ~ Stress_Subj_Level$day2bool_0control_1stress==0)
 # A: The difference in self-reported PSS scores were not significantly affected by the presence of the cold water bath on day 2
 # Key results - Received cold bath mean = 16, Didn't received lukewarm bath mean = 15.86 (p = .94, t=-.075) 
+
+# --- Combining Acute & Chronic Stress Measures --- #
+#combining acute and chronic stressor data into wide data
 
 
 
