@@ -98,12 +98,12 @@ cort[cort == ""] <- NA
 
 # Cortisol - split sample_ID into components - ALL participants #
 
-split_sample_ID <- strsplit(cort$sample_ID, "_")
+split_sample_ID <- strsplit(cort$sample_ID, "_") 
 
 # Convert list to dataframe
 cort_split <- do.call(rbind, split_sample_ID)
-cort_split <- as.data.frame(cort_split)
-names(cort_split) <- c("subject", "day", "sample")
+cort_split <- as.data.frame(cort_split[,2:3])
+names(cort_split) <- c("day", "sample")
 
 # Combine with original dataframe
 cort <- cbind(cort, cort_split)
@@ -115,24 +115,88 @@ cort <- cbind(cort, cort_split)
 subj_mean_cort <- aggregate(cortisol_mean_nmol_to_l ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
 # Q: Do any subject's have extreme cortisol mean values?
 # A: Subject 23 has a very high mean cortisol value
+#    (roughly 6 s.d. above the group mean: 11.37; group mean is 2.00, s.d. is 1.66; 6 s.d.'s above the mean is 11.98)
 
 # Cortisol subject-level mean cortisol readings
-mean(subj_mean_cort$cortisol_mean_nmol_to_l) #1.997
+mean(subj_mean_cort$cortisol_mean_nmol_to_l) # 2.00
+sd(subj_mean_cort$cortisol_mean_nmol_to_l) # 1.66
 
-# Mean of cort_1_value, cort_2_value, and COV by Subject_ID
-mean_cort1 <- aggregate(cort_1_value ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
-mean_cort2 <- aggregate(cort_2_value ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
-mean_COV <- aggregate(cort_coeff_of_variance_as_percent ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
+##### Sample Assay Consistency Check #####
+# How consistent were the duplicate analyses of a given sample? 
+assay_difference_value = cort$cort_1_value - cort$cort_2_value;
 
-# Combine the results into a single data frame
-mean_cortisol_readings <- merge(mean_cort1, mean_cort2, by = "subjectID", all.x = TRUE)
-mean_cortisol_readings2 <- merge(mean_cortisol_readings, mean_COV, by = "subjectID", all.x = TRUE)
-subj_level_cortisol <- merge(mean_cortisol_readings2, subj_mean_cort, by = "subjectID", all.x = TRUE) 
+sum(is.na(assay_difference_value)) # 13 samples do not have duplicate testing values
+  # i.e. for 13 SAMPLES, we have a cort1 value, but not a cort2 value
 
-subj_level_cortisol$cort1_cort2_diff <- subj_level_cortisol$cort_1_value - subj_level_cortisol$cort_2_value
-#Q: Are there any very large differences in cort 1 and 2 readings
-#A: By first glance, there does not appear to be overtly large differences, but we can revisit this after a lit review.
+hist(assay_difference_value) # Not a particularly useful measure, b/c doesn't take into account
+# the overall value of the assay (i.e. a larger discrepancy is ok at larger values)
 
+hist(cort$cort_coeff_of_variance_as_percent, breaks = 20)
+#   Most are < 20 (~96%)
+#   Few are > 20 (~4%, or 12 samples)
+
+# Where are these high CV samples?
+plot(cort$cort_1_value, cort$cort_2_value)
+lines(x = c(0, 30), y = c(0, 30), lty = 'dashed')
+points(cort$cort_1_value[cort$cort_coeff_of_variance_as_percent > 20], cort$cort_2_value[cort$cort_coeff_of_variance_as_percent > 20], col = 'red', pch = 5)
+# Most (11) are small values (< 2.5), and most have cort 1 > cort 2 (why? don't know). 
+# One with highest CV value is NOT the highest cort value (in absolute terms).
+
+# ANSWER: Pretty consistent; scatterplot indicates close clustering. Probably good to go.
+
+
+##### Cortisol Reorganization #####
+# Reshape the cort object into a 4 (sample) x 2 (day) x N (subjects) three dimensional object
+cort_subjectIDs = unique(cort$subjectID);
+cort_mtx = array(data = NA, dim = c(4, 2, length(cort_subjectIDs)))
+
+for (samp_num in 1:4){
+  for (day_num in 1:2){
+    for (subj_num in 1:length(cort_subjectIDs)){
+      
+      ind = (cort$sample == samp_num) & 
+        (cort$day == day_num) & 
+        (cort$subjectID == cort_subjectIDs[subj_num]);
+      
+      if(any(ind)){
+        cort_mtx[samp_num, day_num, subj_num] =
+          cort$cortisol_mean_nmol_to_l[
+              (cort$sample == samp_num) & 
+              (cort$day == day_num) & 
+              (cort$subjectID == cort_subjectIDs[subj_num])];
+      }
+    }
+  }
+}
+
+# Can use ?apply() to e.g. take mean across specific dimensions. 
+
+# Add Stress condition information to `cort` df for analytic purposes
+cort$control0stress1 = NA;
+
+for(subj_num in 1:length(cort_subjectIDs)){
+  subjID = cort_subjectIDs[subj_num]; # extract subject ID
+  
+  # Use the bath object to pull out the boolean values for stress
+  tmp_day1 = as.numeric(bathOrder$Day.1[bathOrder$subjectID == subjID] == 'STRESS') # gives 1 if stress, 0 if control
+  tmp_day2 = as.numeric(bathOrder$Day.2[bathOrder$subjectID == subjID] == 'STRESS') 
+  
+  # where do we propose putting these values
+  ind_day1 = (cort$subjectID == subjID) & (cort$day == 1); 
+  ind_day2 = (cort$subjectID == subjID) & (cort$day == 2);
+  
+  if (any(ind_day1)){ # if this index exists
+    cort$control0stress1[ind_day1] = tmp_day1
+  }
+  if (any(ind_day2)){ # if this index exists
+    cort$control0stress1[ind_day2] = tmp_day2
+  }
+}
+
+cort$day = as.numeric(cort$day) # it's in there as a string
+cort$day_diff = cort$day*2-3 # -1 for day 1, +1 for day 2
+
+cort$sample = as.numeric(cort$sample) # also in there as a string!
 
 
 ## Subj-Level Stress ########
