@@ -129,6 +129,8 @@ t.test(cort_mtx[4,1,], cort_mtx[4,2,], paired = T) # compare all sample 1 values
 # No significant differences in paired t-tests between sample numbers across days. 
 
 
+# REGRESSIONS? 
+
 
 # Day Effects on Cortisol (Across Trials)
 
