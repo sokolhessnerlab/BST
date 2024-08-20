@@ -68,7 +68,8 @@ t.test(diffratings_byday)
 
 ##### CORT Scores ####
 
-# Cortisol scores across readings - ALL participants #
+# Cortisol scores (1 & 2) across all participants #
+# NOTE: These include cort scores of participants who did not complete both days of the experiment.
 
 #Cort 1 Value Readings
 mean(cort$cort_1_value, na.rm = T) #2.12
@@ -80,7 +81,7 @@ mean(cort$cort_2_value, na.rm = T) #2.03
 sd(cort$cort_2_value, na.rm = T) #2.34 
 range(cort$cort_2_value, na.rm = T) # 0 to 18.66
 
-#Cort 1 & 2 Value Means
+#Mean of Cort 1 & 2 Values
 mean(cort$cortisol_mean_nmol_to_l, na.rm = T) #2.09
 sd(cort$cortisol_mean_nmol_to_l, na.rm = T) #2.42
 range(cort$cortisol_mean_nmol_to_l, na.rm = T) # 0 to 21.66
@@ -93,7 +94,7 @@ range(cort$cort_coeff_of_variance_as_percent, na.rm = T) # 0.0 to 38.6
 
 
 # Cortisol score means subject-level - ALL participants #
-# Note: Use Stress_Subj_Level for participants who completed BOTH days of the experiment.
+# Note: These include Stress_Subj_Level for participants who completed BOTH days of the experiment.
 
 #Cort 1 Value Readings
 mean(subj_level_cortisol$cort_1_value, na.rm = T) #2.02
