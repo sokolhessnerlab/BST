@@ -117,6 +117,18 @@ sd(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) #2.87
 range(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) # 1.83 to 14.24
 
 
+# Using cort_mtx, what is the average cort trajectory as a function of day? 
+cort_means_by_sample_and_day = rowMeans(cort_mtx, dims = 2, na.rm = T)
+plot(x = 1:4, y = cort_means_by_sample_and_day[,1], type = 'l')
+lines(x = 1:4, y = cort_means_by_sample_and_day[,2], lty = 'dotted')
+# People enter Day 2 with greater cortisol than day 1
+t.test(cort_mtx[1,1,], cort_mtx[1,2,], paired = T) # compare all sample 1 values across DAYS; p = 0.29
+t.test(cort_mtx[2,1,], cort_mtx[2,2,], paired = T) # compare all sample 1 values across DAYS; p = 0.67
+t.test(cort_mtx[3,1,], cort_mtx[3,2,], paired = T) # compare all sample 1 values across DAYS; p = 0.26
+t.test(cort_mtx[4,1,], cort_mtx[4,2,], paired = T) # compare all sample 1 values across DAYS; p = 0.94
+# No significant differences in paired t-tests between sample numbers across days. 
+
+
 
 # Day Effects on Cortisol (Across Trials)
 
