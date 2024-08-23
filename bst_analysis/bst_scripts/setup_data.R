@@ -144,22 +144,27 @@ points(cort$cort_1_value[cort$cort_coeff_of_variance_as_percent > 20], cort$cort
 
 # ANSWER: Pretty consistent; scatterplot indicates close clustering. Probably good to go.
 
-
 ##### Cortisol Reorganization #####
-# Reshape the cort object into a 4 (sample) x 2 (day) x N (subjects) three dimensional object
+# Reshape the cort object into a 4 (sample) x 2 (day) x 2 (condition [1 = ctrl, 2 = strs]) x N (subjects) three dimensional object
 cort_subjectIDs = unique(cort$subjectID);
-cort_mtx = array(data = NA, dim = c(4, 2, length(cort_subjectIDs)))
+cort_mtx = array(data = NA, dim = c(4, 2, 2, length(cort_subjectIDs)))
 
 for (samp_num in 1:4){
   for (day_num in 1:2){
     for (subj_num in 1:length(cort_subjectIDs)){
       
+      subjID = cort_subjectIDs[subj_num]; # extract subject ID
+      
+      # Use the bath object to pull out the boolean values for stress
+      tmp_condition = as.numeric(bathOrder[bathOrder$subjectID == subjID,day_num+1] == 'STRESS') # gives 1 if stress, 0 if control
+
       ind = (cort$sample == samp_num) & 
         (cort$day == day_num) & 
         (cort$subjectID == cort_subjectIDs[subj_num]);
       
       if(any(ind)){
-        cort_mtx[samp_num, day_num, subj_num] =
+
+        cort_mtx[samp_num, day_num, tmp_condition + 1, subj_num] =
           cort$cortisol_mean_nmol_to_l[
               (cort$sample == samp_num) & 
               (cort$day == day_num) & 
@@ -198,24 +203,18 @@ cort$day_diff = cort$day*2-3 # -1 for day 1, +1 for day 2
 
 cort$sample = as.numeric(cort$sample) # also in there as a string!
 
-cort_mtx #Matrix of day/reading values per participant (NA values for those who quit the experiment)
 
+#Creating the new and improved sum function:
 
-# Means of each sample by day across participants (subject-level)
-cort_means_by_sample_and_day = apply(cort_mtx, c(1, 2), mean, na.rm = TRUE)
-#         [,1]     [,2]
-# [1,] 1.541000 2.126429
-# [2,] 1.735957 2.004500
-# [3,] 3.026596 2.570250
-# [4,] 1.823404 1.931538
+sumna <- function(x) {
+  if(any(is.finite(x))) {
+    sum_val = sum(x, na.rm = TRUE) 
+  } else {
+    sum_val = NA
+  }
+  return(sum_val)
+}
 
-# Standard deviations of each sample by day across participants (subject-level)
-cort_sd_by_sample_and_day = apply(cort_mtx, c(1, 2), sd, na.rm = TRUE)
-#         [,1]     [,2]
-# [1,] 1.202253 3.321143
-# [2,] 1.278518 2.890279
-# [3,] 3.517918 2.768810
-# [4,] 1.346669 1.690566
 
 
 
