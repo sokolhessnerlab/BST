@@ -123,8 +123,8 @@ range(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) # 1.83 t
 
 
 # Using cort_mtx, what is the average cort trajectory as a function of day? 
-#cort_means_by_sample_and_day = rowMeans(cort_mtx, dims = 2, na.rm = T) # Used apply in set up
-plot(x = 1:4, y = cort_means_by_sample_and_day[,1], col = "brown",type = 'l', lwd = 2)
+#cort_means_by_sample_and_day = rowMeans(cort_mtx, dims = 2, na.rm = T) # Used apply in setup_data script
+plot(x = 1:4, y = cort_means_by_sample_and_day[,1], col = "blue",type = 'l', lwd = 2)
 lines(x = 1:4, y = cort_means_by_sample_and_day[,2], col = "red", type = "b", lty = 'dotted', lwd = 2)
 # People enter Day 2 with greater cortisol than day 1
 t.test(cort_mtx[1,1,], cort_mtx[1,2,], paired = T) # compare all sample 1 values across DAYS; p = 0.29
@@ -162,15 +162,6 @@ subj_cort_mean_sample <- aggregate(cortisol_mean_nmol_to_l ~ sample, data = cort
 # Cortisol does not fall below the reading 1 and 2, indicating stress is likely still elevated at the end of the tasks.
 
 
-# Sample Effects on Cortisol (Across Subjects - collapsed)
-
-subj_cort_mean_sample <- aggregate(cortisol_mean_nmol_to_l ~ sample, data = cort, FUN = mean, na.rm = TRUE)
-# Q: Are there differences in cortisol levels from reading 1 to 4
-#  sample cortisol_mean_nmol_to_l
-#      1                1.808261
-#      2                1.859425
-#      3                2.816782
-#      4                1.872442
 
 ##### T0-DO ####
 
@@ -178,6 +169,7 @@ subj_cort_mean_sample <- aggregate(cortisol_mean_nmol_to_l ~ sample, data = cort
 # Reviewed day effects but need to examine day with stress.
 # Rework sample and day with subj-level data. COMPLETE: The day and sample differences are not significant.
 
+# Examine day effects on cort reading 1 for 
 
 #### CHRONIC ####
 
