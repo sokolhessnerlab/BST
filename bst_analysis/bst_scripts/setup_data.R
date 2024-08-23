@@ -208,7 +208,6 @@ cort_means_by_sample_and_day = apply(cort_mtx, c(1, 2), mean, na.rm = TRUE)
 # [2,] 1.735957 2.004500
 # [3,] 3.026596 2.570250
 # [4,] 1.823404 1.931538
-#QUESTION: Why are trajectories for Day 1 and Day 2 substantially different?
 
 # Standard deviations of each sample by day across participants (subject-level)
 cort_sd_by_sample_and_day = apply(cort_mtx, c(1, 2), sd, na.rm = TRUE)
@@ -217,8 +216,6 @@ cort_sd_by_sample_and_day = apply(cort_mtx, c(1, 2), sd, na.rm = TRUE)
 # [2,] 1.278518 2.890279
 # [3,] 3.517918 2.768810
 # [4,] 1.346669 1.690566
-#QUESTION: Is this correct?
-
 
 
 
@@ -227,23 +224,24 @@ cort_sd_by_sample_and_day = apply(cort_mtx, c(1, 2), sd, na.rm = TRUE)
 
 
 
-
-#NOTE: Redo subject-level data frame once data is ready (looping)
-#STRESS subject-level data frame with ALL participants
-#Stress_Subj_noCort <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = TRUE)
-#Stress_Subj_Level_wCort <- merge(Stress_Subj_noCort, subj_level_cortisol, by = "subjectID", all = TRUE)
+# NOTE: Redo subject-level data frame once data is ready (looping)
+# STRESS subject-level data frame with ALL participants
+# Stress_Subj_noCort <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = TRUE)
+# Stress_Subj_Level_wCort <- merge(Stress_Subj_noCort, subj_level_cortisol, by = "subjectID", all = TRUE)
 
 # STRESS subject-level dataframe with participants who completed BOTH days of the experiment
-#Stress_Subj_Level <- Stress_Subj_Level_wCort[!is.na(Stress_Subj_Level_wCort$diffUnPleasantnessRating), ]
+# Stress_Subj_Level <- Stress_Subj_Level_wCort[!is.na(Stress_Subj_Level_wCort$diffUnPleasantnessRating), ]
 
 
 ## To-do Stress ########
 
 # TO-DO: 
-# (1) Extract sampleID : COMPLETE.
-# (2) Address one participant that has very high cort reading. COMPLETE (checked cort data overall)
-# (3) Create day/sample at subj-level
-# (4) Check lit for any additional wrangling/checks/cut-offs for cort.
+# (1) Extract sampleID: COMPLETE.
+# (2) Address one participant that has very high cort reading: COMPLETE (checked cort data overall)
+# (3) Create day/sample at subj-level: COMPLETE.
+# (4) Examine reading 1 on day 2 for individual differences by stress condition on day 1 effects
+# (5) Check lit for any additional wrangling/checks/cut-offs for cort.
+
 
 
 # TRUST ########
