@@ -34,10 +34,10 @@ sd(bath$stressUnpleasantnessRating) #1.301
 mean(bath$controlUnpleasantnessRating) #2.026
 sd(bath$controlUnpleasantnessRating)  #1.038
 
-hist(bath$stressUnpleasantnessRating) 
-hist(bath$controlUnpleasantnessRating) 
-#bath rating under stress condition was fairly consistently rated highly unpleasant
-#bath rating under control condition was rated mostly pleasant with a few participants rating the lukewarm bath moderately unpleasant
+hist(bath$stressUnpleasantnessRating) # Max 7 (highly unpleasant)
+hist(bath$controlUnpleasantnessRating) # Max 4 (mildly unpleasant)
+# Participants consistently rated the CPT bath discomfort (under stress condition) highly unpleasant.
+# Bath rating under control condition was rated mostly pleasant with a few participants rating the lukewarm bath moderately unpleasant.
 
 # Effect of acute stressor - Cold Pressor Task (CPT) - on stress ratings:
 
@@ -116,25 +116,29 @@ mean(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) #7.298
 sd(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) #2.87
 range(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) # 1.83 to 14.24
 
+#Q: Was cortisol consistent across processing values 1 and 2?
+# Overall, cort values are fairly consistent, however at the subject and trial level, 
+# cort value 1 (M = 2.12, 2.02) is greater than cort value 2 (M = 2.03, 1.95)
+# However, standard deviations and ranges are greater for trial level values.
+
 
 # Using cort_mtx, what is the average cort trajectory as a function of day? 
-cort_means_by_sample_and_day = rowMeans(cort_mtx, dims = 2, na.rm = T)
-plot(x = 1:4, y = cort_means_by_sample_and_day[,1], type = 'l')
-lines(x = 1:4, y = cort_means_by_sample_and_day[,2], lty = 'dotted')
+#cort_means_by_sample_and_day = rowMeans(cort_mtx, dims = 2, na.rm = T) # Used apply in set up
+plot(x = 1:4, y = cort_means_by_sample_and_day[,1], col = "brown",type = 'l', lwd = 2)
+lines(x = 1:4, y = cort_means_by_sample_and_day[,2], col = "red", type = "b", lty = 'dotted', lwd = 2)
 # People enter Day 2 with greater cortisol than day 1
 t.test(cort_mtx[1,1,], cort_mtx[1,2,], paired = T) # compare all sample 1 values across DAYS; p = 0.29
-t.test(cort_mtx[2,1,], cort_mtx[2,2,], paired = T) # compare all sample 1 values across DAYS; p = 0.67
-t.test(cort_mtx[3,1,], cort_mtx[3,2,], paired = T) # compare all sample 1 values across DAYS; p = 0.26
-t.test(cort_mtx[4,1,], cort_mtx[4,2,], paired = T) # compare all sample 1 values across DAYS; p = 0.94
+t.test(cort_mtx[2,1,], cort_mtx[2,2,], paired = T) # compare all sample 2 values across DAYS; p = 0.67
+t.test(cort_mtx[3,1,], cort_mtx[3,2,], paired = T) # compare all sample 3 values across DAYS; p = 0.26
+t.test(cort_mtx[4,1,], cort_mtx[4,2,], paired = T) # compare all sample 4 values across DAYS; p = 0.94
 # No significant differences in paired t-tests between sample numbers across days. 
 
 
 # REGRESSIONS? 
 
-
+## REMOVE?
 # Day Effects on Cortisol (Across Trials)
-
-subj_cort_mean_day <- aggregate(cortisol_mean_nmol_to_l ~ day, data = cort, FUN = mean, na.rm = TRUE)
+#subj_cort_mean_day <- aggregate(cortisol_mean_nmol_to_l ~ day, data = cort, FUN = mean, na.rm = TRUE)
 # Q: Are there differences in cortisol levels between day 1 and day 2 of cort readings
 #  day cortisol_mean_nmol_to_l
 #   1                2.024031
@@ -142,7 +146,7 @@ subj_cort_mean_day <- aggregate(cortisol_mean_nmol_to_l ~ day, data = cort, FUN 
 # A: There is a difference of 0.136 higher cort readings on day 2.
 # Could this slight bias towards higher cort on day 2 be from those who already experienced the stressor on day 1,
 # anticipating stress on day 2?
-
+## REMOVE?
 
 # Sample Effects on Cortisol (Across Trials)
 
@@ -155,18 +159,24 @@ subj_cort_mean_sample <- aggregate(cortisol_mean_nmol_to_l ~ sample, data = cort
 #      4                1.872442
 # A: There is an upward trend in cort readings from readings 1 to 3 with a spike between readings 2 and 3,
 # then a fall of cortisol level from reading 3 to 4.
-# Should cort be falling in reading 4?
+# Cortisol does not fall below the reading 1 and 2, indicating stress is likely still elevated at the end of the tasks.
 
 
 # Sample Effects on Cortisol (Across Subjects - collapsed)
 
-
+subj_cort_mean_sample <- aggregate(cortisol_mean_nmol_to_l ~ sample, data = cort, FUN = mean, na.rm = TRUE)
+# Q: Are there differences in cortisol levels from reading 1 to 4
+#  sample cortisol_mean_nmol_to_l
+#      1                1.808261
+#      2                1.859425
+#      3                2.816782
+#      4                1.872442
 
 ##### T0-DO ####
 
 # Should Cort be decreasing at reading 4?
 # Reviewed day effects but need to examine day with stress.
-# Rework sample and day with subj-level data.
+# Rework sample and day with subj-level data. COMPLETE: The day and sample differences are not significant.
 
 
 #### CHRONIC ####
