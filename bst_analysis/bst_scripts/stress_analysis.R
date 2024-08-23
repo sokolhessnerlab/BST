@@ -161,6 +161,59 @@ subj_cort_mean_sample <- aggregate(cortisol_mean_nmol_to_l ~ sample, data = cort
 # then a fall of cortisol level from reading 3 to 4.
 # Cortisol does not fall below the reading 1 and 2, indicating stress is likely still elevated at the end of the tasks.
 
+# Means of each sample by day across participants (subject-level)
+cort_means_by_sample_and_day = apply(cort_mtx, c(1, 2), mean, na.rm = TRUE)
+#         [,1]     [,2]
+# [1,] 1.541000 2.126429
+# [2,] 1.735957 2.004500
+# [3,] 3.026596 2.570250
+# [4,] 1.823404 1.931538
+
+# Standard deviations of each sample by day across participants (subject-level)
+cort_sd_by_sample_and_day = apply(cort_mtx, c(1, 2), sd, na.rm = TRUE)
+#         [,1]     [,2]
+# [1,] 1.202253 3.321143
+# [2,] 1.278518 2.890279
+# [3,] 3.517918 2.768810
+# [4,] 1.346669 1.690566
+
+
+# Question: How do cort differences look across cort readings per condition 
+apply(cort_mtx, c(1,3), mean, na.rm = T) #Calculate mean cort for 4 readings by conditions (control, stress) 
+#Plot mean cort for each reading with control/stress conditions with corrected time stamp (from stressor) 
+matplot(x = c(-2, 3, 13, 30), y = apply(cort_mtx, c(1,3), mean, na.rm = T)) 
+# A: Yes, there is a clear difference between cort reading 3 under stress vs. control
+
+#Question: Are the differences in readings (3 & 1) significant across conditions?
+t.test(apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[1,,2,], 2, sumna), paired = T)  
+#A: t-test reveals cort reading 1 differences for control and stress condition are NOT significant. p = .33
+t.test(apply(cort_mtx[2,,1,], 2, sumna), apply(cort_mtx[2,,2,], 2, sumna), paired = T)  
+#A: t-test reveals cort reading 2 differences for control and stress condition are NOT significant. p = .39
+t.test(apply(cort_mtx[3,,1,], 2, sumna), apply(cort_mtx[3,,2,], 2, sumna), paired = T)  
+#A: t-test reveals cort reading 3 differences for control and stress condition ARE significant. p = 0.0007266
+t.test(apply(cort_mtx[4,,1,], 2, sumna), apply(cort_mtx[4,,2,], 2, sumna), paired = T)  
+#A: t-test reveals cort reading 4 differences for control and stress condition ARE significant. p = 0.006921
+
+
+#Question: Are there differences in on day 1 cort readings across conditions?
+#Run NON-paired t-test on cort reading ONE on day 1 and 2 CONTROL conditions. 
+t.test(cort_mtx[1,1,1,], cort_mtx[1,2,1,], paired = F)
+#A: t-test reveals cort reading 1 from day 1 to day 2 is NOT significant. p = 0.2462
+t.test(cort_mtx[2,1,1,], cort_mtx[2,2,1,], paired = F) 
+#A: t-test reveals cort reading 2 from day 1 to day 2 is NOT significant. p = 0.3542
+t.test(cort_mtx[3,1,1,], cort_mtx[3,2,1,], paired = F) 
+#A: t-test reveals cort reading 3 from day 1 to day 2 is NOT significant. p = 0.6568
+t.test(cort_mtx[4,1,1,], cort_mtx[4,2,1,], paired = F) 
+#A: t-test reveals cort reading 4 from day 1 to day 2 is NOT significant. p = 0.638
+#Key take-away: There does not seem to be an effect of day on control condition cort response.
+
+
+hist(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna))
+hist(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna))
+
+plot(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna)); lines(x = c(-100, 100), y = c(-100, 100)) 
+#Plot of reading 3 to reading 1 difference for stress condition with line,
+#below line is reading 1 higher than reading 3 even under stress. Most are above the line, plus t-test shows sig
 
 
 ##### T0-DO ####
