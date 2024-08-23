@@ -204,8 +204,8 @@ cort$day_diff = cort$day*2-3 # -1 for day 1, +1 for day 2
 cort$sample = as.numeric(cort$sample) # also in there as a string!
 
 
-#Creating the new and improved sum function:
 
+#Create new sum function that accounts for NA removal issues in "apply":
 sumna <- function(x) {
   if(any(is.finite(x))) {
     sum_val = sum(x, na.rm = TRUE) 
