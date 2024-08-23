@@ -129,7 +129,7 @@ sum(is.na(assay_difference_value)) # 13 samples do not have duplicate testing va
   # i.e. for 13 SAMPLES, we have a cort1 value, but not a cort2 value
 
 hist(assay_difference_value) # Not a particularly useful measure, b/c doesn't take into account
-# the overall value of the assay (i.e. a larger discrepancy is ok at larger values)
+# The overall value of the assay (i.e. a larger discrepancy is ok at larger values)
 
 hist(cort$cort_coeff_of_variance_as_percent, breaks = 20)
 #   Most are < 20 (~96%)
@@ -137,7 +137,7 @@ hist(cort$cort_coeff_of_variance_as_percent, breaks = 20)
 
 # Where are these high CV samples?
 plot(cort$cort_1_value, cort$cort_2_value)
-lines(x = c(0, 30), y = c(0, 30), lty = 'dashed')
+lines(x = c(0, 30), y = c(0, 30), lty = 'dashed', col = "lightblue", lwd = 2)
 points(cort$cort_1_value[cort$cort_coeff_of_variance_as_percent > 20], cort$cort_2_value[cort$cort_coeff_of_variance_as_percent > 20], col = 'red', pch = 5)
 # Most (11) are small values (< 2.5), and most have cort 1 > cort 2 (why? don't know). 
 # One with highest CV value is NOT the highest cort value (in absolute terms).
@@ -198,23 +198,33 @@ cort$day_diff = cort$day*2-3 # -1 for day 1, +1 for day 2
 
 cort$sample = as.numeric(cort$sample) # also in there as a string!
 
+cort_mtx #Matrix of day/reading values per participant (NA values for those who quit the experiment)
+
+
+cort_means_by_sample_and_day = apply(cort_mtx, c(1, 2), mean, na.rm = TRUE)
+
 
 ## Subj-Level Stress ########
 
+
+
+
+#NOTE: Redo subject-level data frame once data is ready (looping)
 #STRESS subject-level data frame with ALL participants
-Stress_Subj_noCort <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = TRUE)
-Stress_Subj_Level_wCort <- merge(Stress_Subj_noCort, subj_level_cortisol, by = "subjectID", all = TRUE)
+#Stress_Subj_noCort <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = TRUE)
+#Stress_Subj_Level_wCort <- merge(Stress_Subj_noCort, subj_level_cortisol, by = "subjectID", all = TRUE)
 
 # STRESS subject-level dataframe with participants who completed BOTH days of the experiment
-Stress_Subj_Level <- Stress_Subj_Level_wCort[!is.na(Stress_Subj_Level_wCort$diffUnPleasantnessRating), ]
+#Stress_Subj_Level <- Stress_Subj_Level_wCort[!is.na(Stress_Subj_Level_wCort$diffUnPleasantnessRating), ]
 
 
 ## To-do Stress ########
 
 # TO-DO: 
-# (1) Extract sampleID ?
-# (2) Address one participant that has very high cort reading.
+# (1) Extract sampleID : COMPLETE.
+# (2) Address one participant that has very high cort reading. COMPLETE (checked cort data overall)
 # (3) Create day/sample at subj-level
+# (4) Check lit for any additional wrangling/checks/cut-offs for cort.
 
 
 # TRUST ########
