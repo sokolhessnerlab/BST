@@ -201,7 +201,26 @@ cort$sample = as.numeric(cort$sample) # also in there as a string!
 cort_mtx #Matrix of day/reading values per participant (NA values for those who quit the experiment)
 
 
+# Means of each sample by day across participants (subject-level)
 cort_means_by_sample_and_day = apply(cort_mtx, c(1, 2), mean, na.rm = TRUE)
+#         [,1]     [,2]
+# [1,] 1.541000 2.126429
+# [2,] 1.735957 2.004500
+# [3,] 3.026596 2.570250
+# [4,] 1.823404 1.931538
+#QUESTION: Why are trajectories for Day 1 and Day 2 substantially different?
+
+# Standard deviations of each sample by day across participants (subject-level)
+cort_sd_by_sample_and_day = apply(cort_mtx, c(1, 2), sd, na.rm = TRUE)
+#         [,1]     [,2]
+# [1,] 1.202253 3.321143
+# [2,] 1.278518 2.890279
+# [3,] 3.517918 2.768810
+# [4,] 1.346669 1.690566
+#QUESTION: Is this correct?
+
+
+
 
 
 ## Subj-Level Stress ########
@@ -791,7 +810,7 @@ cm_Subj_Level <- cm[,c(1,30)] #update later
 
 ## To-do Attitudes ########
 
-
+# (1) Process IAT data.
 
 
 # WIDE DATA ########
