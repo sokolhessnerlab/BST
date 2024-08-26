@@ -109,17 +109,39 @@ names(cort_split) <- c("day", "sample")
 cort <- cbind(cort, cort_split)
 
 
-#### SUBJECT Level ####
+#### Subj-Level Cort ####
 
-# Mean cortisol values by subjectID
+# Mean cortisol values (per subject)
 subj_mean_cort <- aggregate(cortisol_mean_nmol_to_l ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
 # Q: Do any subject's have extreme cortisol mean values?
 # A: Subject 23 has a very high mean cortisol value
 #    (roughly 6 s.d. above the group mean: 11.37; group mean is 2.00, s.d. is 1.66; 6 s.d.'s above the mean is 11.98)
+hist(subj_mean_cort$cortisol_mean_nmol_to_l)
+# Note: most between 0-2 (good) with a couple of high readings
 
-# Cortisol subject-level mean cortisol readings
+# Overall, mean cortisol subject-level readings
 mean(subj_mean_cort$cortisol_mean_nmol_to_l) # 2.00
 sd(subj_mean_cort$cortisol_mean_nmol_to_l) # 1.66
+
+
+# Mean cort_coeff_of_variance_as_percent values (per subject)
+subj_mean_cort_COV <- aggregate(cort_coeff_of_variance_as_percent ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
+# Q: Do any subject's have extreme cortisol COV mean values?
+# A: Range 1.825 to 14.2375
+hist(subj_mean_cort_COV$cort_coeff_of_variance_as_percent)
+# normal distribution
+
+# Overall, mean cort_coeff_of_variance_as_percent subject-level 
+mean(subj_mean_cort_COV$cort_coeff_of_variance_as_percent) # 7.30
+sd(subj_mean_cort_COV$cort_coeff_of_variance_as_percent) # 2.87
+
+
+
+#creates truncated cortisol DF for use in subj-level BST DF
+
+#combine subject-level cort dfs
+cort_subj_level_temp <- list(subj_mean_cort, subj_mean_cort_COV)
+cort_subj_level <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), cort_subj_level_temp)
 
 ##### Sample Assay Consistency Check #####
 # How consistent were the duplicate analyses of a given sample? 
@@ -174,8 +196,6 @@ for (samp_num in 1:4){
   }
 }
 
-# Can use ?apply() to e.g. take mean across specific dimensions. 
-
 # Add Stress condition information to `cort` df for analytic purposes
 cort$control0stress1 = NA;
 
@@ -218,18 +238,16 @@ sumna <- function(x) {
 
 
 
-
 ## Subj-Level Stress ########
 
-
-
 # NOTE: Redo subject-level data frame once data is ready (looping)
+
 # STRESS subject-level data frame with ALL participants
-# Stress_Subj_noCort <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = TRUE)
-# Stress_Subj_Level_wCort <- merge(Stress_Subj_noCort, subj_level_cortisol, by = "subjectID", all = TRUE)
+Stress_Subj_noCort <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = TRUE)
+Stress_Subj_Level_wCort <- merge(Stress_Subj_noCort, cort_subj_level, by = "subjectID", all = TRUE)
 
 # STRESS subject-level dataframe with participants who completed BOTH days of the experiment
-# Stress_Subj_Level <- Stress_Subj_Level_wCort[!is.na(Stress_Subj_Level_wCort$diffUnPleasantnessRating), ]
+Stress_Subj_Level <- Stress_Subj_Level_wCort[!is.na(Stress_Subj_Level_wCort$diffUnPleasantnessRating), ]
 
 
 ## To-do Stress ########
@@ -813,7 +831,6 @@ cm_Subj_Level <- cm[,c(1,30)] #update later
 # WIDE DATA ########
 
 #create a data frame with a basic version of subject-level "wide" data
-
 bst_wide_list <- list(Stress_Subj_Level, mrs_Subj_Level, srs_Subj_Level, ims_ems_Subj_Level, amp_Subj_Level, cm_Subj_Level)
 #Note: cm_Subj_Level df only includes self-identified subject race-ethnicity.  Items to include in subj_level df can be updated after PCA.
 
