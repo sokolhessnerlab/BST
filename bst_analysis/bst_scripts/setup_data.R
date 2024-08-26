@@ -111,6 +111,9 @@ cort <- cbind(cort, cort_split)
 
 #### Subj-Level Cort ####
 
+
+##### Creating Subj-Level DF #####
+
 # Mean cortisol values (per subject)
 subj_mean_cort <- aggregate(cortisol_mean_nmol_to_l ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
 # Q: Do any subject's have extreme cortisol mean values?
@@ -122,7 +125,6 @@ hist(subj_mean_cort$cortisol_mean_nmol_to_l)
 # Overall, mean cortisol subject-level readings
 mean(subj_mean_cort$cortisol_mean_nmol_to_l) # 2.00
 sd(subj_mean_cort$cortisol_mean_nmol_to_l) # 1.66
-
 
 # Mean cort_coeff_of_variance_as_percent values (per subject)
 subj_mean_cort_COV <- aggregate(cort_coeff_of_variance_as_percent ~ subjectID, data = cort, FUN = mean, na.rm = TRUE)
@@ -136,12 +138,10 @@ mean(subj_mean_cort_COV$cort_coeff_of_variance_as_percent) # 7.30
 sd(subj_mean_cort_COV$cort_coeff_of_variance_as_percent) # 2.87
 
 
-
-#creates truncated cortisol DF for use in subj-level BST DF
-
-#combine subject-level cort dfs
+#Creates truncated cortisol DF for use in subj-level Subj-level Stress DF
 cort_subj_level_temp <- list(subj_mean_cort, subj_mean_cort_COV)
 cort_subj_level <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), cort_subj_level_temp)
+
 
 ##### Sample Assay Consistency Check #####
 # How consistent were the duplicate analyses of a given sample? 
@@ -165,6 +165,7 @@ points(cort$cort_1_value[cort$cort_coeff_of_variance_as_percent > 20], cort$cort
 # One with highest CV value is NOT the highest cort value (in absolute terms).
 
 # ANSWER: Pretty consistent; scatterplot indicates close clustering. Probably good to go.
+
 
 ##### Cortisol Reorganization #####
 # Reshape the cort object into a 4 (sample) x 2 (day) x 2 (condition [1 = ctrl, 2 = strs]) x N (subjects) three dimensional object
@@ -224,7 +225,6 @@ cort$day_diff = cort$day*2-3 # -1 for day 1, +1 for day 2
 cort$sample = as.numeric(cort$sample) # also in there as a string!
 
 
-
 #Create new sum function that accounts for NA removal issues in "apply":
 sumna <- function(x) {
   if(any(is.finite(x))) {
@@ -240,8 +240,6 @@ sumna <- function(x) {
 
 ## Subj-Level Stress ########
 
-# NOTE: Redo subject-level data frame once data is ready (looping)
-
 # STRESS subject-level data frame with ALL participants
 Stress_Subj_noCort <- merge(Stress_Acute, Stress_Chronic, by = "subjectID", all = TRUE)
 Stress_Subj_Level_wCort <- merge(Stress_Subj_noCort, cort_subj_level, by = "subjectID", all = TRUE)
@@ -256,8 +254,7 @@ Stress_Subj_Level <- Stress_Subj_Level_wCort[!is.na(Stress_Subj_Level_wCort$diff
 # (1) Extract sampleID: COMPLETE.
 # (2) Address one participant that has very high cort reading: COMPLETE (checked cort data overall)
 # (3) Create day/sample at subj-level: COMPLETE.
-# (4) Examine reading 1 on day 2 for individual differences by stress condition on day 1 effects
-# (5) Check lit for any additional wrangling/checks/cut-offs for cort.
+
 
 
 
