@@ -91,8 +91,6 @@ mean(cort$cort_coeff_of_variance_as_percent, na.rm = T) #7.33
 sd(cort$cort_coeff_of_variance_as_percent, na.rm = T) #6.50
 range(cort$cort_coeff_of_variance_as_percent, na.rm = T) # 0.0 to 38.6
 
-
-
 # Cortisol score means subject-level - ALL participants #
 # Note: These include Stress_Subj_Level for participants who completed BOTH days of the experiment.
 
@@ -116,37 +114,7 @@ mean(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) #7.298
 sd(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) #2.87
 range(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) # 1.83 to 14.24
 
-#Q: Was cortisol consistent across processing values 1 and 2?
-# Overall, cort values are fairly consistent, however at the subject and trial level, 
-# cort value 1 (M = 2.12, 2.02) is greater than cort value 2 (M = 2.03, 1.95)
-# However, standard deviations and ranges are greater for trial level values.
 
-
-# Using cort_mtx, what is the average cort trajectory as a function of day? 
-#cort_means_by_sample_and_day = rowMeans(cort_mtx, dims = 2, na.rm = T) # Used apply in setup_data script
-plot(x = 1:4, y = cort_means_by_sample_and_day[,1], col = "blue",type = 'l', lwd = 2)
-lines(x = 1:4, y = cort_means_by_sample_and_day[,2], col = "red", type = "b", lty = 'dotted', lwd = 2)
-# People enter Day 2 with greater cortisol than day 1
-t.test(cort_mtx[1,1,], cort_mtx[1,2,], paired = T) # compare all sample 1 values across DAYS; p = 0.29
-t.test(cort_mtx[2,1,], cort_mtx[2,2,], paired = T) # compare all sample 2 values across DAYS; p = 0.67
-t.test(cort_mtx[3,1,], cort_mtx[3,2,], paired = T) # compare all sample 3 values across DAYS; p = 0.26
-t.test(cort_mtx[4,1,], cort_mtx[4,2,], paired = T) # compare all sample 4 values across DAYS; p = 0.94
-# No significant differences in paired t-tests between sample numbers across days. 
-
-
-# REGRESSIONS? 
-
-## REMOVE?
-# Day Effects on Cortisol (Across Trials)
-#subj_cort_mean_day <- aggregate(cortisol_mean_nmol_to_l ~ day, data = cort, FUN = mean, na.rm = TRUE)
-# Q: Are there differences in cortisol levels between day 1 and day 2 of cort readings
-#  day cortisol_mean_nmol_to_l
-#   1                2.024031
-#   2                2.159193
-# A: There is a difference of 0.136 higher cort readings on day 2.
-# Could this slight bias towards higher cort on day 2 be from those who already experienced the stressor on day 1,
-# anticipating stress on day 2?
-## REMOVE?
 
 # Sample Effects on Cortisol (Across Trials)
 
@@ -161,28 +129,90 @@ subj_cort_mean_sample <- aggregate(cortisol_mean_nmol_to_l ~ sample, data = cort
 # then a fall of cortisol level from reading 3 to 4.
 # Cortisol does not fall below the reading 1 and 2, indicating stress is likely still elevated at the end of the tasks.
 
-# Means of each sample by day across participants (subject-level)
+
+# Day Effects on Cortisol (Across Subjects)
+
+# Means of each cort sample by day across participants (subject-level)
 cort_means_by_sample_and_day = apply(cort_mtx, c(1, 2), mean, na.rm = TRUE)
-#         [,1]     [,2]
+#       [Day 1]     [Day 2]
 # [1,] 1.541000 2.126429
 # [2,] 1.735957 2.004500
 # [3,] 3.026596 2.570250
 # [4,] 1.823404 1.931538
 
-# Standard deviations of each sample by day across participants (subject-level)
+# Standard deviations of each cort sample by day across participants (subject-level)
 cort_sd_by_sample_and_day = apply(cort_mtx, c(1, 2), sd, na.rm = TRUE)
-#         [,1]     [,2]
+#       [Day 1]     [Day 2]
 # [1,] 1.202253 3.321143
 # [2,] 1.278518 2.890279
 # [3,] 3.517918 2.768810
 # [4,] 1.346669 1.690566
 
+#Question: Are there differences for the four cort samples across days?
+t.test(cort_mtx[1,1,,], cort_mtx[1,2,,], paired = F) # compare all sample 1 values across DAYS; p = 0.28
+t.test(cort_mtx[2,1,,], cort_mtx[2,2,,], paired = F) # compare all sample 2 values across DAYS; p = 0.59
+t.test(cort_mtx[3,1,,], cort_mtx[3,2,,], paired = F) # compare all sample 3 values across DAYS; p = 0.50
+t.test(cort_mtx[4,1,,], cort_mtx[4,2,,], paired = F) # compare all sample 4 values across DAYS; p = 0.75
+# No significant differences in paired t-tests between sample numbers across days.
 
-# Question: How do cort differences look across cort readings per condition 
-apply(cort_mtx, c(1,3), mean, na.rm = T) #Calculate mean cort for 4 readings by conditions (control, stress) 
+
+# Using cort_mtx, what is the average cort trajectory as a function of day? 
+#cort_means_by_sample_and_day = rowMeans(cort_mtx, dims = 2, na.rm = T) # Used apply in setup_data script
+plot(x = 1:4, y = cort_means_by_sample_and_day[,1], col = "blue",type = 'l', lwd = 2)
+lines(x = 1:4, y = cort_means_by_sample_and_day[,2], col = "red", type = "b", lty = 'dotted', lwd = 2)
+# People enter Day 2 with greater cortisol than day 1
+
+
+#Question: Are there differences for the CONTROL condition between four cort samples across days?
+t.test(cort_mtx[1,1,1,], cort_mtx[1,2,1,], paired = F)
+#A: t-test reveals cort reading 1 from day 1 to day 2 is NOT significant. p = 0.2462
+t.test(cort_mtx[2,1,1,], cort_mtx[2,2,1,], paired = F) 
+#A: t-test reveals cort reading 2 from day 1 to day 2 is NOT significant. p = 0.3542
+t.test(cort_mtx[3,1,1,], cort_mtx[3,2,1,], paired = F) 
+#A: t-test reveals cort reading 3 from day 1 to day 2 is NOT significant. p = 0.6568
+t.test(cort_mtx[4,1,1,], cort_mtx[4,2,1,], paired = F) 
+#A: t-test reveals cort reading 4 from day 1 to day 2 is NOT significant. p = 0.638
+#Key take-away: There does not appear to be a difference of day on CONTROL cort sample reading across days.
+
+
+
+# Condition Effects on Cortisol (Across Subjects)
+
+# Question: Are there differences in cort readings across days per condition ?
+
+# Calculate mean cort for 4 readings by conditions (control, stress)
+cort_means_by_sample_and_condition = apply(cort_mtx, c(1, 3), mean, na.rm = TRUE)
+#     [Control]     [Stress]
+# [1,] 2.085682 1.553958
+# [2,] 2.025814 1.696818
+# [3,] 1.877907 3.734318
+# [4,] 1.512791 2.232093
+
+# Standard deviations of each cort sample by condition across participants (subject-level)
+cort_sd_by_sample_and_condition = apply(cort_mtx, c(1, 3), sd, na.rm = TRUE)
+#     [Control]     [Stress]
+# [1,] 3.274019 1.162003
+# [2,] 2.860131 1.147460
+# [3,] 2.050817 3.800791
+# [4,] 1.210964 1.687216
+# There is a clear increase in reading 3 under the stress condition.
+
+#Question: Are there differences between the control vs stress condition between four cort samples?
+t.test(cort_mtx[1,1,1,], cort_mtx[1,1,2,], paired = F)
+#A: t-test reveals cort reading 1 control vs. stress condition difference is NOT significant. p = 0.83
+t.test(cort_mtx[2,1,1,], cort_mtx[2,1,2,], paired = F) 
+#A: t-test reveals cort reading 2 control vs. stress condition difference is NOT significant. p = 0.56
+t.test(cort_mtx[3,1,1,], cort_mtx[3,1,2,], paired = F) 
+#A: t-test reveals cort reading 3 control vs. stress condition difference IS significant. p = 0.02
+t.test(cort_mtx[4,1,1,], cort_mtx[4,1,2,], paired = F) 
+#A: t-test reveals cort reading 4 control vs. stress condition difference is approaching significance. p = 0.06
+#Key take-away: There is an impact of the stress vs. control condition on the reading 3 cort response.
+
+
 #Plot mean cort for each reading with control/stress conditions with corrected time stamp (from stressor) 
 matplot(x = c(-2, 3, 13, 30), y = apply(cort_mtx, c(1,3), mean, na.rm = T)) 
 # A: Yes, there is a clear difference between cort reading 3 under stress vs. control
+
 
 #Question: Are the differences in readings (3 & 1) significant across conditions?
 t.test(apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[1,,2,], 2, sumna), paired = T)  
@@ -195,19 +225,6 @@ t.test(apply(cort_mtx[4,,1,], 2, sumna), apply(cort_mtx[4,,2,], 2, sumna), paire
 #A: t-test reveals cort reading 4 differences for control and stress condition ARE significant. p = 0.006921
 
 
-#Question: Are there differences in on day 1 cort readings across conditions?
-#Run NON-paired t-test on cort reading ONE on day 1 and 2 CONTROL conditions. 
-t.test(cort_mtx[1,1,1,], cort_mtx[1,2,1,], paired = F)
-#A: t-test reveals cort reading 1 from day 1 to day 2 is NOT significant. p = 0.2462
-t.test(cort_mtx[2,1,1,], cort_mtx[2,2,1,], paired = F) 
-#A: t-test reveals cort reading 2 from day 1 to day 2 is NOT significant. p = 0.3542
-t.test(cort_mtx[3,1,1,], cort_mtx[3,2,1,], paired = F) 
-#A: t-test reveals cort reading 3 from day 1 to day 2 is NOT significant. p = 0.6568
-t.test(cort_mtx[4,1,1,], cort_mtx[4,2,1,], paired = F) 
-#A: t-test reveals cort reading 4 from day 1 to day 2 is NOT significant. p = 0.638
-#Key take-away: There does not seem to be an effect of day on control condition cort response.
-
-
 hist(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna))
 hist(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna))
 
@@ -218,7 +235,8 @@ plot(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(
 
 ##### T0-DO ####
 
-# Should Cort be decreasing at reading 4?
+# REGRESSIONS for Cort including condition, controlling for day.
+
 # Reviewed day effects but need to examine day with stress.
 # Rework sample and day with subj-level data. COMPLETE: The day and sample differences are not significant.
 
