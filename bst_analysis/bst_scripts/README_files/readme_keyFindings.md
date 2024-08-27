@@ -89,11 +89,14 @@ Day Effects:
     T-tests indicate the differences for the four cort samples across days are not significant (i.e., reading 1 on both days - not considering condition - are not sig different).
     Day Effects (Control): People enter Day 2 with greater cortisol than day 1, however differences for the CONTROL condition between four cort samples across days is not significant (for any of the 4 readings). There does not appear to be a difference of day on CONTROL cort sample reading across days.
 
+Key take-away: Day does not seem to affect cortisol readings.
+
 Condition: 
-  Are there differences in cort readings across days per condition ? Are there differences between the control vs stress condition between four cort samples?  Stress vs. control cort reading 3 are significantly different and reading 4 is approaching significance.  Readings 1 and 2 are not sig different. Key take-away:  The stress condition does seem to have an impact on cortisol levels.
-  Are there differences in cort readings across days per condition ? visually and t-test reveal there is a clear increase in reading 3 under the stress condition that is not present in the control condition.
-  Are the differences in readings (3 & 1) significant across conditions? t-test reveals cort reading 3 differences for control and stress condition ARE significant. p = 0.0007266 and cort reading 4 differences for control and stress condition ARE significant. p = 0.006921. Readings 1 and 3 differences are not significant. Visual distributions also show positive skew under stress vs. differences distributed from zero with control condition. Plotting reading 3 to reading 1 difference for stress condition show most reading 3 are greater than 1 in the stress condition.
-  Taking the visualizations and t-tests shows significant differences between readings 3 and 1 under stress condition
+  Are there differences between the control vs stress condition between four cort samples?  A: Stress vs. control cort reading 3 are significantly different and reading 4 is approaching significance.  Readings 1 and 2 are not sig different. 
+  Are there differences in cort readings across days per condition? Both visual representations and t-tests reveal that there is a clear increase in reading 3 under the stress condition that is not present in the control condition.
+  Are the differences in readings (3 & 1) significant across conditions? t-test reveal cort reading 1 to 3 differences for control and stress condition ARE significant. p = 0.0007266. Also, cort reading 1 to 4 differences between the control and stress condition are significantly different. p = 0.006921. 
+  Readings 1 and 3 differences for the control condition alone are not significant. Visual distributions also show positive skew under stress vs. differences distributed near zero with control condition. Plotting reading 3 to reading 1 difference for stress condition show most reading 3 values are greater than reading 1 values in the stress condition.
+  
 Key take-away: The stress condition does seem to have a significant impact on cortisol levels at reading 3 with some continued impact until reading 4.
 
 𝤿 Extra: If stressor was given on day 2 impact cort reading 1 on day 2?  Are there individual differences here?  Check for anticipatory effect.
