@@ -68,8 +68,8 @@ t.test(diffratings_byday)
 
 ##### CORT Scores ####
 
-# Cortisol scores (1 & 2) across all participants #
-# NOTE: These include cort scores of participants who did not complete both days of the experiment.
+# Trial-Level Cort #
+# Note: These include cort scores of participants who did not complete both days of the experiment.
 
 #Cort 1 Value Readings
 mean(cort$cort_1_value, na.rm = T) #2.12
@@ -81,45 +81,36 @@ mean(cort$cort_2_value, na.rm = T) #2.03
 sd(cort$cort_2_value, na.rm = T) #2.34 
 range(cort$cort_2_value, na.rm = T) # 0 to 18.66
 
-#Mean of Cort 1 & 2 Values
+#trial-level mean/sd cort
 mean(cort$cortisol_mean_nmol_to_l, na.rm = T) #2.09
 sd(cort$cortisol_mean_nmol_to_l, na.rm = T) #2.42
 range(cort$cortisol_mean_nmol_to_l, na.rm = T) # 0 to 21.66
 
-#Cort COV Percentage Means
+#trial-level mean/sd cort coefficients of variance (%)
 mean(cort$cort_coeff_of_variance_as_percent, na.rm = T) #7.33
 sd(cort$cort_coeff_of_variance_as_percent, na.rm = T) #6.50
 range(cort$cort_coeff_of_variance_as_percent, na.rm = T) # 0.0 to 38.6
 
-# Cortisol score means subject-level - ALL participants #
-# Note: These include Stress_Subj_Level for participants who completed BOTH days of the experiment.
 
-#Cort 1 Value Readings
-mean(subj_level_cortisol$cort_1_value, na.rm = T) #2.02
-sd(subj_level_cortisol$cort_1_value, na.rm = T) #1.73 
-range(subj_level_cortisol$cort_1_value, na.rm = T) # 0.00 to 11.87
+# Subject-Level Cort #
 
-#Cort 2 Value Readings
-mean(subj_level_cortisol$cort_2_value, na.rm = T) #1.95
-sd(subj_level_cortisol$cort_2_value, na.rm = T) #1.61 
-range(subj_level_cortisol$cort_2_value, na.rm = T) # 0.00 to 10.86
+#subject-level mean/sd cort
+mean(cort_subj_level$cortisol_mean_nmol_to_l)
+#Mean cort (subject-level) across participants and across days/conditions (M = 2.00)
+sd(cort_subj_level$cortisol_mean_nmol_to_l)
+#SD cort (subject-level) across participants and across days/conditions (SD = 1.66)
 
-#Cort 1 & 2 Value Means
-mean(subj_level_cortisol$cortisol_mean_nmol_to_l, na.rm = T) #1.997
-sd(subj_level_cortisol$cortisol_mean_nmol_to_l, na.rm = T) #1.664
-range(subj_level_cortisol$cortisol_mean_nmol_to_l, na.rm = T) # 0 to 11.37
-
-#Cort COV Percentage Means
-mean(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) #7.298
-sd(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) #2.87
-range(subj_level_cortisol$cort_coeff_of_variance_as_percent, na.rm = T) # 1.83 to 14.24
-
+#subject-level mean/sd cort coefficients of variance (%)
+mean(cort_subj_level$cort_coeff_of_variance_as_percent, na.rm = t)
+#Mean cort (subject-level) across participants and across days/conditions (M = 7.30
+sd(cort_subj_level$cort_coeff_of_variance_as_percent, na.rm = t)
+#SD cort (subject-level) across participants and across days/conditions (SD = 2.87)
 
 
 # Sample Effects on Cortisol (Across Trials)
 
-subj_cort_mean_sample <- aggregate(cortisol_mean_nmol_to_l ~ sample, data = cort, FUN = mean, na.rm = TRUE)
 # Q: Are there differences in cortisol levels from reading 1 to 4
+subj_cort_mean_sample <- aggregate(cortisol_mean_nmol_to_l ~ sample, data = cort, FUN = mean, na.rm = TRUE)
 #  sample cortisol_mean_nmol_to_l
 #      1                1.808261
 #      2                1.859425
@@ -132,7 +123,7 @@ subj_cort_mean_sample <- aggregate(cortisol_mean_nmol_to_l ~ sample, data = cort
 
 # Day Effects on Cortisol (Across Subjects)
 
-# Means of each cort sample by day across participants (subject-level)
+# Means cort samples by day (subject-level)
 cort_means_by_sample_and_day = apply(cort_mtx, c(1, 2), mean, na.rm = TRUE)
 #       [Day 1]     [Day 2]
 # [1,] 1.541000 2.126429
@@ -140,7 +131,7 @@ cort_means_by_sample_and_day = apply(cort_mtx, c(1, 2), mean, na.rm = TRUE)
 # [3,] 3.026596 2.570250
 # [4,] 1.823404 1.931538
 
-# Standard deviations of each cort sample by day across participants (subject-level)
+# SD cort samples by day (subject-level)
 cort_sd_by_sample_and_day = apply(cort_mtx, c(1, 2), sd, na.rm = TRUE)
 #       [Day 1]     [Day 2]
 # [1,] 1.202253 3.321143
@@ -161,7 +152,6 @@ t.test(cort_mtx[4,1,,], cort_mtx[4,2,,], paired = F) # compare all sample 4 valu
 plot(x = 1:4, y = cort_means_by_sample_and_day[,1], col = "blue",type = 'l', lwd = 2)
 lines(x = 1:4, y = cort_means_by_sample_and_day[,2], col = "red", type = "b", lty = 'dotted', lwd = 2)
 # People enter Day 2 with greater cortisol than day 1
-
 
 #Question: Are there differences for the CONTROL condition between four cort samples across days?
 t.test(cort_mtx[1,1,1,], cort_mtx[1,2,1,], paired = F)
@@ -195,7 +185,8 @@ cort_sd_by_sample_and_condition = apply(cort_mtx, c(1, 3), sd, na.rm = TRUE)
 # [2,] 2.860131 1.147460
 # [3,] 2.050817 3.800791
 # [4,] 1.210964 1.687216
-# There is a clear increase in reading 3 under the stress condition.
+# There is a clear increase in reading 3 under the stress condition that is not present in the control condition.
+
 
 #Question: Are there differences between the control vs stress condition between four cort samples?
 t.test(cort_mtx[1,1,1,], cort_mtx[1,1,2,], paired = F)
@@ -206,13 +197,13 @@ t.test(cort_mtx[3,1,1,], cort_mtx[3,1,2,], paired = F)
 #A: t-test reveals cort reading 3 control vs. stress condition difference IS significant. p = 0.02
 t.test(cort_mtx[4,1,1,], cort_mtx[4,1,2,], paired = F) 
 #A: t-test reveals cort reading 4 control vs. stress condition difference is approaching significance. p = 0.06
-#Key take-away: There is an impact of the stress vs. control condition on the reading 3 cort response.
-
+# Stress vs. control cort reading 3 are significantly different and reading 4 is approaching significance.  
+# Readings 1 and 2 are not sig different.
+# Key take-away:  The stress condition does seem to have an impact on cortisol levels.
 
 #Plot mean cort for each reading with control/stress conditions with corrected time stamp (from stressor) 
 matplot(x = c(-2, 3, 13, 30), y = apply(cort_mtx, c(1,3), mean, na.rm = T)) 
 # A: Yes, there is a clear difference between cort reading 3 under stress vs. control
-
 
 #Question: Are the differences in readings (3 & 1) significant across conditions?
 t.test(apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[1,,2,], 2, sumna), paired = T)  
