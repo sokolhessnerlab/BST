@@ -10,7 +10,7 @@
 Acute **stress**
 
 ✅ CPT (stress condition) unpleasantness rating  
-**𝤿**  Cortisol
+**𝤿**  Cortisol - - Cortisol levels peak at reading 3, as expected. Reading 4 is higher than readings 1 and 2, indicating the stressor is still effective in latter parts of the experimental tasks.
 
 Chronic **stress**
 
@@ -77,7 +77,6 @@ Explicit **attitudes**
 
 BST main premise: Does stress impact trust?  What role do attitudes play in outcomes?
 
-
 STRESS only: 
 
 Q: Did the acute stressor work? 
@@ -85,6 +84,18 @@ Q: Did the acute stressor work?
 ✅ Yes. Participants are more stressed after the CPT (stress condition).
 (1) The cold pressor task rated much more uncomfortable vs. the lukewarm bath.
 (2) Cortisol levels are higher after CPT.
+
+Day Effects:
+    T-tests indicate the differences for the four cort samples across days are not significant (i.e., reading 1 on both days - not considering condition - are not sig different).
+    Day Effects (Control): People enter Day 2 with greater cortisol than day 1, however differences for the CONTROL condition between four cort samples across days is not significant (for any of the 4 readings). There does not appear to be a difference of day on CONTROL cort sample reading across days.
+
+Condition: 
+  Are there differences in cort readings across days per condition ? Are there differences between the control vs stress condition between four cort samples?  Stress vs. control cort reading 3 are significantly different and reading 4 is approaching significance.  Readings 1 and 2 are not sig different. Key take-away:  The stress condition does seem to have an impact on cortisol levels.
+  Are there differences in cort readings across days per condition ? visually and t-test reveal there is a clear increase in reading 3 under the stress condition that is not present in the control condition.
+  Are the differences in readings (3 & 1) significant across conditions? t-test reveals cort reading 3 differences for control and stress condition ARE significant. p = 0.0007266 and cort reading 4 differences for control and stress condition ARE significant. p = 0.006921. Readings 1 and 3 differences are not significant. Visual distributions also show positive skew under stress vs. differences distributed from zero with control condition. Plotting reading 3 to reading 1 difference for stress condition show most reading 3 are greater than 1 in the stress condition.
+  Taking the visualizations and t-tests shows significant differences between readings 3 and 1 under stress condition
+Key take-away: The stress condition does seem to have a significant impact on cortisol levels at reading 3 with some continued impact until reading 4.
+
 𝤿 Extra: If stressor was given on day 2 impact cort reading 1 on day 2?  Are there individual differences here?  Check for anticipatory effect.
 
 Q: Are the subjects chronically stressed? 
@@ -94,6 +105,10 @@ Q: Are the subjects chronically stressed?
 (2) Median split also shows low-to-moderate range
 (3) Overall PSS mean shows low-to-moderate range
 𝤿 Extra: Did day 2 PSS score differ when the stress condition was on day 2?
+
+Q; Are there interactions between chronic stress and cortisol?
+(1) PSS and cortisol mean
+(2) PSS and cortisol reading 1 to 3 dynamics
 
 
 
