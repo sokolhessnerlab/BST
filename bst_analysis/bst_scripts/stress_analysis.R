@@ -66,6 +66,7 @@ t.test(diffratings_byday)
 # p = 0.20, t(38) = 1.29, M = -0.92 
 # There do not appear to be significant day effects on bath ratings.
 
+
 ##### CORT Scores ####
 
 # Trial-Level Cort #
@@ -189,6 +190,11 @@ cort_sd_by_sample_and_condition = apply(cort_mtx, c(1, 3), sd, na.rm = TRUE)
 
 
 #Question: Are there differences between the control vs stress condition between four cort samples?
+
+#Plot mean cort for each reading with control/stress conditions with corrected time stamps (from stressor origin) 
+matplot(x = c(-2, 3, 13, 30), y = apply(cort_mtx, c(1,3), mean, na.rm = T)) 
+# A: There is a clear difference between cort reading 3 under stress vs. control
+
 t.test(cort_mtx[1,1,1,], cort_mtx[1,1,2,], paired = F)
 #A: t-test reveals cort reading 1 control vs. stress condition difference is NOT significant. p = 0.83
 t.test(cort_mtx[2,1,1,], cort_mtx[2,1,2,], paired = F) 
@@ -199,11 +205,6 @@ t.test(cort_mtx[4,1,1,], cort_mtx[4,1,2,], paired = F)
 #A: t-test reveals cort reading 4 control vs. stress condition difference is approaching significance. p = 0.06
 # Stress vs. control cort reading 3 are significantly different and reading 4 is approaching significance.  
 # Readings 1 and 2 are not sig different.
-# Key take-away:  The stress condition does seem to have an impact on cortisol levels.
-
-#Plot mean cort for each reading with control/stress conditions with corrected time stamp (from stressor) 
-matplot(x = c(-2, 3, 13, 30), y = apply(cort_mtx, c(1,3), mean, na.rm = T)) 
-# A: Yes, there is a clear difference between cort reading 3 under stress vs. control
 
 #Question: Are the differences in readings (3 & 1) significant across conditions?
 t.test(apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[1,,2,], 2, sumna), paired = T)  
@@ -215,23 +216,71 @@ t.test(apply(cort_mtx[3,,1,], 2, sumna), apply(cort_mtx[3,,2,], 2, sumna), paire
 t.test(apply(cort_mtx[4,,1,], 2, sumna), apply(cort_mtx[4,,2,], 2, sumna), paired = T)  
 #A: t-test reveals cort reading 4 differences for control and stress condition ARE significant. p = 0.006921
 
+# Differences between sample 3 and 1 reading by condition (control then stress)
+hist(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna)) #Control
+hist(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna)) #Stress
+# Under the control condition, cortisol reading 1 to 3 differences hover near zero,
+# whereas under the stress condition, there a positive skew in distribution.
+# indicating that across subjects, there is greater differences overall from cort readings 1 to 3 under the stress condition. 
 
-hist(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna))
-hist(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna))
+# Differences between sample 4 and 1 reading by condition (control then stress)
+hist(apply(cort_mtx[4,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna)) #Control
+hist(apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna)) #Stress
+# Under the control condition, cortisol reading 1 to 4 differences hover near zero,
+# whereas under the stress condition, there a positive skew in distribution
+# Across subjects, there is greater differences overall from cort readings 1 to 4 under the stress condition,
+#   but not to the extent of reading 1 and 3 differences (stress)
 
 plot(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna)); lines(x = c(-100, 100), y = c(-100, 100)) 
-#Plot of reading 3 to reading 1 difference for stress condition with line,
-#below line is reading 1 higher than reading 3 even under stress. Most are above the line, plus t-test shows sig
+# Plot of reading 3 to reading 1 difference for stress condition with line,
+# Below the line indicates reading 1 is higher than reading 3 under stress. 
+# Most are above the line, and t-tests shows significant differences between readings 3 and 1 under stress condition
+
+# Key take-away: The stress condition does seem to have a significant impact on cortisol levels at reading 3 
+# with some continued impact until reading 4.
+
+# REGRESSIONS for Cort including condition, controlling for day.
+
+# Main effects without interactions
+model_cort_sample1 = lmer(cortisol_mean_nmol_to_l ~ 1 + sample + day + control0stress1 + (1 | subjectID), data = cort)
+# Fixed Effects:
+#  (Intercept)           sample              day  control0stress1  
+#   1.3482           0.1138           0.1163           0.4613  
+
+
+# Main effects with sample-day interactions
+model_cort_sample2 = lmer(cortisol_mean_nmol_to_l ~ 1 + sample:day + control0stress1 + (1 | subjectID), data = cort)
+# Sample/Day interaction impact is low compared to stress vs. control condition impact on the model.
+# Fixed Effects:
+#   (Intercept)  control0stress1       sample:day  
+#   1.62855          0.46038          0.04684
+# Sample/Day interaction impact is low compared to stress vs. control condition impact on the model.
+
+
+# main effects and two-way interactions, but no three-way interaction
+model_cort_sample3 = lmer(cortisol_mean_nmol_to_l ~ 1 + (sample + day + control0stress1)^2 + (1 | subjectID), data = cort)
+# Fixed Effects:
+#  (Intercept)          sample        day        control0stress1     sample:day    sample:control0stress1    day:control0stress1  
+# 1.08518               0.02130       0.77369    -0.02286            -0.13565      0.57025                   -0.62355
+
+# all main effects and pairwise interactions
+model_cort_sample4 = lmer(cortisol_mean_nmol_to_l ~ 1 + (sample + day)*control0stress1 + (1 | subjectID), data = cort)
+
+#Fixed Effects:
+# (Intercept)                  sample                 day         control0stress1  sample:control0stress1     day:control0stress1  
+# 1.60112                -0.18649                 0.43510                -0.08055                 0.59019                -0.61590  
 
 
 ##### T0-DO ####
 
-# REGRESSIONS for Cort including condition, controlling for day.
 
-# Reviewed day effects but need to examine day with stress.
+# Reviewed day effects but need to examine day with stress. COMPLETE: The condition effects are significant from reading 1 to 3 under stress
+# Reading 1 to 4 differences are approaching significance under stress.
+
 # Rework sample and day with subj-level data. COMPLETE: The day and sample differences are not significant.
 
-# Examine day effects on cort reading 1 for 
+# Examine day effects on cort reading 1 for Control Only. CONPLETE: Control condition readings across days/readings are not signficantly different.
+
 
 #### CHRONIC ####
 
