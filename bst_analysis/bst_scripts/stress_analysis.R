@@ -274,6 +274,21 @@ model_cort_sample4 = lmer(cortisol_mean_nmol_to_l ~ 1 + (sample + day)*control0s
 # 1.60112                -0.18649                 0.43510                -0.08055                 0.59019                -0.61590  
 
 
+
+##### T0-DO ####
+
+# Return to subject-level analysis: Examine cort reading 3 and 1 differences with PSS and unpleasantness ratings
+
+# Reviewed day effects but need to examine day with stress. COMPLETE: The condition effects are significant from reading 1 to 3 under stress
+# Reading 1 to 4 differences are approaching significance under stress.
+
+# Rework sample and day with subj-level data. COMPLETE: The day and sample differences are not significant.
+
+# Examine day effects on cort reading 1 for Control Only. CONPLETE: Control condition readings across days/readings are not signficantly different.
+
+#### ACUTE INTERACTIONS ####
+
+
 # Regressions for Cort - subject-level
 # QUESTION: Best way to set this up or use lmer and add long data of PSS scores/unpleasantness?
 
@@ -291,18 +306,6 @@ summary(model_cort_sample6)
 
 model_cort_sample7 = lm(cortisol_mean_nmol_to_l ~ 1 + pssSum + day2bool_0control_1stress, data = Stress_Subj_Level_No_PSS)
 summary(model_cort_sample7)
-
-
-##### T0-DO ####
-
-# Return to subject-level analysis: Examine cort reading 3 and 1 differences with PSS and unpleasantness ratings
-
-# Reviewed day effects but need to examine day with stress. COMPLETE: The condition effects are significant from reading 1 to 3 under stress
-# Reading 1 to 4 differences are approaching significance under stress.
-
-# Rework sample and day with subj-level data. COMPLETE: The day and sample differences are not significant.
-
-# Examine day effects on cort reading 1 for Control Only. CONPLETE: Control condition readings across days/readings are not signficantly different.
 
 
 #### CHRONIC ####
