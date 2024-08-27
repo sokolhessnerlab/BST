@@ -239,12 +239,15 @@ plot(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(
 # Key take-away: The stress condition does seem to have a significant impact on cortisol levels at reading 3 
 # with some continued impact until reading 4.
 
-# REGRESSIONS for Cort including condition, controlling for day.
+
+##### REGRESSIONS ####
+
+# Regressions for Cort including condition, controlling for day.
 
 # Main effects without interactions
 model_cort_sample1 = lmer(cortisol_mean_nmol_to_l ~ 1 + sample + day + control0stress1 + (1 | subjectID), data = cort)
 # Fixed Effects:
-#  (Intercept)           sample              day  control0stress1  
+#  (Intercept)        sample              day   control0stress1  
 #   1.3482           0.1138           0.1163           0.4613  
 
 
@@ -271,8 +274,28 @@ model_cort_sample4 = lmer(cortisol_mean_nmol_to_l ~ 1 + (sample + day)*control0s
 # 1.60112                -0.18649                 0.43510                -0.08055                 0.59019                -0.61590  
 
 
+# Regressions for Cort - subject-level
+# QUESTION: Best way to set this up or use lmer and add long data of PSS scores/unpleasantness?
+
+#comparing unpleasantness ratings with cort response
+model_cort_sample5 = lm(cortisol_mean_nmol_to_l ~ 1 + diffUnPleasantnessRating, data = Stress_Subj_Level_No_PSS)
+summary(model_cort_sample5)
+# Subjects' overall cort levels are not associated with CPT unpleasantness ratings 
+
+# comparing PSS summed scores with cort response
+model_cort_sample6 = lm(cortisol_mean_nmol_to_l ~ 1 + pssSum, data = Stress_Subj_Level_No_PSS)
+summary(model_cort_sample6)
+# PSS and cort means (across samples) is approaching significance.
+
+# TO-DO: examine cort reading 3 and 1 differences with PSS and unpleasantness ratings
+
+model_cort_sample7 = lm(cortisol_mean_nmol_to_l ~ 1 + pssSum + day2bool_0control_1stress, data = Stress_Subj_Level_No_PSS)
+summary(model_cort_sample7)
+
+
 ##### T0-DO ####
 
+# Return to subject-level analysis: Examine cort reading 3 and 1 differences with PSS and unpleasantness ratings
 
 # Reviewed day effects but need to examine day with stress. COMPLETE: The condition effects are significant from reading 1 to 3 under stress
 # Reading 1 to 4 differences are approaching significance under stress.
