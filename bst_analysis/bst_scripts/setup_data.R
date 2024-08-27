@@ -237,7 +237,6 @@ sumna <- function(x) {
 
 
 
-
 ## Subj-Level Stress ########
 
 # STRESS subject-level data frame with ALL participants
@@ -247,6 +246,13 @@ Stress_Subj_Level_wCort <- merge(Stress_Subj_noCort, cort_subj_level, by = "subj
 # STRESS subject-level dataframe with participants who completed BOTH days of the experiment
 Stress_Subj_Level <- Stress_Subj_Level_wCort[!is.na(Stress_Subj_Level_wCort$diffUnPleasantnessRating), ]
 
+# Excludes those missing PSS
+Stress_Subj_Level_No_PSS <- Stress_Subj_Level[!is.na(Stress_Subj_Level$pssSum), ]
+
+# TO:DO Means cort sample 1 to 3 differences by subject to put in subject-level df
+# cort_rdg_1_to_3_diff_by_subj = apply(cort_mtx, c(1, 2), mean, na.rm = TRUE)
+# cort_rdg_1_to_3_diff_by_subj = (apply(cort_mtx[3,,2,], 1, sumna) - apply(cort_mtx[1,,2,], 1, sumna)) #Stress
+
 
 ## To-do Stress ########
 
@@ -254,6 +260,7 @@ Stress_Subj_Level <- Stress_Subj_Level_wCort[!is.na(Stress_Subj_Level_wCort$diff
 # (1) Extract sampleID: COMPLETE.
 # (2) Address one participant that has very high cort reading: COMPLETE (checked cort data overall)
 # (3) Create day/sample at subj-level: COMPLETE.
+# (4) Create mean cort sample 1 to 3 differences by subject to put in subject-level df
 
 
 
