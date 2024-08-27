@@ -1,7 +1,7 @@
 
 # --- Stress Only Base Level Analysis Script --- #
 
-#setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
+setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
 #setwd("~/Documents/GitHub/bst") #laptop
 
 #NOTE: Run this script while connected to the shlab drive, 
@@ -235,6 +235,24 @@ plot(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(
 # Plot of reading 3 to reading 1 difference for stress condition with line,
 # Below the line indicates reading 1 is higher than reading 3 under stress. 
 # Most are above the line, and t-tests shows significant differences between readings 3 and 1 under stress condition
+
+t.test(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna), paired = T)
+# cort reading 1 to 3 differences are significantly different under the stress vs. control conditions
+# p-value = 0.00213
+
+t.test(apply(cort_mtx[4,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna), paired = T)
+# cort reading 1 to 4 differences are significantly different under the stress vs. control conditions
+# p-value = 0.01854
+
+wilcox.test(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna), paired = T)
+# p-value = 0.0002561
+
+#Check for high cort response:
+which(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna) > 15)
+cort_subjectIDs[20]
+cort[cort$subjectID == 23,]
+#Note: Subj 23 has a very high cort response, 
+
 
 # Key take-away: The stress condition does seem to have a significant impact on cortisol levels at reading 3 
 # with some continued impact until reading 4.
