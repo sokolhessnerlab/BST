@@ -49,12 +49,19 @@ The primary function of this ReadMe file is to document important references for
      
  **ATTITUDES**
     - (1) The extent to which an individual invests in and trusts others with different racial backgrounds is related to the magnitude of that individual's implicit race bias. The core dimension of social trust can be shaped, to some degree, by attitudes that reside outside conscious awareness and intention.
-      Reference: Stanley, D. A., Sokol-Hessner, P., Banaji, M. R., & Phelps, E. A. (2011). Implicit race attitudes predict trustworthiness judgments and economic trust decisions. Proceedings of the National Academy of Sciences of the United States of America, 108(19), 7710–7715. https://doi.org/10.1073/pnas.1014345108
+    Implicit attitudes of group membership can support or impede social trust and decisions. Previous work examining trust under implicit attitudes has demonstrated that group membership can impact social trust and decisions, namely that in-/out-group implicit biases can impact trust behaviors.
+    Reference: Stanley, D. A., Sokol-Hessner, P., Banaji, M. R., & Phelps, E. A. (2011). Implicit race attitudes predict trustworthiness judgments and economic trust decisions. Proceedings of the National Academy of Sciences of the United States of America, 108(19), 7710–7715. https://doi.org/10.1073/pnas.1014345108
     
     - (2) We show that: (a) although political scientists use the BIAT and the AMP to measure the same thing, the relationship between them is substantively indistinguishable from zero; (b) both measures classify an unlikely proportion of whites as more favorable toward Black Americans than white Americans; and (c) substantial numbers of whites that either measure classifies as free of prejudice openly endorse anti-Black stereotypes. 
       Reference:  Clayton, K., Horrillo, J., & Sniderman, P. M. (2023). The BIAT and the AMP as measures of racial prejudice in political science: A methodological assessment. Political Science Research and Methods, 11(2), 363–373. doi:10.1017/psrm.2022.56
 
+    - (3) Explicit attitudes are beliefs and associations we can directly access and directly measure, while implicit attitudes we have little awareness of and thus measure by indirect means.  Explicit and implicit attitudes work on parallel systems and can be contrary to one another within same individual.  Implicit attitudes in particular have been shown to be a better predictor of behavior than explicit beliefs
+      References: Hahn, Judd, Hirsh, & Blair (2014); Reihl et al. (2015) 
 
+    - (4)  The Impact of Cognitive Stressors in the Emergency Department on Physician Implicit Racial Bias. Academic emergency medicine.
+    Stress can affect the potency of implicit attitudes we hold towards others. ER study demonstrated that cognitive stressors (overcrowding and patient load) were associated with increased implicit bias. 
+      Reference:  Johnson, T. J., Hickey, R. W., Switzer, G. E., Miller, E., Winger, D. G., Nguyen, M., Saladino, R. A., & Hausmann, L. R. (2016). The Impact of Cognitive Stressors in the Emergency Department on Physician Implicit Racial Bias. Academic emergency medicine : official journal of the Society for Academic Emergency Medicine, 23(3), 297–305. https://doi.org/10.1111/acem.12901 
+      
 - **TRUST**
 
 - (1) The extent to which an individual invests in and trusts others with different racial backgrounds is related to the magnitude of that individual's implicit race bias. The core dimension of social trust can be shaped, to some degree, by attitudes that reside outside conscious awareness and intention.
