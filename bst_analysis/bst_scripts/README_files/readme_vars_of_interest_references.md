@@ -67,3 +67,12 @@ The primary function of this ReadMe file is to document important references for
 - (1) The extent to which an individual invests in and trusts others with different racial backgrounds is related to the magnitude of that individual's implicit race bias. The core dimension of social trust can be shaped, to some degree, by attitudes that reside outside conscious awareness and intention.
       Reference: Stanley, D. A., Sokol-Hessner, P., Banaji, M. R., & Phelps, E. A. (2011). Implicit race attitudes predict trustworthiness judgments and economic trust decisions. Proceedings of the National Academy of Sciences of the United States of America, 108(19), 7710–7715. https://doi.org/10.1073/pnas.1014345108
     
+- (2) How and why humans trust: A meta-analysis and elaborated model
+      Reference: Hancock, P. A., Kessler, T. T., Kaplan, A. D., Stowers, K., Brill, J. C., Billings, D. R., Schaefer, K. E., & Szalma, J. L. (2023). How and why humans trust: A meta-analysis and elaborated model. Frontiers in psychology, 14, 1081086. https://doi.org/10.3389/fpsyg.2023.1081086
+      
+- (3) Intergroup empathy: how does race affect empathic neural responses?
+      Reference: Chiao, J. Y., & Mathur, V. A. (2010). Intergroup empathy: how does race affect empathic neural responses?. Current biology : CB, 20(11), R478–R480. https://doi.org/10.1016/j.cub.2010.04.001
+      
+- (4) Trust Games and Beyond
+      "Authors highlight the difficulties and limitations of" Trust Game paradigm, and explore alternatives measures of trust like surveys, neurochemical manipulations, and neuroimaging.
+      Reference: Alós-Ferrer, C., & Farolfi, F. (2019). Trust Games and Beyond. Frontiers in neuroscience, 13, 887. https://doi.org/10.3389/fnins.2019.00887
