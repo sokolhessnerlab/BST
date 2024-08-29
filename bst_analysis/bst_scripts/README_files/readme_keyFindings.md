@@ -1,6 +1,10 @@
 ## BST Data Processing & Key Findings ####
 
-# Updated 8/27/2024
+# Updated 8/29/2024
+
+# This document is used to document note-worthy findings that arise during the process of wrangling and analyzing the BST data.  Key findings are then entered into summary_mainfindings.md found in the main Github/bst folder.
+
+# Note: the data wrangling and data analyzing sections are separate here.  Those can be combined/reconciled once all data has been wrangled.
 
 
 #### DATA WRANGLING ####
@@ -85,13 +89,13 @@ Q: Did the acute stressor work?
 (1) The cold pressor task rated much more uncomfortable vs. the lukewarm bath.
 (2) Cortisol levels are higher after CPT.
 
-Day Effects:
+✅ Day Effects:
     T-tests indicate the differences for the four cort samples across days are not significant (i.e., reading 1 on both days - not considering condition - are not sig different).
     Day Effects (Control): People enter Day 2 with greater cortisol than day 1, however differences for the CONTROL condition between four cort samples across days is not significant (for any of the 4 readings). There does not appear to be a difference of day on CONTROL cort sample reading across days.
 
 Key take-away: Day does not seem to affect cortisol readings.
 
-Condition: 
+✅ Condition: 
   Are there differences between the control vs stress condition between four cort samples?  A: Stress vs. control cort reading 3 are significantly different and reading 4 is approaching significance.  Readings 1 and 2 are not sig different. 
   Are there differences in cort readings across days per condition? Both visual representations and t-tests reveal that there is a clear increase in reading 3 under the stress condition that is not present in the control condition.
   Are the differences in readings (3 & 1) significant across conditions? t-test reveal cort reading 1 to 3 differences for control and stress condition ARE significant. p = 0.0007266. Also, cort reading 1 to 4 differences between the control and stress condition are significantly different. p = 0.006921. 
@@ -134,7 +138,7 @@ Q: How trusting (perceptually) are people in our sample?
 (2) WIth same vs. other race?
 𝤿 What are reaction times during trust perceptions?
 (1) Overall - across races?
-(2) WIth same vs. other race?
+(2) With same vs. other race?
 𝤿 Extra: …
 
 
