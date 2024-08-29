@@ -6,6 +6,7 @@
 library(plyr)
 library(dplyr)
 library(car)
+library(IATanalytics)
 
 #Color Blind Palette for graphing
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
@@ -136,7 +137,6 @@ hist(subj_mean_cort_COV$cort_coeff_of_variance_as_percent)
 # Overall, mean cort_coeff_of_variance_as_percent subject-level 
 mean(subj_mean_cort_COV$cort_coeff_of_variance_as_percent) # 7.30
 sd(subj_mean_cort_COV$cort_coeff_of_variance_as_percent) # 2.87
-
 
 #Creates truncated cortisol DF for use in subj-level Subj-level Stress DF
 cort_subj_level_temp <- list(subj_mean_cort, subj_mean_cort_COV)
@@ -652,20 +652,29 @@ iat <- read.csv(iat_csv) #reads in iat data
 
 #FISPPA Version
 
-# (1) Clean IAT - Remove from the dataset the pure practice blocks of the IAT
+# (1) Clean IAT - Remove from the dataset the pure practice blocks of the IAT 
+# iat_wrangled used in IATanalytics function
 iat_wrangled = filter(iat, trialtype != "PRAC")
 
-iat_wrangled_Dscoring <- iat_wrangled[, c("subjectID", "blockNum", "RT", "correct")]
+# (2) Run the IATanalytics function ()
 
-iat_wrangled_Dscoring <- iat_wrangled_Dscoring %>%
-  rename(participant = subjectID,
-         block = blockNum,
-         latency = RT,
-         correct = correct)
+# Storage's function = IATanalytics(IAT, Trials, First)
+# Uses default number of trials (220), first condition as congruent, and IAT as df name
+
+# Modify to have first trial as "incongruent", 200 trials, and use of iat_wrangled for data
+IATanalytics(IAT = iat_wrangled, Trials = 200, First="Incongruent")
+
+#REVIEW w PSH
 
 
-# Storage version
-# IATScore(iat, Trials, First)
+#alternative version
+#iat_wrangled_Dscoring <- iat_wrangled[, c("subjectID", "blockNum", "RT", "correct")]
+
+#iat_wrangled_Dscoring <- iat_wrangled_Dscoring %>%
+# rename(participant = subjectID,
+#        block = blockNum,
+#       latency = RT,
+#       correct = correct)
 
 
 
