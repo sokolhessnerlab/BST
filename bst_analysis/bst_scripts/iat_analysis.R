@@ -18,7 +18,7 @@ IATanalytics <- function(IAT, Trials, First){
 
   RT <- NULL
 
-  colnames(IAT) <- c("blockNum", "cumtrialNum", "cattype", "corrans", "correct", "RT")  # QUESTION: Check Category & Cat_Item
+  colnames(IAT) <- c("blockNum", "cumTrialNum", "cattype", "corrans", "correct", "RT")  # QUESTION: Check Category & Cat_Item
 
   # Set default number of trials to 220, which is standard for the IAT, unless another value is specified by the user
   if(missing(Trials)){
@@ -35,13 +35,13 @@ IATanalytics <- function(IAT, Trials, First){
   # Step 1: Delete any reaction times > 10,000 ms ####
   i <- 1 # define i counting variable for while loop
   while (i < Trials) { # define while loop for Step 1
-    if (IAT$RT[i] > 10000) {IAT$RT[i] <- 0}
+    if (IAT$RT[i] > 100000) {IAT$RT[i] <- 0}
     i = i + 1
   }
   IAT2 <- subset(IAT, RT!=0) # new data frame, excluding trials over 10,000 ms
 
   # Step 2: Check for exclusion based on response speed (10% trials < 300 ms) ####
-  SpeedCount <- length(which(IAT2$RT<300)) # count number of RTs under 300
+  SpeedCount <- length(which(IAT2$RT<.01)) # count number of RTs under 300
   SpeedCount # display the number of RTs under 300
   SpeedProp <- SpeedCount/nrow(IAT2) # calculate proportion of RTs under 300
   SpeedProp # display proportion of RTs under 300
@@ -110,7 +110,7 @@ IATanalytics <- function(IAT, Trials, First){
 
   # Step 4b: Compute means of correct trials in the odd data frame and replace incorrect trials with this value + 600
   Block2oddnewmean <- mean(IATodd$RT[IATodd$blockNum==2 & IATodd$correct==0]) + 600
-  Block3oddnewmean <- mean(IATodd$RT[IATodd$blockNumk==3 & IATodd$correct==0]) + 600
+  Block3oddnewmean <- mean(IATodd$RT[IATodd$blockNum==3 & IATodd$correct==0]) + 600
   Block5oddnewmean <- mean(IATodd$RT[IATodd$blockNum==5 & IATodd$correct==0]) + 600
   Block6oddnewmean <- mean(IATodd$RT[IATodd$blockNum==6 & IATodd$correct==0]) + 600
 
@@ -217,7 +217,7 @@ IATanalytics <- function(IAT, Trials, First){
   Analysis <- c("Overall IAT effect size:",
                 "Effect size for ODD trials only:",
                 "Effect size for EVEN trials only:",
-                "Proportion of trials with RTs under 300ms:")
+                "Proportion of trials with RTs under 100ms:")
 
   Value <- c(IATeffect, IATeffectodd, IATeffecteven, SpeedProp)
 
@@ -231,10 +231,10 @@ IATanalytics <- function(IAT, Trials, First){
   message(round(time.taken, 3))
   message(" ")
 
-  # Tell the researcher to exclude this participant if they went too fast on over 10% of the trials (< 300 ms)
+  # Tell the researcher to exclude this participant if they went too fast on over 10% of the trials (< 100 ms)
   if (SpeedProp > 0.10) {
     message("NOTE: THE PARTICIPANT WENT TOO FAST ON THE IAT -- EXCLUDE")
-    message("Proportion of trials with responses faster than 300 ms:")
+    message("Proportion of trials with responses faster than 100 ms:")
     message(round(SpeedProp, 3))
     message(" ")
     return(results)
