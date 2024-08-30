@@ -22,7 +22,7 @@ IATanalytics <- function(IAT, Trials, First){
 
   # Set default number of trials to 220, which is standard for the IAT, unless another value is specified by the user
   if(missing(Trials)){
-    Trials = 221
+    Trials = 139
   } else {
     Trials = Trials + 1
   }

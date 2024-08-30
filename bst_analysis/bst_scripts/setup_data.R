@@ -658,11 +658,18 @@ iat_wrangled = filter(iat, trialtype != "PRAC")
 
 # (2) Run the IATanalytics function ()
 
+
+iat_results <- IATanalytics(data = iat_wrangled, 
+                           participant_id = "subjectID",
+                           block_name = "blockNum",
+                           trial_latency = "RT",
+                           error = "correct")
+
 # Storage's function = IATanalytics(IAT, Trials, First)
 # Uses default number of trials (220), first condition as congruent, and IAT as df name
 
 # Modify to have first trial as "incongruent", 200 trials, and use of iat_wrangled for data
-IATanalytics(IAT = iat_wrangled, Trials = 200, First="Incongruent")
+iat_results <- IATanalytics(IAT = iat_wrangled, Trials = 139, First="Incongruent")
 
 #REVIEW w PSH
 
