@@ -650,31 +650,84 @@ amp_Subj_Level <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list)
 iat_csv <- file.path(config$path$data$current, config$csvs$iat)
 iat <- read.csv(iat_csv) #reads in iat data
 
-#FISPPA Version
-
 # (1) Clean IAT - Remove from the dataset the pure practice blocks of the IAT 
 # iat_wrangled used in IATanalytics function
 iat_wrangled = filter(iat, trialtype != "PRAC")
 
+iat_wrangled = iat_wrangled %>%
+  arrange(subjectID, cumTrialNum) %>%
+  group_by(subjectID) %>%
+  mutate(trial_index = row_number())
+
+iat_wrangled$blockNum[iat_wrangled$blockNum ==3] <- 1
+iat_wrangled$blockNum[iat_wrangled$blockNum ==4] <- 2
+
 # (2) Run the IATanalytics function ()
 
-
-iat_results <- IATanalytics(data = iat_wrangled, 
-                           participant_id = "subjectID",
-                           block_name = "blockNum",
-                           trial_latency = "RT",
-                           error = "correct")
-
 # Storage's function = IATanalytics(IAT, Trials, First)
-# Uses default number of trials (220), first condition as congruent, and IAT as df name
+# Note: default to have first trial as "congruent", 200 trials, IAT as df
+# Updated to reflect 139 trials, first condition as "incongruent", and iat_wrangled as df
 
-# Modify to have first trial as "incongruent", 200 trials, and use of iat_wrangled for data
 iat_results <- IATanalytics(IAT = iat_wrangled, Trials = 139, First="Incongruent")
 
-#REVIEW w PSH
+iat_results <- IATanalytics(IAT = iat, Trials = 200, First="Incongruent")
+
+#iat_results <- IATanalytics(data = iat_wrangled, 
+                           #participant_id = "subjectID",
+                           #block_name = "blockNum",
+                           #trial_latency = "RT",
+                           #error = "correct")
 
 
-#alternative version
+
+#REVIEW w PSH ---- Attempting  to loop through subject level IAT results
+
+# create function to get d-score per subject
+get_IAT_dscore_per_subject <- function(iat_results) {
+  result <- IATanalytics(
+    IAT = iat_results,
+    Trials = 139,
+    First = "Incongruent"
+    )
+  return(result$D_score)
+}
+
+
+#version1 dplyr
+results_IAT_dscore_per_subject <- iat_wrangled %>%
+  group_by(subjectID) %>%
+  summarize(D_score = get_IAT_dscore_per_subject(cur_data()), .groups = 'drop') %>%
+  filter(!is.na(D_score))
+
+#only prints subjectIDs
+print(results_IAT_dscore_per_subject)
+
+#version2 looping
+results_IAT_dscore_per_subject2 <- data.frame(subjectID = integer(), D_score = numeric(), stringsAsFactors = FALSE)
+
+unique_subjectIDs <- unique(iat$subjectID)
+
+for (subject in unique_subjectIDs) {
+  #subset
+  subject_data <- subset(iat, subjectID == subject)
+  
+  #compute D-score
+  d_score <- tryCatch(
+    get_IAT_dscore_per_subject(subject_data),
+    error = function(e) NA #handle NAs
+  )
+  
+  if (is.numeric(d_score)){
+    results_IAT_dscore_per_subject2 <- rbind(results_IAT_dscore_per_subject2, data.frame(subjectID = subject, D_score = d_score))
+    } else {
+    warning(paste("Unexpected D-score for subject:"))
+    }
+  
+}
+
+print(results_IAT_dscore_per_subject2)
+#alternative version of getting d-scores
+
 #iat_wrangled_Dscoring <- iat_wrangled[, c("subjectID", "blockNum", "RT", "correct")]
 
 #iat_wrangled_Dscoring <- iat_wrangled_Dscoring %>%
