@@ -261,13 +261,33 @@ cort[cort$subjectID == 23,]
 ##### REGRESSIONS ####
 
 # Regressions for Cort including condition, controlling for day.
+# reformat day
+# convert readings to minutes - look at raw timings 
 
 # Main effects without interactions
-model_cort_sample1 = lmer(cortisol_mean_nmol_to_l ~ 1 + sample + day + control0stress1 + (1 | subjectID), data = cort)
+model_cort_sample_day_stress = lmer(cortisol_mean_nmol_to_l ~ 1 + sample + day_diff + control0stress1 + (1 | subjectID), data = cort)
+summary(model_cort_sample_day_stress)
 # Fixed Effects:
 #  (Intercept)        sample              day   control0stress1  
 #   1.3482           0.1138           0.1163           0.4613  
+model_cort_sample1 = lm(cortisol_mean_nmol_to_l ~ 1 + day_diff * control0stress1, data = cort[cort$sample == 1,])
+summary(model_cort_sample1)
 
+model_cort_sample2 = lm(cortisol_mean_nmol_to_l ~ 1 + day_diff * control0stress1, data = cort[cort$sample == 2,])
+summary(model_cort_sample2)
+
+model_cort_sample3 = lm(cortisol_mean_nmol_to_l ~ 1 + day_diff * control0stress1, data = cort[cort$sample == 3,])
+summary(model_cort_sample3)
+
+model_cort_sample4 = lm(cortisol_mean_nmol_to_l ~ 1 + day_diff * control0stress1, data = cort[cort$sample == 4,])
+summary(model_cort_sample4)
+
+
+cort$sampleF = as.factor(cort$sample);
+cort$ctrlstressDiff = cort$control0stress1 * 2 - 1
+model_cort_sampleF_day_stress = lmer(cortisol_mean_nmol_to_l ~ 1 + sample + sampleF * control0stress1 + day_diff * control0stress1 + 
+                                       (1 | subjectID), data = cort)
+summary(model_cort_sampleF_day_stress)
 
 # Main effects with sample-day interactions
 model_cort_sample2 = lmer(cortisol_mean_nmol_to_l ~ 1 + sample:day + control0stress1 + (1 | subjectID), data = cort)
