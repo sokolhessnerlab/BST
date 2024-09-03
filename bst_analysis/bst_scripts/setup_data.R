@@ -625,15 +625,15 @@ amp <- read.csv(amp_csv) #reads in AMP data
 #renaming columns for clarity
 names(amp)[names(amp) == "RT"] <- "responseTime_AMP"
 names(amp)[names(amp) == "stimulusRace"] <- "stimulusRace_0w_1b_2o"
-names(amp)[names(amp) == "response"] <- "unPleasant0_Pleasant1"
+names(amp)[names(amp) == "response"] <- "amp_unPleasant0_Pleasant1"
 names(amp)[names(amp) == "condition"] <- "PleasOnLeft0_PleasOnRight1"
 names(amp)[names(amp) == "session"] <- "amp1_amp2"
 
 amp_rt_mean <- aggregate(responseTime_AMP ~ subjectID, data = amp, FUN=mean)
 amp_rt_sd <- aggregate(responseTime_AMP ~ subjectID, data = amp, FUN=sd)
 
-amp_bathrating_mean <- aggregate(unPleasant0_Pleasant1 ~ subjectID, data = amp, FUN=mean)
-amp_bathrating_sd <- aggregate(unPleasant0_Pleasant1 ~ subjectID, data = amp, FUN=sd)
+amp_bathrating_mean <- aggregate(amp_unPleasant0_Pleasant1 ~ subjectID, data = amp, FUN=mean)
+amp_bathrating_sd <- aggregate(amp_unPleasant0_Pleasant1 ~ subjectID, data = amp, FUN=sd)
 
 #amp_sum <- merge(amp_rt_mean, amp_rt_sd, amp_bathrating_mean, amp_bathrating_sd)
 
@@ -693,14 +693,14 @@ get_IAT_dscore_per_subject <- function(iat_results) {
 }
 
 
-#version1 dplyr
-results_IAT_dscore_per_subject <- iat_wrangled %>%
-  group_by(subjectID) %>%
-  summarize(D_score = get_IAT_dscore_per_subject(cur_data()), .groups = 'drop') %>%
-  filter(!is.na(D_score))
+#version 1 dplyr
+#results_IAT_dscore_per_subject <- iat_wrangled %>%
+  #group_by(subjectID) %>%
+  #summarize(D_score = get_IAT_dscore_per_subject(cur_data()), .groups = 'drop') %>%
+  #filter(!is.na(D_score))
 
 #only prints subjectIDs
-print(results_IAT_dscore_per_subject)
+#print(results_IAT_dscore_per_subject)
 
 #version2 looping
 results_IAT_dscore_per_subject2 <- data.frame(subjectID = integer(), D_score = numeric(), stringsAsFactors = FALSE)

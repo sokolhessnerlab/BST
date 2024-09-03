@@ -29,7 +29,6 @@ options(scipen=999)
 
 ### Basic Analyses AMP ####
 summary(amp)
-str(amp)
 
 #Examine Response Times
 mean(amp$responseTime) #0.912
@@ -51,16 +50,16 @@ hist(amp$responseTime, breaks = 100)
 
 #Q: What are the effects of stimulus race on stress pleasantness ratings? 
 # (collapsed)
-by(data = amp$unPleasant0_Pleasant1, INDICES = amp$stimulusRace_0w_1b_2o, FUN = mean)
-by(data = amp$unPleasant0_Pleasant1, INDICES = amp$stimulusRace_0w_1b_2o, FUN = sd)
+by(data = amp$amp_unPleasant0_Pleasant1, INDICES = amp$stimulusRace_0w_1b_2o, FUN = mean)
+by(data = amp$amp_unPleasant0_Pleasant1, INDICES = amp$stimulusRace_0w_1b_2o, FUN = sd)
 #white AMP unpleasantness 0.57 mean (0.49 sd)
 #black AMP unpleasantness 0.58 mean (0.49 sd)
 #other AMP unpleasantness 0.58 mean (0.49 sd)
 #A: People rated white (.57), black (.58), and other (.58) faces as approximately equally pleasant,
 # but with a good deal of variability.
 
-prop.table(table(amp$stimulusRace_0w_1b_2o, amp$unPleasant0_Pleasant1),1)*100
-#                   unPleasant0_Pleasant1
+prop.table(table(amp$stimulusRace_0w_1b_2o, amp$amp_unPleasant0_Pleasant1),1)*100
+#                   amp_unPleasant0_Pleasant1
 #stimulusRace_0w_1b_2o         0         1
 #                   0       42.72%    57.28%
 #                   1       41.87%    58.13%
@@ -105,10 +104,10 @@ for (s in 1:number_of_AMP_subjects){
   
   tmpdata = amp[amp$subjectID == sID,];
   
-  amp_summary_stats$judgments_mean_overall[s] = mean(tmpdata$unPleasant0_Pleasant1);
-  amp_summary_stats$judgments_mean_white[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 0]);
-  amp_summary_stats$judgments_mean_black[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 1]);
-  amp_summary_stats$judgments_mean_other[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 2]);
+  amp_summary_stats$judgments_mean_overall[s] = mean(tmpdata$amp_unPleasant0_Pleasant1);
+  amp_summary_stats$judgments_mean_white[s] = mean(tmpdata$amp_unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 0]);
+  amp_summary_stats$judgments_mean_black[s] = mean(tmpdata$amp_unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 1]);
+  amp_summary_stats$judgments_mean_other[s] = mean(tmpdata$amp_unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 2]);
   
   amp_summary_stats$responseTime_mean_overall[s] = mean(tmpdata$responseTime);
   amp_summary_stats$responseTime_mean_white[s] = mean(tmpdata$responseTime[tmpdata$stimulusRace_0w_1b_2o == 0]);
@@ -123,8 +122,8 @@ amp_summary_stats
 # BST012, 030, and 035 have meaningful numbers of trials that are either excessively fast or slow (esp. 030 and 035).
 # Judgments don't appear to be singular (i.e. all one response or one button).
 
-amp$unPleasant0_Pleasant1[amp$responseTime < lower_RT_bound] = NA
-amp$unPleasant0_Pleasant1[amp$responseTime > upper_RT_bound] = NA
+amp$amp_unPleasant0_Pleasant1[amp$responseTime < lower_RT_bound] = NA
+amp$amp_unPleasant0_Pleasant1[amp$responseTime > upper_RT_bound] = NA
 
 amp$responseTime[amp$responseTime < lower_RT_bound] = NA
 amp$responseTime[amp$responseTime > upper_RT_bound] = NA
@@ -136,7 +135,7 @@ for (race_category in 0:2){
     subj_level_averages = array(data = NA, dim = c(number_of_AMP_subjects,1));
     for (subj in 1:number_of_AMP_subjects){
       tmp_index = (amp$stimulusRace_0w_1b_2o == race_category) &
-        (amp$unPleasant0_Pleasant1 == response_type) &
+        (amp$amp_unPleasant0_Pleasant1 == response_type) &
         (amp$subjectID == subject_IDs[subj]);
       
       subj_level_averages[subj] = mean(amp$responseTime[tmp_index], na.rm = T) # NOTE: doing this with MEDIAN produces very similar pattern (maybe less diff. btwn pleas/unpleas for other?)
@@ -152,7 +151,7 @@ amp_rts_byRaceResp = as.data.frame(amp_rts_byRaceResp)
 amp_rts_byRaceResp$raceCategory = as.factor(amp_rts_byRaceResp$raceCategory)
 amp_rts_byRaceResp$responseType = as.factor(amp_rts_byRaceResp$responseType)
 
-amp$responseType = amp$unPleasant0_Pleasant1*2-1; # +1 = pleasant, -1 = unpleasant
+amp$responseType = amp$amp_unPleasant0_Pleasant1*2-1; # +1 = pleasant, -1 = unpleasant
 
 amp$isblack = (amp$stimulusRace_0w_1b_2o == 1)*1;
 amp$isother = (amp$stimulusRace_0w_1b_2o == 2)*1;
@@ -259,17 +258,17 @@ for (s in 1:number_of_AMP_subjects){
   
   tmpdata = amp[amp$subjectID == sID,];
   
-  amp_scores$amp_overall[s] = mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 0], na.rm = T) -
-    mean(tmpdata$unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 1], na.rm = T);
+  amp_scores$amp_overall[s] = mean(tmpdata$amp_unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 0], na.rm = T) -
+    mean(tmpdata$amp_unPleasant0_Pleasant1[tmpdata$stimulusRace_0w_1b_2o == 1], na.rm = T);
   
-  amp_scores$amp_d1_s1[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 1)], na.rm = T) -
-    mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 1)], na.rm = T);
-  amp_scores$amp_d1_s2[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 2)], na.rm = T) -
-    mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 2)], na.rm = T);
-  amp_scores$amp_d2_s1[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 1)], na.rm = T) -
-    mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 1)], na.rm = T);
-  amp_scores$amp_d2_s2[s] = mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 2)], na.rm = T) -
-    mean(tmpdata$unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 2)], na.rm = T);
+  amp_scores$amp_d1_s1[s] = mean(tmpdata$amp_unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 1)], na.rm = T) -
+    mean(tmpdata$amp_unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 1)], na.rm = T);
+  amp_scores$amp_d1_s2[s] = mean(tmpdata$amp_unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 2)], na.rm = T) -
+    mean(tmpdata$amp_unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 1) & (tmpdata$amp1_amp2 == 2)], na.rm = T);
+  amp_scores$amp_d2_s1[s] = mean(tmpdata$amp_unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 1)], na.rm = T) -
+    mean(tmpdata$amp_unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 1)], na.rm = T);
+  amp_scores$amp_d2_s2[s] = mean(tmpdata$amp_unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 0) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 2)], na.rm = T) -
+    mean(tmpdata$amp_unPleasant0_Pleasant1[(tmpdata$stimulusRace_0w_1b_2o == 1) & (tmpdata$day == 2) & (tmpdata$amp1_amp2 == 2)], na.rm = T);
   
   # Calculate change in AMP on a per-day basis
   # AMP 2 - AMP 1
@@ -304,15 +303,15 @@ for (s in 1:number_of_AMP_subjects){
 # 1. Did stress increase AMP scores?
 
 #CPT/Control by frequency of AMP unpleasant (0)/pleasant (1) rating
-prop.table(table(amp_bath$day2StressedBool, amp_bath$unPleasant0_Pleasant1),1)*100
+prop.table(table(amp_bath$day2StressedBool, amp_bath$amp_unPleasant0_Pleasant1),1)*100
 
-#                unPleasant0_Pleasant1
+#                amp_unPleasant0_Pleasant1
 #     day2StressedBool      0     1
 #           Control 0   42.42% 57.55%
 #               CPT 1   41.64% 58.36%
 # participants rated AMP stimuli pleasant more often than unpleasant for both control and experimental (CPT) conditions
 
-#xtabs(~day2StressedBool + unPleasant0_Pleasant1, data = amp_bath)
+#xtabs(~day2StressedBool + amp_unPleasant0_Pleasant1, data = amp_bath)
 
 hist(amp_scores$change_amp_stress)
 hist(amp_scores$change_amp_control)
@@ -682,14 +681,14 @@ amp_mod2 <- lmer(responseTime ~ 1 + stimulusRace_0w_1b_2o + amp1_amp2 + ( 1 | su
 summary(amp_mod2)
 #simpler model, same results as amp_mod1 which included interaction effects
 
-amp_mod3 <- glm(unPleasant0_Pleasant1 ~ stimulusRace_0w_1b_2o + amp1_amp2, data = amp)
+amp_mod3 <- glm(amp_unPleasant0_Pleasant1 ~ stimulusRace_0w_1b_2o + amp1_amp2, data = amp)
 summary(amp_mod3)
 #when controlling for stimulus race, amp1/amp2 significantly related to unpleasant/pleasant AMP ratings.
 
 #To-DO: Check AMP 1 vs 2 by whether or not they had control or exper on day 1! Then compare with stimulus type.
 
-prop.table(table(amp$amp1_amp2, amp$unPleasant0_Pleasant1),1)*100
-#                unPleasant0_Pleasant1
+prop.table(table(amp$amp1_amp2, amp$amp_unPleasant0_Pleasant1),1)*100
+#                amp_unPleasant0_Pleasant1
 #                           0     1
 #           AMP_1     43.79% 56.21%
 #           AMP_2     40.43% 59.57%
