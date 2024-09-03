@@ -1,7 +1,7 @@
 
 # --- Stress Only Base Level Analysis Script --- #
 
-setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
+#setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
 #setwd("~/Documents/GitHub/bst") #laptop
 
 #NOTE: Run this script while connected to the shlab drive, 
@@ -166,7 +166,6 @@ t.test(cort_mtx[4,1,1,], cort_mtx[4,2,1,], paired = F)
 #Key take-away: There does not appear to be a difference of day on CONTROL cort sample reading across days.
 
 
-
 # Condition Effects on Cortisol (Across Subjects)
 
 # Question: Are there differences in cort readings across days per condition ?
@@ -313,7 +312,7 @@ model_cort_sample4 = lmer(cortisol_mean_nmol_to_l ~ 1 + (sample + day)*control0s
 
 
 
-##### T0-DO ####
+##### TO-DO ####
 
 # Return to subject-level analysis: Examine cort reading 3 and 1 differences with PSS and unpleasantness ratings
 
@@ -324,8 +323,8 @@ model_cort_sample4 = lmer(cortisol_mean_nmol_to_l ~ 1 + (sample + day)*control0s
 
 # Examine day effects on cort reading 1 for Control Only. CONPLETE: Control condition readings across days/readings are not signficantly different.
 
-#### ACUTE INTERACTIONS ####
 
+#### ACUTE INTERACTIONS ####
 
 # Regressions for Cort - subject-level
 # QUESTION: Best way to set this up or use lmer and add long data of PSS scores/unpleasantness?
@@ -392,7 +391,9 @@ t.test(Stress_Subj_Level$pssSum ~ Stress_Subj_Level$day2bool_0control_1stress==0
 # Key results - Received cold bath mean = 16, Didn't received lukewarm bath mean = 15.86 (p = .94, t=-.075) 
 
 # --- Combining Acute & Chronic Stress Measures --- #
-#combining acute and chronic stressor data into wide data
+# Note: combined acute and chronic stressor data is in the wide BST df
+
+
 
 
 
