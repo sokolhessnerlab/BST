@@ -19,7 +19,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 
 ## Chronic Stress Measures ########
 
-### PSS DFs ########
+### PSS Subj-Level DF ########
 
 #Loads in PSS .csv file
 pss_csv <- file.path(config$path$data$survey, config$csvs$pss)
@@ -83,13 +83,16 @@ names(bath)[names(bath) == "STRESS"] <- "stressUnpleasantnessRating"
 names(bath)[names(bath) == "Day.1"] <- "bathReceivedDay1"
 names(bath)[names(bath) == "Day.2"] <- "bathReceivedDay2"
 
-#creates truncated Bath order & Bath rating DF 
-Stress_Acute <- bath[c(1,6:7) ]
+#### Subj-Level Bath ####
 
+#creates truncated Bath order & Bath rating DF 
+# includes subj ID, diffUnPleanantnessRating, day2bool_0control_1stress
+Stress_Acute <- bath[c(1,6:7) ]
+#QUESTION : Do we want stress and control unpleasantness ratings?
 
 ### Cortisol DFs ########
 
-#### TRIAL Level ####
+#### Trial Level Cort ####
 
 #Loads in cortisol .csv file
 cort_csv <- file.path(config$path$data$cortisol, config$csvs$cort)
@@ -257,10 +260,10 @@ Stress_Subj_Level_No_PSS <- Stress_Subj_Level[!is.na(Stress_Subj_Level$pssSum), 
 ## To-do Stress ########
 
 # TO-DO: 
-# (1) Extract sampleID: COMPLETE.
-# (2) Address one participant that has very high cort reading: COMPLETE (checked cort data overall)
-# (3) Create day/sample at subj-level: COMPLETE.
-# (4) Create mean cort sample 1 to 3 differences by subject to put in subject-level df
+# (1) COMPLETE. Extract sampleID: 
+# (2) COMPLETE. Address one participant that has very high cort reading: (checked cort data overall)
+# (3) COMPLETE. Create day/sample at subj-level: 
+# (4) _____ Create mean cort sample 1 to 3 differences by subject to put in subject-level df
 
 
 
@@ -457,10 +460,15 @@ names(subj_sd_tG_shared)[names(subj_sd_tG_shared) == "shared"] <- "sd_shared_amo
 
 #Creates truncated tg DF for use in Subj-level Trust DF
 trust_game_subj_level <- merge(subj_mean_tG_shared, subj_mean_tG_rt, by = "subjectID", all = TRUE)
+#TO ADD: 
+# - task order ...
+# - stressed bool  ...
 
-#DF includes SD of shared amount and reaction time per subject
-trust_game_subj_level_full <- merge(trust_game_subj_level, subj_sd_tg_shared, by = "subjectID", all = TRUE)
-trust_game_subj_level_full <- merge(trust_game_subj_level_full, subj_sd_tg_rt, by = "subjectID", all = TRUE)
+
+#More complex subj-level DF includes SD of shared amount and reaction time per subject
+trust_game_subj_level_full <- merge(trust_game_subj_level, subj_sd_tG_shared, by = "subjectID", all = TRUE)
+trust_game_subj_level_full <- merge(trust_game_subj_level_full, subj_sd_tG_rt, by = "subjectID", all = TRUE)
+
 
 
 
@@ -941,22 +949,22 @@ BST_Subj_Level_DF <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), 
 #From stress
   # chronic - add PSS score X
   #         - add PSS median split X
-  # acute   - bath unpleasantness X
-  #         - bath order ___
-  #         - bath rating difference (on day of stress vs control) ___
+  # acute   - bath unpleasantness __? Do we want this for stress or control or both?
+  #         - bath order __? Do we need this if we have the stressed bool?
+  #         - bath rating difference (on day of stress vs control) X
   #         - stressed bool X
 #From trust
   # trust perception
   #         - average ratings X
   #         - average RTs X
-  #         - average per ...
+  #         - average per ... __? Do this per race or ..?
   # trust behavior
   #         - task order ...
   #         - average RTs X
   #         - stressed bool  ...
-  #         - prev trial shared amount ...
-  #         - prev trial feedback ...
-  #         - shared/not bool ...
+  #         - prev trial shared amount __? How best might we do this at the subj-level?
+  #         - prev trial feedback __? How best might we do this at the subj-level?
+  #         - shared/not bool __? How best might we do this at the subj-level?
   #         - shared amount avg. X
 #From Bias
   # implic. - add average IAT score ___
@@ -973,7 +981,7 @@ BST_Subj_Level_DF <- Reduce(function(x, y) merge(x, y, all.x=TRUE, all.y=TRUE), 
   #         - IMS-EMS EMS Avg X
   #         - IMS-EMS IMS Avg X
   #         - IMS-EMS Avg Difference X
-  #         - Contact Measures ___
+  #         - Contact Measures X (Can add other dimensions as needed)
 
 # Working Notes for creating the Wide data frame (erase when done)
 
