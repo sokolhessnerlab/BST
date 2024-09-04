@@ -269,6 +269,7 @@ summary(model_cort_sample_day_stress)
 # Fixed Effects:
 #  (Intercept)        sample              day   control0stress1  
 #   1.3482           0.1138           0.1163           0.4613  
+
 model_cort_sample1 = lm(cortisol_mean_nmol_to_l ~ 1 + day_diff * control0stress1, data = cort[cort$sample == 1,])
 summary(model_cort_sample1)
 
@@ -316,12 +317,12 @@ model_cort_sample4 = lmer(cortisol_mean_nmol_to_l ~ 1 + (sample + day)*control0s
 
 # Return to subject-level analysis: Examine cort reading 3 and 1 differences with PSS and unpleasantness ratings
 
-# Reviewed day effects but need to examine day with stress. COMPLETE: The condition effects are significant from reading 1 to 3 under stress
+# COMPLETE: Reviewed day effects but need to examine day with stress. Note: The condition effects are significant from reading 1 to 3 under stress
 # Reading 1 to 4 differences are approaching significance under stress.
 
-# Rework sample and day with subj-level data. COMPLETE: The day and sample differences are not significant.
+# COMPLETE: Rework sample and day with subj-level data. Note: The day and sample differences are not significant.
 
-# Examine day effects on cort reading 1 for Control Only. CONPLETE: Control condition readings across days/readings are not signficantly different.
+# COMPLETE: Examine day effects on cort reading 1 for Control Only. Note: Control condition readings across days/readings are not signficantly different.
 
 
 #### ACUTE INTERACTIONS ####
