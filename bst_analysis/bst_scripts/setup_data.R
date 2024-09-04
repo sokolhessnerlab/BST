@@ -994,4 +994,8 @@ ptsD1_csv <- file.path(config$path$data$current, config$csvs$ptsD1)
 post_task_survey_day1 <- read.csv(ptsD1_csv)
 
 
+#Survey Data Day 2
+#Participants' experience with the study
+ptsD2_csv <- file.path(config$path$data$current, config$csvs$ptsD2)
+post_task_survey_day2 <- read.csv(ptsD2_csv)
 
