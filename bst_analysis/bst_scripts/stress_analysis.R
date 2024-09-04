@@ -190,8 +190,31 @@ cort_sd_by_sample_and_condition = apply(cort_mtx, c(1, 3), sd, na.rm = TRUE)
 
 #Question: Are there differences between the control vs stress condition between four cort samples?
 
+time_vect = c(-2, 3, 13, 45)
+# Sample 1: -2:0 minutes (2 min. long)
+#   STRESSOR: 0:3 minutes (3 min. long)
+# Sample 2: 3:5 minutes (2 min. long)
+#   BREAK: 5:13 minutes (8 min. long)
+# Sample 3: 13:15 minutes (2 min. long)
+#   TASKS: 15:45 minutes (30 min. long)
+# Sample 4: 45:47
+
+time_vect_plotting = cbind(time_vect-.25, time_vect+.25)
+
+y_vals = apply(cort_mtx, c(1,3), mean, na.rm = T);
+y_sd = apply(cort_mtx, c(1,3), sd, na.rm = T);
+y_min = y_vals - y_sd;
+y_max = y_vals + y_sd;
+
 #Plot mean cort for each reading with control/stress conditions with corrected time stamps (from stressor origin) 
-matplot(x = c(-2, 3, 13, 30), y = apply(cort_mtx, c(1,3), mean, na.rm = T)) 
+matplot(x = time_vect_plotting, y = y_vals, 
+        type = 'l', col = rbind(rgb(0,0,1), rgb(1,0,0)),
+        xlab = 'time since start of water bath (min)', ylab = 'cortisol nmol/L', ylim = c(0,8))
+matplot(x = time_vect_plotting, y = y_vals, pch = 19, add = T, col = rbind(rgb(0,0,1), rgb(1,0,0)))
+
+arrows(x0 = time_vect_plotting[,1], x1 = time_vect_plotting[,1], y0 = y_min[,1], y1 = y_max[,1], col = rgb(0,0,1), length = 0)
+arrows(x0 = time_vect_plotting[,2], x1 = time_vect_plotting[,2], y0 = y_min[,2], y1 = y_max[,2], col = rgb(1,0,0), length = 0)
+
 # A: There is a clear difference between cort reading 3 under stress vs. control
 
 t.test(cort_mtx[1,1,1,], cort_mtx[1,1,2,], paired = F)
@@ -235,16 +258,57 @@ plot(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(
 # Below the line indicates reading 1 is higher than reading 3 under stress. 
 # Most are above the line, and t-tests shows significant differences between readings 3 and 1 under stress condition
 
+# 3-1 under control vs. under stress
 t.test(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna), paired = T)
 # cort reading 1 to 3 differences are significantly different under the stress vs. control conditions
 # p-value = 0.00213
 
+# 4-1 under control vs. under stress
 t.test(apply(cort_mtx[4,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna), paired = T)
 # cort reading 1 to 4 differences are significantly different under the stress vs. control conditions
 # p-value = 0.01854
 
+# stress-control sample 3 vs. sample 4
+t.test(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna), 
+       apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[4,,1,], 2, sumna), 
+       paired = T)
+# stress vs. control difference is greater on sample 3 than it is on sample 4
+# p = 0.004
+
+# Does the pattern of the stress vs. control difference change a lot between
+# sample 3 and sample 4?
+plot(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna), 
+       apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[4,,1,], 2, sumna),
+     xlab = 'Sample 3', ylab = 'Sample 4', main = 'Stress - Control (cortisol)')
+# highly correlated!
+cor.test(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna), 
+     apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[4,,1,], 2, sumna))
+# p = 2x10-7
+cor.test(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna), 
+         apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[4,,1,], 2, sumna),
+         method = 'spearman')
+# p = 2x10-7
+# 
+# NO, it does not. Stress vs. control at sample 3 is highly correlated with sample 4 (r(37) = 0.72,
+# Spearman's rho = 0.76).
+#
+# TAKEAWAY:
+# Looking at sample 3 or sample 4 doesn't change the story; 4 is smaller, yes, but still
+# significant and highly correlated with the diff. at 3.
+
+# --> USE SAMPLE 3 (see also lit that suggests that cort peaks at 15-30 min. after stressor)
+
+# WILCOX (b/c of potential outlier concerns)
+
+# 3-1 under control vs. under stress
 wilcox.test(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna), paired = T)
-# p-value = 0.0002561
+# p-value = 0.0002561 (SAME AS T-TEST)
+
+# stress-control sample 3 vs. sample 4
+wilcox.test(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna), 
+            apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[4,,1,], 2, sumna), paired = T)
+# p-value = 0.0025 (SAME AS T-TEST)
+
 
 #Check for high cort response:
 which(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna) > 15)
@@ -263,53 +327,77 @@ cort[cort$subjectID == 23,]
 # reformat day
 # convert readings to minutes - look at raw timings 
 
+cort$approxTime = NA
+for(sampleN in 1:4){
+  cort$approxTime[cort$sample == sampleN] = time_vect[sampleN];
+}
+
 # Main effects without interactions
-model_cort_sample_day_stress = lmer(cortisol_mean_nmol_to_l ~ 1 + sample + day_diff + control0stress1 + (1 | subjectID), data = cort)
-summary(model_cort_sample_day_stress)
-# Fixed Effects:
-#  (Intercept)        sample              day   control0stress1  
-#   1.3482           0.1138           0.1163           0.4613  
+model_cort_time_day_ctrlstress = lmer(cortisol_mean_nmol_to_l ~ 1 + approxTime + day_diff + control0stress1 + (1 | subjectID), data = cort)
+summary(model_cort_time_day_ctrlstress)
+# ME of stress, intercept
+
+model_cort_time_day_controlONLY = lmer(cortisol_mean_nmol_to_l ~ 1 + approxTime + day_diff + (1 | subjectID), data = cort[cort$control0stress1 == 0,])
+summary(model_cort_time_day_controlONLY)
+# ME of time (neg.), intercept
+model_cort_time_day_stressONLY = lmer(cortisol_mean_nmol_to_l ~ 1 + approxTime + day_diff + (1 | subjectID), data = cort[cort$control0stress1 == 1,])
+summary(model_cort_time_day_stressONLY)
+# ME of intercept
 
 model_cort_sample1 = lm(cortisol_mean_nmol_to_l ~ 1 + day_diff * control0stress1, data = cort[cort$sample == 1,])
 summary(model_cort_sample1)
+# no fx of stress
 
 model_cort_sample2 = lm(cortisol_mean_nmol_to_l ~ 1 + day_diff * control0stress1, data = cort[cort$sample == 2,])
 summary(model_cort_sample2)
+# no fx of stress
 
 model_cort_sample3 = lm(cortisol_mean_nmol_to_l ~ 1 + day_diff * control0stress1, data = cort[cort$sample == 3,])
 summary(model_cort_sample3)
+# stress p = 0.009
 
 model_cort_sample4 = lm(cortisol_mean_nmol_to_l ~ 1 + day_diff * control0stress1, data = cort[cort$sample == 4,])
 summary(model_cort_sample4)
+# stress p = 0.02
 
+# Key take-away: As also demonstrated by Wilcox tests, the stress condition does seem to have a significant impact 
+# on cortisol levels at reading 3, even when controlling for the effects of day and day-condition interactions.
+# There is continued impact until reading 4.
 
-cort$sampleF = as.factor(cort$sample);
+# In below regressions, CANNOT include sample as a factor alongside anything else that has discrete (and constant)
+# values for a given sample (i.e. approxTime and sampleF cannot be present at the same time because the latter
+# can exactly reproduce the former, and so something must be dropped)
+
+cort$sampleF = factor(cort$sample);
 cort$ctrlstressDiff = cort$control0stress1 * 2 - 1
-model_cort_sampleF_day_stress = lmer(cortisol_mean_nmol_to_l ~ 1 + sample + sampleF * control0stress1 + day_diff * control0stress1 + 
+cort$post_bath = as.integer(cort$sample > 2.5)
+model_cort_time_postbath_stress = lmer(cortisol_mean_nmol_to_l ~ 1 + approxTime + post_bath * control0stress1 + 
                                        (1 | subjectID), data = cort)
-summary(model_cort_sampleF_day_stress)
+summary(model_cort_time_postbath_stress)
 
-# Main effects with sample-day interactions
-model_cort_sample2 = lmer(cortisol_mean_nmol_to_l ~ 1 + sample:day + control0stress1 + (1 | subjectID), data = cort)
-# Sample/Day interaction impact is low compared to stress vs. control condition impact on the model.
-# Fixed Effects:
-#   (Intercept)  control0stress1       sample:day  
-#   1.62855          0.46038          0.04684
-# Sample/Day interaction impact is low compared to stress vs. control condition impact on the model.
+# ME: Intercept, approxTime (negative)
+# Intxn: post_bath x control/stress --> much higher cort post-bath under stress condition only
+# RFX too, capturing indiv. variability in cort! 
+#
+# Adding the following regressors does not change this perspective and doesn't add anything either
+# - day_diff
+# - approxTime x control/stress
+# - ctrlstressDiff (numerically identical, little harder to interpret)
+
+model_cort_sampleF_stress = lmer(cortisol_mean_nmol_to_l ~ 1 + sampleF * control0stress1 + 
+                                   (1 | subjectID), data = cort)
+summary(model_cort_sampleF_stress)
+# stress only affects the third and fourth samples
+
+# TAKEAWAY:
+# cortisol declines with time, and in the stress condition only, is sig. elevated after the bath.
+# (see: LMER regression; sample-wise regressions; condition-wise regressions; t-tests/wilcox)
 
 
-# main effects and two-way interactions, but no three-way interaction
-model_cort_sample3 = lmer(cortisol_mean_nmol_to_l ~ 1 + (sample + day + control0stress1)^2 + (1 | subjectID), data = cort)
-# Fixed Effects:
-#  (Intercept)          sample        day        control0stress1     sample:day    sample:control0stress1    day:control0stress1  
-# 1.08518               0.02130       0.77369    -0.02286            -0.13565      0.57025                   -0.62355
+cort_diff_var = apply(cort_mtx[3,,,], c(2,3), sumna) - apply(cort_mtx[1,,,], 2, sumna)
+# Makes 2 (day) x 50 (subject) matrix
+# use cort_subjectIDs to find out who's who (NOT IN ORDER!!!!)
 
-# all main effects and pairwise interactions
-model_cort_sample4 = lmer(cortisol_mean_nmol_to_l ~ 1 + (sample + day)*control0stress1 + (1 | subjectID), data = cort)
-
-#Fixed Effects:
-# (Intercept)                  sample                 day         control0stress1  sample:control0stress1     day:control0stress1  
-# 1.60112                -0.18649                 0.43510                -0.08055                 0.59019                -0.61590  
 
 
 
