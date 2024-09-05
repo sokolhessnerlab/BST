@@ -458,7 +458,7 @@ names(subj_sd_tG_shared)[names(subj_sd_tG_shared) == "shared"] <- "sd_shared_amo
 # Q: Do any subject's have uniformity in their sharing behavior?
 # A: Participants 27, 42, & 54 have 0 sd in trust game sharing, indicating they may be using a uniform approach to sharing.
 
-#Creates truncated tg DF for use in Subj-level Trust DF
+#Creates truncated trust game DF for use in Subj-level Trust DF
 trust_game_subj_level <- merge(subj_mean_tG_shared, subj_mean_tG_rt, by = "subjectID", all = TRUE)
 #TO ADD: 
 # - task order ...
@@ -908,16 +908,61 @@ cm <- mutate(cm, w0_his1_as2_bl3_birac4_mult5 = ifelse(Race_Eth_Self_Report=="Wh
                                                                 ifelse(Race_Eth_Self_Report=="AsianAm_PacIsl", 2,
                                                                        ifelse(Race_Eth_Self_Report=="Black_Am", 3,
                                                                               ifelse(Race_Eth_Self_Report=="BiRac_MultiRac", 4, 5))))))
+### cm PCA ######## 
 
-
-# Create Numerical dataframe for CM
-# for use in PCA
+# Create Numerical dataframe for CM for use in PCA
 cm_num = cm[,c(12:19,21:29)]
+cm_num_scaled <- scale(cm_num)
+
+cm_pca <- prcomp(cm_num_scaled, center = T, scale. = T)
+summary(cm_pca)
+# PC1 indicates the importance of components by the order of most variance
+
+# Visualize data for PC 1 and PC2
+plot(cm_pca$x[,1], cm_pca$x[,2],
+     xlab = "principal component 1",
+     ylab = "principal component 2",
+     main = "Contact Measures PCA 1 vs. PCA 2",
+     pch = 1,
+     col = "dark red")
+
+# How does each variable contribute to the PCA axes
+#   i.e., negative values indicate a negative relationship
+cm_pca_rotations <- cm_pca$rotation
+
+# Q: What is the order of variance (in %) explained by each component?
+variance_explained <- cm_pca$sdev^2/sum(cm_pca$sdev^2)
+#  0.204750632 0.188073887 0.129481622 0.106994876 0.073373954 
+#  0.055504022 0.045749613 0.044843529 0.039527648 0.031225371 
+#  0.024211057 0.015001692 0.013379584 0.009792807 0.007355568 
+#  0.006439753 0.004294385
+
+plot(variance_explained, type = "b",
+     xlab = "principal component",
+     ylab = "proportion of variance explained",
+     main = "scree plot")
+# A: The first (PCA = 0.20) and second (PCA = 0.19) components are close in meaningfulness,
+# while components 3 and 4 (PCA = 0.13, 0.11) contribute some meaningfulness.
+
+# CM TO-DO: Decide the threshold of the CM PCA cutoff.
+# ...........
 
 
-#subject-level data frame
+# Dunsmoor (2016) CM subj-level calculation method:
+#  Calculate intergroup contact difference scores
+#  average the percentages for Black and White contact separately for each subject 
+#  and then subtract the percentage of Black contact from White contact.
+
+# CM TO-DO: Calculate Dunsmoor CM d-score.
+# ...........
+
+
+### cm subject-level data frame ######## 
 cm_Subj_Level <- cm[,c(1,30)] #update later
 # includes subject ID and self-report race-ethnicity item
+
+# CM TO-DO: Update subj-level cm and attitudes wide dfs after getting CM d-score
+# ...........
 
 # cm_Subj_Level <- cm[,c(1,12:19,21:30)] #update later with what to include from PCA
 
