@@ -918,6 +918,12 @@ cm_pca <- prcomp(cm_num_scaled, center = T, scale. = T)
 summary(cm_pca)
 # PC1 indicates the importance of components by the order of most variance
 
+# Cumulative proportions
+#       PC1    PC2    PC3    PC4     PC5    PC6     PC7     PC8     PC9    PC10
+#    0.2047 0.3928 0.5223 0.6293 0.70267 0.7582 0.80393 0.84877 0.88830 0.91953
+
+# The first 10 components results in 92 % of whole variance in the cm data
+
 # Visualize data for PC 1 and PC2
 plot(cm_pca$x[,1], cm_pca$x[,2],
      xlab = "principal component 1",
@@ -926,7 +932,7 @@ plot(cm_pca$x[,1], cm_pca$x[,2],
      pch = 1,
      col = "dark red")
 
-# How does each variable contribute to the PCA axes
+# How does each variable contribute to the PCA axes?
 #   i.e., negative values indicate a negative relationship
 cm_pca_rotations <- cm_pca$rotation
 
@@ -940,13 +946,13 @@ variance_explained <- cm_pca$sdev^2/sum(cm_pca$sdev^2)
 plot(variance_explained, type = "b",
      xlab = "principal component",
      ylab = "proportion of variance explained",
-     main = "scree plot")
+     main = "CM scree plot")
 # A: The first (PCA = 0.20) and second (PCA = 0.19) components are close in meaningfulness,
 # while components 3 and 4 (PCA = 0.13, 0.11) contribute some meaningfulness.
 
 # CM TO-DO: Decide the threshold of the CM PCA cutoff.
 # ...........
-
+# i.e., 90% of cumulative proportions
 
 # Dunsmoor (2016) CM subj-level calculation method:
 #  Calculate intergroup contact difference scores
