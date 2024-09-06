@@ -676,10 +676,8 @@ amp_Subj_Level <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list)
 
 ### IAT ########
 
-#library(IATScore)
-
 iat_csv <- file.path(config$path$data$current, config$csvs$iat)
-iat <- read.csv(iat_csv) #reads in iat data
+IAT_Data <- read.csv(iat_csv) #reads in iat data
 
 # (1) Clean IAT - Remove from the dataset the pure practice blocks of the IAT 
 # iat_wrangled used in IATanalytics function
@@ -699,7 +697,7 @@ iat_wrangled$blockNum[iat_wrangled$blockNum ==4] <- 2
 # Note: default to have first trial as "congruent", 200 trials, IAT as df
 # Updated to reflect 139 trials, first condition as "incongruent", and iat_wrangled as df
 
-iat_results <- IATanalytics(IAT = iat_wrangled, Trials = 139, First="Incongruent")
+iat_results <- IATanalytics(IAT = iat_processed, Trials = 220, First="Congruent")
 
 iat_results <- IATanalytics(IAT = iat, Trials = 200, First="Incongruent")
 
@@ -736,11 +734,11 @@ get_IAT_dscore_per_subject <- function(iat_results) {
 #version2 looping
 results_IAT_dscore_per_subject2 <- data.frame(subjectID = integer(), D_score = numeric(), stringsAsFactors = FALSE)
 
-unique_subjectIDs <- unique(iat$subjectID)
+unique_subjectIDs <- unique(iat_processed$subjectID)
 
 for (subject in unique_subjectIDs) {
   #subset
-  subject_data <- subset(iat, subjectID == subject)
+  subject_data <- subset(iat_processed, subjectID == subject)
   
   #compute D-score
   d_score <- tryCatch(
@@ -936,6 +934,9 @@ plot(cm_pca$x[,1], cm_pca$x[,2],
 #   i.e., negative values indicate a negative relationship
 cm_pca_rotations <- cm_pca$rotation
 
+#bar plot of those % variance explained for the CM PCR
+barplot(cm_pca_rotations)
+
 # Q: What is the order of variance (in %) explained by each component?
 variance_explained <- cm_pca$sdev^2/sum(cm_pca$sdev^2)
 #  0.204750632 0.188073887 0.129481622 0.106994876 0.073373954 
@@ -950,6 +951,7 @@ plot(variance_explained, type = "b",
 # A: The first (PCA = 0.20) and second (PCA = 0.19) components are close in meaningfulness,
 # while components 3 and 4 (PCA = 0.13, 0.11) contribute some meaningfulness.
 
+
 # CM TO-DO: Decide the threshold of the CM PCA cutoff.
 # ...........
 # i.e., 90% of cumulative proportions
@@ -962,6 +964,14 @@ plot(variance_explained, type = "b",
 # CM TO-DO: Calculate Dunsmoor CM d-score.
 # ...........
 
+# (1) Get subject-level Black and White contact percentage means
+# (2) Difference of White and Black contacts.
+
+
+# Contact Measures Key Take-Aways:
+
+# The first principal direction along which the data shows the greatest variation
+# appears greater with more black contact and smaller with more white contact.
 
 ### cm subject-level data frame ######## 
 cm_Subj_Level <- cm[,c(1,30)] #update later
