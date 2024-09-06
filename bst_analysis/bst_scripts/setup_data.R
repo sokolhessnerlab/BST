@@ -677,9 +677,86 @@ amp_Subj_Level <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list)
 ### IAT ########
 
 iat_csv <- file.path(config$path$data$current, config$csvs$iat)
-IAT_Data <- read.csv(iat_csv) #reads in iat data
+raw_IAT_Data <- read.csv(iat_csv) #reads in iat data
+# condition = congruent (?), incongruent (?)
+# trialtype = PRAC, TEST
+# cattype = SINGLE (which is also PRAC), INCONGRUENT, CONGRUENT
+# blocknum = identifier of what kind of categorization is going on
+#   1 (pleasant/unpleasant)
+#   2 (black/white)
+#   3 (Black/pleasant & White/unpleasant) (INCONGRUENT)
+#   4 (Black/Unpleasant & White/pleasant) (CONGRUENT)
+#   5-7 insects & flowers (NOT USED HERE)
+#   8 (unpleasant/pleasant)
+# day = day 1 or day 2 (1 or 2)
+# condition = control (0) or stress (1)
 
-# (1) Clean IAT - Remove from the dataset the pure practice blocks of the IAT 
+# Need to...
+# - separately analyze each person on each day/in each condition (2 d-scores/person)
+# - pull out pieces of DS's IAT analytics function to analyze one day's data for one person 
+#   (no even/odd separation)
+
+
+# IATanalytics requires...
+# Data files with six columns (names don't matter) organized IN ORDER as follows: 
+# 1: Block (0-6) [ONLY USES 2, 3, 5, AND 6; 2 & 3 ARE ASSUMED TO BE THE SAME; 5 & 6 ARE ASSUMED TO BE THE SAME]
+# 2: trial (0-19 for training blocks, 0-39 for test blocks)
+# 3: category (dependent on your IAT)
+# 4: the type of item within that category (dependent on your IAT)
+# 5: a dummy variable indicating whether the participant was correct or incorrect on that trial (0=correct, 1=incorrect)
+# 6: the participant’s reaction time (in milliseconds).
+# (SOURCE: https://cran.r-project.org/web/packages/IATanalytics/IATanalytics.pdf)
+
+unique_subjectIDs <- unique(raw_IAT_Data$subjectID)
+
+# Prep the DF for use by the IATAnalytics function
+proc_IAT_Data = raw_IAT_Data;
+proc_IAT_Data$RTms = proc_IAT_Data$RT * 1000 # convert to ms
+
+proc_IAT_Data$block = NA;
+proc_IAT_Data$block[proc_IAT_Data$trialtype == "PRAC"] = 0
+
+
+
+#REVIEW w PSH ---- Attempting  to loop through subject level IAT results
+
+# create function to get d-score per subject
+get_IAT_dscore_per_subject <- function(iat_processed) {
+  result <- IATanalytics(
+    IAT = iat_results,
+    Trials = 139,
+    First = "Incongruent"
+  )
+  return(result$D_score)
+}
+
+# loop through subjects
+results_IAT_dscore_per_subject <- data.frame(subjectID = integer(), D_score = numeric(), stringsAsFactors = FALSE)
+
+for (subject in unique_subjectIDs) {
+  #subset
+  subject_data <- subset(iat_processed, subjectID == subject)
+  
+  #compute D-score
+  d_score <- tryCatch(
+    get_IAT_dscore_per_subject(subject_data),
+    error = function(e) NA #handle NAs
+  )
+  
+  if (is.numeric(d_score)){
+    results_IAT_dscore_per_subject2 <- rbind(results_IAT_dscore_per_subject2, data.frame(subjectID = subject, D_score = d_score))
+  } else {
+    warning(paste("Unexpected D-score for subject:"))
+  }
+  
+}
+
+print(results_IAT_dscore_per_subject2)
+
+
+
+
+# (1) Do we want to Clean IAT - Remove from the dataset the pure practice blocks of the IAT 
 # iat_wrangled used in IATanalytics function
 iat_wrangled = filter(iat, trialtype != "PRAC")
 
@@ -709,52 +786,6 @@ iat_results <- IATanalytics(IAT = iat, Trials = 200, First="Incongruent")
 
 
 
-#REVIEW w PSH ---- Attempting  to loop through subject level IAT results
-
-# create function to get d-score per subject
-get_IAT_dscore_per_subject <- function(iat_results) {
-  result <- IATanalytics(
-    IAT = iat_results,
-    Trials = 139,
-    First = "Incongruent"
-    )
-  return(result$D_score)
-}
-
-
-#version 1 dplyr
-#results_IAT_dscore_per_subject <- iat_wrangled %>%
-  #group_by(subjectID) %>%
-  #summarize(D_score = get_IAT_dscore_per_subject(cur_data()), .groups = 'drop') %>%
-  #filter(!is.na(D_score))
-
-#only prints subjectIDs
-#print(results_IAT_dscore_per_subject)
-
-#version2 looping
-results_IAT_dscore_per_subject2 <- data.frame(subjectID = integer(), D_score = numeric(), stringsAsFactors = FALSE)
-
-unique_subjectIDs <- unique(iat_processed$subjectID)
-
-for (subject in unique_subjectIDs) {
-  #subset
-  subject_data <- subset(iat_processed, subjectID == subject)
-  
-  #compute D-score
-  d_score <- tryCatch(
-    get_IAT_dscore_per_subject(subject_data),
-    error = function(e) NA #handle NAs
-  )
-  
-  if (is.numeric(d_score)){
-    results_IAT_dscore_per_subject2 <- rbind(results_IAT_dscore_per_subject2, data.frame(subjectID = subject, D_score = d_score))
-    } else {
-    warning(paste("Unexpected D-score for subject:"))
-    }
-  
-}
-
-print(results_IAT_dscore_per_subject2)
 #alternative version of getting d-scores
 
 #iat_wrangled_Dscoring <- iat_wrangled[, c("subjectID", "blockNum", "RT", "correct")]
@@ -766,6 +797,14 @@ print(results_IAT_dscore_per_subject2)
 #       correct = correct)
 
 
+#version 1 dplyr
+#results_IAT_dscore_per_subject <- iat_wrangled %>%
+#group_by(subjectID) %>%
+#summarize(D_score = get_IAT_dscore_per_subject(cur_data()), .groups = 'drop') %>%
+#filter(!is.na(D_score))
+
+#only prints subjectIDs
+#print(results_IAT_dscore_per_subject)
 
 ## Explicit Attitudes ######## 
 
