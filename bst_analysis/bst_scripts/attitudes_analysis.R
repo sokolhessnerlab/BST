@@ -1,7 +1,7 @@
 
 # --- Bias (Race Attitudes) Only Base Level Analysis Script --- #
 
-#setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
+setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
 #setwd("~/Documents/GitHub/bst") #laptop
 
 #NOTE: Run this script while connected to the shlab drive, 

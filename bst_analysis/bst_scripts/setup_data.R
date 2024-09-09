@@ -678,10 +678,9 @@ amp_Subj_Level <- Reduce(function(x, y) merge(x, y, all.x=TRUE), amp_list)
 
 iat_csv <- file.path(config$path$data$current, config$csvs$iat)
 raw_IAT_Data <- read.csv(iat_csv) #reads in iat data
-# condition = congruent (?), incongruent (?)
 # trialtype = PRAC, TEST
 # cattype = SINGLE (which is also PRAC), INCONGRUENT, CONGRUENT
-# blocknum = identifier of what kind of categorization is going on
+# blockNum = identifier of what kind of categorization is going on
 #   1 (pleasant/unpleasant)
 #   2 (black/white)
 #   3 (Black/pleasant & White/unpleasant) (INCONGRUENT)
@@ -695,7 +694,6 @@ raw_IAT_Data <- read.csv(iat_csv) #reads in iat data
 # - separately analyze each person on each day/in each condition (2 d-scores/person)
 # - pull out pieces of DS's IAT analytics function to analyze one day's data for one person 
 #   (no even/odd separation)
-
 
 # IATanalytics requires...
 # Data files with six columns (names don't matter) organized IN ORDER as follows: 
