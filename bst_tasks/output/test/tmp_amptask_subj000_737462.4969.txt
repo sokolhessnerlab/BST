@@ -1,0 +1,17 @@
+SUBJECT ID	CONDITION	BLOCK	TRIAL NUM	CUMULATIVE TRIAL NUM	STIM	INK	MASK	STIM RACE	RESPONSE	RT	START TIME
+000	1	80	01	01	black_mb089.bmp	pd_sm_inkblot_170816_1750_045.png	pdPR_noiseMask_170814_1952_072.png	1	0	0.690162	555.857883
+000	1	80	02	02	white_00939_960627_fa_edt.bmp	pd_sm_inkblot_170816_1750_079.png	pdPR_noiseMask_170814_1952_028.png	0	1	0.356531	557.207415
+000	1	80	03	03	other_00570_940928_fa_edt.bmp	pd_sm_inkblot_170816_1750_086.png	pdPR_noiseMask_170814_1952_097.png	2	0	0.273476	557.890477
+000	1	1	01	01	black_mb071.bmp	pd_sm_inkblot_170816_1750_084.png	pdPR_noiseMask_170814_1952_081.png	1	0	0.727657	564.788069
+000	1	1	02	02	white_mw073.bmp	pd_sm_inkblot_170816_1750_042.png	pdPR_noiseMask_170814_1952_090.png	0	1	0.289285	565.754385
+000	1	1	03	03	white_mw016.bmp	pd_sm_inkblot_170816_1750_051.png	pdPR_noiseMask_170814_1952_051.png	0	0	0.260916	566.270880
+000	1	1	04	04	white_00597_940928_fb_edt.bmp	pd_sm_inkblot_170816_1750_096.png	pdPR_noiseMask_170814_1952_088.png	0	1	0.193117	566.770678
+000	1	1	05	05	other_00584_940928_fa_edt.bmp	pd_sm_inkblot_170816_1750_002.png	pdPR_noiseMask_170814_1952_040.png	2	0	0.240563	567.187270
+000	1	1	06	06	other_00921_960627_fb_edt.bmp	pd_sm_inkblot_170816_1750_043.png	pdPR_noiseMask_170814_1952_015.png	2	1	0.053830	567.670546
+000	1	1	07	07	black_mb044.bmp	pd_sm_inkblot_170816_1750_030.png	pdPR_noiseMask_170814_1952_066.png	1	0	0.146004	567.953608
+000	1	1	08	08	other_00666_941121_fa_edt_rot.bmp	pd_sm_inkblot_170816_1750_077.png	pdPR_noiseMask_170814_1952_099.png	2	0	0.290910	568.336852
+000	1	1	09	09	other_00617_940928_fb_edt.bmp	pd_sm_inkblot_170816_1750_031.png	pdPR_noiseMask_170814_1952_047.png	2	0	0.254410	568.853277
+000	1	1	10	10	white_mw075.bmp	pd_sm_inkblot_170816_1750_065.png	pdPR_noiseMask_170814_1952_001.png	0	1	0.171477	569.336456
+000	1	1	11	11	black_mb092.bmp	pd_sm_inkblot_170816_1750_048.png	pdPR_noiseMask_170814_1952_018.png	1	0	0.003329	569.736317
+000	1	1	12	12	black_mb027.bmp	pd_sm_inkblot_170816_1750_032.png	pdPR_noiseMask_170814_1952_051.png	1	1	0.042153	569.969554
+000	1	1	13	13	white_mw091.bmp	pd_sm_inkblot_170816_1750_048.png	pdPR_noiseMask_170814_1952_047.png	0	0	0.135546	570.236132

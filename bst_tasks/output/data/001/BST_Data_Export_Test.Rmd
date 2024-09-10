@@ -1,0 +1,20 @@
+---
+title: "BST Exporting MATLAB Data Test"
+author: "Chelsey Pan"
+date: "4/26/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load packages
+library(tidyverse)
+library(R.matlab)
+
+# Load data
+BST001_TG = readMat('../001/tgametask_subj001_day1_737462.6084.mat')
+
+test = readMat()
+
+```

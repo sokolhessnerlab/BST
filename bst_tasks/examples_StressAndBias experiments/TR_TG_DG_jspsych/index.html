@@ -1,0 +1,751 @@
+<html>
+  <head>
+    <title>Trust game</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="jspsych-4.2/jspsych.js"></script>
+    <script src="jspsych-4.2/plugins/jspsych-text.js"></script>
+    <script src="jspsych-4.2/plugins/jspsych-single-stim.js"></script>
+    <link href="jspsych-4.2/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+  </head>
+  <body>
+  </body>
+  <script>
+  
+ var white = ['trustrating_stim/white_mw052',
+'trustrating_stim/white_mw053',
+'trustrating_stim/white_mw054',
+'trustrating_stim/white_mw056',
+'trustrating_stim/white_mw057',
+'trustrating_stim/white_mw058',
+'trustrating_stim/white_mw060',
+'trustrating_stim/white_mw063',
+'trustrating_stim/white_mw065',
+'trustrating_stim/white_mw066',
+'trustrating_stim/white_mw067',
+'trustrating_stim/white_mw068',
+'trustrating_stim/white_mw070',
+'trustrating_stim/white_mw071',
+'trustrating_stim/white_mw072',
+'trustrating_stim/white_mw073',
+'trustrating_stim/white_mw074',
+'trustrating_stim/white_mw075',
+'trustrating_stim/white_mw076',
+'trustrating_stim/white_mw077',
+'trustrating_stim/white_mw078',
+'trustrating_stim/white_mw080',
+'trustrating_stim/white_mw082',
+'trustrating_stim/white_mw084',
+'trustrating_stim/white_mw085',
+'trustrating_stim/white_mw089',
+'trustrating_stim/white_mw091',
+'trustrating_stim/white_mw092',
+'trustrating_stim/white_mw095',
+'trustrating_stim/white_mw096',
+'trustrating_stim/white_mw097',
+'trustrating_stim/white_mw098',
+'trustrating_stim/white_mw099', 'trustrating_stim/white_00050_931230_fa_edt',
+'trustrating_stim/white_00109_931230_fa_edt',
+'trustrating_stim/white_00120_931230_fa_edt',
+'trustrating_stim/white_00129_931230_fb_edt',
+'trustrating_stim/white_00199_940128_fa_edt',
+'trustrating_stim/white_00223_940128_fb_edt',
+'trustrating_stim/white_00248_940128_fa_edt',
+'trustrating_stim/white_00253_940128_fa_edt',
+'trustrating_stim/white_00283_940422_fa_edt',
+'trustrating_stim/white_00299_940422_fa_edt',
+'trustrating_stim/white_00340_940422_fa_edt',
+'trustrating_stim/white_00341_940422_fa_edt',
+'trustrating_stim/white_00519_940519_fb_edt',
+'trustrating_stim/white_00577_940928_fa_edt',
+'trustrating_stim/white_00591_940928_fa_edt',
+'trustrating_stim/white_00597_940928_fb_edt',
+'trustrating_stim/white_00602_940928_fb_edt',
+'trustrating_stim/white_00657_941121_fa_edt',
+'trustrating_stim/white_00658_941121_fb_edt',
+'trustrating_stim/white_00659_941121_fa_edt',
+'trustrating_stim/white_00757_941201_fa_edt',
+'trustrating_stim/white_00761_941201_fb_edt',
+'trustrating_stim/white_00764_941201_fa_edt',
+'trustrating_stim/white_00766_941201_fb_edt',
+'trustrating_stim/white_00785_941205_fb_edt',
+'trustrating_stim/white_00807_941205_fb_edt',
+'trustrating_stim/white_00816_941205_fa_edt',
+'trustrating_stim/white_00874_940307_fa_edt',
+'trustrating_stim/white_00897_960530_fb_edt',
+'trustrating_stim/white_00898_960530_fa_edt',
+'trustrating_stim/white_00939_960627_fa_edt',
+'trustrating_stim/white_00960_960627_fb_edt',
+'trustrating_stim/white_00972_960627_fa_edt', 'trustrating_stim/white_mw001',
+'trustrating_stim/white_mw002',
+'trustrating_stim/white_mw003',
+'trustrating_stim/white_mw004',
+'trustrating_stim/white_mw006',
+'trustrating_stim/white_mw008',
+'trustrating_stim/white_mw009',
+'trustrating_stim/white_mw010',
+'trustrating_stim/white_mw012',
+'trustrating_stim/white_mw013',
+'trustrating_stim/white_mw015',
+'trustrating_stim/white_mw016',
+'trustrating_stim/white_mw018',
+'trustrating_stim/white_mw019',
+'trustrating_stim/white_mw022',
+'trustrating_stim/white_mw024',
+'trustrating_stim/white_mw025',
+'trustrating_stim/white_mw028',
+'trustrating_stim/white_mw029',
+'trustrating_stim/white_mw033',
+'trustrating_stim/white_mw034',
+'trustrating_stim/white_mw035',
+'trustrating_stim/white_mw038',
+'trustrating_stim/white_mw039',
+'trustrating_stim/white_mw040',
+'trustrating_stim/white_mw041',
+'trustrating_stim/white_mw042',
+'trustrating_stim/white_mw043',
+'trustrating_stim/white_mw044',
+'trustrating_stim/white_mw046',
+'trustrating_stim/white_mw047',
+'trustrating_stim/white_mw048',
+'trustrating_stim/white_mw049',
+'trustrating_stim/white_mw051']
+
+ var other = ['trustrating_stim/other_00029_940128_fa_edt',
+'trustrating_stim/other_00046_931230_fa_edt',
+'trustrating_stim/other_00058_931230_fa_edt',
+'trustrating_stim/other_00070_941121_fb_edt',
+'trustrating_stim/other_00096_940128_fb_edt',
+'trustrating_stim/other_00097_931230_fa_edt',
+'trustrating_stim/other_00110_931230_fb_edt',
+'trustrating_stim/other_00114_931230_fa_edt',
+'trustrating_stim/other_00116_931230_fa_edt',
+'trustrating_stim/other_00119_931230_fb_edt',
+'trustrating_stim/other_00122_931230_fa_edt',
+'trustrating_stim/other_00132_931230_fb_edt',
+'trustrating_stim/other_00139_931230_fb_edt',
+'trustrating_stim/other_00178_931230_fa_edt',
+'trustrating_stim/other_00193_940128_fa_edt',
+'trustrating_stim/other_00205_940128_fa_edt',
+'trustrating_stim/other_00216_940128_fa_edt',
+'trustrating_stim/other_00234_940128_fb_edt',
+'trustrating_stim/other_00237_940128_fb_edt',
+'trustrating_stim/other_00246_940128_fa_edt',
+'trustrating_stim/other_00247_941121_fb_edt',
+'trustrating_stim/other_00261_940128_fb_edt',
+'trustrating_stim/other_00282_940422_fb_edt',
+'trustrating_stim/other_00318_940422_fb_edt',
+'trustrating_stim/other_00383_941031_fa_edt_rot',
+'trustrating_stim/other_00415_940422_fb_edt_rot',
+'trustrating_stim/other_00461_940422_fb_edt',
+'trustrating_stim/other_00490_940519_fb_edt',
+'trustrating_stim/other_00512_940519_fa_edt',
+'trustrating_stim/other_00516_940519_fb_edt', 'trustrating_stim/other_00672_941121_fa_edt',
+'trustrating_stim/other_00673_941121_fa_edt_rot',
+'trustrating_stim/other_00698_941121_fb_edt',
+'trustrating_stim/other_00710_960530_fa_edt',
+'trustrating_stim/other_00712_941205_fa_edt',
+'trustrating_stim/other_00724_941201_fa_edt',
+'trustrating_stim/other_00726_941201_fb_edt',
+'trustrating_stim/other_00733_941201_fa_edt',
+'trustrating_stim/other_00734_941201_fa_edt',
+'trustrating_stim/other_00737_941201_fa_edt',
+'trustrating_stim/other_00740_941205_fa_edt',
+'trustrating_stim/other_00763_941201_fb_edt',
+'trustrating_stim/other_00793_941205_fb_edt',
+'trustrating_stim/other_00795_941205_fb_edt',
+'trustrating_stim/other_00797_941205_fb_edt',
+'trustrating_stim/other_00809_941205_fa_edt',
+'trustrating_stim/other_00810_941205_fb_edt_rot',
+'trustrating_stim/other_00828_940307_fa_edt',
+'trustrating_stim/other_00841_940307_fb_edt',
+'trustrating_stim/other_00859_940307_fa_edt',
+'trustrating_stim/other_00866_940307_fa_edt',
+'trustrating_stim/other_00869_940307_fa_edt',
+'trustrating_stim/other_00880_960530_fa_edt',
+'trustrating_stim/other_00911_960530_fa_edt',
+'trustrating_stim/other_00912_960530_fa_edt',
+'trustrating_stim/other_00921_960627_fb_edt',
+'trustrating_stim/other_00926_960627_fa_edt',
+'trustrating_stim/other_00933_960627_fa_edt',
+'trustrating_stim/other_00976_960627_fb_edt',
+'trustrating_stim/other_01207_940128_fb_edt', 'trustrating_stim/other_00545_940519_fa_edt',
+'trustrating_stim/other_00566_940928_fb_edt',
+'trustrating_stim/other_00570_940928_fa_edt',
+'trustrating_stim/other_00575_940928_fb_edt',
+'trustrating_stim/other_00578_940928_fa_edt',
+'trustrating_stim/other_00580_940928_fa_edt',
+'trustrating_stim/other_00582_940928_fb_edt',
+'trustrating_stim/other_00583_940928_fa_edt',
+'trustrating_stim/other_00584_940928_fa_edt',
+'trustrating_stim/other_00587_940928_fa_edt',
+'trustrating_stim/other_00588_940928_fa_edt',
+'trustrating_stim/other_00596_940928_fa_edt',
+'trustrating_stim/other_00601_940928_fb_edt',
+'trustrating_stim/other_00604_940928_fb_edt',
+'trustrating_stim/other_00610_940928_fa_edt',
+'trustrating_stim/other_00611_940928_fa_edt_rot',
+'trustrating_stim/other_00614_940928_fa_edt',
+'trustrating_stim/other_00616_940928_fa_edt_rot',
+'trustrating_stim/other_00617_940928_fb_edt',
+'trustrating_stim/other_00618_940928_fb_edt',
+'trustrating_stim/other_00619_940928_fa_edt',
+'trustrating_stim/other_00621_941121_fa_edt',
+'trustrating_stim/other_00622_940928_fb_edt',
+'trustrating_stim/other_00623_940928_fb_edt',
+'trustrating_stim/other_00625_940928_fb_edt',
+'trustrating_stim/other_00629_940928_fa_edt',
+'trustrating_stim/other_00640_941031_fa_edt_rot',
+'trustrating_stim/other_00652_941031_fb_edt',
+'trustrating_stim/other_00656_941121_fb_edt',
+'trustrating_stim/other_00666_941121_fa_edt_rot',
+'trustrating_stim/other_00668_941121_fa_edt']
+  
+var black = ['trustrating_stim/black_mb014',
+'trustrating_stim/black_mb015',
+'trustrating_stim/black_mb016',
+'trustrating_stim/black_mb017',
+'trustrating_stim/black_mb018',
+'trustrating_stim/black_mb019',
+'trustrating_stim/black_mb020',
+'trustrating_stim/black_mb021',
+'trustrating_stim/black_mb023',
+'trustrating_stim/black_mb025',
+'trustrating_stim/black_mb026',
+'trustrating_stim/black_mb027',
+'trustrating_stim/black_mb029',
+'trustrating_stim/black_mb030',
+'trustrating_stim/black_mb031',
+'trustrating_stim/black_mb032',
+'trustrating_stim/black_mb033',
+'trustrating_stim/black_mb035',
+'trustrating_stim/black_mb038',
+'trustrating_stim/black_mb039',
+'trustrating_stim/black_mb040',
+'trustrating_stim/black_mb042',
+'trustrating_stim/black_mb044',
+'trustrating_stim/black_mb045',
+'trustrating_stim/black_mb046',
+'trustrating_stim/black_mb047',
+'trustrating_stim/black_mb049',
+'trustrating_stim/black_mb050',
+'trustrating_stim/black_mb051',
+'trustrating_stim/black_mb054',
+'trustrating_stim/black_mb055',
+'trustrating_stim/black_mb056',
+'trustrating_stim/black_mb057',
+'trustrating_stim/black_mb058',
+'trustrating_stim/black_mb059',
+'trustrating_stim/black_mb060',
+'trustrating_stim/black_mb061',
+'trustrating_stim/black_mb062',
+'trustrating_stim/black_mb063',
+'trustrating_stim/black_mb064',
+'trustrating_stim/black_mb065',
+'trustrating_stim/black_mb066',
+'trustrating_stim/black_mb067', 'trustrating_stim/black_00108_940128_fb_edt',
+'trustrating_stim/black_00183_940128_fb_edt',
+'trustrating_stim/black_00257_940128_fa_edt',
+'trustrating_stim/black_00273_940422_fa_edt',
+'trustrating_stim/black_00332_940422_fa_edt_contrast',
+'trustrating_stim/black_00358_940422_fb_edt',
+'trustrating_stim/black_00453_940422_fb_edt',
+'trustrating_stim/black_00467_940519_fb_edt',
+'trustrating_stim/black_00488_940519_fb_edt',
+'trustrating_stim/black_00531_940519_fa_edt',
+'trustrating_stim/black_00558_940519_fa_edt',
+'trustrating_stim/black_00586_940928_fa_edt',
+'trustrating_stim/black_00677_941121_fa_edt',
+'trustrating_stim/black_00716_941201_fa_edt_rot',
+'trustrating_stim/black_00746_941201_fb_edt',
+'trustrating_stim/black_00801_941205_fa_edt',
+'trustrating_stim/black_00857_940307_fa_edt',
+'trustrating_stim/black_00917_960620_fa_edt',
+'trustrating_stim/black_00929_960627_fa_edt',
+'trustrating_stim/black_00964_960627_fb_edt',
+'trustrating_stim/black_38M_NE_C',
+'trustrating_stim/black_39M_NE_C',
+'trustrating_stim/black_mb001',
+'trustrating_stim/black_mb002',
+'trustrating_stim/black_mb003',
+'trustrating_stim/black_mb004',
+'trustrating_stim/black_mb005',
+'trustrating_stim/black_mb006',
+'trustrating_stim/black_mb008',
+'trustrating_stim/black_mb009',
+'trustrating_stim/black_mb010',
+'trustrating_stim/black_mb011',
+'trustrating_stim/black_mb013',
+'trustrating_stim/black_mb068',
+'trustrating_stim/black_mb069',
+'trustrating_stim/black_mb070',
+'trustrating_stim/black_mb071',
+'trustrating_stim/black_mb072',
+'trustrating_stim/black_mb073',
+'trustrating_stim/black_mb075',
+'trustrating_stim/black_mb077',
+'trustrating_stim/black_mb078',
+'trustrating_stim/black_mb079',
+'trustrating_stim/black_mb081',
+'trustrating_stim/black_mb082',
+'trustrating_stim/black_mb083',
+'trustrating_stim/black_mb085',
+'trustrating_stim/black_mb088',
+'trustrating_stim/black_mb089',
+'trustrating_stim/black_mb092',
+'trustrating_stim/black_mb093',
+'trustrating_stim/black_mb094',
+'trustrating_stim/black_mb096',
+'trustrating_stim/black_mb097',
+'trustrating_stim/black_mb098',
+'trustrating_stim/black_mb099',
+  'trustrating_stim/black_mb100'];
+
+var black_tg = ['rutgers/black_sid1002_sk00000',
+'rutgers/black_sid1009_sk11111',
+'rutgers/black_sid1010_sk11111',
+'rutgers/black_sid1015_sk11000',
+'rutgers/black_sid1026_sk11110',
+'rutgers/black_sid1029_sk11000',
+'rutgers/black_sid1035_sk11100',
+'rutgers/black_sid1049_sk11100',
+'rutgers/black_sid1050_sk00000',
+'rutgers/black_sid1071_sk10000',
+'rutgers/black_sid1073_sk11000',
+'rutgers/black_sid1076_sk11100',
+'rutgers/black_sid1088_sk11111',
+'rutgers/black_sid1101_sk11000',
+'rutgers/black_sid1102_sk11100',
+'rutgers/black_sid1103_sk11100',
+'rutgers/black_sid1107_sk11000',
+'rutgers/black_sid1108_sk11100',
+'rutgers/black_sid1109_sk00000',
+'rutgers/black_sid1119_sk10000',
+'rutgers/black_sid1122_sk11110',
+'rutgers/black_sid1126_sk11110',
+'rutgers/black_sid1129_sk11100',
+'rutgers/black_sid1137_sk00000',
+'rutgers/black_sid1172_sk11111',
+'rutgers/black_sid1173_sk11110',
+'rutgers/black_sid1179_sk11110',
+'rutgers/black_sid1184_sk00000',
+'rutgers/black_sid1186_sk11111',
+'rutgers/black_sid1200_sk10101',
+  'rutgers/black_sid1201_sk11110'];
+  
+var other_tg = ['rutgers/other_sid1022_sk11111',
+'rutgers/other_sid1024_sk11000',
+'rutgers/other_sid1025_sk01100',
+'rutgers/other_sid1034_sk11110',
+'rutgers/other_sid1044_sk11110',
+'rutgers/other_sid1045_sk11000',
+'rutgers/other_sid1047_sk01101',
+'rutgers/other_sid1057_sk10000',
+'rutgers/other_sid1061_sk11000',
+'rutgers/other_sid1074_sk11110',
+'rutgers/other_sid1090_sk11010',
+'rutgers/other_sid1094_sk00000',
+'rutgers/other_sid1104_sk00000',
+'rutgers/other_sid1116_sk11110',
+'rutgers/other_sid1130_sk00000',
+'rutgers/other_sid1134_sk00000',
+'rutgers/other_sid1145_sk11111',
+'rutgers/other_sid1150_sk11100',
+'rutgers/other_sid1166_sk01110',
+  'rutgers/other_sid1167_sk11100'];
+  
+var white_tg = ['rutgers/white_sid1003_sk11110',
+'rutgers/white_sid1006_sk00000',
+'rutgers/white_sid1016_sk11000',
+'rutgers/white_sid1020_sk11100',
+'rutgers/white_sid1021_sk11111',
+'rutgers/white_sid1030_sk11100',
+'rutgers/white_sid1031_sk11110',
+'rutgers/white_sid1037_sk11110',
+'rutgers/white_sid1039_sk11100',
+'rutgers/white_sid1042_sk01111',
+'rutgers/white_sid1051_sk10000',
+'rutgers/white_sid1054_sk00000',
+'rutgers/white_sid1065_sk00000',
+'rutgers/white_sid1075_sk00000',
+'rutgers/white_sid1097_sk11100',
+'rutgers/white_sid1110_sk11100',
+'rutgers/white_sid1112_sk00000',
+'rutgers/white_sid1118_sk11111',
+'rutgers/white_sid1120_sk00001',
+'rutgers/white_sid1168_sk11111',
+'rutgers/white_sid1171_sk11000',
+'rutgers/white_sid1175_sk11100',
+'rutgers/white_sid1176_sk11100',
+'rutgers/white_sid1180_sk11110',
+'rutgers/white_sid1185_sk00000',
+'rutgers/white_sid1189_sk11100',
+'rutgers/white_sid1190_sk11000',
+  'rutgers/white_sid1198_sk11110'];
+
+white_dg=['img/DG_2',
+'img/DG_4',
+'img/DG_5',
+  'img/DG_6'];
+
+other_dg=['img/DG_1'];
+
+
+  white=jsPsych.randomization.shuffle(white);
+  other=jsPsych.randomization.shuffle(other);
+  black=jsPsych.randomization.shuffle(black);
+  white_tg=jsPsych.randomization.shuffle(white_tg);
+  other_tg=jsPsych.randomization.shuffle(other_tg);
+  black_tg=jsPsych.randomization.shuffle(black_tg);
+
+  var rating_trials = white.slice(0,50);
+  rating_trials=rating_trials.concat(black.slice(0,50),other.slice(0,42));
+  var trustgame_trials = white.slice(50,72);
+  trustgame_trials=trustgame_trials.concat(white_tg,black.slice(50,69),black_tg,other.slice(42,64),other_tg);
+  var dictator_trials = white.slice(72,98);
+  dictator_trials=dictator_trials.concat(white_dg,black.slice(69,99),other.slice(64,88),other_dg);
+  
+  rating_trials = jsPsych.randomization.shuffle(rating_trials);
+  trustgame_trials = jsPsych.randomization.shuffle(trustgame_trials);
+  dictator_trials = jsPsych.randomization.shuffle(dictator_trials);
+  
+  for (i = 0; i < rating_trials.length; i++) {
+	  rating_trials[i]=rating_trials[i] + "_rating.png";
+  }
+  for (i = 0; i < trustgame_trials.length; i++) {
+	  trustgame_trials[i]=trustgame_trials[i] + "_TG_DG.png";
+  }
+  for (i = 0; i < dictator_trials.length; i++) {
+	  dictator_trials[i]=dictator_trials[i] + "_TG_DG.png";
+  }
+
+  var test_stimuli = rating_trials.concat(trustgame_trials,dictator_trials);
+  
+    jsPsych.preloadImages(test_stimuli, function() {startExperiment(); }, function(nLoaded) {updateLoadedCount(nLoaded); });
+
+	var welcome_block = {
+		type: "text",
+		text: "<p><strong>Welcome!</strong><br> <h3 style='color:red'>PLEASE READ ALL INSTRUCTIONS CAREFULLY AS YOU WILL BE TESTED ON COMPREHENSION.</h3><p>In this portion of the experiment, you will be participating in a series of four tasks. As advertised on MTurk, you will be paid $10 for completing the entire experiment, and you will also have the opportunity to make more money in some of the following tasks. How you can make more money will be explained during the instructions for the specific task.</p><p>In two of the tasks, you will be interacting with a number of <strong>real partners</strong> whose responses we already collected. For example, some were participants in a previous experiment that we conducted at Rutgers University in Newark, New Jersey. We interviewed these people and asked them what they would do in these situations. They were given the specific details of the tasks, and gave us their answers in advance. We collected their decisions and will use them to determine the outcomes of your interactions today.</p><p>It is well known that faces are particularly important for helping us gather social information. For this reason, and to give you a better sense of whom you're interacting with, we will provide you with a picture of your partner for each of these interactions.</p><p><em>Press enter to continue.</em></p>",
+		cont_key: [13]
+	}
+
+    var instructions_block = {
+      type: "text",
+      text: "<p><strong>In this task,</strong> you will have the opportunity to make money by participating in economic interactions with <strong>real partners</strong>. For each interaction, you will see a picture of your partner's face and then choose how much money you want to share with that partner. The money that you choose to send will quadruple in amount.  Your partner has previously decided, based on the amount sent, to either share what they received with you or keep all of it for themselves. Based on your decisions and those of your partners, the money will be distributed accordingly.</p><p>For each of the partners you may choose to share $0, $1, $2, $3, $4 or $5. Partners were told that you had the option to share some of the money with them, but that you could also choose to share none of it, and keep it entirely to yourself, leaving them with no money. They were made aware that the more you shared with them, the more both of you could make, but they also knew that they could of course keep all the money you sent them, returning none of it to you.</p><em>Press enter to continue to an example.</em>",
+		cont_key: [13]
+    }; 
+	
+    var instructions_block_2 = {
+      type: "text",
+      text: "<p><strong>For example,</strong> <p> <table ><tr><td class='center-content' colspan='2'>you see a photo of your partner and decide to share $3 of your money with them.<br><br> <big>&#8595;</big><br><br>The money will be quadrupled (becoming $12)</td></tr><tr><td class='center-content'><big>&#8601</big></td><td class='center-content'>&#8600</td></tr><tr><td class='center-content' style='width:50%'>If your partner decided to share the money with you, you would receive $6 and they would keep $6.</td><td class='center-content' style='width:50%'>If your partner decided to keep the money, you will receive $0 back and they will keep $12. You will lose the money you shared.</td></tr></table><p><strong>Payment:</strong></p><p>In addition to receiving $10 for participating in the whole experiment, we are now giving you an additional $5 credit for this portion of the experiment, which you can choose to share with the potential of making more money. However, if your partner decided to keep what you shared, you will not get it back at the end of the experiment. Remember, these transactions have <strong>real consequences</strong>. At the end of the study, one interaction will be randomly selected and realized. At that point, you will find out whether or not you received money back.</p><em>Press enter to continue to quiz.</em>",
+		cont_key: [13]
+    }; 
+	
+	var quiz_intro = {
+		type: "text",
+		text: "<p><center><strong>Post Instruction Quiz (respond by pressing a, b or c on your keyboard)</strong></p><p><em>Press enter to continue</em></p></center>",
+		cont_key: [13]
+	}
+	
+	var question_one = {
+		type: "text",
+		text: "<p><strong>1) What is the minimum you can choose to send to your partner?</strong><p>a) $2</p><p>b) $0</p><p>c) $3</p>",
+		cont_key: ['b']
+	}
+	
+	var question_two = {
+		type: "text",
+		text: "<p><strong>2) What is the maximum you can choose to send to your partner?</strong></p><p>a) $8</p><p>b) $5</p><p>c) $3</p>",
+		cont_key: ['b']
+	}
+	
+	var question_three = {
+		type: "text",
+		text: "<strong>3) How many trials will be selected and realized at the end of the study?</strong><p>a) 1</p><p>b) 3</p><p>c) All</p>",
+		cont_key: ['a']
+	}
+	
+	var question_four = {
+		type: "text",
+		text: "<strong>4) What happens to the amount you choose to send to your partner</strong><p>a) Nothing</p><p>b) It doubles</p><p>c) It quadruples</p>",
+		cont_key: ['c']
+	}
+
+	var question_five = {
+		type: "text",
+		text: "<strong>5) If you decide to share $4 with your partner, and they decided to share what they received with you, how much money would you each end up with from that interaction?</strong><p>a) $16</p><p>b) $0</p><p>c) $8</p>",
+		cont_key: ['c']
+	}
+	
+	
+	var quiz_intro_dg = {
+		type: "text",
+		text: "<p><center><strong>Post Instruction Quiz (respond by pressing a, b or c on your keyboard)</strong></p><p><em>Press enter to continue</em></p></center>",
+		cont_key: [13]
+	}
+	
+	var question_one_dg = {
+		type: "text",
+		text: "<p><strong>1) How much credit are you starting with in this task?</strong><p>a) $0</p><p>b) $3</p><p>c) $5</p>",
+		cont_key: ['c']
+	}
+	
+	var question_two_dg = {
+		type: "text",
+		text: "<p><strong>2) What is the maximum amount you can choose to send to your partner?</strong></p><p>a) $8</p><p>b) $5</p><p>c) $3</p>",
+		cont_key: ['b']
+	}
+	
+	var question_three_dg = {
+		type: "text",
+		text: "<strong>2) How many trials will be selected and realized at the end of the study?</strong><p>a) 1</p><p>b) 3</p><p>c) All</p>",
+		cont_key: ['a']
+	}
+
+	var question_four_dg = {
+		type: "text",
+		text: "<strong>4) What happens to the amount you choose to send to your partner</strong><p>a) They get to keep it</p><p>b) It doubles</p><p>c) They can share some of it back with me</p>",
+		cont_key: ['a']
+	}
+
+	var quiz_end = {
+		type: "text",
+		text: "<p class='center-content'><strong>Thanks for completing the quiz - you will now start the task.</strong></p><p><em>Press enter to continue</em></p>",
+		cont_key: [13]
+	}
+	
+	var test_block = {
+		type: "single-stim",
+		stimuli: trustgame_trials,
+		// prompt: "<center><p>How much money would you like to share with this person?</p><p><strong>$0&nbsp;&nbsp;$1&nbsp;&nbsp;$2 &nbsp;&nbsp;$3&nbsp;&nbsp;$4&nbsp;&nbsp;$5</strong></p></center>",
+		choices: ['0', '1', '2', '3', '4', '5'],
+		timing_post_trial: 100,
+		data: { task: 'TG' }
+	};
+	
+    var rating_instructions_block = {
+      type: "text",
+      text: "<p><strong>In this task</strong> you will be presented with many pictures of male faces." + 
+		" For each face, please rate how trustworthy the person looks to you on a scale of 1 (not-at-all trustworthy) to 9 (extremely trustworthy)</p>" +
+		"<p><strong>For example:</strong></p>" +
+          "<p><table style='width:100%'><tr><td class='center-content'><img src='img/example_dm.png'></img></td></tr>" +
+          "<tr><td class='center-content'>How trustworthy is this person?" +
+          "<br><strong>1&nbsp; 2&nbsp; 3&nbsp; 4&nbsp; 5&nbsp; 6&nbsp; 7&nbsp; 8&nbsp; 9</strong>" + 
+		  "<br><small>Not-at-all&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Extremely</small></td></tr></table></p>" +
+          "<p><em>Press enter to begin.</em></p>",
+		cont_key: [13]
+    }; 
+	
+	var rating_block = {
+		type: "single-stim",
+		stimuli: rating_trials,
+		choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+		// prompt: "<center><p>How trustworthy is this person?</p><p><strong>1  &nbsp;&nbsp; 2 &nbsp;&nbsp; 3 &nbsp;&nbsp; 4 &nbsp;&nbsp; 5 &nbsp;&nbsp; 6 &nbsp;&nbsp; 7 &nbsp;&nbsp;8&nbsp;&nbsp; 9</strong></p></center>",
+		timing_post_trial: 100,
+	};
+	
+	var dictator_instructions = {
+		type: "text",
+		text: "<p><strong>In this task,</strong> you will have the opportunity to engage in economic interactions with <strong>real partners</strong>. You will start with $5 credit, which you will be given the opportunity to share with your partners. After you make your decision, any shared money will belong to your partner, and will not be returned to you at the end of the experiment.  The partners have been told that they could receive money depending on your decisions.</p>" + 
+		"<p>For each partner that appears on the screen, you will have the option to give them $0, $1, $2, $3, $4 or $5 by pressing the corresponding number key on your keyboard. Remember, these transactions have <strong>real consequences</strong>. At the end of the study, one interaction will be randomly selected and realized, determining how much money you and your partners will receive.</p>" +
+		"<p><strong>Payment:</strong> In addition to receiving $10 for participating in the whole experiment, we are now giving you an additional $5 credit for this portion of the experiment, which you can choose to share with your partners or not." +
+		"<p><em>Press enter to continue to quiz.</em></p>",
+		cont_key: [13]
+	}
+	
+	var dictator_block = {
+		type: "single-stim",
+		stimuli: dictator_trials,
+		choices: ['0', '1', '2', '3', '4', '5'],
+		// prompt: "<p><center>How much money would you like to share with this person?</p><p><strong>$0&nbsp;&nbsp;$1&nbsp;&nbsp;$2 &nbsp;&nbsp;$3&nbsp;&nbsp;$4&nbsp;&nbsp;$5</strong></p></center>",
+		timing_post_trial: 100,
+		data: { task: 'Dict' }
+	};
+	
+	dictator_chunk = {
+		chunk_type: 'linear',
+		timeline: [dictator_instructions, quiz_intro_dg, question_one_dg, question_two_dg, question_three_dg, question_four_dg, quiz_end, dictator_block],
+	}
+	
+	trustgame_chunk = {
+		chunk_type: 'linear',
+		timeline: [instructions_block, instructions_block_2, quiz_intro, question_one, question_two, question_three, question_four, question_five, quiz_end, test_block],
+	}
+	
+	
+	function kPress(key){
+		var payment=0;
+		switch (key){
+			case 49:
+				if (Math.random()>.7468){
+					payment=2;
+				};
+				break;
+			case 50:
+				if (Math.random()>.7342){
+					payment=4;
+				};
+				break;
+			case 51:
+				if (Math.random()>.5949){
+					payment=6;
+				};
+				break;
+			case 52:
+				if (Math.random()>.3544){
+					payment=8;
+				};
+				break;
+			case 53:
+				if (Math.random()>.1772){
+					payment=10;
+				};
+				break;
+			default:
+				break;
+		};
+		return payment
+	  };
+	  
+	  function dictator_money(keep){
+  	    
+  		if (keep == 48){
+  			keep = 5;
+  		} else if (keep == 49){
+  			keep = 4;
+  		} else if (keep == 50){
+  			keep = 3;
+  		} else if (keep == 51){
+  			keep = 2;
+  		} else if (keep == 52){
+  			keep = 1;
+  		} else if (keep == 53){
+  			keep = 0;
+  		}
+		return keep
+	  };
+	  
+	  partner_one = 0;
+	  dictator_partner = 0;
+	  
+var display_data_block = {
+  type: "text",
+  text: function() {
+      partner_one = Math.floor(Math.random()*(jsPsych.data.getTrialsOfTask("TG").length))+1;
+	  dictator_partner = Math.floor(Math.random()*(jsPsych.data.getTrialsOfTask("Dict").length))+1;
+	  start_time = jsPsych.startTime(); //displayed in Greenwich Mean Time
+	  total_time = jsPsych.totalTime(); //displayed in milliseconds
+	  moneyKept = kPress(jsPsych.data.getTrialsOfTask("TG")[partner_one].key_press-1);
+	  dictMoney = dictator_money(jsPsych.data.getTrialsOfTask("Dict")[dictator_partner].key_press-1);
+	  return "<p>Thank you for participating!</p> <p>In the economic exchange task in which your partner had the option to return some money to you, your partner was from trial <strong>" + partner_one + ".</strong> You received <strong>$" + moneyKept + " </strong> back from them.</p>" + "<p>In the task in which you had the option to give some money to your partner, trial <strong>"+ dictator_partner + "</strong> was realized, which means you receive <strong>$" + dictMoney + ".</strong></p><p><em>Press enter to exit</em></p>";
+  },
+  cont_key: [13]
+};
+
+function getUrlVars() {
+var vars = {};
+var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+vars[key] = value;
+});
+return vars;
+}
+
+// var sid = getUrlVars()["MID"];
+// var IAT = getUrlVars()["IAT"];
+// var ord = getUrlVars()["ORD"];
+var ord = "TR_TG_DG";
+
+function updateLoadedCount(nLoaded){
+	var percentcomplete = nLoaded / test_stimuli.length * 100;
+	console.log('Loaded '+percentcomplete+'% of images');
+}
+
+// function goToIAT(iatname){
+// 	var IATURL = "http://emotion.caltech.edu/~dstanley/IAT/" + iatname + "/?MID=" + sid;
+// 	window.location = IATURL;
+// }
+//
+// function saveData(filename, filedata){
+// 	$.ajax({
+// 		type: 'post',
+// 		cache: false,
+// 		url: 'save_data.php',
+// 		data:{filename: filename, filedata: filedata}
+// 	});
+// }
+
+var experiment = [];
+switch(ord){
+	case "TG_DG_TR": 
+		experiment.push(welcome_block);
+		experiment.push(trustgame_chunk);
+		experiment.push(dictator_chunk);
+		experiment.push(rating_instructions_block);
+		experiment.push(rating_block);
+		experiment.push(display_data_block);
+	break;
+	case "TG_TR_DG": 
+		experiment.push(welcome_block);
+		experiment.push(trustgame_chunk);
+		experiment.push(rating_instructions_block);
+		experiment.push(rating_block);
+		experiment.push(dictator_chunk);
+		experiment.push(display_data_block);
+	break;
+	case "DG_TG_TR": 
+		experiment.push(welcome_block);
+		experiment.push(dictator_chunk);
+		experiment.push(trustgame_chunk);
+		experiment.push(rating_instructions_block);
+		experiment.push(rating_block);
+		experiment.push(display_data_block);
+	break;
+	case "DG_TR_TG":
+		experiment.push(welcome_block);
+		experiment.push(dictator_chunk);
+		experiment.push(rating_instructions_block);
+		experiment.push(rating_block);
+		experiment.push(trustgame_chunk);
+		experiment.push(display_data_block);
+	break;
+	case "TR_TG_DG":
+		experiment.push(welcome_block);
+		experiment.push(rating_instructions_block);
+		experiment.push(rating_block);
+		experiment.push(trustgame_chunk);
+		experiment.push(dictator_chunk);
+		experiment.push(display_data_block);
+		break;
+	case "TR_DG_TG":
+		experiment.push(welcome_block);
+		experiment.push(rating_instructions_block);
+		experiment.push(rating_block);
+		experiment.push(dictator_chunk);
+		experiment.push(trustgame_chunk);
+		experiment.push(display_data_block);
+		break;
+default: ;
+break;
+	
+}
+ 
+ function startExperiment(){
+	jsPsych.init({
+		experiment_structure: experiment,
+		on_finish: function(data) {
+			jsPsych.data.addProperties({subject_id: sid})
+			jsPsych.data.addProperties({start_time: start_time})
+			jsPsych.data.addProperties({total_time: total_time})
+			jsPsych.data.addProperties({TG_money: moneyKept}) 
+			jsPsych.data.addProperties({dictMoney: dictMoney})
+			jsPsych.data.addProperties({TG_partner: partner_one})
+			jsPsych.data.addProperties({dict_partner: dictator_partner})
+			jsPsych.data.addProperties({IAT: IAT})
+			// saveData(sid, jsPsych.data.dataAsCSV())
+			// goToIAT(IAT)
+	  	  	jsPsych.data.displayData()
+			
+	}
+    });
+}
+  </script>
+</html>

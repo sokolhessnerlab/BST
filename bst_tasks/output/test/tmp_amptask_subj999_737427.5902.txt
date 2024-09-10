@@ -1,0 +1,22 @@
+SUBJECT ID	CONDITION	BLOCK	TRIAL NUM	CUMULATIVE TRIAL NUM	STIM	INK	MASK	STIM RACE	RESPONSE	RT	START TIME
+999	0	80	01	01	black_mb002.bmp	pd_sm_inkblot_170816_1750_085.png	pdPL_noiseMask_170814_1952_056.png	1	1	0.638212	14782.198122
+999	0	80	02	02	white_mw043.bmp	pd_sm_inkblot_170816_1750_033.png	pdPL_noiseMask_170814_1952_001.png	0	1	0.458041	14783.234150
+999	0	80	03	03	other_00797_941205_fb_edt.bmp	pd_sm_inkblot_170816_1750_026.png	pdPL_noiseMask_170814_1952_051.png	2	0	0.381763	14784.054368
+999	0	1	01	01	other_00193_940128_fa_edt.bmp	pd_sm_inkblot_170816_1750_092.png	pdPL_noiseMask_170814_1952_043.png	2	1	0.165424	14815.206251
+999	0	1	02	02	white_mw074.bmp	pd_sm_inkblot_170816_1750_072.png	pdPL_noiseMask_170814_1952_029.png	0	0	0.188585	14815.623138
+999	0	1	03	03	black_mb049.bmp	pd_sm_inkblot_170816_1750_054.png	pdPL_noiseMask_170814_1952_075.png	1	1	0.163281	14816.040901
+999	0	1	04	04	black_mb047.bmp	pd_sm_inkblot_170816_1750_051.png	pdPL_noiseMask_170814_1952_017.png	1	0	0.186029	14816.442333
+999	0	1	05	05	white_mw078.bmp	pd_sm_inkblot_170816_1750_059.png	pdPL_noiseMask_170814_1952_082.png	0	1	0.119741	14816.860437
+999	0	1	06	06	other_00516_940519_fb_edt.bmp	pd_sm_inkblot_170816_1750_046.png	pdPL_noiseMask_170814_1952_071.png	2	0	0.040321	14817.227892
+999	0	2	01	07	black_mb060.bmp	pd_sm_inkblot_170816_1750_025.png	pdPL_noiseMask_170814_1952_026.png	1	1	8.642422	14823.529872
+999	0	2	02	08	white_mw008.bmp	pd_sm_inkblot_170816_1750_075.png	pdPL_noiseMask_170814_1952_062.png	0	1	0.576015	14832.419597
+999	0	2	03	09	other_00247_941121_fb_edt.bmp	pd_sm_inkblot_170816_1750_080.png	pdPL_noiseMask_170814_1952_050.png	2	0	0.310236	14833.221580
+999	0	2	04	10	white_mw028.bmp	pd_sm_inkblot_170816_1750_037.png	pdPL_noiseMask_170814_1952_074.png	0	0	0.335375	14833.756308
+999	0	2	05	11	black_mb045.bmp	pd_sm_inkblot_170816_1750_088.png	pdPL_noiseMask_170814_1952_071.png	1	1	0.207168	14834.324601
+999	0	2	06	12	other_00619_940928_fa_edt.bmp	pd_sm_inkblot_170816_1750_019.png	pdPL_noiseMask_170814_1952_026.png	2	1	0.284670	14834.759101
+999	0	3	01	13	white_mw099.bmp	pd_sm_inkblot_170816_1750_061.png	pdPL_noiseMask_170814_1952_043.png	0	0	27.851199	14841.312978
+999	0	3	02	14	other_00724_941201_fa_edt.bmp	pd_sm_inkblot_170816_1750_062.png	pdPL_noiseMask_170814_1952_092.png	2	0	0.269758	14869.421809
+999	0	3	03	15	black_mb099.bmp	pd_sm_inkblot_170816_1750_069.png	pdPL_noiseMask_170814_1952_070.png	1	0	0.185257	14869.922617
+999	0	3	04	16	white_mw016.bmp	pd_sm_inkblot_170816_1750_097.png	pdPL_noiseMask_170814_1952_055.png	0	0	0.151310	14870.340631
+999	0	3	05	17	other_00114_931230_fa_edt.bmp	pd_sm_inkblot_170816_1750_008.png	pdPL_noiseMask_170814_1952_023.png	2	0	0.151630	14870.724717
+999	0	3	06	18	black_mb011.bmp	pd_sm_inkblot_170816_1750_059.png	pdPL_noiseMask_170814_1952_094.png	1	0	0.046387	14871.110023

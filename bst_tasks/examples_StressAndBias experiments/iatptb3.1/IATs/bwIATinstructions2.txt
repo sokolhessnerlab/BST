@@ -1,0 +1,25 @@
+In this task, you will be presented with a set of words or images to classify into groups.
+This task requires that you classify items as quickly as you can while making as few 
+mistakes as possible. Going too slow or making too many mistakes will result in an 
+uninterpretable score. The following is a list of category labels and the items that belong
+to each of those categories.
+
+Category Items
+
+Good:   Great, Terrific, Wonderful, Fabulous, Superb, Nice, Fantastic, Lovely.
+Bad:     Awful, Terrible, Horrible, Disgusting, Horrid, Foul, Revolting, Nasty.
+Black American:  Faces of Black American people
+White American:  Faces of White American people
+
+The two labels at the top will tell you which words or images go with each key.  Every so 
+often the labels at the top will change, switching which words or images go with each key.
+At these times there will be a short break and you will be told to look at the categories.
+
+Keep in mind
+
+    * Keep your index fingers on the 'e' and 'i' keys to enable rapid response.
+    * Each word or image has a correct classification. Most of these are easy.
+    * The test gives no results if you go slow -- Please try to go as fast as possible.
+    * Expect to make a few mistakes because of going fast. That's OK.
+    * If you make a mistake, a red X will appear. You should then correct your response as
+      quickly as possible.
