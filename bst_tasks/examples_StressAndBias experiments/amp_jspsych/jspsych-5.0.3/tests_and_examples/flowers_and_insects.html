@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Evaluative Priming</title>
+  <script src="js/jquery.min.js"></script>
+  <script src="../jspsych.js"></script>
+  <script src="../plugins/jspsych-text.js"></script>
+  <script src="../plugins/jspsych-multi-stim-multi-response.js"></script>
+  <link rel="stylesheet" href="../css/jspsych.css"></link>
+  <style>
+    img {
+      height: 300px;
+	  align: center;
+    }
+  </style>  
+</head>
+
+<body>
+  <div id="jspsych-target"></div>
+</body>
+<script>
+
+/* create the experiment timelines */
+var timeline=[];
+
+/*set up welcome block*/
+var welcome = {
+  type: "text",
+  text: "<p style='margin:20%'>Welcome to the experiment. Press any key to begin.</p>"
+};
+timeline.push(welcome);
+
+/* instructions*/
+var instructions={
+	type: "text",
+	text: ['<p>You are going to see a series of words, some of which ' +
+	' refer to animals, while others refer to tools. Your job is to sort the'+
+	' words into the two categories as quickly and accurately as you can.<p>'+
+	'<p style="text-align:center;">Press E if the word is a flower.</p>'+
+	'<p style="text-align:center;">Press I if the word is an insect.</p>'+
+    '<p>Please press ENTER to start the experiment.</p>']
+};
+timeline.push(instructions);
+
+/* Define the images */
+var prime= [
+	'Flowers_sml/carnation.png',
+	'Flowers_sml/daisy.png',
+	'Flowers_sml/lily.png',
+	'Flowers_sml/orchid.png',
+	'Flowers_sml/poppy.png',
+	'Flowers_sml/rose.png',
+	'Flowers_sml/sunflower.png',
+	'Flowers_sml/tulip.png',
+	'Insects_sml/beetle.png',
+	'Insects_sml/centipede.png',
+	'Insects_sml/cockroach.png',
+	'Insects_sml/flea.png',
+	'Insects_sml/mosquito.png',
+	'Insects_sml/scorpion.png',
+	'Insects_sml/spider.png',
+	'Insects_sml/tick.png',
+];
+
+/*need to change these */
+var	word=[
+	'positive/caress.jpg',
+	'positive/cheer.jpg',
+	'positive/diamond.jpg',
+	'positive/diploma.jpg',
+	'positive/family.jpg',
+	'positive/freedom.jpg',
+	'positive/friend.jpg',
+	'positive/gentle.jpg',
+	'positive/gift.jpg',
+	'positive/happy.jpg',
+	'positive/health.jpg',
+	'positive/heaven.jpg',
+	'positive/honest.jpg',
+	'positive/honor.jpg',
+	'positive/laughter.jpg',
+	'positive/love.jpg',
+	'positive/loyal.jpg',
+	'positive/lucky.jpg',
+	'positive/miracle.jpg',
+	'positive/paradise.jpg',
+	'positive/peace.jpg',
+	'positive/pleasure.jpg',
+	'positive/rainbow.jpg',
+	'positive/sunrise.jpg',
+	'positive/vacation.jpg',
+	'negative/abuse.jpg',
+	'negative/crash.jpg',
+	'negative/filth.jpg',
+	'negative/murder.jpg',
+	'negative/sickness.jpg',
+	'negative/accident.jpg',
+	'negative/death.jpg',
+	'negative/grief.jpg',
+	'negative/poison.jpg',
+	'negative/stink.jpg',
+	'negative/assault.jpg',
+	'negative/disaster.jpg',
+	'negative/hatred.jpg',
+	'negative/pollute.jpg',
+	'negative/tragedy.jpg',
+	'negative/divorce.jpg',
+	'negative/jail.jpg',
+	'negative/poverty.jpg',
+	'negative/ugly.jpg',
+	'negative/cancer.jpg',
+	'negative/kill.jpg',
+	'negative/rotten.jpg',
+	'negative/vomit.jpg',
+	'negative/agony.jpg',
+	'negative/prison.jpg',
+];
+
+/* generate the randomized lists of stimuli */
+var second_stimuli = jsPsych.randomization.sample(word, 20, true)
+var prime_stimuli = jsPsych.randomization.sample(prime, 20, true)
+
+/* define the stimulis array*/
+var alltrials=[];
+for (var i=0; i<second_stimuli.length; i++) {
+	alltrials.push({stimuli: [prime_stimuli[i], second_stimuli[i], 'prompts/evaluative_priming_prompt.png']})
+}
+
+/*create test trials */
+  var trial_1 = {
+    type: 'multi-stim-multi-response',
+	timeline: alltrials,
+    choices: [
+      [69, 73]
+    ], // E or I
+    timing_stim: [200,200, -1],
+	timing_response: 1000,
+	timing_post_trial: 1000,
+  }
+  timeline.push(trial_1)
+  
+  jsPsych.init({
+	timeline: timeline,
+	on_finish: function() { jsPsych.data.displayData('csv');
+    }
+  });
+</script>
+</html>

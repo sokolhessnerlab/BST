@@ -1,0 +1,452 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Evaluative Priming</title>
+  <script src="js/jquery.min.js"></script>
+  <script src="../jspsych.js"></script>
+  <script src="../plugins/jspsych-text.js"></script>
+  <script src="../plugins/jspsych-multi-stim-multi-response.js"></script>
+  <link rel="stylesheet" href="../css/jspsych.css"></link>
+  <style>
+    img {
+      height: 300px;
+	  align: center;
+    }
+  </style>  
+</head>
+
+<body>
+  <div id="jspsych-target"></div>
+</body>
+<script>
+
+/* create the experiment timelines */
+var timeline=[];
+
+/*set up welcome block*/
+var welcome = {
+  type: "text",
+  text: "<p style='margin:20%'>Welcome to the experiment. Press any key to begin.</p>"
+};
+timeline.push(welcome);
+
+/* instructions*/
+var instructions={
+	type: "text",
+	text: ['<p>You are going to see a series of words, some of which ' +
+	' refer to animals, while others refer to tools. Your job is to sort the'+
+	' words into the two categories as quickly and accurately as you can.<p>'+
+	'<p style="text-align:center;">Press E if the word is positive.</p>'+
+	'<p style="text-align:center;">Press I if the word is negative.</p>'+
+    '<p>Please press ENTER to start the experiment.</p>']
+};
+timeline.push(instructions);
+
+/* Define the images */
+var faces= [
+  'trustrating_stim/black_mb014.bmp',
+  'trustrating_stim/black_mb015.bmp',
+  'trustrating_stim/black_mb016.bmp',
+  'trustrating_stim/black_mb017.bmp',
+  'trustrating_stim/black_mb018.bmp',
+  'trustrating_stim/black_mb019.bmp',
+  'trustrating_stim/black_mb020.bmp',
+  'trustrating_stim/black_mb021.bmp',
+  'trustrating_stim/black_mb023.bmp',
+  'trustrating_stim/black_mb025.bmp',
+  'trustrating_stim/black_mb026.bmp',
+  'trustrating_stim/black_mb027.bmp',
+  'trustrating_stim/black_mb029.bmp',
+  'trustrating_stim/black_mb030.bmp',
+  'trustrating_stim/black_mb031.bmp',
+  'trustrating_stim/black_mb032.bmp',
+  'trustrating_stim/black_mb033.bmp',
+  'trustrating_stim/black_mb035.bmp',
+  'trustrating_stim/black_mb038.bmp',
+  'trustrating_stim/black_mb039.bmp',
+  'trustrating_stim/black_mb040.bmp',
+  'trustrating_stim/black_mb042.bmp',
+  'trustrating_stim/black_mb044.bmp',
+  'trustrating_stim/black_mb045.bmp',
+  'trustrating_stim/black_mb046.bmp',
+  'trustrating_stim/black_mb047.bmp',
+  'trustrating_stim/black_mb049.bmp',
+  'trustrating_stim/black_mb050.bmp',
+  'trustrating_stim/black_mb051.bmp',
+  'trustrating_stim/black_mb054.bmp',
+  'trustrating_stim/black_mb055.bmp',
+  'trustrating_stim/black_mb056.bmp',
+  'trustrating_stim/black_mb057.bmp',
+  'trustrating_stim/black_mb058.bmp',
+  'trustrating_stim/black_mb059.bmp',
+  'trustrating_stim/black_mb060.bmp',
+  'trustrating_stim/black_mb061.bmp',
+  'trustrating_stim/black_mb062.bmp',
+  'trustrating_stim/black_mb063.bmp',
+  'trustrating_stim/black_mb064.bmp',
+  'trustrating_stim/black_mb065.bmp',
+  'trustrating_stim/black_mb066.bmp',
+  'trustrating_stim/black_mb067.bmp',
+	'trustrating_stim/black_00108_940128_fb_edt.bmp',
+  'trustrating_stim/black_00183_940128_fb_edt.bmp',
+  'trustrating_stim/black_00257_940128_fa_edt.bmp',
+  'trustrating_stim/black_00273_940422_fa_edt.bmp',
+  'trustrating_stim/black_00332_940422_fa_edt_contrast.bmp',
+  'trustrating_stim/black_00358_940422_fb_edt.bmp',
+  'trustrating_stim/black_00453_940422_fb_edt.bmp',
+  'trustrating_stim/black_00467_940519_fb_edt.bmp',
+  'trustrating_stim/black_00488_940519_fb_edt.bmp',
+  'trustrating_stim/black_00531_940519_fa_edt.bmp',
+  'trustrating_stim/black_00558_940519_fa_edt.bmp',
+  'trustrating_stim/black_00586_940928_fa_edt.bmp',
+  'trustrating_stim/black_00677_941121_fa_edt.bmp',
+  'trustrating_stim/black_00716_941201_fa_edt_rot.bmp',
+  'trustrating_stim/black_00746_941201_fb_edt.bmp',
+  'trustrating_stim/black_00801_941205_fa_edt.bmp',
+  'trustrating_stim/black_00857_940307_fa_edt.bmp',
+  'trustrating_stim/black_00917_960620_fa_edt.bmp',
+  'trustrating_stim/black_00929_960627_fa_edt.bmp',
+  'trustrating_stim/black_00964_960627_fb_edt.bmp',
+  'trustrating_stim/black_38M_NE_C.bmp',
+  'trustrating_stim/black_39M_NE_C.bmp',
+  'trustrating_stim/black_mb001.bmp',
+  'trustrating_stim/black_mb002.bmp',
+  'trustrating_stim/black_mb003.bmp',
+  'trustrating_stim/black_mb004.bmp',
+  'trustrating_stim/black_mb005.bmp',
+  'trustrating_stim/black_mb006.bmp',
+  'trustrating_stim/black_mb008.bmp',
+  'trustrating_stim/black_mb009.bmp',
+  'trustrating_stim/black_mb010.bmp',
+  'trustrating_stim/black_mb011.bmp',
+  'trustrating_stim/black_mb013.bmp',
+  'trustrating_stim/black_mb068.bmp',
+  'trustrating_stim/black_mb069.bmp',
+  'trustrating_stim/black_mb070.bmp',
+  'trustrating_stim/black_mb071.bmp',
+  'trustrating_stim/black_mb072.bmp',
+  'trustrating_stim/black_mb073.bmp',
+  'trustrating_stim/black_mb075.bmp',
+  'trustrating_stim/black_mb077.bmp',
+  'trustrating_stim/black_mb078.bmp',
+  'trustrating_stim/black_mb079.bmp',
+  'trustrating_stim/black_mb081.bmp',
+  'trustrating_stim/black_mb082.bmp',
+  'trustrating_stim/black_mb083.bmp',
+  'trustrating_stim/black_mb085.bmp',
+  'trustrating_stim/black_mb088.bmp',
+  'trustrating_stim/black_mb089.bmp',
+  'trustrating_stim/black_mb092.bmp',
+  'trustrating_stim/black_mb093.bmp',
+  'trustrating_stim/black_mb094.bmp',
+  'trustrating_stim/black_mb096.bmp',
+  'trustrating_stim/black_mb097.bmp',
+  'trustrating_stim/black_mb098.bmp',
+  'trustrating_stim/black_mb099.bmp',
+  'trustrating_stim/black_mb100.bmp',
+'trustrating_stim/other_00029_940128_fa_edt.bmp',
+'trustrating_stim/other_00046_931230_fa_edt.bmp',
+'trustrating_stim/other_00058_931230_fa_edt.bmp',
+'trustrating_stim/other_00070_941121_fb_edt.bmp',
+'trustrating_stim/other_00096_940128_fb_edt.bmp',
+'trustrating_stim/other_00097_931230_fa_edt.bmp',
+'trustrating_stim/other_00110_931230_fb_edt.bmp',
+'trustrating_stim/other_00114_931230_fa_edt.bmp',
+'trustrating_stim/other_00116_931230_fa_edt.bmp',
+'trustrating_stim/other_00119_931230_fb_edt.bmp',
+'trustrating_stim/other_00122_931230_fa_edt.bmp',
+'trustrating_stim/other_00132_931230_fb_edt.bmp',
+'trustrating_stim/other_00139_931230_fb_edt.bmp',
+'trustrating_stim/other_00178_931230_fa_edt.bmp',
+'trustrating_stim/other_00193_940128_fa_edt.bmp',
+'trustrating_stim/other_00205_940128_fa_edt.bmp',
+'trustrating_stim/other_00216_940128_fa_edt.bmp',
+'trustrating_stim/other_00234_940128_fb_edt.bmp',
+'trustrating_stim/other_00237_940128_fb_edt.bmp',
+'trustrating_stim/other_00246_940128_fa_edt.bmp',
+'trustrating_stim/other_00247_941121_fb_edt.bmp',
+'trustrating_stim/other_00261_940128_fb_edt.bmp',
+'trustrating_stim/other_00282_940422_fb_edt.bmp',
+'trustrating_stim/other_00318_940422_fb_edt.bmp',
+'trustrating_stim/other_00383_941031_fa_edt_rot.bmp',
+'trustrating_stim/other_00415_940422_fb_edt_rot.bmp',
+'trustrating_stim/other_00461_940422_fb_edt.bmp',
+'trustrating_stim/other_00490_940519_fb_edt.bmp',
+'trustrating_stim/other_00512_940519_fa_edt.bmp',
+'trustrating_stim/other_00516_940519_fb_edt.bmp',
+	'trustrating_stim/other_00672_941121_fa_edt.bmp',
+'trustrating_stim/other_00673_941121_fa_edt_rot.bmp',
+'trustrating_stim/other_00698_941121_fb_edt.bmp',
+'trustrating_stim/other_00710_960530_fa_edt.bmp',
+'trustrating_stim/other_00712_941205_fa_edt.bmp',
+'trustrating_stim/other_00724_941201_fa_edt.bmp',
+'trustrating_stim/other_00726_941201_fb_edt.bmp',
+'trustrating_stim/other_00733_941201_fa_edt.bmp',
+'trustrating_stim/other_00734_941201_fa_edt.bmp',
+'trustrating_stim/other_00737_941201_fa_edt.bmp',
+'trustrating_stim/other_00740_941205_fa_edt.bmp',
+'trustrating_stim/other_00763_941201_fb_edt.bmp',
+'trustrating_stim/other_00793_941205_fb_edt.bmp',
+'trustrating_stim/other_00795_941205_fb_edt.bmp',
+'trustrating_stim/other_00797_941205_fb_edt.bmp',
+'trustrating_stim/other_00809_941205_fa_edt.bmp',
+'trustrating_stim/other_00810_941205_fb_edt_rot.bmp',
+'trustrating_stim/other_00828_940307_fa_edt.bmp',
+'trustrating_stim/other_00841_940307_fb_edt.bmp',
+'trustrating_stim/other_00859_940307_fa_edt.bmp',
+'trustrating_stim/other_00866_940307_fa_edt.bmp',
+'trustrating_stim/other_00869_940307_fa_edt.bmp',
+'trustrating_stim/other_00880_960530_fa_edt.bmp',
+'trustrating_stim/other_00911_960530_fa_edt.bmp',
+'trustrating_stim/other_00912_960530_fa_edt.bmp',
+'trustrating_stim/other_00921_960627_fb_edt.bmp',
+'trustrating_stim/other_00926_960627_fa_edt.bmp',
+'trustrating_stim/other_00933_960627_fa_edt.bmp',
+'trustrating_stim/other_00976_960627_fb_edt.bmp',
+'trustrating_stim/other_01207_940128_fb_edt.bmp',
+	'trustrating_stim/other_00545_940519_fa_edt.bmp',
+'trustrating_stim/other_00566_940928_fb_edt.bmp',
+'trustrating_stim/other_00570_940928_fa_edt.bmp',
+'trustrating_stim/other_00575_940928_fb_edt.bmp',
+'trustrating_stim/other_00578_940928_fa_edt.bmp',
+'trustrating_stim/other_00580_940928_fa_edt.bmp',
+'trustrating_stim/other_00582_940928_fb_edt.bmp',
+'trustrating_stim/other_00583_940928_fa_edt.bmp',
+'trustrating_stim/other_00584_940928_fa_edt.bmp',
+'trustrating_stim/other_00587_940928_fa_edt.bmp',
+'trustrating_stim/other_00588_940928_fa_edt.bmp',
+'trustrating_stim/other_00596_940928_fa_edt.bmp',
+'trustrating_stim/other_00601_940928_fb_edt.bmp',
+'trustrating_stim/other_00604_940928_fb_edt.bmp',
+'trustrating_stim/other_00610_940928_fa_edt.bmp',
+'trustrating_stim/other_00611_940928_fa_edt_rot.bmp',
+'trustrating_stim/other_00614_940928_fa_edt.bmp',
+'trustrating_stim/other_00616_940928_fa_edt_rot.bmp',
+'trustrating_stim/other_00617_940928_fb_edt.bmp',
+'trustrating_stim/other_00618_940928_fb_edt.bmp',
+'trustrating_stim/other_00619_940928_fa_edt.bmp',
+'trustrating_stim/other_00621_941121_fa_edt.bmp',
+'trustrating_stim/other_00622_940928_fb_edt.bmp',
+'trustrating_stim/other_00623_940928_fb_edt.bmp',
+'trustrating_stim/other_00625_940928_fb_edt.bmp',
+'trustrating_stim/other_00629_940928_fa_edt.bmp',
+'trustrating_stim/other_00640_941031_fa_edt_rot.bmp',
+'trustrating_stim/other_00652_941031_fb_edt.bmp',
+'trustrating_stim/other_00656_941121_fb_edt.bmp',
+'trustrating_stim/other_00666_941121_fa_edt_rot.bmp',
+'trustrating_stim/other_00668_941121_fa_edt.bmp',
+	'trustrating_stim/white_mw052.bmp',
+'trustrating_stim/white_mw053.bmp',
+'trustrating_stim/white_mw054.bmp',
+'trustrating_stim/white_mw056.bmp',
+'trustrating_stim/white_mw057.bmp',
+'trustrating_stim/white_mw058.bmp',
+'trustrating_stim/white_mw060.bmp',
+'trustrating_stim/white_mw063.bmp',
+'trustrating_stim/white_mw065.bmp',
+'trustrating_stim/white_mw066.bmp',
+'trustrating_stim/white_mw067.bmp',
+'trustrating_stim/white_mw068.bmp',
+'trustrating_stim/white_mw070.bmp',
+'trustrating_stim/white_mw071.bmp',
+'trustrating_stim/white_mw072.bmp',
+'trustrating_stim/white_mw073.bmp',
+'trustrating_stim/white_mw074.bmp',
+'trustrating_stim/white_mw075.bmp',
+'trustrating_stim/white_mw076.bmp',
+'trustrating_stim/white_mw077.bmp',
+'trustrating_stim/white_mw078.bmp',
+'trustrating_stim/white_mw080.bmp',
+'trustrating_stim/white_mw082.bmp',
+'trustrating_stim/white_mw084.bmp',
+'trustrating_stim/white_mw085.bmp',
+'trustrating_stim/white_mw089.bmp',
+'trustrating_stim/white_mw091.bmp',
+'trustrating_stim/white_mw092.bmp',
+'trustrating_stim/white_mw095.bmp',
+'trustrating_stim/white_mw096.bmp',
+'trustrating_stim/white_mw097.bmp',
+'trustrating_stim/white_mw098.bmp',
+'trustrating_stim/white_mw099.bmp',
+	'trustrating_stim/white_00050_931230_fa_edt.bmp',
+'trustrating_stim/white_00109_931230_fa_edt.bmp',
+'trustrating_stim/white_00120_931230_fa_edt.bmp',
+'trustrating_stim/white_00129_931230_fb_edt.bmp',
+'trustrating_stim/white_00199_940128_fa_edt.bmp',
+'trustrating_stim/white_00223_940128_fb_edt.bmp',
+'trustrating_stim/white_00248_940128_fa_edt.bmp',
+'trustrating_stim/white_00253_940128_fa_edt.bmp',
+'trustrating_stim/white_00283_940422_fa_edt.bmp',
+'trustrating_stim/white_00299_940422_fa_edt.bmp',
+'trustrating_stim/white_00340_940422_fa_edt.bmp',
+'trustrating_stim/white_00341_940422_fa_edt.bmp',
+'trustrating_stim/white_00519_940519_fb_edt.bmp',
+'trustrating_stim/white_00577_940928_fa_edt.bmp',
+'trustrating_stim/white_00591_940928_fa_edt.bmp',
+'trustrating_stim/white_00597_940928_fb_edt.bmp',
+'trustrating_stim/white_00602_940928_fb_edt.bmp',
+'trustrating_stim/white_00657_941121_fa_edt.bmp',
+'trustrating_stim/white_00658_941121_fb_edt.bmp',
+'trustrating_stim/white_00659_941121_fa_edt.bmp',
+'trustrating_stim/white_00757_941201_fa_edt.bmp',
+'trustrating_stim/white_00761_941201_fb_edt.bmp',
+'trustrating_stim/white_00764_941201_fa_edt.bmp',
+'trustrating_stim/white_00766_941201_fb_edt.bmp',
+'trustrating_stim/white_00785_941205_fb_edt.bmp',
+'trustrating_stim/white_00807_941205_fb_edt.bmp',
+'trustrating_stim/white_00816_941205_fa_edt.bmp',
+'trustrating_stim/white_00874_940307_fa_edt.bmp',
+'trustrating_stim/white_00897_960530_fb_edt.bmp',
+'trustrating_stim/white_00898_960530_fa_edt.bmp',
+'trustrating_stim/white_00939_960627_fa_edt.bmp',
+'trustrating_stim/white_00960_960627_fb_edt.bmp',
+'trustrating_stim/white_00972_960627_fa_edt.bmp',
+	'trustrating_stim/white_mw001.bmp',
+'trustrating_stim/white_mw002.bmp',
+'trustrating_stim/white_mw003.bmp',
+'trustrating_stim/white_mw004.bmp',
+'trustrating_stim/white_mw006.bmp',
+'trustrating_stim/white_mw008.bmp',
+'trustrating_stim/white_mw009.bmp',
+'trustrating_stim/white_mw010.bmp',
+'trustrating_stim/white_mw012.bmp',
+'trustrating_stim/white_mw013.bmp',
+'trustrating_stim/white_mw015.bmp',
+'trustrating_stim/white_mw016.bmp',
+'trustrating_stim/white_mw018.bmp',
+'trustrating_stim/white_mw019.bmp',
+'trustrating_stim/white_mw022.bmp',
+'trustrating_stim/white_mw024.bmp',
+'trustrating_stim/white_mw025.bmp',
+'trustrating_stim/white_mw028.bmp',
+'trustrating_stim/white_mw029.bmp',
+'trustrating_stim/white_mw033.bmp',
+'trustrating_stim/white_mw034.bmp',
+'trustrating_stim/white_mw035.bmp',
+'trustrating_stim/white_mw038.bmp',
+'trustrating_stim/white_mw039.bmp',
+'trustrating_stim/white_mw040.bmp',
+'trustrating_stim/white_mw041.bmp',
+'trustrating_stim/white_mw042.bmp',
+'trustrating_stim/white_mw043.bmp',
+'trustrating_stim/white_mw044.bmp',
+'trustrating_stim/white_mw046.bmp',
+'trustrating_stim/white_mw047.bmp',
+'trustrating_stim/white_mw048.bmp',
+'trustrating_stim/white_mw049.bmp',
+'trustrating_stim/white_mw051.bmp',
+];
+
+/* Define the words */
+var	words=[
+	'positive/caress.jpg',
+	'positive/cheer.jpg',
+	'positive/diamond.jpg',
+	'positive/diploma.jpg',
+	'positive/family.jpg',
+	'positive/freedom.jpg',
+	'positive/friend.jpg',
+	'positive/gentle.jpg',
+	'positive/gift.jpg',
+	'positive/happy.jpg',
+	'positive/health.jpg',
+	'positive/heaven.jpg',
+	'positive/honest.jpg',
+	'positive/honor.jpg',
+	'positive/laughter.jpg',
+	'positive/love.jpg',
+	'positive/loyal.jpg',
+	'positive/lucky.jpg',
+	'positive/miracle.jpg',
+	'positive/paradise.jpg',
+	'positive/peace.jpg',
+	'positive/pleasure.jpg',
+	'positive/rainbow.jpg',
+	'positive/sunrise.jpg',
+	'positive/vacation.jpg',
+	'negative/abuse.jpg',
+	'negative/crash.jpg',
+	'negative/filth.jpg',
+	'negative/murder.jpg',
+	'negative/sickness.jpg',
+	'negative/accident.jpg',
+	'negative/death.jpg',
+	'negative/grief.jpg',
+	'negative/poison.jpg',
+	'negative/stink.jpg',
+	'negative/assault.jpg',
+	'negative/disaster.jpg',
+	'negative/hatred.jpg',
+	'negative/pollute.jpg',
+	'negative/tragedy.jpg',
+	'negative/divorce.jpg',
+	'negative/jail.jpg',
+	'negative/poverty.jpg',
+	'negative/ugly.jpg',
+	'negative/cancer.jpg',
+	'negative/kill.jpg',
+	'negative/rotten.jpg',
+	'negative/vomit.jpg',
+	'negative/agony.jpg',
+	'negative/prison.jpg',
+];
+
+/* generate the randomized lists of stimuli */
+var second_stimuli = jsPsych.randomization.sample(words, 20, true)
+var prime_stimuli = jsPsych.randomization.sample(faces, 20, true)
+
+/* define the stimulis array*/
+var alltrials=[];
+for (var i=0; i<second_stimuli.length; i++) {
+	alltrials.push({stimuli: [prime_stimuli[i], second_stimuli[i], 'prompts/evaluative_priming_prompt.png']})
+}
+
+/*create test trials */
+  var trial_1 = {
+    type: 'multi-stim-multi-response',
+	timeline: alltrials,
+    choices: [
+      [69, 73]
+    ], // E or I
+    timing_stim: [200,200, -1],
+	timing_response: 1000,
+	timing_post_trial: 1000,
+  }
+  timeline.push(trial_1)
+
+/* implement on the server */
+  function getUrlVars() {
+  var vars = {};
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+  vars[key] = value;
+  });
+  return vars;
+  }
+
+  var sid = getUrlVars()["MID"];
+  var EP = getUrlVars()["EP"];
+
+  function goToEP(epname){
+  	var IATURL = "http://emotion.caltech.edu/~dstanley/EP/" + epname + "/?MID=" + sid;
+  	window.location = EPURL;
+  }
+
+  function saveData(filename, filedata){
+  	$.ajax({
+  		type: 'post',
+  		cache: false,
+  		url: 'save_data.php',
+  		data:{filename: filename, filedata: filedata}
+  	});
+  }
+  
+  
+  jsPsych.init({
+	timeline: timeline,
+	on_finish: function(data) {
+			goToEP(EP)
+    }
+  });
+</script>
+</html>
