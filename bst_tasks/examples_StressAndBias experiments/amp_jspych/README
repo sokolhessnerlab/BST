@@ -1,0 +1,13 @@
+Race Affect Misattribution Procedure (AMP)
+
+Programmed in JSPsych.
+
+You can run it locally by simply opening the index_AMP_pre_db.html file
+
+At the end of the run the data will be displayed in the webpage. This is not the case for the version we use online (without the "db") which employs php to write out the data. 
+
+This was part of a bigger multipart experiment - ignore the references to other tasks.
+
+Noise mask files are kept in "masks" folder
+inkblots are kept in "inks folder"
+face cues are kept in "trustrating_stim" folder - along with a bunch of stimuli that could be used for trust rating or game.
