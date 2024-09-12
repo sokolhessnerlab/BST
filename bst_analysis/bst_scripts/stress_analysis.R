@@ -190,14 +190,21 @@ cort_sd_by_sample_and_condition = apply(cort_mtx, c(1, 3), sd, na.rm = TRUE)
 
 #Question: Are there differences between the control vs stress condition between four cort samples?
 
-time_vect = c(-2, 3, 13, 45)
-# Sample 1: -2:0 minutes (2 min. long)
+#Note: Time Vector values have been reviewed with participant checklist survey data to ensure more accuracy
+time_vect = c(-3, 4, 14, 42)
+# Sample 1: -3:0 minutes (3 min. long)
+#       *Sample 1 is taken an average of 3 minutes prior to the stressor
 #   STRESSOR: 0:3 minutes (3 min. long)
-# Sample 2: 3:5 minutes (2 min. long)
-#   BREAK: 5:13 minutes (8 min. long)
-# Sample 3: 13:15 minutes (2 min. long)
-#   TASKS: 15:45 minutes (30 min. long)
-# Sample 4: 45:47
+#       *Stressor is uniformly 3 minutes long for those who completed both days of BST
+#       *However, cort 2 reading takes place on average 4 mins after the start of the stressor
+# Sample 2: 4:6 minutes (2 min. long)
+#   BREAK: 6:13 minutes (8 min. long)
+#       *Break takes on average 9 minutes 
+# Sample 3: 14:16 minutes (2 min. long)
+#   TASKS: 17:40 minutes (23 min. long)
+#       *Tasks (TGTR, AMP2, IAT instructions, IAT) take on average 23 minutes 
+# Sample 4: 41:43
+#       *Sample 4 is taken on average 42 minutes after the stressor
 
 time_vect_plotting = cbind(time_vect-.25, time_vect+.25)
 
@@ -214,7 +221,6 @@ matplot(x = time_vect_plotting, y = y_vals, pch = 19, add = T, col = rbind(rgb(0
 
 arrows(x0 = time_vect_plotting[,1], x1 = time_vect_plotting[,1], y0 = y_min[,1], y1 = y_max[,1], col = rgb(0,0,1), length = 0)
 arrows(x0 = time_vect_plotting[,2], x1 = time_vect_plotting[,2], y0 = y_min[,2], y1 = y_max[,2], col = rgb(1,0,0), length = 0)
-
 # A: There is a clear difference between cort reading 3 under stress vs. control
 
 t.test(cort_mtx[1,1,1,], cort_mtx[1,1,2,], paired = F)
@@ -225,7 +231,8 @@ t.test(cort_mtx[3,1,1,], cort_mtx[3,1,2,], paired = F)
 #A: t-test reveals cort reading 3 control vs. stress condition difference IS significant. p = 0.02
 t.test(cort_mtx[4,1,1,], cort_mtx[4,1,2,], paired = F) 
 #A: t-test reveals cort reading 4 control vs. stress condition difference is approaching significance. p = 0.06
-# Stress vs. control cort reading 3 are significantly different and reading 4 is approaching significance.  
+
+# Take-away: Stress vs. control cort reading 3 are significantly different and reading 4 is approaching significance.  
 # Readings 1 and 2 are not sig different.
 
 #Question: Are the differences in readings (3 & 1) significant across conditions?
