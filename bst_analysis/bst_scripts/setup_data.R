@@ -719,52 +719,52 @@ proc_IAT_Data$block[proc_IAT_Data$trialtype == "PRAC"] = 0
 #REVIEW w PSH ---- Attempting  to loop through subject level IAT results
 
 # create function to get d-score per subject
-get_IAT_dscore_per_subject <- function(iat_processed) {
-  result <- IATanalytics(
-    IAT = iat_results,
-    Trials = 139,
-    First = "Incongruent"
-  )
-  return(result$D_score)
-}
-
-# loop through subjects
-results_IAT_dscore_per_subject <- data.frame(subjectID = integer(), D_score = numeric(), stringsAsFactors = FALSE)
-
-for (subject in unique_subjectIDs) {
-  #subset
-  subject_data <- subset(iat_processed, subjectID == subject)
-  
-  #compute D-score
-  d_score <- tryCatch(
-    get_IAT_dscore_per_subject(subject_data),
-    error = function(e) NA #handle NAs
-  )
-  
-  if (is.numeric(d_score)){
-    results_IAT_dscore_per_subject2 <- rbind(results_IAT_dscore_per_subject2, data.frame(subjectID = subject, D_score = d_score))
-  } else {
-    warning(paste("Unexpected D-score for subject:"))
-  }
-  
-}
-
-print(results_IAT_dscore_per_subject2)
+# get_IAT_dscore_per_subject <- function(iat_processed) {
+#   result <- IATanalytics(
+#     IAT = iat_results,
+#     Trials = 139,
+#     First = "Incongruent"
+#   )
+#   return(result$D_score)
+# }
+# 
+# # loop through subjects
+# results_IAT_dscore_per_subject <- data.frame(subjectID = integer(), D_score = numeric(), stringsAsFactors = FALSE)
+# 
+# for (subject in unique_subjectIDs) {
+#   #subset
+#   subject_data <- subset(iat_processed, subjectID == subject)
+#   
+#   #compute D-score
+#   d_score <- tryCatch(
+#     get_IAT_dscore_per_subject(subject_data),
+#     error = function(e) NA #handle NAs
+#   )
+#   
+#   if (is.numeric(d_score)){
+#     results_IAT_dscore_per_subject2 <- rbind(results_IAT_dscore_per_subject2, data.frame(subjectID = subject, D_score = d_score))
+#   } else {
+#     warning(paste("Unexpected D-score for subject:"))
+#   }
+#   
+# }
+# 
+# print(results_IAT_dscore_per_subject2)
 
 
 
 
 # (1) Do we want to Clean IAT - Remove from the dataset the pure practice blocks of the IAT 
 # iat_wrangled used in IATanalytics function
-iat_wrangled = filter(iat, trialtype != "PRAC")
-
-iat_wrangled = iat_wrangled %>%
-  arrange(subjectID, cumTrialNum) %>%
-  group_by(subjectID) %>%
-  mutate(trial_index = row_number())
-
-iat_wrangled$blockNum[iat_wrangled$blockNum ==3] <- 1
-iat_wrangled$blockNum[iat_wrangled$blockNum ==4] <- 2
+# iat_wrangled = filter(iat, trialtype != "PRAC")
+# 
+# iat_wrangled = iat_wrangled %>%
+#   arrange(subjectID, cumTrialNum) %>%
+#   group_by(subjectID) %>%
+#   mutate(trial_index = row_number())
+# 
+# iat_wrangled$blockNum[iat_wrangled$blockNum ==3] <- 1
+# iat_wrangled$blockNum[iat_wrangled$blockNum ==4] <- 2
 
 # (2) Run the IATanalytics function ()
 
@@ -772,9 +772,9 @@ iat_wrangled$blockNum[iat_wrangled$blockNum ==4] <- 2
 # Note: default to have first trial as "congruent", 200 trials, IAT as df
 # Updated to reflect 139 trials, first condition as "incongruent", and iat_wrangled as df
 
-iat_results <- IATanalytics(IAT = iat_processed, Trials = 220, First="Congruent")
-
-iat_results <- IATanalytics(IAT = iat, Trials = 200, First="Incongruent")
+# iat_results <- IATanalytics(IAT = iat_processed, Trials = 220, First="Congruent")
+# 
+# iat_results <- IATanalytics(IAT = iat, Trials = 200, First="Incongruent")
 
 #iat_results <- IATanalytics(data = iat_wrangled, 
                            #participant_id = "subjectID",
