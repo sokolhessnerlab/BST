@@ -213,11 +213,17 @@ y_sd = apply(cort_mtx, c(1,3), sd, na.rm = T);
 y_min = y_vals - y_sd;
 y_max = y_vals + y_sd;
 
+# Cortisol Visualizations & Characterizations for ALL participants #
+# ----------------------- #
+
 #Plot mean cort for each reading with control/stress conditions with corrected time stamps (from stressor origin) 
 matplot(x = time_vect_plotting, y = y_vals, 
-        type = 'l', col = rbind(rgb(0,0,1), rgb(1,0,0)),
-        xlab = 'time since start of water bath (min)', ylab = 'cortisol nmol/L', ylim = c(0,8))
+        type = 'l', col = rbind(rgb(0,0,1), rgb(1,0,0)), cex.main=1.25, cex.lab=1.1, cex.axis = .9, cex=2,
+        main = "Mean Cortisol Readings (1-4) across Conditions",
+        xlab = 'Time since Start of Water Bath Stressor (min)', ylab = 'Cortisol nmol/L', ylim = c(0,5))
 matplot(x = time_vect_plotting, y = y_vals, pch = 19, add = T, col = rbind(rgb(0,0,1), rgb(1,0,0)))
+legend(33, .85, c("control", "stress"), col = rbind(rgb(0,0,1), rgb(1,0,0)),
+       lty = c(4, 1), pch = c(-1, 3), merge = TRUE, bg='gray90')
 
 arrows(x0 = time_vect_plotting[,1], x1 = time_vect_plotting[,1], y0 = y_min[,1], y1 = y_max[,1], col = rgb(0,0,1), length = 0)
 arrows(x0 = time_vect_plotting[,2], x1 = time_vect_plotting[,2], y0 = y_min[,2], y1 = y_max[,2], col = rgb(1,0,0), length = 0)
@@ -290,6 +296,124 @@ plot(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna),
 # highly correlated!
 cor.test(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna), 
      apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[4,,1,], 2, sumna))
+# p = 2x10-7
+cor.test(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna), 
+         apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[4,,1,], 2, sumna),
+         method = 'spearman')
+# p = 2x10-7
+# 
+# NO, it does not. Stress vs. control at sample 3 is highly correlated with sample 4 (r(37) = 0.72,
+# Spearman's rho = 0.76).
+#
+# TAKEAWAY:
+# Looking at sample 3 or sample 4 doesn't change the story; 4 is smaller, yes, but still
+# significant and highly correlated with the diff. at 3.
+
+# --> USE SAMPLE 3 (see also lit that suggests that cort peaks at 15-30 min. after stressor)
+
+# WILCOX (b/c of potential outlier concerns)
+
+# 3-1 under control vs. under stress
+wilcox.test(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna), paired = T)
+# p-value = 0.0002561 (SAME AS T-TEST)
+
+# stress-control sample 3 vs. sample 4
+wilcox.test(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna), 
+            apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[4,,1,], 2, sumna), paired = T)
+# p-value = 0.0025 (SAME AS T-TEST)
+
+
+#Check for high cort response:
+which(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna) > 15)
+cort_subjectIDs[20]
+cort[cort$subjectID == 23,]
+#Note: Subj 23 has a very high cort response, 
+
+
+# Key take-away: The stress condition does seem to have a significant impact on cortisol levels at reading 3 
+# with some continued impact until reading 4.
+
+
+# Cortisol Visualizations & Characterizations for 39 participants who completed BOTH DAYS#
+# ----------------------- #
+
+#Plot mean cort for each reading with control/stress conditions with corrected time stamps (from stressor origin) 
+matplot(x = time_vect_plotting, y = y_vals, 
+        type = 'l', col = rbind(rgb(0,0,1), rgb(1,0,0)),
+        xlab = 'time since start of water bath (min)', ylab = 'cortisol nmol/L', ylim = c(0,8))
+matplot(x = time_vect_plotting, y = y_vals, pch = 19, add = T, col = rbind(rgb(0,0,1), rgb(1,0,0)))
+
+arrows(x0 = time_vect_plotting[,1], x1 = time_vect_plotting[,1], y0 = y_min[,1], y1 = y_max[,1], col = rgb(0,0,1), length = 0)
+arrows(x0 = time_vect_plotting[,2], x1 = time_vect_plotting[,2], y0 = y_min[,2], y1 = y_max[,2], col = rgb(1,0,0), length = 0)
+# A: There is a clear difference between cort reading 3 under stress vs. control
+
+t.test(cort_mtx[1,1,1,], cort_mtx[1,1,2,], paired = F)
+#A: t-test reveals cort reading 1 control vs. stress condition difference is NOT significant. p = 0.83
+t.test(cort_mtx[2,1,1,], cort_mtx[2,1,2,], paired = F) 
+#A: t-test reveals cort reading 2 control vs. stress condition difference is NOT significant. p = 0.56
+t.test(cort_mtx[3,1,1,], cort_mtx[3,1,2,], paired = F) 
+#A: t-test reveals cort reading 3 control vs. stress condition difference IS significant. p = 0.02
+t.test(cort_mtx[4,1,1,], cort_mtx[4,1,2,], paired = F) 
+#A: t-test reveals cort reading 4 control vs. stress condition difference is approaching significance. p = 0.06
+
+# Take-away: Stress vs. control cort reading 3 are significantly different and reading 4 is approaching significance.  
+# Readings 1 and 2 are not sig different.
+
+#Question: Are the differences in readings (3 & 1) significant across conditions?
+t.test(apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[1,,2,], 2, sumna), paired = T)  
+#A: t-test reveals cort reading 1 differences for control and stress condition are NOT significant. p = .33
+t.test(apply(cort_mtx[2,,1,], 2, sumna), apply(cort_mtx[2,,2,], 2, sumna), paired = T)  
+#A: t-test reveals cort reading 2 differences for control and stress condition are NOT significant. p = .39
+t.test(apply(cort_mtx[3,,1,], 2, sumna), apply(cort_mtx[3,,2,], 2, sumna), paired = T)  
+#A: t-test reveals cort reading 3 differences for control and stress condition ARE significant. p = 0.0007266
+t.test(apply(cort_mtx[4,,1,], 2, sumna), apply(cort_mtx[4,,2,], 2, sumna), paired = T)  
+#A: t-test reveals cort reading 4 differences for control and stress condition ARE significant. p = 0.006921
+
+# Differences between sample 3 and 1 reading by condition (control then stress)
+hist(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna)) #Control
+hist(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna)) #Stress
+# Under the control condition, cortisol reading 1 to 3 differences hover near zero,
+# whereas under the stress condition, there a positive skew in distribution.
+# indicating that across subjects, there is greater differences overall from cort readings 1 to 3 under the stress condition. 
+
+# Differences between sample 4 and 1 reading by condition (control then stress)
+hist(apply(cort_mtx[4,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna)) #Control
+hist(apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna)) #Stress
+# Under the control condition, cortisol reading 1 to 4 differences hover near zero,
+# whereas under the stress condition, there a positive skew in distribution
+# Across subjects, there is greater differences overall from cort readings 1 to 4 under the stress condition,
+#   but not to the extent of reading 1 and 3 differences (stress)
+
+plot(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna)); lines(x = c(-100, 100), y = c(-100, 100)) 
+# Plot of reading 3 to reading 1 difference for stress condition with line,
+# Below the line indicates reading 1 is higher than reading 3 under stress. 
+# Most are above the line, and t-tests shows significant differences between readings 3 and 1 under stress condition
+
+# 3-1 under control vs. under stress
+t.test(apply(cort_mtx[3,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna), paired = T)
+# cort reading 1 to 3 differences are significantly different under the stress vs. control conditions
+# p-value = 0.00213
+
+# 4-1 under control vs. under stress
+t.test(apply(cort_mtx[4,,1,], 2, sumna) - apply(cort_mtx[1,,1,], 2, sumna), apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[1,,2,], 2, sumna), paired = T)
+# cort reading 1 to 4 differences are significantly different under the stress vs. control conditions
+# p-value = 0.01854
+
+# stress-control sample 3 vs. sample 4
+t.test(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna), 
+       apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[4,,1,], 2, sumna), 
+       paired = T)
+# stress vs. control difference is greater on sample 3 than it is on sample 4
+# p = 0.004
+
+# Does the pattern of the stress vs. control difference change a lot between
+# sample 3 and sample 4?
+plot(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna), 
+     apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[4,,1,], 2, sumna),
+     xlab = 'Sample 3', ylab = 'Sample 4', main = 'Stress - Control (cortisol)')
+# highly correlated!
+cor.test(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna), 
+         apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[4,,1,], 2, sumna))
 # p = 2x10-7
 cor.test(apply(cort_mtx[3,,2,], 2, sumna) - apply(cort_mtx[3,,1,], 2, sumna), 
          apply(cort_mtx[4,,2,], 2, sumna) - apply(cort_mtx[4,,1,], 2, sumna),
