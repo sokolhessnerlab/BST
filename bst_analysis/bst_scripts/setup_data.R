@@ -409,6 +409,7 @@ for (t in 2:length(index_partnerWhite)){
   }
 }
 
+
 for (t in 2:length(index_partnerBlack)){
   if (trustGame$subjectID[index_partnerBlack[t]] != trustGame$subjectID[index_partnerBlack[t-1]]){
     next 
@@ -418,6 +419,7 @@ for (t in 2:length(index_partnerBlack)){
     trustGame$past_Black_Shared[index_partnerBlack[t]] = trustGame$shared[index_partnerBlack[t-1]];
   }
 }
+
 
 for (t in 2:length(index_partnerOther)){
   if (trustGame$subjectID[index_partnerOther[t]] != trustGame$subjectID[index_partnerOther[t-1]]){

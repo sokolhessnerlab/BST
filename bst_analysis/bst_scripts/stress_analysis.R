@@ -218,16 +218,20 @@ y_max = y_vals + y_sd;
 
 #Plot mean cort for each reading with control/stress conditions with corrected time stamps (from stressor origin) 
 matplot(x = time_vect_plotting, y = y_vals, 
-        type = 'l', col = rbind(rgb(0,0,1), rgb(1,0,0)), cex.main=1.25, cex.lab=1.1, cex.axis = .9, cex=2,
+        type = 'l', col = rbind(rgb(0,0,1), rgb(1,0,0)), cex.main=1.25, cex.lab=1.1, cex.axis = .9, cex=3,
         main = "Mean Cortisol Readings (1-4) across Conditions",
-        xlab = 'Time since Start of Water Bath Stressor (min)', ylab = 'Cortisol nmol/L', ylim = c(0,5))
+        xlab = 'Time Elapsed from Start of Stressor (min)', ylab = 'Cortisol nmol/L', ylim = c(-2,8))
 matplot(x = time_vect_plotting, y = y_vals, pch = 19, add = T, col = rbind(rgb(0,0,1), rgb(1,0,0)))
-legend(33, .85, c("control", "stress"), col = rbind(rgb(0,0,1), rgb(1,0,0)),
-       lty = c(4, 1), pch = c(-1, 3), merge = TRUE, bg='gray90')
+legend(36, -1, c("Control", "Stress"), col = rbind(rgb(0,0,1), rgb(1,0,0)),
+       lty = c(1, 4), pch = c(19, 19), lwd = 1.5, merge = TRUE, bg='gray90')
 
 arrows(x0 = time_vect_plotting[,1], x1 = time_vect_plotting[,1], y0 = y_min[,1], y1 = y_max[,1], col = rgb(0,0,1), length = 0)
 arrows(x0 = time_vect_plotting[,2], x1 = time_vect_plotting[,2], y0 = y_min[,2], y1 = y_max[,2], col = rgb(1,0,0), length = 0)
 # A: There is a clear difference between cort reading 3 under stress vs. control
+
+#matlines(B[, 1:3], type = "l",
+         #col = 2, lwd = 2,
+         #lty = 1)
 
 t.test(cort_mtx[1,1,1,], cort_mtx[1,1,2,], paired = F)
 #A: t-test reveals cort reading 1 control vs. stress condition difference is NOT significant. p = 0.83
