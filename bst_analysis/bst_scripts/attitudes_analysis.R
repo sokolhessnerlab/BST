@@ -426,21 +426,21 @@ t.test(amp_scores$change_amp_stress) # n.s.
 ## IAT ########################################
 
 #IAT descriptives
-summary(iat)
-str(iat)
-dim(iat) #15600 x 18
+summary(proc_IAT_Data)
+str(proc_IAT_Data)
+dim(proc_IAT_Data) #15600 x 18
 
 #Examine Response Times
-mean(iat$RT) #0.647
-sd(iat$RT) #0.320 Somewhat high compared to mean
-max(iat$RT)  #10.65
-min(iat$RT)  #0.20
+mean(proc_IAT_Data$RT) #0.647
+sd(proc_IAT_Data$RT) #0.320 Somewhat high compared to mean
+max(proc_IAT_Data$RT)  #10.65
+min(proc_IAT_Data$RT)  #0.20
 
 #distribution on low-end quantile for reaction times
-quantile(iat$RT, c(.0001,.05,.125,.5,.875,.95,.9999))
-hist(iat$RT, xlim = c(0, 3), breaks = 100) #normal distribution along mean
+quantile(proc_IAT_Data$RT, c(.0001,.05,.125,.5,.875,.95,.9999))
+hist(proc_IAT_Data$RT, xlim = c(0, 3), breaks = 100) #normal distribution along mean
 
-prop.table(table(iat$cattype, iat$corrans),1)*100
+prop.table(table(proc_IAT_Data$cattype, proc_IAT_Data$corrans),1)*100
 #              Black Pleasant Unpleasant White
 #CONGRUENT    25.0     25.0       25.0  25.0
 #INCONGRUENT  25.0     25.0       25.0  25.0
@@ -448,11 +448,11 @@ prop.table(table(iat$cattype, iat$corrans),1)*100
 # even trial bins for congruent/incongruint stimuli (words/images)
 
 #Factoring for use in ggplot
-iat$stimulus.F <- factor(iat$stimulus)
-iat$corrans.F <- factor(iat$corrans)
+proc_IAT_Data$stimulus.F <- factor(proc_IAT_Data$stimulus)
+proc_IAT_Data$corrans.F <- factor(proc_IAT_Data$corrans)
 
 #Response Times by stimulus & correct answers
-ggplot(iat, aes(x = factor(corrans.F), y = RT, fill = stimulus.F, colour = stimulus.F)) +
+ggplot(proc_IAT_Data, aes(x = factor(corrans.F), y = RT, fill = stimulus.F, colour = stimulus.F)) +
   labs(x="Correct Answer", y="Response Time", fill = "Stimulus") +
   geom_bar(stat = "identity", position = "dodge") +
   ggtitle("Response Time by Stimulus Type & Correct Answer") +
