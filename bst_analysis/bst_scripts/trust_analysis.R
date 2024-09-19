@@ -27,7 +27,7 @@ options(scipen=999)
 
 
 # Trust Rating Task Order Effects
-
+par(1,1)
 # (collapsed)
 #Q: What are the effects of task order on peoples' trust perceptions? 
 mean(aggregate(trust_rating ~ subjectID, data = trustRating, FUN=mean)$trust_rating) #Mean Trust Rating = 4.703949
@@ -116,7 +116,7 @@ for (s in 1:number_of_subjects){
 
 
 ### Mean Rating Visualizations & Analysis ############################################################
-
+par(mfrow = c(1,1))
 # Visualize Distributions of Mean Ratings
 mean_rating_hist = hist(tr_sub_level$tr_mean_rating, breaks = seq(from = 0, to = 8, by = 1), plot = F);
 mean_ratingW_hist = hist(tr_sub_level$tr_mean_ratingW, breaks = seq(from = 0, to =8, by = 1), plot = F)
@@ -124,7 +124,7 @@ mean_ratingB_hist = hist(tr_sub_level$tr_mean_ratingB, breaks = seq(from = 0, to
 mean_ratingO_hist = hist(tr_sub_level$tr_mean_ratingO, breaks = seq(from = 0, to = 8, by = 1), plot = F)
 
 plot(mean_rating_hist$mids, mean_rating_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,8), ylim = c(0,.5), cex.lab = 1.2, cex.main = 1.5,
-     main = "Trust Rating per Race", xlab = 'Mean Trust Rating', ylab = 'Frequency', ps = 500)
+     main = "Trust Rating per Race", xlab = 'Mean Trust Rating', ylab = 'Frequency')
 lines(mean_ratingW_hist$mids, mean_ratingW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(mean_ratingB_hist$mids, mean_ratingB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(mean_ratingO_hist$mids, mean_ratingO_hist$density, col = rgb(0,0,1), lwd = 3)
@@ -136,19 +136,20 @@ t.test(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingO, paired = T) #
 t.test(tr_sub_level$tr_mean_ratingB, tr_sub_level$tr_mean_ratingO, paired = T) # p = 0.0743  O = B
 # Mean trust ratings across participants show B > W & O > W, but B = O (though other was numerically higher than black).
 
-par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
-plot(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingB, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4,
-     xlab = 'White', ylab = 'Black', main = 'Mean Rating', xlim = c(0,8), ylim = c(0,8))
+par(mfrow=c(1,3), oma=c(0,0,5,0)) # plot 3 graphs at a time with room for a top title
+plot(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingB, lwd = 1.25, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4, cex.lab = 1.52, cex.main = 1.75,
+     xlab = 'White', ylab = 'Black', main = 'Mean Ratings of Black vs. White Faces by', xlim = c(0,8), ylim = c(0,8))
 abline(a = 0, b = 1, col = 'black')
 points(x = mean(tr_sub_level$tr_mean_ratingW), y = mean(tr_sub_level$tr_mean_ratingB), pch = 18, cex = 6)
-plot(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingO, bg = rgb(.6, .13, .94, .5), pch = 21, cex = 4,
+plot(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingO, lwd = 1.25, bg = rgb(.6, .13, .94, .5), pch = 21, cex = 4, cex.lab = 1.52, cex.main = 1.75,
      xlab = 'White', ylab = 'Other', main = 'Mean Rating', xlim = c(0,8), ylim = c(0,8))
 abline(a = 0, b = 1, col = 'black')
 points(x = mean(tr_sub_level$tr_mean_ratingW), y = mean(tr_sub_level$tr_mean_ratingO), pch = 18, cex = 6)
-plot(tr_sub_level$tr_mean_ratingB, tr_sub_level$tr_mean_ratingO, bg = rgb(.5, 1, .83, .5), pch = 21, cex = 4,
+plot(tr_sub_level$tr_mean_ratingB, tr_sub_level$tr_mean_ratingO, lwd = 1.25, bg = rgb(.5, 1, .83, .5), pch = 21, cex = 4, cex.lab = 1.52, cex.main = 1.75,
      xlab = 'Black', ylab = 'Other', main = 'Mean Rating', xlim = c(0,8), ylim = c(0,8))
 abline(a = 0, b = 1, col = 'black')
 points(x = mean(tr_sub_level$tr_mean_ratingB), y = mean(tr_sub_level$tr_mean_ratingO), pch = 18, cex = 6)
+mtext("Mean Ratings by Race", line = 1, side = 3, outer = T, cex = 2)
 par(mfrow = c(1,1)) # Returning graphs to plot 1 at a time
 
 
