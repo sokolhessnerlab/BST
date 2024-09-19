@@ -27,38 +27,41 @@ options(scipen=999)
 
 
 # Trust Rating Task Order Effects
-#Q: What are the effects of task order on peoples' trust perceptions? 
-# (collapsed)
-mean(aggregate(rating ~ subjectID, data = trustRating, FUN=mean)$rating) #Mean Trust Rating = 4.703949
-mean(aggregate(rating ~ subjectID, data = trustRating, FUN=sd)$rating)  #SD Trust Rating = 1.50436
 
-by(data = trustRating$rating, INDICES = trustRating$taskOrder, FUN = mean, na.rm = T)
-by(data = trustRating$rating, INDICES = trustRating$taskOrder, FUN = sd, na.rm = T)
-# On average, people rate people as more trustworthy when the CPT (stressor) is given on day 2)
+# (collapsed)
+#Q: What are the effects of task order on peoples' trust perceptions? 
+mean(aggregate(trust_rating ~ subjectID, data = trustRating, FUN=mean)$trust_rating) #Mean Trust Rating = 4.703949
+mean(aggregate(trust_rating ~ subjectID, data = trustRating, FUN=sd)$trust_rating)  #SD Trust Rating = 1.50436
+
+by(data = trustRating$trust_rating, INDICES = trustRating$taskOrder, FUN = mean, na.rm = T)
+by(data = trustRating$trust_rating, INDICES = trustRating$taskOrder, FUN = sd, na.rm = T)
 # Task Order 1: 4.50(1.84), Task Order 2: 4.81(1.86)
 
 #(subject-level)
-tmpvectR = aggregate(rating ~ subjectID + taskOrder, data = trustRating, FUN=mean);
-by(data = tmpvectR$rating, INDICES = tmpvectR$taskOrder, FUN = mean) 
-#A: Participants are rating people as more trustworthy when task order is 1 vs. 2
+# Trust Rating Task Order Effects
+tmpvectR = aggregate(trust_rating ~ subjectID + taskOrder, data = trustRating, FUN=mean);
+by(data = tmpvectR$trust_rating, INDICES = tmpvectR$taskOrder, FUN = mean) 
 # Task Order 1: 4.69, Task Order 2: 4.85
-
+t.test(tmpvectR$trust_rating[tmpvectR$taskOrder=='1'], tmpvectR$trust_rating[tmpvectR$taskOrder=='2'], paired = F)
+#A: Trust ratings were not significantly different when task order is 1 vs. 2
+#p = 0.56
 
 # Trust Rating Day Effects
 #Q: What are the effects of day on peoples' trust perceptions? 
-tmpvectR2 = aggregate(rating ~ subjectID + day, data = trustRating, FUN=mean);
-by(data = tmpvectR2$rating, INDICES = tmpvectR2$day, FUN = mean) 
-#A: Participants' trust perceptions decrease from day 1 to day 2.
+tmpvectR2 = aggregate(trust_rating ~ subjectID + day, data = trustRating, FUN=mean);
+by(data = tmpvectR2$trust_rating, INDICES = tmpvectR2$day, FUN = mean) 
 # Day 1: 4.73, Day 2: 4.68
-
+t.test(tmpvectR2$trust_rating[tmpvectR2$day=='1'], tmpvectR2$trust_rating[tmpvectR2$day=='2'], paired = T)
+#A: Participants' trust perceptions are not significantly different from day 1 to day 2 of the study.
 
 # Trust Rating Stress Effects
 #Q: What are the effects of stress on peoples' trust perceptions? 
-tmpvectR3 = aggregate(rating ~ subjectID + stressedBool, data = trustRating, FUN=mean);
+tmpvectR3 = aggregate(trust_rating ~ subjectID + stressedBool, data = trustRating, FUN=mean);
 # Trust Rating means within condition
-by(data = tmpvectR3$rating, INDICES = tmpvectR3$stressedBool, FUN = mean) 
-#A: Acute stress seems to decrease peoples' trust perceptions.
+by(data = tmpvectR3$trust_rating, INDICES = tmpvectR3$stressedBool, FUN = mean) 
 # control = 4.74, stressed = 4.67
+t.test(tmpvectR3$trust_rating[tmpvectR3$stressedBool=='0'], tmpvectR3$trust_rating[tmpvectR3$stressedBool=='1'], paired = T)
+#A: Acute stress does not affect peoples' trust perceptions.
 
 
 ## TR: Averages & Variances in Ratings & RTs #######################################################
@@ -90,15 +93,15 @@ for (s in 1:number_of_subjects){
   sub_ind = trustRating$subjectID == subjectIDs[s];
   tmp_data = trustRating[sub_ind,];
   
-  tr_sub_level$tr_mean_rating[s] = mean(tmp_data$rating, na.rm = T)
-  tr_sub_level$tr_mean_ratingW[s] = mean(tmp_data$rating[tmp_data$partnerRace_0w_1b_2o == 0], na.rm = T)
-  tr_sub_level$tr_mean_ratingB[s] = mean(tmp_data$rating[tmp_data$partnerRace_0w_1b_2o == 1], na.rm = T)
-  tr_sub_level$tr_mean_ratingO[s] = mean(tmp_data$rating[tmp_data$partnerRace_0w_1b_2o == 2], na.rm = T)
+  tr_sub_level$tr_mean_rating[s] = mean(tmp_data$trust_rating, na.rm = T)
+  tr_sub_level$tr_mean_ratingW[s] = mean(tmp_data$trust_rating[tmp_data$partnerRace_0w_1b_2o == 0], na.rm = T)
+  tr_sub_level$tr_mean_ratingB[s] = mean(tmp_data$trust_rating[tmp_data$partnerRace_0w_1b_2o == 1], na.rm = T)
+  tr_sub_level$tr_mean_ratingO[s] = mean(tmp_data$trust_rating[tmp_data$partnerRace_0w_1b_2o == 2], na.rm = T)
   
-  tr_sub_level$tr_var_rating[s] = var(tmp_data$rating, na.rm = T)
-  tr_sub_level$tr_var_ratingW[s] = var(tmp_data$rating[tmp_data$partnerRace_0w_1b_2o == 0], na.rm = T)
-  tr_sub_level$tr_var_ratingB[s] = var(tmp_data$rating[tmp_data$partnerRace_0w_1b_2o == 1], na.rm = T)
-  tr_sub_level$tr_var_ratingO[s] = var(tmp_data$rating[tmp_data$partnerRace_0w_1b_2o == 2], na.rm = T)
+  tr_sub_level$tr_var_rating[s] = var(tmp_data$trust_rating, na.rm = T)
+  tr_sub_level$tr_var_ratingW[s] = var(tmp_data$trust_rating[tmp_data$partnerRace_0w_1b_2o == 0], na.rm = T)
+  tr_sub_level$tr_var_ratingB[s] = var(tmp_data$trust_rating[tmp_data$partnerRace_0w_1b_2o == 1], na.rm = T)
+  tr_sub_level$tr_var_ratingO[s] = var(tmp_data$trust_rating[tmp_data$partnerRace_0w_1b_2o == 2], na.rm = T)
   
   tr_sub_level$tr_rt_rating[s] = mean(tmp_data$responseTime, na.rm = T)
   tr_sub_level$tr_rt_ratingW[s] = mean(tmp_data$responseTime[tmp_data$partnerRace_0w_1b_2o == 0], na.rm = T)
@@ -120,12 +123,12 @@ mean_ratingW_hist = hist(tr_sub_level$tr_mean_ratingW, breaks = seq(from = 0, to
 mean_ratingB_hist = hist(tr_sub_level$tr_mean_ratingB, breaks = seq(from = 0, to = 8, by = 1), plot = F)
 mean_ratingO_hist = hist(tr_sub_level$tr_mean_ratingO, breaks = seq(from = 0, to = 8, by = 1), plot = F)
 
-plot(mean_rating_hist$mids, mean_rating_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,8), ylim = c(0,.5), 
-     xlab = 'Mean Trust Rating', ylab = 'Frequency')
+plot(mean_rating_hist$mids, mean_rating_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,8), ylim = c(0,.5), cex.lab = 1.2, cex.main = 1.5,
+     main = "Trust Rating per Race", xlab = 'Mean Trust Rating', ylab = 'Frequency', ps = 500)
 lines(mean_ratingW_hist$mids, mean_ratingW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(mean_ratingB_hist$mids, mean_ratingB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(mean_ratingO_hist$mids, mean_ratingO_hist$density, col = rgb(0,0,1), lwd = 3)
-legend(x = 7, y = .4, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
+legend(x = 7.2, y = .4, c('Overall','White','Black','Other'), cex = 1.2, lwd = 2, col = c('black','red','green','blue'))
 
 #t-tests for Mean Ratings
 t.test(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingB, paired = T) # p = 0.0001  B > W
