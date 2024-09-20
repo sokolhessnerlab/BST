@@ -717,8 +717,17 @@ proc_IAT_Data$block = NA;
 proc_IAT_Data$block[proc_IAT_Data$trialtype == "PRAC"] = 0
 
 
+# Troubleshooting IAT "condition" randomization issue:
 
-#REVIEW w PSH ---- Attempting  to loop through subject level IAT results
+tapply(proc_IAT_Data$condition, proc_IAT_Data$subjectID, max)
+tapply(proc_IAT_Data$condition, proc_IAT_Data$subjectID, mean)
+tapply(proc_IAT_Data$condition, proc_IAT_Data$blockNum, mean)
+#REVIEW ---- condition x block
+#      1          2          3          4          8 
+# 0.18604651 0.10256410 0.10256410 0.10256410 0.05405405
+plot(proc_IAT_Data$condition, xlim=c(-1, 16000))
+
+#REVIEW  ---- Attempting  to loop through subject level IAT results
 
 # create function to get d-score per subject
 # get_IAT_dscore_per_subject <- function(iat_processed) {
