@@ -23,8 +23,9 @@ library(lmerTest) # adds more useful info to the output of lmer's
 #converts scientific notation to decimal
 options(scipen=999)
 
-# TRUST RATINGS ################################################################################
 
+
+# TRUST RATINGS ################################################################################
 
 # Trust Rating Task Order Effects
 par(1,1)
@@ -64,7 +65,8 @@ t.test(tmpvectR3$trust_rating[tmpvectR3$stressedBool=='0'], tmpvectR3$trust_rati
 #A: Acute stress does not affect peoples' trust perceptions.
 
 
-## TR: Averages & Variances in Ratings & RTs #######################################################
+## Rating & RT Means & Variances #######################################################
+
 ### Subject-Level Loop ##########################################################################
 tr_sub_level_colnames = c(
   'tr_mean_rating',
@@ -115,7 +117,7 @@ for (s in 1:number_of_subjects){
 }
 
 
-### Mean Rating Rating Visualizations & Analysis ############################################################
+### Mean Rating Visualizations & Analysis ############################################################
 
 # Q: Are peoples' mean trust perceptions similar from race to race?
 par(mfrow = c(1,1))
@@ -125,7 +127,7 @@ mean_ratingW_hist = hist(tr_sub_level$tr_mean_ratingW, breaks = seq(from = 0, to
 mean_ratingB_hist = hist(tr_sub_level$tr_mean_ratingB, breaks = seq(from = 0, to = 8, by = 1), plot = F)
 mean_ratingO_hist = hist(tr_sub_level$tr_mean_ratingO, breaks = seq(from = 0, to = 8, by = 1), plot = F)
 
-# Visualizing Trust Rating Distributions by Race (across subjects)
+# Visualizing Trust Rating Distributions by Race (averaged across subjects)
 plot(mean_rating_hist$mids, mean_rating_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,8), ylim = c(0,.6), cex.lab = 1.2, cex.main = 1.5,
      main = "Trust Rating per Race", xlab = 'Mean Trust Rating', ylab = 'Frequency')
 lines(mean_ratingW_hist$mids, mean_ratingW_hist$density, col = rgb(1,0,0), lwd = 3)
@@ -143,6 +145,7 @@ knitr::kable(head(trust_perc_race_to_race), caption = "Race to Race Trust Rating
 # A: Subjects mean trust ratings across participants show B > W & O > W, but B = O (though other was numerically higher than black).
 
 
+# Visualizing Trust Rating by Race (per subject)
 par(mfrow=c(1,3)) # plot 3 graphs at a time
 #par(mfrow=c(1,3), oma=c(0,0,5,0)) # plot 3 graphs at a time with room for a top title
 
@@ -161,8 +164,11 @@ points(x = mean(tr_sub_level$tr_mean_ratingB), y = mean(tr_sub_level$tr_mean_rat
 mtext("Mean Ratings by Race", line = 1, side = 3, outer = T, cex = 2)
 par(mfrow = c(1,1)) # Returning graphs to plot 1 at a time
 
+# Key Take-away: Nearly all subjects rate both black and other faces as more trustworthy than white, 
+# but less discrepancy was seen with  subjects's trust ratings of black vs. other faces.
 
-### Response Time Visualizations & Analysis ###########################################################
+
+### Mean RT Visualizations & Analysis ###########################################################
 
 # Q: Are peoples' mean response times during trust ratings similar from race to race?
 
@@ -172,10 +178,9 @@ rt_ratingW_hist = hist(tr_sub_level$tr_rt_ratingW, breaks = seq(from = 0, to = 1
 rt_ratingB_hist = hist(tr_sub_level$tr_rt_ratingB, breaks = seq(from = 0, to = 10, length.out = 12), plot = F)
 rt_ratingO_hist = hist(tr_sub_level$tr_rt_ratingO, breaks = seq(from = 0, to = 10, length.out = 12), plot = F)
 
-# Visualizing Trust Rating RTs by Race (across subjects)
-points(x = mean(tr_sub_level$tr_mean_ratingW), y = mean(tr_sub_level$tr_mean_ratingB), pch = 18, cex = 6)
 
-plot(rt_rating_hist$mids, rt_rating_hist$density, lwd = 3, col = rgb(0,0,0), type = 'l', cex = 2.5, cex.lab = 1.35, cex.main = 1.5, xlim = c(0,10), ylim = c(0,.5), 
+# Visualizing Trust Rating RTs by Race (averaged across subjects)
+plot(rt_rating_hist$mids, rt_rating_hist$density, col = rgb(0,0,0), type = 'l',  lwd = 3, xlim = c(0,10), ylim = c(0,.5), cex.lab = 1.2, cex.main = 1.5,
      xlab = 'Trust Rating Response Time (seconds)', ylab = 'Frequency')
 lines(rt_ratingW_hist$mids, rt_ratingW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(rt_ratingB_hist$mids, rt_ratingB_hist$density, col = rgb(0,1,0), lwd = 3)
@@ -184,7 +189,8 @@ points(x = mean(tr_sub_level$tr_rt_rating), y = 0, pch = 16, cex = 2.25, lwd = 4
 points(x = mean(tr_sub_level$tr_rt_ratingW), y = 0.025, pch = 16, cex = 2.25, lwd = 4, col = 'red')
 points(x = mean(tr_sub_level$tr_rt_ratingB), y = 0.05, pch = 16, cex = 2.25, lwd = 4, col = 'green')
 points(x = mean(tr_sub_level$tr_rt_ratingO), y = 0.075, pch = 16, cex = 2.25, lwd = 4, col = 'blue')
-legend(x = 8.65, y = .375, c('Overall','White','Black','Other'), cex = 1.1, lwd = 2, col = c('black','red','green','blue'))
+legend(x = 8.75, y = .375, c('Overall','White','Black','Other'), cex = 1.1, lwd = 2, col = c('black','red','green','blue'))
+
 
 #t-tests for Mean RTs (race comparisons)
 tRTbVw <- t.test(tr_sub_level$tr_rt_ratingW, tr_sub_level$tr_rt_ratingB, paired = T) # p = 0.06   B = W
@@ -193,24 +199,29 @@ tRTbVo <- t.test(tr_sub_level$tr_rt_ratingB, tr_sub_level$tr_rt_ratingO, paired 
 
 trust_perc_RT_race_to_race <- cbind(tRTbVw, tRTwVo, tRTbVo)
 knitr::kable(head(trust_perc_RT_race_to_race), caption = "Race to Race Trust Rating Reaction Times Comparisons",  col.names = c('  ', 'Black vs. White', 'Other vs. White', 'Other vs. Black'))
-# A: Subjects mean trust ratings reaction times show no significant differentces
+# A: Subjects mean trust ratings reaction times show no significant differences
+
 
 # Visualizing Trust Rating RTs by Race (by subject)
 par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
-plot(tr_sub_level$tr_rt_ratingW, tr_sub_level$tr_rt_ratingB, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4,
-     xlab = 'White', ylab = 'Black', main = 'Response Time for Ratings', xlim = c(0,10), ylim = c(0,10))
-abline(a = 0, b = 1, col = 'black')
-points(x = mean(tr_sub_level$tr_rt_ratingW), y = mean(tr_sub_level$tr_rt_ratingB), pch = 18, cex = 6)
-plot(tr_sub_level$tr_rt_ratingW, tr_sub_level$tr_rt_ratingO, bg = rgb(.6, .13, .94, .5), pch = 21, cex = 4,
-     xlab = 'White', ylab = 'Other', main = 'Response Time for Ratings', xlim = c(0,10), ylim = c(0,10))
-abline(a = 0, b = 1, col = 'black')
-points(x = mean(tr_sub_level$tr_rt_ratingW), y = mean(tr_sub_level$tr_rt_ratingO), pch = 18, cex = 6)
-plot(tr_sub_level$tr_rt_ratingB, tr_sub_level$tr_rt_ratingO, bg = rgb(.5, 1, .83, .5), pch = 21, cex = 4,
-     xlab = 'Black', ylab = 'Other', main = 'Response Time for Ratings', xlim = c(0,10), ylim = c(0,10))
-abline(a = 0, b = 1, col = 'black')
-points(x = mean(tr_sub_level$tr_rt_ratingB), y = mean(tr_sub_level$tr_rt_ratingO), pch = 18, cex = 6)
+plot(tr_sub_level$tr_rt_ratingW, tr_sub_level$tr_rt_ratingB, lwd = 1.25, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4, cex.lab = 1.59, cex.main = 1.7,
+     xlab = 'White', ylab = 'Black', main = 'Black vs. White Trust Rating Response Times', xlim = c(0,10), ylim = c(0,10))
+abline(a = 0, b = 1, lwd = 1.25, col = 'black')
+points(x = mean(tr_sub_level$tr_rt_ratingW), y = mean(tr_sub_level$tr_rt_ratingB), pch = 18, cex = 5)
+plot(tr_sub_level$tr_rt_ratingW, tr_sub_level$tr_rt_ratingO, lwd = 1.25, bg = rgb(.6, .13, .94, .5), pch = 21, cex = 4, cex.lab = 1.59, cex.main = 1.7,
+     xlab = 'White', ylab = 'Other', main = 'Other vs. White Trust Rating Response Times', xlim = c(0,10), ylim = c(0,10))
+abline(a = 0, b = 1, lwd = 1.25,  col = 'black')
+points(x = mean(tr_sub_level$tr_rt_ratingW), y = mean(tr_sub_level$tr_rt_ratingO), pch = 18, cex = 5)
+plot(tr_sub_level$tr_rt_ratingB, tr_sub_level$tr_rt_ratingO, lwd = 1.25, bg = rgb(.5, 1, .83, .5), pch = 21, cex = 4, cex.lab = 1.59, cex.main = 1.7,
+     xlab = 'Black', ylab = 'Other', main = 'Other vs. Black Trust Rating Response Times', xlim = c(0,10), ylim = c(0,10))
+abline(a = 0, b = 1, lwd = 1.25, col = 'black')
+points(x = mean(tr_sub_level$tr_rt_ratingB), y = mean(tr_sub_level$tr_rt_ratingO), pch = 18, cex = 5)
 par(mfrow = c(1,1)) # Returning graphs to plot 1 at a time
 
+# Key Take-away: Overall, subjects' response times during trust ratings was overall similar when rating black, white, other races.
+
+
+#Output visualizations
 for (s in 1:number_of_subjects){
   fp = paste0(config$path$code$r_scripts,'/figures/responsetimes_trustRating',sprintf('/tr_rt_BST%03i.pdf',subjectIDs[s]))
   pdf(file=fp)
@@ -219,13 +230,14 @@ for (s in 1:number_of_subjects){
   dev.off()
 }
 
+
+
+### Variances in Rating Visualizations & Analysis #######################################
+
 t.test(tr_sub_level$tr_rt_var_ratingW, tr_sub_level$tr_rt_var_ratingB, paired = T) # p = 0.55
 t.test(tr_sub_level$tr_rt_var_ratingW, tr_sub_level$tr_rt_var_ratingO, paired = T) # p = 0.67
 t.test(tr_sub_level$tr_rt_var_ratingB, tr_sub_level$tr_rt_var_ratingO, paired = T) # p = 0.38
 # Within-subject variance in RTs during trust ratings are equal
-
-
-### Variances in Rating Visualizations & Analysis #######################################
 
 # Visualize Variance in Distributions of Mean Ratings
 var_rating_hist = hist(tr_sub_level$tr_var_rating, breaks = seq(from = 0, to = 10, by = .1), plot = F);
@@ -233,11 +245,12 @@ var_ratingW_hist = hist(tr_sub_level$tr_var_ratingW, breaks = seq(from = 0, to =
 var_ratingB_hist = hist(tr_sub_level$tr_var_ratingB, breaks = seq(from = 0, to = 10, by = .1), plot = F)
 var_ratingO_hist = hist(tr_sub_level$tr_var_ratingO, breaks = seq(from = 0, to = 10, by = .1), plot = F)
 
-plot(var_rating_hist$mids, var_rating_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0.1,8), ylim = c(0,.8), xlab = 'Variance in Ratings', ylab = 'Frequency')
+
+plot(var_rating_hist$mids, var_rating_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, cex = 4, cex.lab = 1.59, cex.main = 1.7, xlim = c(0.1,8), ylim = c(0,1.1), xlab = 'Variance in Trust Ratings', ylab = 'Frequency')
 lines(var_ratingW_hist$mids, var_ratingW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(var_ratingB_hist$mids, var_ratingB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(var_ratingO_hist$mids, var_ratingO_hist$density, col = rgb(0,0,1), lwd = 3)
-legend(x = 7, y = .6, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
+legend(x = 7.45, y = .6, c('Overall','White','Black','Other'), lwd = 2, cex = 1.1, col = c('black','red','green','blue'))
 
 #t-tests for Rating Variances
 t.test(tr_sub_level$tr_var_ratingW, tr_sub_level$tr_var_ratingB, paired = T) # p = 0.03   W > B
@@ -246,18 +259,18 @@ t.test(tr_sub_level$tr_var_ratingB, tr_sub_level$tr_var_ratingO, paired = T) # p
 #A: Participants vary significantly on trust perceptions for white vs. black partners, showing greater variance for white vs. black partners in rating amounts
 #A: This difference in variance for partner trust perception is not significant when comparing shares for black vs. other partners or white vs. other partners.
 
-par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
-plot(tr_sub_level$tr_var_ratingW, tr_sub_level$tr_var_ratingB, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4,
-     xlab = 'White', ylab = 'Black', main = 'Variance in Ratings', xlim = c(0,6), ylim = c(0,6))
-abline(a = 0, b = 1, col = 'black')
+par(mfrow = c(1,3)) 
+plot(tr_sub_level$tr_var_ratingW, tr_sub_level$tr_var_ratingB, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4, cex.lab = 1.59, cex.main = 1.7,
+     xlab = 'White', ylab = 'Black', main = 'Black vs. White Rating Variance', xlim = c(0,7), ylim = c(0,7))
+abline(a = 0, b = 1, lwd = 1.25, col = 'black')
 points(x = var(tr_sub_level$tr_var_ratingW), y = var(tr_sub_level$tr_var_ratingB), pch = 18, cex = 6)
-plot(tr_sub_level$tr_var_ratingW, tr_sub_level$tr_var_ratingO, bg = rgb(.6, .13, .94, .5), pch = 21, cex = 4,
-     xlab = 'White', ylab = 'Other', main = 'Variance in Ratings', xlim = c(0,6), ylim = c(0,6))
-abline(a = 0, b = 1, col = 'black')
+plot(tr_sub_level$tr_var_ratingW, tr_sub_level$tr_var_ratingO, bg = rgb(.6, .13, .94, .5), pch = 21, cex = 4, cex.lab = 1.59, cex.main = 1.7,
+     xlab = 'White', ylab = 'Other', main = 'Other vs. White Rating Variance', xlim = c(0,7), ylim = c(0,7))
+abline(a = 0, b = 1, lwd = 1.25, col = 'black')
 points(x = var(tr_sub_level$tr_var_ratingW), y = var(tr_sub_level$tr_var_ratingO), pch = 18, cex = 6)
-plot(tr_sub_level$tr_var_ratingB, tr_sub_level$tr_var_ratingO, bg = rgb(.5, 1, .83, .5), pch = 21, cex = 4,
-     xlab = 'Black', ylab = 'Other', main = 'Variance in Ratings', xlim = c(0,6), ylim = c(0,6))
-abline(a = 0, b = 1, col = 'black')
+plot(tr_sub_level$tr_var_ratingB, tr_sub_level$tr_var_ratingO, bg = rgb(.5, 1, .83, .5), pch = 21, cex = 4, cex.lab = 1.59, cex.main = 1.7,
+     xlab = 'Black', ylab = 'Other', main = 'Other vs. Black Rating Variance', xlim = c(0,7), ylim = c(0,7))
+abline(a = 0, b = 1, lwd = 1.25, col = 'black')
 points(x = var(tr_sub_level$tr_var_ratingB), y = var(tr_sub_level$tr_var_ratingO), pch = 18, cex = 6)
 par(mfrow = c(1,1)) # Returning graphs to plot 1 at a time
 
@@ -308,14 +321,15 @@ by(data = trustGame$shared, INDICES = trustGame$taskOrder, FUN = sd, na.rm = T)
 # On average, people share more when the CPT (stressor) is given on day 1)
 # Task Order 1: 2.722(1.640), Task Order 2: 2.272(1.477)
 #(subject-level)
-tmpvect = aggregate(shared ~ subjectID + taskOrder, data = trustGame, FUN=mean);
-by(data = tmpvect$shared, INDICES = tmpvect$taskOrder, FUN = mean) # order 1 = 2.60, order 2 = 2.30
-#A: Participants are sharing more when task order is 1 vs. 2
+tmpvectG1 = aggregate(shared ~ subjectID + taskOrder, data = trustGame, FUN=mean);
+by(data = tmpvectG1$shared, INDICES = tmpvect$taskOrder, FUN = mean) # order 1 = 2.60, order 2 = 2.30
 # Task Order 1: 2.600, Task Order 2: 2.304
+t.test(tmpvectG1$shared[tmpvectG1$taskOrder=='1'], tmpvectG1$shared[tmpvectR$taskOrder=='2'], paired = F)
+#A: Participants are NOT sharing more when task order is 1 vs. 2 (p-value = 0.4171)
 
 # Trust Game Stress Effects
 # Q: Were participants stressed before doing the trust task?
-
+# Cortisol levels at reading 3 - immediately preceding the trust tasks - showed a significantly elevated mean cortical response.
 
 # Q: What are the effects of stress on peoples' trust behaviors? 
 tmpvectG2 = aggregate(shared ~ subjectID + stressedBool, data = trustGame, FUN=mean);
@@ -323,6 +337,8 @@ tmpvectG2 = aggregate(shared ~ subjectID + stressedBool, data = trustGame, FUN=m
 by(data = tmpvectG2$shared, INDICES = tmpvectG2$stressedBool, FUN = mean) 
 #A: Acute stress does not seem to affect peoples' trust behaviors at the subject level.
 # control = 2.53, stressed = 2.52
+t.test(tmpvectG2$shared[tmpvectG2$stressedBool=='0'], tmpvectG2$shared[tmpvectG2$stressedBool=='1'], paired = T)
+#A: On average, participants are NOT sharing more by condition - stress/control (p-value = 0.929)
 
 
 ## TG: Averages & Variances in Offers & RTs #######################################################
