@@ -115,72 +115,87 @@ for (s in 1:number_of_subjects){
 }
 
 
-### Mean Rating Visualizations & Analysis ############################################################
+### Mean Rating Rating Visualizations & Analysis ############################################################
+
+# Q: Are peoples' mean trust perceptions similar from race to race?
 par(mfrow = c(1,1))
-# Visualize Distributions of Mean Ratings
+
 mean_rating_hist = hist(tr_sub_level$tr_mean_rating, breaks = seq(from = 0, to = 8, by = 1), plot = F);
 mean_ratingW_hist = hist(tr_sub_level$tr_mean_ratingW, breaks = seq(from = 0, to =8, by = 1), plot = F)
 mean_ratingB_hist = hist(tr_sub_level$tr_mean_ratingB, breaks = seq(from = 0, to = 8, by = 1), plot = F)
 mean_ratingO_hist = hist(tr_sub_level$tr_mean_ratingO, breaks = seq(from = 0, to = 8, by = 1), plot = F)
 
-plot(mean_rating_hist$mids, mean_rating_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,8), ylim = c(0,.5), cex.lab = 1.2, cex.main = 1.5,
+# Visualizing Trust Rating Distributions by Race (across subjects)
+plot(mean_rating_hist$mids, mean_rating_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,8), ylim = c(0,.6), cex.lab = 1.2, cex.main = 1.5,
      main = "Trust Rating per Race", xlab = 'Mean Trust Rating', ylab = 'Frequency')
 lines(mean_ratingW_hist$mids, mean_ratingW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(mean_ratingB_hist$mids, mean_ratingB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(mean_ratingO_hist$mids, mean_ratingO_hist$density, col = rgb(0,0,1), lwd = 3)
-legend(x = 7.2, y = .4, c('Overall','White','Black','Other'), cex = 1.2, lwd = 2, col = c('black','red','green','blue'))
+legend(x = 7.2, y = .4, c('Overall','White','Black','Other'), cex = 1.1, lwd = 2, col = c('black','red','green','blue'))
 
 #t-tests for Mean Ratings
-t.test(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingB, paired = T) # p = 0.0001  B > W
-t.test(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingO, paired = T) # p = 0.0000  O > W
-t.test(tr_sub_level$tr_mean_ratingB, tr_sub_level$tr_mean_ratingO, paired = T) # p = 0.0743  O = B
-# Mean trust ratings across participants show B > W & O > W, but B = O (though other was numerically higher than black).
+tBvW <- t.test(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingB, paired = T) # p = 0.0001  B > W
+tOvW <- t.test(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingO, paired = T) # p = 0.0000  O > W
+t0vB <- t.test(tr_sub_level$tr_mean_ratingB, tr_sub_level$tr_mean_ratingO, paired = T) # p = 0.0743  O = B
 
-par(mfrow=c(1,3), oma=c(0,0,5,0)) # plot 3 graphs at a time with room for a top title
-plot(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingB, lwd = 1.25, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4, cex.lab = 1.52, cex.main = 1.75,
-     xlab = 'White', ylab = 'Black', main = 'Mean Ratings of Black vs. White Faces by', xlim = c(0,8), ylim = c(0,8))
-abline(a = 0, b = 1, col = 'black')
-points(x = mean(tr_sub_level$tr_mean_ratingW), y = mean(tr_sub_level$tr_mean_ratingB), pch = 18, cex = 6)
-plot(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingO, lwd = 1.25, bg = rgb(.6, .13, .94, .5), pch = 21, cex = 4, cex.lab = 1.52, cex.main = 1.75,
-     xlab = 'White', ylab = 'Other', main = 'Mean Rating', xlim = c(0,8), ylim = c(0,8))
-abline(a = 0, b = 1, col = 'black')
-points(x = mean(tr_sub_level$tr_mean_ratingW), y = mean(tr_sub_level$tr_mean_ratingO), pch = 18, cex = 6)
-plot(tr_sub_level$tr_mean_ratingB, tr_sub_level$tr_mean_ratingO, lwd = 1.25, bg = rgb(.5, 1, .83, .5), pch = 21, cex = 4, cex.lab = 1.52, cex.main = 1.75,
-     xlab = 'Black', ylab = 'Other', main = 'Mean Rating', xlim = c(0,8), ylim = c(0,8))
-abline(a = 0, b = 1, col = 'black')
-points(x = mean(tr_sub_level$tr_mean_ratingB), y = mean(tr_sub_level$tr_mean_ratingO), pch = 18, cex = 6)
+trust_perc_race_to_race <- cbind(tBvW, tOvW, t0vB)
+knitr::kable(head(trust_perc_race_to_race), caption = "Race to Race Trust Rating Comparisons",  col.names = c('  ', 'Black vs. White', 'Other vs. White', 'Other vs. Black'))
+# A: Subjects mean trust ratings across participants show B > W & O > W, but B = O (though other was numerically higher than black).
+
+
+par(mfrow=c(1,3)) # plot 3 graphs at a time
+#par(mfrow=c(1,3), oma=c(0,0,5,0)) # plot 3 graphs at a time with room for a top title
+
+plot(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingB, lwd = 1.25, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4, cex.lab = 1.59, cex.main = 1.7,
+     xlab = 'White', ylab = 'Black', main = 'Black vs. White Face Trust Ratings', xlim = c(0,8), ylim = c(0,8))
+abline(a = 0, b = 1, lwd = 1.25, col = 'black')
+points(x = mean(tr_sub_level$tr_mean_ratingW), y = mean(tr_sub_level$tr_mean_ratingB), pch = 18, cex = 5)
+plot(tr_sub_level$tr_mean_ratingW, tr_sub_level$tr_mean_ratingO, lwd = 1.25, bg = rgb(.6, .13, .94, .5), pch = 21, cex = 4, cex.lab = 1.59, cex.main = 1.7,
+     xlab = 'White', ylab = 'Other', main = 'Other vs. White Face Trust Ratings', xlim = c(0,8), ylim = c(0,8))
+abline(a = 0, b = 1, lwd = 1.25, col = 'black')
+points(x = mean(tr_sub_level$tr_mean_ratingW), y = mean(tr_sub_level$tr_mean_ratingO), pch = 18, cex = 5)
+plot(tr_sub_level$tr_mean_ratingB, tr_sub_level$tr_mean_ratingO, lwd = 1.25, bg = rgb(.5, 1, .83, .5), pch = 21, cex = 4, cex.lab = 1.59, cex.main = 1.7,
+     xlab = 'Black', ylab = 'Other', main = 'Other vs. Black Face Trust Ratings', xlim = c(0,8), ylim = c(0,8))
+abline(a = 0, b = 1, lwd = 1.25, col = 'black')
+points(x = mean(tr_sub_level$tr_mean_ratingB), y = mean(tr_sub_level$tr_mean_ratingO), pch = 18, cex = 5)
 mtext("Mean Ratings by Race", line = 1, side = 3, outer = T, cex = 2)
 par(mfrow = c(1,1)) # Returning graphs to plot 1 at a time
 
 
 ### Response Time Visualizations & Analysis ###########################################################
 
-# Reaction Times (decision speed)
+# Q: Are peoples' mean response times during trust ratings similar from race to race?
 
+# Reaction Times (decision speed)
 rt_rating_hist = hist(tr_sub_level$tr_rt_rating, breaks = seq(from = 0, to = 10, length.out = 12), plot = F);
 rt_ratingW_hist = hist(tr_sub_level$tr_rt_ratingW, breaks = seq(from = 0, to = 10, length.out = 12), plot = F)
 rt_ratingB_hist = hist(tr_sub_level$tr_rt_ratingB, breaks = seq(from = 0, to = 10, length.out = 12), plot = F)
 rt_ratingO_hist = hist(tr_sub_level$tr_rt_ratingO, breaks = seq(from = 0, to = 10, length.out = 12), plot = F)
 
+# Visualizing Trust Rating RTs by Race (across subjects)
+points(x = mean(tr_sub_level$tr_mean_ratingW), y = mean(tr_sub_level$tr_mean_ratingB), pch = 18, cex = 6)
 
-plot(rt_rating_hist$mids, rt_rating_hist$density, col = rgb(0,0,0), type = 'l', lwd = 3, xlim = c(0,10), ylim = c(0,.5), 
-     xlab = 'Response Time (seconds)', ylab = 'Frequency')
+plot(rt_rating_hist$mids, rt_rating_hist$density, lwd = 3, col = rgb(0,0,0), type = 'l', cex = 2.5, cex.lab = 1.35, cex.main = 1.5, xlim = c(0,10), ylim = c(0,.5), 
+     xlab = 'Trust Rating Response Time (seconds)', ylab = 'Frequency')
 lines(rt_ratingW_hist$mids, rt_ratingW_hist$density, col = rgb(1,0,0), lwd = 3)
 lines(rt_ratingB_hist$mids, rt_ratingB_hist$density, col = rgb(0,1,0), lwd = 3)
 lines(rt_ratingO_hist$mids, rt_ratingO_hist$density, col = rgb(0,0,1), lwd = 3)
-points(x = mean(tr_sub_level$tr_rt_rating), y = 0, lwd = 4, col = 'black')
-points(x = mean(tr_sub_level$tr_rt_ratingW), y = 0.025, lwd = 4, col = 'red')
-points(x = mean(tr_sub_level$tr_rt_ratingB), y = 0.05, lwd = 4, col = 'green')
-points(x = mean(tr_sub_level$tr_rt_ratingO), y = 0.075, lwd = 4, col = 'blue')
-legend(x = 8.25, y = .375, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
-
+points(x = mean(tr_sub_level$tr_rt_rating), y = 0, pch = 16, cex = 2.25, lwd = 4, col = 'black')
+points(x = mean(tr_sub_level$tr_rt_ratingW), y = 0.025, pch = 16, cex = 2.25, lwd = 4, col = 'red')
+points(x = mean(tr_sub_level$tr_rt_ratingB), y = 0.05, pch = 16, cex = 2.25, lwd = 4, col = 'green')
+points(x = mean(tr_sub_level$tr_rt_ratingO), y = 0.075, pch = 16, cex = 2.25, lwd = 4, col = 'blue')
+legend(x = 8.65, y = .375, c('Overall','White','Black','Other'), cex = 1.1, lwd = 2, col = c('black','red','green','blue'))
 
 #t-tests for Mean RTs (race comparisons)
-t.test(tr_sub_level$tr_rt_ratingW, tr_sub_level$tr_rt_ratingB, paired = T) # p = 0.06   B = W
-t.test(tr_sub_level$tr_rt_ratingW, tr_sub_level$tr_rt_ratingO, paired = T) # p = 0.69   O = W
-t.test(tr_sub_level$tr_rt_ratingB, tr_sub_level$tr_rt_ratingO, paired = T) # p = 0.07   B = O
+tRTbVw <- t.test(tr_sub_level$tr_rt_ratingW, tr_sub_level$tr_rt_ratingB, paired = T) # p = 0.06   B = W
+tRTwVo <- t.test(tr_sub_level$tr_rt_ratingW, tr_sub_level$tr_rt_ratingO, paired = T) # p = 0.69   O = W
+tRTbVo <- t.test(tr_sub_level$tr_rt_ratingB, tr_sub_level$tr_rt_ratingO, paired = T) # p = 0.07   B = O
 
+trust_perc_RT_race_to_race <- cbind(tRTbVw, tRTwVo, tRTbVo)
+knitr::kable(head(trust_perc_RT_race_to_race), caption = "Race to Race Trust Rating Reaction Times Comparisons",  col.names = c('  ', 'Black vs. White', 'Other vs. White', 'Other vs. Black'))
+# A: Subjects mean trust ratings reaction times show no significant differentces
 
+# Visualizing Trust Rating RTs by Race (by subject)
 par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
 plot(tr_sub_level$tr_rt_ratingW, tr_sub_level$tr_rt_ratingB, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4,
      xlab = 'White', ylab = 'Black', main = 'Response Time for Ratings', xlim = c(0,10), ylim = c(0,10))
