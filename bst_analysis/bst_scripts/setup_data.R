@@ -1108,3 +1108,21 @@ post_task_survey_day1 <- read.csv(ptsD1_csv)
 ptsD2_csv <- file.path(config$path$data$current, config$csvs$ptsD2)
 post_task_survey_day2 <- read.csv(ptsD2_csv)
 
+
+# FUTURE DIRECTIONS ########
+
+# Binomial Distribution
+
+# p = probability of a successful trial
+# x = number of trials, which iterates through function - f(x) - with pbinom
+# n = independent trial outcomes
+
+# example: cumulative probability fx for having 4 or fewer correct answers by 12 attempts
+# size=12: in 12 attempts
+# 4: iterates through outcomes of 0, 1, 2, 3, 4 (0-4 correct answers per 12 attempts)
+# prob=0.2: questions have 1 out of 5 correct answers (i.e., 20% chance of correct per attempt)
+
+pbinom(4, size=12, prob=0.2) 
+
+
+
