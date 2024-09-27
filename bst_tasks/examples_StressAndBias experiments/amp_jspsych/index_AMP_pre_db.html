@@ -1,0 +1,1040 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>PRE-social Affect Misattribution Procedure</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="jspsych-5.0.3/jspsych.js"></script>
+  <script src="jspsych-5.0.3/plugins/jspsych-text.js"></script>
+  <script src="jspsych-5.0.3/plugins/jspsych-multi-stim-multi-response.js"></script>
+  <link rel="stylesheet" href="jspsych-5.0.3/css/jspsych.css"></link>
+  <style>
+    img {
+      height: 200px;
+	  align: center;
+    }
+  </style>  
+</head>
+
+<body>
+  <div id="jspsych-target"></div>
+</body>
+<script>
+
+
+	var timing_stim = [75,125,200, -1];
+/* Define the images */
+var black=[
+'trustrating_stim/pd_black_00108_940128_fb_edt_H300.png',
+'trustrating_stim/pd_black_00183_940128_fb_edt_H300.png',
+'trustrating_stim/pd_black_00257_940128_fa_edt_H300.png',
+'trustrating_stim/pd_black_00273_940422_fa_edt_H300.png',
+'trustrating_stim/pd_black_00332_940422_fa_edt_contrast_H300.png',
+'trustrating_stim/pd_black_00358_940422_fb_edt_H300.png',
+'trustrating_stim/pd_black_00453_940422_fb_edt_H300.png',
+'trustrating_stim/pd_black_00467_940519_fb_edt_H300.png',
+'trustrating_stim/pd_black_00488_940519_fb_edt_H300.png',
+'trustrating_stim/pd_black_00531_940519_fa_edt_H300.png',
+'trustrating_stim/pd_black_00558_940519_fa_edt_H300.png',
+'trustrating_stim/pd_black_00586_940928_fa_edt_H300.png',
+'trustrating_stim/pd_black_00677_941121_fa_edt_H300.png',
+'trustrating_stim/pd_black_00716_941201_fa_edt_rot_H300.png',
+'trustrating_stim/pd_black_00746_941201_fb_edt_H300.png',
+'trustrating_stim/pd_black_00801_941205_fa_edt_H300.png',
+'trustrating_stim/pd_black_00857_940307_fa_edt_H300.png',
+'trustrating_stim/pd_black_00917_960620_fa_edt_H300.png',
+'trustrating_stim/pd_black_00929_960627_fa_edt_H300.png',
+'trustrating_stim/pd_black_00964_960627_fb_edt_H300.png',
+'trustrating_stim/pd_black_38M_NE_C_H300.png',
+'trustrating_stim/pd_black_39M_NE_C_H300.png',
+'trustrating_stim/pd_black_mb001_H300.png',
+'trustrating_stim/pd_black_mb002_H300.png',
+'trustrating_stim/pd_black_mb003_H300.png',
+'trustrating_stim/pd_black_mb004_H300.png',
+'trustrating_stim/pd_black_mb005_H300.png',
+'trustrating_stim/pd_black_mb006_H300.png',
+'trustrating_stim/pd_black_mb008_H300.png',
+'trustrating_stim/pd_black_mb009_H300.png',
+'trustrating_stim/pd_black_mb010_H300.png',
+'trustrating_stim/pd_black_mb011_H300.png',
+'trustrating_stim/pd_black_mb013_H300.png',
+'trustrating_stim/pd_black_mb014_H300.png',
+'trustrating_stim/pd_black_mb015_H300.png',
+'trustrating_stim/pd_black_mb016_H300.png',
+'trustrating_stim/pd_black_mb017_H300.png',
+'trustrating_stim/pd_black_mb018_H300.png',
+'trustrating_stim/pd_black_mb019_H300.png',
+'trustrating_stim/pd_black_mb020_H300.png',
+'trustrating_stim/pd_black_mb021_H300.png',
+'trustrating_stim/pd_black_mb023_H300.png',
+'trustrating_stim/pd_black_mb025_H300.png',
+'trustrating_stim/pd_black_mb026_H300.png',
+'trustrating_stim/pd_black_mb027_H300.png',
+'trustrating_stim/pd_black_mb029_H300.png',
+'trustrating_stim/pd_black_mb030_H300.png',
+'trustrating_stim/pd_black_mb031_H300.png',
+'trustrating_stim/pd_black_mb032_H300.png',
+'trustrating_stim/pd_black_mb033_H300.png',
+'trustrating_stim/pd_black_mb035_H300.png',
+'trustrating_stim/pd_black_mb038_H300.png',
+'trustrating_stim/pd_black_mb039_H300.png',
+'trustrating_stim/pd_black_mb040_H300.png',
+'trustrating_stim/pd_black_mb042_H300.png',
+'trustrating_stim/pd_black_mb044_H300.png',
+'trustrating_stim/pd_black_mb045_H300.png',
+'trustrating_stim/pd_black_mb046_H300.png',
+'trustrating_stim/pd_black_mb047_H300.png',
+'trustrating_stim/pd_black_mb049_H300.png',
+'trustrating_stim/pd_black_mb050_H300.png',
+'trustrating_stim/pd_black_mb051_H300.png',
+'trustrating_stim/pd_black_mb054_H300.png',
+'trustrating_stim/pd_black_mb055_H300.png',
+'trustrating_stim/pd_black_mb056_H300.png',
+'trustrating_stim/pd_black_mb057_H300.png',
+'trustrating_stim/pd_black_mb058_H300.png',
+'trustrating_stim/pd_black_mb059_H300.png',
+'trustrating_stim/pd_black_mb060_H300.png',
+'trustrating_stim/pd_black_mb061_H300.png',
+'trustrating_stim/pd_black_mb062_H300.png',
+'trustrating_stim/pd_black_mb063_H300.png',
+'trustrating_stim/pd_black_mb064_H300.png',
+'trustrating_stim/pd_black_mb065_H300.png',
+'trustrating_stim/pd_black_mb066_H300.png',
+'trustrating_stim/pd_black_mb067_H300.png',
+'trustrating_stim/pd_black_mb068_H300.png',
+'trustrating_stim/pd_black_mb069_H300.png',
+'trustrating_stim/pd_black_mb070_H300.png',
+'trustrating_stim/pd_black_mb071_H300.png',
+'trustrating_stim/pd_black_mb072_H300.png',
+'trustrating_stim/pd_black_mb073_H300.png',
+'trustrating_stim/pd_black_mb075_H300.png',
+'trustrating_stim/pd_black_mb077_H300.png',
+'trustrating_stim/pd_black_mb078_H300.png',
+'trustrating_stim/pd_black_mb079_H300.png',
+'trustrating_stim/pd_black_mb081_H300.png',
+'trustrating_stim/pd_black_mb082_H300.png',
+'trustrating_stim/pd_black_mb083_H300.png',
+'trustrating_stim/pd_black_mb085_H300.png',
+'trustrating_stim/pd_black_mb088_H300.png',
+'trustrating_stim/pd_black_mb089_H300.png',
+'trustrating_stim/pd_black_mb092_H300.png',
+'trustrating_stim/pd_black_mb093_H300.png',
+'trustrating_stim/pd_black_mb094_H300.png',
+'trustrating_stim/pd_black_mb096_H300.png',
+'trustrating_stim/pd_black_mb097_H300.png',
+'trustrating_stim/pd_black_mb098_H300.png',
+'trustrating_stim/pd_black_mb099_H300.png',
+'trustrating_stim/pd_black_mb100_H300.png',
+];
+
+var other=[
+'trustrating_stim/pd_other_00029_940128_fa_edt_H300.png',
+'trustrating_stim/pd_other_00046_931230_fa_edt_H300.png',
+'trustrating_stim/pd_other_00058_931230_fa_edt_H300.png',
+'trustrating_stim/pd_other_00070_941121_fb_edt_H300.png',
+'trustrating_stim/pd_other_00096_940128_fb_edt_H300.png',
+'trustrating_stim/pd_other_00097_931230_fa_edt_H300.png',
+'trustrating_stim/pd_other_00110_931230_fb_edt_H300.png',
+'trustrating_stim/pd_other_00114_931230_fa_edt_H300.png',
+'trustrating_stim/pd_other_00116_931230_fa_edt_H300.png',
+'trustrating_stim/pd_other_00119_931230_fb_edt_H300.png',
+'trustrating_stim/pd_other_00122_931230_fa_edt_H300.png',
+'trustrating_stim/pd_other_00132_931230_fb_edt_H300.png',
+'trustrating_stim/pd_other_00139_931230_fb_edt_H300.png',
+'trustrating_stim/pd_other_00178_931230_fa_edt_H300.png',
+'trustrating_stim/pd_other_00193_940128_fa_edt_H300.png',
+'trustrating_stim/pd_other_00205_940128_fa_edt_H300.png',
+'trustrating_stim/pd_other_00216_940128_fa_edt_H300.png',
+'trustrating_stim/pd_other_00234_940128_fb_edt_H300.png',
+'trustrating_stim/pd_other_00237_940128_fb_edt_H300.png',
+'trustrating_stim/pd_other_00246_940128_fa_edt_H300.png',
+'trustrating_stim/pd_other_00247_941121_fb_edt_H300.png',
+'trustrating_stim/pd_other_00261_940128_fb_edt_H300.png',
+'trustrating_stim/pd_other_00282_940422_fb_edt_H300.png',
+'trustrating_stim/pd_other_00318_940422_fb_edt_H300.png',
+'trustrating_stim/pd_other_00383_941031_fa_edt_rot_H300.png',
+'trustrating_stim/pd_other_00415_940422_fb_edt_rot_H300.png',
+'trustrating_stim/pd_other_00461_940422_fb_edt_H300.png',
+'trustrating_stim/pd_other_00490_940519_fb_edt_H300.png',
+'trustrating_stim/pd_other_00512_940519_fa_edt_H300.png',
+'trustrating_stim/pd_other_00516_940519_fb_edt_H300.png',
+'trustrating_stim/pd_other_00545_940519_fa_edt_H300.png',
+'trustrating_stim/pd_other_00566_940928_fb_edt_H300.png',
+'trustrating_stim/pd_other_00570_940928_fa_edt_H300.png',
+'trustrating_stim/pd_other_00575_940928_fb_edt_H300.png',
+'trustrating_stim/pd_other_00578_940928_fa_edt_H300.png',
+'trustrating_stim/pd_other_00580_940928_fa_edt_H300.png',
+'trustrating_stim/pd_other_00582_940928_fb_edt_H300.png',
+'trustrating_stim/pd_other_00583_940928_fa_edt_H300.png',
+'trustrating_stim/pd_other_00584_940928_fa_edt_H300.png',
+'trustrating_stim/pd_other_00587_940928_fa_edt_H300.png',
+'trustrating_stim/pd_other_00588_940928_fa_edt_H300.png',
+'trustrating_stim/pd_other_00596_940928_fa_edt_H300.png',
+'trustrating_stim/pd_other_00601_940928_fb_edt_H300.png',
+'trustrating_stim/pd_other_00604_940928_fb_edt_H300.png',
+'trustrating_stim/pd_other_00610_940928_fa_edt_H300.png',
+'trustrating_stim/pd_other_00611_940928_fa_edt_rot_H300.png',
+'trustrating_stim/pd_other_00614_940928_fa_edt_H300.png',
+'trustrating_stim/pd_other_00616_940928_fa_edt_rot_H300.png',
+'trustrating_stim/pd_other_00617_940928_fb_edt_H300.png',
+'trustrating_stim/pd_other_00618_940928_fb_edt_H300.png',
+'trustrating_stim/pd_other_00619_940928_fa_edt_H300.png',
+'trustrating_stim/pd_other_00621_941121_fa_edt_H300.png',
+'trustrating_stim/pd_other_00622_940928_fb_edt_H300.png',
+'trustrating_stim/pd_other_00623_940928_fb_edt_H300.png',
+'trustrating_stim/pd_other_00625_940928_fb_edt_H300.png',
+'trustrating_stim/pd_other_00629_940928_fa_edt_H300.png',
+'trustrating_stim/pd_other_00640_941031_fa_edt_rot_H300.png',
+'trustrating_stim/pd_other_00652_941031_fb_edt_H300.png',
+'trustrating_stim/pd_other_00656_941121_fb_edt_H300.png',
+'trustrating_stim/pd_other_00666_941121_fa_edt_rot_H300.png',
+'trustrating_stim/pd_other_00668_941121_fa_edt_H300.png',
+'trustrating_stim/pd_other_00672_941121_fa_edt_H300.png',
+'trustrating_stim/pd_other_00673_941121_fa_edt_rot_H300.png',
+'trustrating_stim/pd_other_00698_941121_fb_edt_H300.png',
+'trustrating_stim/pd_other_00710_960530_fa_edt_H300.png',
+'trustrating_stim/pd_other_00712_941205_fa_edt_H300.png',
+'trustrating_stim/pd_other_00724_941201_fa_edt_H300.png',
+'trustrating_stim/pd_other_00726_941201_fb_edt_H300.png',
+'trustrating_stim/pd_other_00733_941201_fa_edt_H300.png',
+'trustrating_stim/pd_other_00734_941201_fa_edt_H300.png',
+'trustrating_stim/pd_other_00737_941201_fa_edt_H300.png',
+'trustrating_stim/pd_other_00740_941205_fa_edt_H300.png',
+'trustrating_stim/pd_other_00763_941201_fb_edt_H300.png',
+'trustrating_stim/pd_other_00793_941205_fb_edt_H300.png',
+'trustrating_stim/pd_other_00795_941205_fb_edt_H300.png',
+'trustrating_stim/pd_other_00797_941205_fb_edt_H300.png',
+'trustrating_stim/pd_other_00809_941205_fa_edt_H300.png',
+'trustrating_stim/pd_other_00810_941205_fb_edt_rot_H300.png',
+'trustrating_stim/pd_other_00828_940307_fa_edt_H300.png',
+'trustrating_stim/pd_other_00841_940307_fb_edt_H300.png',
+'trustrating_stim/pd_other_00859_940307_fa_edt_H300.png',
+'trustrating_stim/pd_other_00866_940307_fa_edt_H300.png',
+'trustrating_stim/pd_other_00869_940307_fa_edt_H300.png',
+'trustrating_stim/pd_other_00880_960530_fa_edt_H300.png',
+'trustrating_stim/pd_other_00911_960530_fa_edt_H300.png',
+'trustrating_stim/pd_other_00912_960530_fa_edt_H300.png',
+'trustrating_stim/pd_other_00921_960627_fb_edt_H300.png',
+'trustrating_stim/pd_other_00926_960627_fa_edt_H300.png',
+'trustrating_stim/pd_other_00933_960627_fa_edt_H300.png',
+'trustrating_stim/pd_other_00976_960627_fb_edt_H300.png',
+'trustrating_stim/pd_other_01207_940128_fb_edt_H300.png',
+];
+
+
+var white=[
+'trustrating_stim/pd_white_00109_931230_fa_edt_H300.png',
+'trustrating_stim/pd_white_00120_931230_fa_edt_H300.png',
+'trustrating_stim/pd_white_00129_931230_fb_edt_H300.png',
+'trustrating_stim/pd_white_00199_940128_fa_edt_H300.png',
+'trustrating_stim/pd_white_00223_940128_fb_edt_H300.png',
+'trustrating_stim/pd_white_00248_940128_fa_edt_H300.png',
+'trustrating_stim/pd_white_00253_940128_fa_edt_H300.png',
+'trustrating_stim/pd_white_00283_940422_fa_edt_H300.png',
+'trustrating_stim/pd_white_00299_940422_fa_edt_H300.png',
+'trustrating_stim/pd_white_00340_940422_fa_edt_H300.png',
+'trustrating_stim/pd_white_00341_940422_fa_edt_H300.png',
+'trustrating_stim/pd_white_00519_940519_fb_edt_H300.png',
+'trustrating_stim/pd_white_00577_940928_fa_edt_H300.png',
+'trustrating_stim/pd_white_00591_940928_fa_edt_H300.png',
+'trustrating_stim/pd_white_00597_940928_fb_edt_H300.png',
+'trustrating_stim/pd_white_00602_940928_fb_edt_H300.png',
+'trustrating_stim/pd_white_00657_941121_fa_edt_H300.png',
+'trustrating_stim/pd_white_00658_941121_fb_edt_H300.png',
+'trustrating_stim/pd_white_00659_941121_fa_edt_H300.png',
+'trustrating_stim/pd_white_00757_941201_fa_edt_H300.png',
+'trustrating_stim/pd_white_00761_941201_fb_edt_H300.png',
+'trustrating_stim/pd_white_00764_941201_fa_edt_H300.png',
+'trustrating_stim/pd_white_00766_941201_fb_edt_H300.png',
+'trustrating_stim/pd_white_00785_941205_fb_edt_H300.png',
+'trustrating_stim/pd_white_00807_941205_fb_edt_H300.png',
+'trustrating_stim/pd_white_00816_941205_fa_edt_H300.png',
+'trustrating_stim/pd_white_00874_940307_fa_edt_H300.png',
+'trustrating_stim/pd_white_00897_960530_fb_edt_H300.png',
+'trustrating_stim/pd_white_00898_960530_fa_edt_H300.png',
+'trustrating_stim/pd_white_00939_960627_fa_edt_H300.png',
+'trustrating_stim/pd_white_00960_960627_fb_edt_H300.png',
+'trustrating_stim/pd_white_00972_960627_fa_edt_H300.png',
+'trustrating_stim/pd_white_mw001_H300.png',
+'trustrating_stim/pd_white_mw002_H300.png',
+'trustrating_stim/pd_white_mw003_H300.png',
+'trustrating_stim/pd_white_mw004_H300.png',
+'trustrating_stim/pd_white_mw006_H300.png',
+'trustrating_stim/pd_white_mw008_H300.png',
+'trustrating_stim/pd_white_mw009_H300.png',
+'trustrating_stim/pd_white_mw010_H300.png',
+'trustrating_stim/pd_white_mw012_H300.png',
+'trustrating_stim/pd_white_mw013_H300.png',
+'trustrating_stim/pd_white_mw015_H300.png',
+'trustrating_stim/pd_white_mw016_H300.png',
+'trustrating_stim/pd_white_mw018_H300.png',
+'trustrating_stim/pd_white_mw019_H300.png',
+'trustrating_stim/pd_white_mw022_H300.png',
+'trustrating_stim/pd_white_mw024_H300.png',
+'trustrating_stim/pd_white_mw025_H300.png',
+'trustrating_stim/pd_white_mw028_H300.png',
+'trustrating_stim/pd_white_mw029_H300.png',
+'trustrating_stim/pd_white_mw033_H300.png',
+'trustrating_stim/pd_white_mw034_H300.png',
+'trustrating_stim/pd_white_mw035_H300.png',
+'trustrating_stim/pd_white_mw038_H300.png',
+'trustrating_stim/pd_white_mw039_H300.png',
+'trustrating_stim/pd_white_mw040_H300.png',
+'trustrating_stim/pd_white_mw041_H300.png',
+'trustrating_stim/pd_white_mw042_H300.png',
+'trustrating_stim/pd_white_mw043_H300.png',
+'trustrating_stim/pd_white_mw044_H300.png',
+'trustrating_stim/pd_white_mw046_H300.png',
+'trustrating_stim/pd_white_mw047_H300.png',
+'trustrating_stim/pd_white_mw048_H300.png',
+'trustrating_stim/pd_white_mw049_H300.png',
+'trustrating_stim/pd_white_mw051_H300.png',
+'trustrating_stim/pd_white_mw052_H300.png',
+'trustrating_stim/pd_white_mw053_H300.png',
+'trustrating_stim/pd_white_mw054_H300.png',
+'trustrating_stim/pd_white_mw056_H300.png',
+'trustrating_stim/pd_white_mw057_H300.png',
+'trustrating_stim/pd_white_mw058_H300.png',
+'trustrating_stim/pd_white_mw060_H300.png',
+'trustrating_stim/pd_white_mw063_H300.png',
+'trustrating_stim/pd_white_mw065_H300.png',
+'trustrating_stim/pd_white_mw066_H300.png',
+'trustrating_stim/pd_white_mw067_H300.png',
+'trustrating_stim/pd_white_mw068_H300.png',
+'trustrating_stim/pd_white_mw070_H300.png',
+'trustrating_stim/pd_white_mw071_H300.png',
+'trustrating_stim/pd_white_mw072_H300.png',
+'trustrating_stim/pd_white_mw073_H300.png',
+'trustrating_stim/pd_white_mw074_H300.png',
+'trustrating_stim/pd_white_mw075_H300.png',
+'trustrating_stim/pd_white_mw076_H300.png',
+'trustrating_stim/pd_white_mw077_H300.png',
+'trustrating_stim/pd_white_mw078_H300.png',
+'trustrating_stim/pd_white_mw080_H300.png',
+'trustrating_stim/pd_white_mw082_H300.png',
+'trustrating_stim/pd_white_mw084_H300.png',
+'trustrating_stim/pd_white_mw085_H300.png',
+'trustrating_stim/pd_white_mw089_H300.png',
+'trustrating_stim/pd_white_mw091_H300.png',
+'trustrating_stim/pd_white_mw092_H300.png',
+'trustrating_stim/pd_white_mw095_H300.png',
+'trustrating_stim/pd_white_mw096_H300.png',
+'trustrating_stim/pd_white_mw097_H300.png',
+'trustrating_stim/pd_white_mw098_H300.png',
+'trustrating_stim/pd_white_mw099_H300.png',
+];
+
+white=jsPsych.randomization.shuffle(white);
+other=jsPsych.randomization.shuffle(other);
+black=jsPsych.randomization.shuffle(black);
+
+whitestim=white.slice(0,50);
+otherstim=other.slice(0,50);
+blackstim=black.slice(0,50);
+
+
+var	inks=[
+'inks/pdbrd_sm_inkblot_170816_1750_001.png',
+'inks/pdbrd_sm_inkblot_170816_1750_002.png',
+'inks/pdbrd_sm_inkblot_170816_1750_003.png',
+'inks/pdbrd_sm_inkblot_170816_1750_004.png',
+'inks/pdbrd_sm_inkblot_170816_1750_005.png',
+'inks/pdbrd_sm_inkblot_170816_1750_006.png',
+'inks/pdbrd_sm_inkblot_170816_1750_007.png',
+'inks/pdbrd_sm_inkblot_170816_1750_008.png',
+'inks/pdbrd_sm_inkblot_170816_1750_009.png',
+'inks/pdbrd_sm_inkblot_170816_1750_010.png',
+'inks/pdbrd_sm_inkblot_170816_1750_011.png',
+'inks/pdbrd_sm_inkblot_170816_1750_012.png',
+'inks/pdbrd_sm_inkblot_170816_1750_013.png',
+'inks/pdbrd_sm_inkblot_170816_1750_014.png',
+'inks/pdbrd_sm_inkblot_170816_1750_015.png',
+'inks/pdbrd_sm_inkblot_170816_1750_016.png',
+'inks/pdbrd_sm_inkblot_170816_1750_017.png',
+'inks/pdbrd_sm_inkblot_170816_1750_018.png',
+'inks/pdbrd_sm_inkblot_170816_1750_019.png',
+'inks/pdbrd_sm_inkblot_170816_1750_020.png',
+'inks/pdbrd_sm_inkblot_170816_1750_021.png',
+'inks/pdbrd_sm_inkblot_170816_1750_022.png',
+'inks/pdbrd_sm_inkblot_170816_1750_023.png',
+'inks/pdbrd_sm_inkblot_170816_1750_024.png',
+'inks/pdbrd_sm_inkblot_170816_1750_025.png',
+'inks/pdbrd_sm_inkblot_170816_1750_026.png',
+'inks/pdbrd_sm_inkblot_170816_1750_027.png',
+'inks/pdbrd_sm_inkblot_170816_1750_028.png',
+'inks/pdbrd_sm_inkblot_170816_1750_029.png',
+'inks/pdbrd_sm_inkblot_170816_1750_030.png',
+'inks/pdbrd_sm_inkblot_170816_1750_031.png',
+'inks/pdbrd_sm_inkblot_170816_1750_032.png',
+'inks/pdbrd_sm_inkblot_170816_1750_033.png',
+'inks/pdbrd_sm_inkblot_170816_1750_034.png',
+'inks/pdbrd_sm_inkblot_170816_1750_035.png',
+'inks/pdbrd_sm_inkblot_170816_1750_036.png',
+'inks/pdbrd_sm_inkblot_170816_1750_037.png',
+'inks/pdbrd_sm_inkblot_170816_1750_038.png',
+'inks/pdbrd_sm_inkblot_170816_1750_039.png',
+'inks/pdbrd_sm_inkblot_170816_1750_040.png',
+'inks/pdbrd_sm_inkblot_170816_1750_041.png',
+'inks/pdbrd_sm_inkblot_170816_1750_042.png',
+'inks/pdbrd_sm_inkblot_170816_1750_043.png',
+'inks/pdbrd_sm_inkblot_170816_1750_044.png',
+'inks/pdbrd_sm_inkblot_170816_1750_045.png',
+'inks/pdbrd_sm_inkblot_170816_1750_046.png',
+'inks/pdbrd_sm_inkblot_170816_1750_047.png',
+'inks/pdbrd_sm_inkblot_170816_1750_048.png',
+'inks/pdbrd_sm_inkblot_170816_1750_049.png',
+'inks/pdbrd_sm_inkblot_170816_1750_050.png',
+'inks/pdbrd_sm_inkblot_170816_1750_051.png',
+'inks/pdbrd_sm_inkblot_170816_1750_052.png',
+'inks/pdbrd_sm_inkblot_170816_1750_053.png',
+'inks/pdbrd_sm_inkblot_170816_1750_054.png',
+'inks/pdbrd_sm_inkblot_170816_1750_055.png',
+'inks/pdbrd_sm_inkblot_170816_1750_056.png',
+'inks/pdbrd_sm_inkblot_170816_1750_057.png',
+'inks/pdbrd_sm_inkblot_170816_1750_058.png',
+'inks/pdbrd_sm_inkblot_170816_1750_059.png',
+'inks/pdbrd_sm_inkblot_170816_1750_060.png',
+'inks/pdbrd_sm_inkblot_170816_1750_061.png',
+'inks/pdbrd_sm_inkblot_170816_1750_062.png',
+'inks/pdbrd_sm_inkblot_170816_1750_063.png',
+'inks/pdbrd_sm_inkblot_170816_1750_064.png',
+'inks/pdbrd_sm_inkblot_170816_1750_065.png',
+'inks/pdbrd_sm_inkblot_170816_1750_066.png',
+'inks/pdbrd_sm_inkblot_170816_1750_067.png',
+'inks/pdbrd_sm_inkblot_170816_1750_068.png',
+'inks/pdbrd_sm_inkblot_170816_1750_069.png',
+'inks/pdbrd_sm_inkblot_170816_1750_070.png',
+'inks/pdbrd_sm_inkblot_170816_1750_071.png',
+'inks/pdbrd_sm_inkblot_170816_1750_072.png',
+'inks/pdbrd_sm_inkblot_170816_1750_073.png',
+'inks/pdbrd_sm_inkblot_170816_1750_074.png',
+'inks/pdbrd_sm_inkblot_170816_1750_075.png',
+'inks/pdbrd_sm_inkblot_170816_1750_076.png',
+'inks/pdbrd_sm_inkblot_170816_1750_077.png',
+'inks/pdbrd_sm_inkblot_170816_1750_078.png',
+'inks/pdbrd_sm_inkblot_170816_1750_079.png',
+'inks/pdbrd_sm_inkblot_170816_1750_080.png',
+'inks/pdbrd_sm_inkblot_170816_1750_081.png',
+'inks/pdbrd_sm_inkblot_170816_1750_082.png',
+'inks/pdbrd_sm_inkblot_170816_1750_083.png',
+'inks/pdbrd_sm_inkblot_170816_1750_084.png',
+'inks/pdbrd_sm_inkblot_170816_1750_085.png',
+'inks/pdbrd_sm_inkblot_170816_1750_086.png',
+'inks/pdbrd_sm_inkblot_170816_1750_087.png',
+'inks/pdbrd_sm_inkblot_170816_1750_088.png',
+'inks/pdbrd_sm_inkblot_170816_1750_089.png',
+'inks/pdbrd_sm_inkblot_170816_1750_090.png',
+'inks/pdbrd_sm_inkblot_170816_1750_091.png',
+'inks/pdbrd_sm_inkblot_170816_1750_092.png',
+'inks/pdbrd_sm_inkblot_170816_1750_093.png',
+'inks/pdbrd_sm_inkblot_170816_1750_094.png',
+'inks/pdbrd_sm_inkblot_170816_1750_095.png',
+'inks/pdbrd_sm_inkblot_170816_1750_096.png',
+'inks/pdbrd_sm_inkblot_170816_1750_097.png',
+'inks/pdbrd_sm_inkblot_170816_1750_098.png',
+'inks/pdbrd_sm_inkblot_170816_1750_099.png',
+];
+
+inks = jsPsych.randomization.shuffle(inks);
+inkstim = inks.slice(0,50);
+
+var	masks_PL=[
+'masks/pdPL_noiseMask_170814_1952_000.png',
+'masks/pdPL_noiseMask_170814_1952_001.png',
+'masks/pdPL_noiseMask_170814_1952_002.png',
+'masks/pdPL_noiseMask_170814_1952_003.png',
+'masks/pdPL_noiseMask_170814_1952_004.png',
+'masks/pdPL_noiseMask_170814_1952_005.png',
+'masks/pdPL_noiseMask_170814_1952_006.png',
+'masks/pdPL_noiseMask_170814_1952_007.png',
+'masks/pdPL_noiseMask_170814_1952_008.png',
+'masks/pdPL_noiseMask_170814_1952_009.png',
+'masks/pdPL_noiseMask_170814_1952_010.png',
+'masks/pdPL_noiseMask_170814_1952_011.png',
+'masks/pdPL_noiseMask_170814_1952_012.png',
+'masks/pdPL_noiseMask_170814_1952_013.png',
+'masks/pdPL_noiseMask_170814_1952_014.png',
+'masks/pdPL_noiseMask_170814_1952_015.png',
+'masks/pdPL_noiseMask_170814_1952_016.png',
+'masks/pdPL_noiseMask_170814_1952_017.png',
+'masks/pdPL_noiseMask_170814_1952_018.png',
+'masks/pdPL_noiseMask_170814_1952_019.png',
+'masks/pdPL_noiseMask_170814_1952_020.png',
+'masks/pdPL_noiseMask_170814_1952_021.png',
+'masks/pdPL_noiseMask_170814_1952_022.png',
+'masks/pdPL_noiseMask_170814_1952_023.png',
+'masks/pdPL_noiseMask_170814_1952_024.png',
+'masks/pdPL_noiseMask_170814_1952_025.png',
+'masks/pdPL_noiseMask_170814_1952_026.png',
+'masks/pdPL_noiseMask_170814_1952_027.png',
+'masks/pdPL_noiseMask_170814_1952_028.png',
+'masks/pdPL_noiseMask_170814_1952_029.png',
+'masks/pdPL_noiseMask_170814_1952_030.png',
+'masks/pdPL_noiseMask_170814_1952_031.png',
+'masks/pdPL_noiseMask_170814_1952_032.png',
+'masks/pdPL_noiseMask_170814_1952_033.png',
+'masks/pdPL_noiseMask_170814_1952_034.png',
+'masks/pdPL_noiseMask_170814_1952_035.png',
+'masks/pdPL_noiseMask_170814_1952_036.png',
+'masks/pdPL_noiseMask_170814_1952_037.png',
+'masks/pdPL_noiseMask_170814_1952_038.png',
+'masks/pdPL_noiseMask_170814_1952_039.png',
+'masks/pdPL_noiseMask_170814_1952_040.png',
+'masks/pdPL_noiseMask_170814_1952_041.png',
+'masks/pdPL_noiseMask_170814_1952_042.png',
+'masks/pdPL_noiseMask_170814_1952_043.png',
+'masks/pdPL_noiseMask_170814_1952_044.png',
+'masks/pdPL_noiseMask_170814_1952_045.png',
+'masks/pdPL_noiseMask_170814_1952_046.png',
+'masks/pdPL_noiseMask_170814_1952_047.png',
+'masks/pdPL_noiseMask_170814_1952_048.png',
+'masks/pdPL_noiseMask_170814_1952_049.png',
+'masks/pdPL_noiseMask_170814_1952_050.png',
+'masks/pdPL_noiseMask_170814_1952_051.png',
+'masks/pdPL_noiseMask_170814_1952_052.png',
+'masks/pdPL_noiseMask_170814_1952_053.png',
+'masks/pdPL_noiseMask_170814_1952_054.png',
+'masks/pdPL_noiseMask_170814_1952_055.png',
+'masks/pdPL_noiseMask_170814_1952_056.png',
+'masks/pdPL_noiseMask_170814_1952_057.png',
+'masks/pdPL_noiseMask_170814_1952_058.png',
+'masks/pdPL_noiseMask_170814_1952_059.png',
+'masks/pdPL_noiseMask_170814_1952_060.png',
+'masks/pdPL_noiseMask_170814_1952_061.png',
+'masks/pdPL_noiseMask_170814_1952_062.png',
+'masks/pdPL_noiseMask_170814_1952_063.png',
+'masks/pdPL_noiseMask_170814_1952_064.png',
+'masks/pdPL_noiseMask_170814_1952_065.png',
+'masks/pdPL_noiseMask_170814_1952_066.png',
+'masks/pdPL_noiseMask_170814_1952_067.png',
+'masks/pdPL_noiseMask_170814_1952_068.png',
+'masks/pdPL_noiseMask_170814_1952_069.png',
+'masks/pdPL_noiseMask_170814_1952_070.png',
+'masks/pdPL_noiseMask_170814_1952_071.png',
+'masks/pdPL_noiseMask_170814_1952_072.png',
+'masks/pdPL_noiseMask_170814_1952_073.png',
+'masks/pdPL_noiseMask_170814_1952_074.png',
+'masks/pdPL_noiseMask_170814_1952_075.png',
+'masks/pdPL_noiseMask_170814_1952_076.png',
+'masks/pdPL_noiseMask_170814_1952_077.png',
+'masks/pdPL_noiseMask_170814_1952_078.png',
+'masks/pdPL_noiseMask_170814_1952_079.png',
+'masks/pdPL_noiseMask_170814_1952_080.png',
+'masks/pdPL_noiseMask_170814_1952_081.png',
+'masks/pdPL_noiseMask_170814_1952_082.png',
+'masks/pdPL_noiseMask_170814_1952_083.png',
+'masks/pdPL_noiseMask_170814_1952_084.png',
+'masks/pdPL_noiseMask_170814_1952_085.png',
+'masks/pdPL_noiseMask_170814_1952_086.png',
+'masks/pdPL_noiseMask_170814_1952_087.png',
+'masks/pdPL_noiseMask_170814_1952_088.png',
+'masks/pdPL_noiseMask_170814_1952_089.png',
+'masks/pdPL_noiseMask_170814_1952_090.png',
+'masks/pdPL_noiseMask_170814_1952_091.png',
+'masks/pdPL_noiseMask_170814_1952_092.png',
+'masks/pdPL_noiseMask_170814_1952_093.png',
+'masks/pdPL_noiseMask_170814_1952_094.png',
+'masks/pdPL_noiseMask_170814_1952_095.png',
+'masks/pdPL_noiseMask_170814_1952_096.png',
+'masks/pdPL_noiseMask_170814_1952_097.png',
+'masks/pdPL_noiseMask_170814_1952_098.png',
+'masks/pdPL_noiseMask_170814_1952_099.png',
+];
+
+masks_PL = jsPsych.randomization.shuffle(masks_PL);
+masks_PL_stim = masks_PL.slice(0,50);
+
+
+var masks_PR= [
+'masks/pdPR_noiseMask_170814_1952_000.png',
+'masks/pdPR_noiseMask_170814_1952_001.png',
+'masks/pdPR_noiseMask_170814_1952_002.png',
+'masks/pdPR_noiseMask_170814_1952_003.png',
+'masks/pdPR_noiseMask_170814_1952_004.png',
+'masks/pdPR_noiseMask_170814_1952_005.png',
+'masks/pdPR_noiseMask_170814_1952_006.png',
+'masks/pdPR_noiseMask_170814_1952_007.png',
+'masks/pdPR_noiseMask_170814_1952_008.png',
+'masks/pdPR_noiseMask_170814_1952_009.png',
+'masks/pdPR_noiseMask_170814_1952_010.png',
+'masks/pdPR_noiseMask_170814_1952_011.png',
+'masks/pdPR_noiseMask_170814_1952_012.png',
+'masks/pdPR_noiseMask_170814_1952_013.png',
+'masks/pdPR_noiseMask_170814_1952_014.png',
+'masks/pdPR_noiseMask_170814_1952_015.png',
+'masks/pdPR_noiseMask_170814_1952_016.png',
+'masks/pdPR_noiseMask_170814_1952_017.png',
+'masks/pdPR_noiseMask_170814_1952_018.png',
+'masks/pdPR_noiseMask_170814_1952_019.png',
+'masks/pdPR_noiseMask_170814_1952_020.png',
+'masks/pdPR_noiseMask_170814_1952_021.png',
+'masks/pdPR_noiseMask_170814_1952_022.png',
+'masks/pdPR_noiseMask_170814_1952_023.png',
+'masks/pdPR_noiseMask_170814_1952_024.png',
+'masks/pdPR_noiseMask_170814_1952_025.png',
+'masks/pdPR_noiseMask_170814_1952_026.png',
+'masks/pdPR_noiseMask_170814_1952_027.png',
+'masks/pdPR_noiseMask_170814_1952_028.png',
+'masks/pdPR_noiseMask_170814_1952_029.png',
+'masks/pdPR_noiseMask_170814_1952_030.png',
+'masks/pdPR_noiseMask_170814_1952_031.png',
+'masks/pdPR_noiseMask_170814_1952_032.png',
+'masks/pdPR_noiseMask_170814_1952_033.png',
+'masks/pdPR_noiseMask_170814_1952_034.png',
+'masks/pdPR_noiseMask_170814_1952_035.png',
+'masks/pdPR_noiseMask_170814_1952_036.png',
+'masks/pdPR_noiseMask_170814_1952_037.png',
+'masks/pdPR_noiseMask_170814_1952_038.png',
+'masks/pdPR_noiseMask_170814_1952_039.png',
+'masks/pdPR_noiseMask_170814_1952_040.png',
+'masks/pdPR_noiseMask_170814_1952_041.png',
+'masks/pdPR_noiseMask_170814_1952_042.png',
+'masks/pdPR_noiseMask_170814_1952_043.png',
+'masks/pdPR_noiseMask_170814_1952_044.png',
+'masks/pdPR_noiseMask_170814_1952_045.png',
+'masks/pdPR_noiseMask_170814_1952_046.png',
+'masks/pdPR_noiseMask_170814_1952_047.png',
+'masks/pdPR_noiseMask_170814_1952_048.png',
+'masks/pdPR_noiseMask_170814_1952_049.png',
+'masks/pdPR_noiseMask_170814_1952_050.png',
+'masks/pdPR_noiseMask_170814_1952_051.png',
+'masks/pdPR_noiseMask_170814_1952_052.png',
+'masks/pdPR_noiseMask_170814_1952_053.png',
+'masks/pdPR_noiseMask_170814_1952_054.png',
+'masks/pdPR_noiseMask_170814_1952_055.png',
+'masks/pdPR_noiseMask_170814_1952_056.png',
+'masks/pdPR_noiseMask_170814_1952_057.png',
+'masks/pdPR_noiseMask_170814_1952_058.png',
+'masks/pdPR_noiseMask_170814_1952_059.png',
+'masks/pdPR_noiseMask_170814_1952_060.png',
+'masks/pdPR_noiseMask_170814_1952_061.png',
+'masks/pdPR_noiseMask_170814_1952_062.png',
+'masks/pdPR_noiseMask_170814_1952_063.png',
+'masks/pdPR_noiseMask_170814_1952_064.png',
+'masks/pdPR_noiseMask_170814_1952_065.png',
+'masks/pdPR_noiseMask_170814_1952_066.png',
+'masks/pdPR_noiseMask_170814_1952_067.png',
+'masks/pdPR_noiseMask_170814_1952_068.png',
+'masks/pdPR_noiseMask_170814_1952_069.png',
+'masks/pdPR_noiseMask_170814_1952_070.png',
+'masks/pdPR_noiseMask_170814_1952_071.png',
+'masks/pdPR_noiseMask_170814_1952_072.png',
+'masks/pdPR_noiseMask_170814_1952_073.png',
+'masks/pdPR_noiseMask_170814_1952_074.png',
+'masks/pdPR_noiseMask_170814_1952_075.png',
+'masks/pdPR_noiseMask_170814_1952_076.png',
+'masks/pdPR_noiseMask_170814_1952_077.png',
+'masks/pdPR_noiseMask_170814_1952_078.png',
+'masks/pdPR_noiseMask_170814_1952_079.png',
+'masks/pdPR_noiseMask_170814_1952_080.png',
+'masks/pdPR_noiseMask_170814_1952_081.png',
+'masks/pdPR_noiseMask_170814_1952_082.png',
+'masks/pdPR_noiseMask_170814_1952_083.png',
+'masks/pdPR_noiseMask_170814_1952_084.png',
+'masks/pdPR_noiseMask_170814_1952_085.png',
+'masks/pdPR_noiseMask_170814_1952_086.png',
+'masks/pdPR_noiseMask_170814_1952_087.png',
+'masks/pdPR_noiseMask_170814_1952_088.png',
+'masks/pdPR_noiseMask_170814_1952_089.png',
+'masks/pdPR_noiseMask_170814_1952_090.png',
+'masks/pdPR_noiseMask_170814_1952_091.png',
+'masks/pdPR_noiseMask_170814_1952_092.png',
+'masks/pdPR_noiseMask_170814_1952_093.png',
+'masks/pdPR_noiseMask_170814_1952_094.png',
+'masks/pdPR_noiseMask_170814_1952_095.png',
+'masks/pdPR_noiseMask_170814_1952_096.png',
+'masks/pdPR_noiseMask_170814_1952_097.png',
+'masks/pdPR_noiseMask_170814_1952_098.png',
+'masks/pdPR_noiseMask_170814_1952_099.png',
+];
+
+masks_PR = jsPsych.randomization.shuffle(masks_PR);
+masks_PR_stim = masks_PR.slice(0,50);
+
+
+//assign the masks
+var maskBlack_PL=jsPsych.randomization.shuffle(masks_PL_stim);
+var maskWhite_PL=jsPsych.randomization.shuffle(masks_PL_stim);
+var maskOther_PL=jsPsych.randomization.shuffle(masks_PL_stim);
+
+var maskBlack_PR=jsPsych.randomization.shuffle(masks_PR_stim);
+var maskWhite_PR=jsPsych.randomization.shuffle(masks_PR_stim);
+var maskOther_PR=jsPsych.randomization.shuffle(masks_PR_stim);
+
+//assign the inks
+var inksBlack=jsPsych.randomization.shuffle(inkstim);
+var inksWhite=jsPsych.randomization.shuffle(inkstim);
+var inksOther=jsPsych.randomization.shuffle(inkstim);
+
+
+// practice stimuli GL
+var pr_stimuli_GL = [];
+var pr_blackstim = black.slice(50,51);
+var pr_whitestim = white.slice(50,51);
+var pr_otherstim = other.slice(50,51);
+
+var pr_maskBlack_PL = masks_PL.slice(50,51);
+var pr_maskWhite_PL = masks_PL.slice(51,52);
+var pr_maskOther_PL = masks_PL.slice(52,53);
+
+var pr_inksBlack = inks.slice(50,51);
+var pr_inksWhite = inks.slice(51,52);
+var pr_inksOther = inks.slice(52,53);
+
+for (var i = 0; i < pr_blackstim.length; i++) {
+  pr_stimuli_GL.push({stimuli: [pr_blackstim[i],'misc/blank.png',pr_inksBlack[i],pr_maskBlack_PL[i]]})
+  pr_stimuli_GL.push({stimuli: [pr_whitestim[i],'misc/blank.png',pr_inksWhite[i],pr_maskWhite_PL[i]]})
+  pr_stimuli_GL.push({stimuli: [pr_otherstim[i],'misc/blank.png',pr_inksOther[i],pr_maskOther_PL[i]]})
+}
+
+pr_stimuli_GL = jsPsych.randomization.shuffle(pr_stimuli_GL)
+
+// practice stimuli GR
+var pr_stimuli_GR = [];
+
+var pr_maskBlack_PR = masks_PR.slice(50,51);
+var pr_maskWhite_PR = masks_PR.slice(51,52);
+var pr_maskOther_PR = masks_PR.slice(52,53);
+
+var pr_inksBlack = inks.slice(50,51);
+var pr_inksWhite = inks.slice(51,52);
+var pr_inksOther = inks.slice(52,53);
+
+for (var i = 0; i < pr_blackstim.length; i++) {
+  pr_stimuli_GR.push({stimuli: [pr_blackstim[i],'misc/blank.png',pr_inksBlack[i],pr_maskBlack_PR[i]]})
+  pr_stimuli_GR.push({stimuli: [pr_whitestim[i],'misc/blank.png',pr_inksWhite[i],pr_maskWhite_PR[i]]})
+  pr_stimuli_GR.push({stimuli: [pr_otherstim[i],'misc/blank.png',pr_inksOther[i],pr_maskOther_PR[i]]})
+}
+
+pr_stimuli_GR = jsPsych.randomization.shuffle(pr_stimuli_GR)
+
+
+/* generate the randomized lists of stimuli- BLOCK 1: no. 0-16 = 17 trials*/ 
+var stimuli1_GL=[];
+for (var i=0; i<17; i++){
+	stimuli1_GL.push({stimuli:[whitestim[i],'misc/blank.png',inksWhite[i],maskWhite_PL[i]]})
+	stimuli1_GL.push({stimuli:[blackstim[i],'misc/blank.png',inksBlack[i],maskBlack_PL[i]]})
+	stimuli1_GL.push({stimuli:[otherstim[i],'misc/blank.png',inksOther[i],maskOther_PL[i]]})
+}
+stimuli1_GL=jsPsych.randomization.shuffle(stimuli1_GL)
+
+var stimuli1_GR=[];
+for (var i=0; i<17; i++){
+  stimuli1_GR.push({stimuli:[whitestim[i],'misc/blank.png',inksWhite[i],maskWhite_PR[i]]})
+  stimuli1_GR.push({stimuli:[blackstim[i],'misc/blank.png',inksBlack[i],maskBlack_PR[i]]})
+  stimuli1_GR.push({stimuli:[otherstim[i],'misc/blank.png',inksOther[i],maskOther_PR[i]]})
+}
+stimuli1_GR=jsPsych.randomization.shuffle(stimuli1_GR)
+
+
+/* generate the randomized lists of stimuli- BLOCK 2: no. 17-33 = 17 trials*/
+var stimuli2_GL=[];
+for (var i=17; i<34; i++){
+  stimuli2_GL.push({stimuli:[whitestim[i],'misc/blank.png',inksWhite[i],maskWhite_PL[i]]})
+  stimuli2_GL.push({stimuli:[blackstim[i],'misc/blank.png',inksBlack[i],maskBlack_PL[i]]})
+  stimuli2_GL.push({stimuli:[otherstim[i],'misc/blank.png',inksOther[i],maskOther_PL[i]]})
+}
+stimuli2_GL=jsPsych.randomization.shuffle(stimuli2_GL)
+
+var stimuli2_GR=[];
+for (var i=17; i<34; i++){
+  stimuli2_GR.push({stimuli:[whitestim[i],'misc/blank.png',inksWhite[i],maskWhite_PR[i]]})
+  stimuli2_GR.push({stimuli:[blackstim[i],'misc/blank.png',inksBlack[i],maskBlack_PR[i]]})
+  stimuli2_GR.push({stimuli:[otherstim[i],'misc/blank.png',inksOther[i],maskOther_PR[i]]})
+}
+stimuli2_GR=jsPsych.randomization.shuffle(stimuli2_GR)
+
+
+/* generate the randomized lists of stimuli- BLOCK 3: no. 34-50 = 16 trials*/
+var stimuli3_GL=[];
+for (var i=34; i<50; i++){
+  stimuli3_GL.push({stimuli:[whitestim[i],'misc/blank.png',inksWhite[i],maskWhite_PL[i]]})
+  stimuli3_GL.push({stimuli:[blackstim[i],'misc/blank.png',inksBlack[i],maskBlack_PL[i]]})
+  stimuli3_GL.push({stimuli:[otherstim[i],'misc/blank.png',inksOther[i],maskOther_PL[i]]})
+}
+stimuli3_GL=jsPsych.randomization.shuffle(stimuli3_GL)
+
+var stimuli3_GR=[];
+for (var i=34; i<50; i++){
+  stimuli3_GR.push({stimuli:[whitestim[i],'misc/blank.png',inksWhite[i],maskWhite_PR[i]]})
+  stimuli3_GR.push({stimuli:[blackstim[i],'misc/blank.png',inksBlack[i],maskBlack_PR[i]]})
+  stimuli3_GR.push({stimuli:[otherstim[i],'misc/blank.png',inksOther[i],maskOther_PR[i]]})
+}
+stimuli3_GR=jsPsych.randomization.shuffle(stimuli3_GR)
+
+
+
+/*set up welcome block*/
+var welcome_block = {
+  type: "text",
+  text: "<p><strong>Welcome to the experiment! This is Task 1 out of 5 and will take less than 5 minutes to complete.</strong></p><p><em>Press the ENTER key to continue.</em></p>",
+	cont_key: [13],
+};
+var handsetup={
+	type: "text",
+	text: "<div class='header'><small>Task 1 of 5</small></div><p style='margin-top:20%'>Place your left index finger on the E key and your right index finger on the I key.</p>"+
+	"<p>Press ENTER to continue.</p>",
+    cont_key: [13]
+}
+/* instructions*/
+var instructions_GL={
+	type: "text",
+	text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; </small></div>"+"<p>You will make 150 evaluative judgments of images. For each trial, you will first see a real-life picture of a face. Then you will see an image of an inkblot drawing, followed by an image of black and white noise.</p>"+ "<center><img src='taskinstrux2.png'></img></center>"+'<p>Finally, you will make an evaluative judgment as to whether '+
+	' the inkblot drawing that you saw was "pleasant" or "unpleasant".</p><p>It is important to note that the real-life pictures can sometimes bias people\'s judgments of the drawings. Because we are interested in how '+
+	'people can avoid being biased, <strong>please try your absolute best not to let the real-life picture bias your judgment of the drawings!</strong> Give us an honest assessment of the inkblot drawings, regardless of the images that precede them.</p>' + 
+	// '<p><strong>only categorize the inkblot </strong> images.</p>'+
+	'<p style="text-align:center;">Press <strong>E</strong> with your left index finger if the inkblot was <strong>pleasant</strong>.</p><p style="text-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Press <strong>I</strong> with your right index finger if the inkblot was <strong>unpleasant</strong>.</p>'+
+    '<p>Press ENTER to continue.</p>'],
+    cont_key: [13],
+};
+var instructions_GR={
+	type: "text",
+	text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; </small></div>"+"<p>You will make 150 evaluative judgments of images. For each trial, you will first see a real-life picture of a face. Then you will see an image of an inkblot drawing, followed by an image of black and white noise.</p>"+ "<center><img src='taskinstrux2.png'></img></center>"+'<p>Finally, you will make an evaluative judgment as to whether '+
+	' the inkblot drawing that you saw was "pleasant" or "unpleasant".</p><p>It is important to note that the real-life pictures can sometimes bias people\'s judgments of the drawings. Because we are interested in how '+
+	'people can avoid being biased, <strong>please try your absolute best not to let the real-life pictures bias your judgment of the drawings!</strong> Give us an honest assessment of the inkblot drawings, regardless of the images that precede them.</p>' + 
+	// '<p><strong>only categorize the inkblot </strong> images.</p>'+
+	'<p style="text-align:center;">Press <strong>E</strong> with your left index finger if the inkblot was <strong>unpleasant</strong>.</p><p style="text-align:center;">Press <strong>I</strong> with your right index finger if the inkblot was <strong>pleasant</strong>.</p>'+
+   '<p>Press ENTER to begin.</p>'],
+    cont_key: [13],
+};
+
+
+var practice_instructions={
+  type: "text",
+  text: "<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Practice Block</small></div>"+ '<p>You will now begin three practice trials of the task.</p>' +
+   '<p>Press ENTER to begin.</p>',
+    cont_key: [13],
+};
+
+var prblock_GL = {
+  type: 'multi-stim-multi-response',
+timeline: pr_stimuli_GL, 
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+var prblock_GR = {
+  type: 'multi-stim-multi-response',
+timeline: pr_stimuli_GR, 
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+var begin_exp_GR={
+  type: "text",
+  text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Block 1 of 3</small></div>"+'<p>You have finished the practice trials and will now begin the actual task.</p>' + 
+	//'<p>Remember to categorize the inkblots as <strong>quickly</strong> as you can.</p>' + 
+  '<p style="text-align:center;"> Press <strong>E</strong> with your left index finger if the inkblot was <strong>unpleasant</strong>.</p><p style="text-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Press <strong>I</strong>  with your right index finger if the inkblot was <strong>pleasant</strong>.</p>'+
+    '<p>Press ENTER to begin.</p>'],
+    cont_key: [13],
+};
+
+
+var begin_exp_GL={
+  type: "text",
+  text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Block 1 of 3</small></div>"+'<p>You have finished the practice trials and will now begin the actual task.</p>' + 
+	// '<p>Remember to categorize the inkblots as <strong>quickly</strong> as you can.</p>' +
+  '<p style="text-align:center;"> Press <strong>E</strong> with your left index finger if the inkblot was <strong>pleasant</strong>.</p><p style="text-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Press <strong>I</strong>  with your right index finger if the inkblot was <strong>unpleasant</strong>.</p>'+
+    '<p>Press ENTER to begin.</p>'],
+    cont_key: [13],
+};
+
+/*create blocks with 18 trials each for a total of 72 trials */
+var block1_GL = {
+  type: 'multi-stim-multi-response',
+timeline: stimuli1_GL,
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+var block1_GR = {
+  type: 'multi-stim-multi-response',
+timeline: stimuli1_GR,
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+
+var interblock12_GR={
+	type: "text",
+	text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Block 2 of 3</small></div>"+'<p>You have finished Block 1 of 3.' + //' Remember to categorize the inkblots as <strong>quickly</strong>  as you can.</p>'+
+	'<p style="text-align:center;"> Press <strong>E</strong> with your left index finger if the inkblot was <strong>unpleasant</strong>.</p><p style="text-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Press <strong>I</strong>  with your right index finger if the inkblot was <strong>pleasant</strong>.</p>'+
+    '<p>Press ENTER to continue the experiment.</p>'],
+    cont_key: [13],
+};
+
+
+var interblock12_GL={
+	type: "text",
+	text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Block 1 of 3</small></div>"+'<p>You have finished Block 1 of 3.' + //' Remember to categorize the inkblots as <strong>quickly</strong>  as you can.</p>'+
+  '<p style="text-align:center;"> Press <strong>E</strong> with your left index finger if the inkblot was <strong>pleasant</strong>.</p><p style="text-align:center;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Press <strong>I</strong>  with your right index finger if the inkblot was <strong>unpleasant</strong>.</p>'+
+    '<p>Press ENTER to continue the experiment.</p>'],
+    cont_key: [13],
+};
+
+
+var block2_GL = {
+  type: 'multi-stim-multi-response',
+timeline: stimuli2_GL,
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+var block2_GR = {
+  type: 'multi-stim-multi-response',
+timeline: stimuli2_GR,
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+var interblock23_GR={
+  type: "text",
+  text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Block 3 of 3</small></div>"+'<p>You have finished Block 2 of 3.' + //' Remember to categorize the inkblots as <strong>quickly</strong>  as you can.</p>'+
+  '<p style="text-align:center;"> Press <strong>E</strong> with your left index finger if the inkblot was <strong>unpleasant</strong>.</p><p style="text-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Press <strong>I</strong>  with your right index finger if the inkblot was <strong>pleasant</strong>.</p>'+
+    '<p>Press ENTER to continue the experiment.</p>'],
+    cont_key: [13],
+};
+
+
+var interblock23_GL={
+  type: "text",
+  text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Block 3 of 3</small></div>"+'<p>You have finished Block 2 of 3.' + //' Remember to categorize the inkblots as <strong>quickly</strong>  as you can.</p>'+
+  '<p style="text-align:center;"> Press <strong>E</strong> with your left index finger if the inkblot was <strong>pleasant</strong>.</p><p style="text-align:center;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Press <strong>I</strong>  with your right index finger if the inkblot was <strong>unpleasant</strong>.</p>'+
+    '<p>Press ENTER to continue the experiment.</p>'],
+    cont_key: [13],
+};
+
+
+var block3_GL = {
+  type: 'multi-stim-multi-response',
+timeline: stimuli3_GL,
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+var block3_GR = {
+  type: 'multi-stim-multi-response',
+timeline: stimuli3_GR,
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+
+  var display_data_block = {
+    type: "text",
+    text: function() {
+  	  start_time = jsPsych.startTime(); //displayed in Greenwich Mean Time
+  	  total_time = jsPsych.totalTime(); //displayed in milliseconds
+  	  jsPsych.data.addProperties({subject_id: sid});
+  	  jsPsych.data.addProperties({start_time: start_time});
+  	  jsPsych.data.addProperties({total_time: total_time});
+	  jsPsych.data.addProperties({preshand: preshand});
+ 	  // saveData(descript, jsPsych.data.dataAsCSV());
+  	  return "<p>Thank you for completing Task 1 out of 5!</p><em>Press the enter key to exit</em></p>";
+    },
+    cont_key: [13]
+  };
+  function getUrlVars() {
+  var vars = {};
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+  vars[key] = value;
+  });
+  return vars;
+  }
+  // var sid = getUrlVars()["MID"];
+  // var preshand = getUrlVars()["PRESHAND"]
+  // var task = getUrlVars()["TASK"]
+  // var postshand=getUrlVars()["POSTSHAND"]
+  // var iatname=getUrlVars()["IAT"]
+
+  // for debugging and programing I have added the following
+  var preshand="GL"
+  var sid="testing"
+  var task="otg"
+
+
+  descript= "AMP_pres_"+preshand+"_"+task+"_"+sid;
+    
+   function goToOTG(otgname){
+   	var OTGURL = "http://nigiri.caltech.edu/~dstanley/otg/?MID=" + sid + "&TASK=" + otgname + "&POSTSHAND=" + postshand + "&IAT=" + iatname;
+   	window.location = OTGURL;
+   }
+  function saveData(filename, filedata){
+  	$.ajax({
+  		type: 'post',
+  		cache: false,
+  		url: 'save_data.php',
+  		data:{filename: filename, filedata: filedata}
+  	});
+  }
+
+
+  var experiment=[];
+  switch(preshand){
+  case "GL":
+	  experiment.push(welcome_block);
+	  experiment.push(handsetup);
+	  experiment.push(instructions_GL);
+    experiment.push(practice_instructions);
+    experiment.push(prblock_GL);
+    experiment.push(begin_exp_GL);
+	  experiment.push(block1_GL);
+	  experiment.push(interblock12_GL);
+    experiment.push(block2_GL);
+    experiment.push(interblock23_GL);
+    experiment.push(block3_GL);
+	  experiment.push(display_data_block);
+  break;
+  case "GR":
+	  experiment.push(welcome_block);
+	  experiment.push(handsetup);
+	  experiment.push(instructions_GR);
+    experiment.push(practice_instructions);
+    experiment.push(prblock_GR);
+    experiment.push(begin_exp_GR);
+	  experiment.push(block1_GR);
+	  experiment.push(interblock12_GR);
+    experiment.push(block2_GR);
+    experiment.push(interblock23_GR);
+    experiment.push(block3_GR);
+	  experiment.push(display_data_block);
+  break;
+  default: ;
+  break;
+  }
+  
+  
+  jsPsych.init({
+	timeline: experiment,
+	//  	on_finish: function(data) {goToOTG(task)
+	//      }
+		 on_finish: function() {
+		     jsPsych.data.displayData();
+		   }
+  });
+</script>
+</html>

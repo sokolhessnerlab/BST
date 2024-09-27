@@ -1,0 +1,2 @@
+mean %Keep of all rutgers=     0.7733    0.7667    0.6067    0.3733    0.1600
+mean %Keep of usable subset 0.7468    0.7342    0.5949    0.3544    0.1772

@@ -1,0 +1,469 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>PRE-social Affect Misattribution Procedure</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="jspsych-5.0.3/jspsych.js"></script>
+  <script src="jspsych-5.0.3/plugins/jspsych-text.js"></script>
+  <script src="jspsych-5.0.3/plugins/jspsych-multi-stim-multi-response.js"></script>
+  <link rel="stylesheet" href="jspsych-5.0.3/css/jspsych.css"></link>
+  <style>
+    img {
+      height: 200px;
+	  align: center;
+    }
+  </style>  
+</head>
+
+<body>
+  <div id="jspsych-target"></div>
+</body>
+<script>
+
+
+	var timing_stim = [75,125,200, -1];
+/* Define the images */
+var black=[
+'trustrating_stim/pd_black_00108_940128_fb_edt_H300.png',
+'trustrating_stim/pd_black_00183_940128_fb_edt_H300.png',
+'trustrating_stim/pd_black_00257_940128_fa_edt_H300.png'
+];
+
+var other=[
+'trustrating_stim/pd_other_00029_940128_fa_edt_H300.png',
+'trustrating_stim/pd_other_00046_931230_fa_edt_H300.png',
+'trustrating_stim/pd_other_00058_931230_fa_edt_H300.png'
+];
+
+
+var white=[
+'trustrating_stim/pd_white_00109_931230_fa_edt_H300.png',
+'trustrating_stim/pd_white_00120_931230_fa_edt_H300.png',
+'trustrating_stim/pd_white_00129_931230_fb_edt_H300.png'
+];
+
+white=jsPsych.randomization.shuffle(white);
+other=jsPsych.randomization.shuffle(other);
+black=jsPsych.randomization.shuffle(black);
+
+whitestim=white.slice(0,2);
+otherstim=other.slice(0,2);
+blackstim=black.slice(0,2);
+
+
+var	inks=[
+'inks/pdbrd_sm_inkblot_170816_1750_001.png',
+'inks/pdbrd_sm_inkblot_170816_1750_002.png',
+'inks/pdbrd_sm_inkblot_170816_1750_003.png'
+];
+
+inks = jsPsych.randomization.shuffle(inks);
+inkstim = inks.slice(0,2);
+
+var	masks_PL=[
+'masks/pdPL_noiseMask_170814_1952_000.png',
+'masks/pdPL_noiseMask_170814_1952_001.png',
+'masks/pdPL_noiseMask_170814_1952_002.png'
+];
+
+masks_PL = jsPsych.randomization.shuffle(masks_PL);
+masks_PL_stim = masks_PL.slice(0,2);
+
+
+var masks_PR= [
+'masks/pdPR_noiseMask_170814_1952_000.png',
+'masks/pdPR_noiseMask_170814_1952_001.png',
+'masks/pdPR_noiseMask_170814_1952_002.png'
+];
+
+masks_PR = jsPsych.randomization.shuffle(masks_PR);
+masks_PR_stim = masks_PR.slice(0,2);
+
+
+//assign the masks
+var maskBlack_PL=jsPsych.randomization.shuffle(masks_PL_stim);
+var maskWhite_PL=jsPsych.randomization.shuffle(masks_PL_stim);
+var maskOther_PL=jsPsych.randomization.shuffle(masks_PL_stim);
+
+var maskBlack_PR=jsPsych.randomization.shuffle(masks_PR_stim);
+var maskWhite_PR=jsPsych.randomization.shuffle(masks_PR_stim);
+var maskOther_PR=jsPsych.randomization.shuffle(masks_PR_stim);
+
+//assign the inks
+var inksBlack=jsPsych.randomization.shuffle(inkstim);
+var inksWhite=jsPsych.randomization.shuffle(inkstim);
+var inksOther=jsPsych.randomization.shuffle(inkstim);
+
+
+// practice stimuli GL
+var pr_stimuli_GL = [];
+var pr_blackstim = black.slice(0,1);
+var pr_whitestim = white.slice(0,1);
+var pr_otherstim = other.slice(0,1);
+
+var pr_maskBlack_PL = masks_PL.slice(0,1);
+var pr_maskWhite_PL = masks_PL.slice(0,1);
+var pr_maskOther_PL = masks_PL.slice(0,1);
+
+var pr_inksBlack = inks.slice(0,1);
+var pr_inksWhite = inks.slice(0,1);
+var pr_inksOther = inks.slice(0,1);
+
+for (var i = 0; i < pr_blackstim.length; i++) {
+  pr_stimuli_GL.push({stimuli: [pr_blackstim[i],'misc/blank.png',pr_inksBlack[i],pr_maskBlack_PL[i]]})
+  pr_stimuli_GL.push({stimuli: [pr_whitestim[i],'misc/blank.png',pr_inksWhite[i],pr_maskWhite_PL[i]]})
+  pr_stimuli_GL.push({stimuli: [pr_otherstim[i],'misc/blank.png',pr_inksOther[i],pr_maskOther_PL[i]]})
+}
+
+pr_stimuli_GL = jsPsych.randomization.shuffle(pr_stimuli_GL)
+
+// practice stimuli GR
+var pr_stimuli_GR = [];
+
+var pr_maskBlack_PR = masks_PR.slice(0,1);
+var pr_maskWhite_PR = masks_PR.slice(0,1);
+var pr_maskOther_PR = masks_PR.slice(0,1);
+
+var pr_inksBlack = inks.slice(0,1);
+var pr_inksWhite = inks.slice(0,1);
+var pr_inksOther = inks.slice(0,1);
+
+for (var i = 0; i < pr_blackstim.length; i++) {
+  pr_stimuli_GR.push({stimuli: [pr_blackstim[i],'misc/blank.png',pr_inksBlack[i],pr_maskBlack_PR[i]]})
+  pr_stimuli_GR.push({stimuli: [pr_whitestim[i],'misc/blank.png',pr_inksWhite[i],pr_maskWhite_PR[i]]})
+  pr_stimuli_GR.push({stimuli: [pr_otherstim[i],'misc/blank.png',pr_inksOther[i],pr_maskOther_PR[i]]})
+}
+
+pr_stimuli_GR = jsPsych.randomization.shuffle(pr_stimuli_GR)
+
+
+/* generate the randomized lists of stimuli- BLOCK 1: no. 0-16 = 17 trials*/ 
+var stimuli1_GL=[];
+for (var i=0; i<1; i++){
+	stimuli1_GL.push({stimuli:[whitestim[i],'misc/blank.png',inksWhite[i],maskWhite_PL[i]]})
+	stimuli1_GL.push({stimuli:[blackstim[i],'misc/blank.png',inksBlack[i],maskBlack_PL[i]]})
+	stimuli1_GL.push({stimuli:[otherstim[i],'misc/blank.png',inksOther[i],maskOther_PL[i]]})
+}
+stimuli1_GL=jsPsych.randomization.shuffle(stimuli1_GL)
+
+var stimuli1_GR=[];
+for (var i=0; i<1; i++){
+  stimuli1_GR.push({stimuli:[whitestim[i],'misc/blank.png',inksWhite[i],maskWhite_PR[i]]})
+  stimuli1_GR.push({stimuli:[blackstim[i],'misc/blank.png',inksBlack[i],maskBlack_PR[i]]})
+  stimuli1_GR.push({stimuli:[otherstim[i],'misc/blank.png',inksOther[i],maskOther_PR[i]]})
+}
+stimuli1_GR=jsPsych.randomization.shuffle(stimuli1_GR)
+
+
+/* generate the randomized lists of stimuli- BLOCK 2: no. 17-33 = 17 trials*/
+var stimuli2_GL=[];
+for (var i=1; i<2; i++){
+  stimuli2_GL.push({stimuli:[whitestim[i],'misc/blank.png',inksWhite[i],maskWhite_PL[i]]})
+  stimuli2_GL.push({stimuli:[blackstim[i],'misc/blank.png',inksBlack[i],maskBlack_PL[i]]})
+  stimuli2_GL.push({stimuli:[otherstim[i],'misc/blank.png',inksOther[i],maskOther_PL[i]]})
+}
+stimuli2_GL=jsPsych.randomization.shuffle(stimuli2_GL)
+
+var stimuli2_GR=[];
+for (var i=1; i<2; i++){
+  stimuli2_GR.push({stimuli:[whitestim[i],'misc/blank.png',inksWhite[i],maskWhite_PR[i]]})
+  stimuli2_GR.push({stimuli:[blackstim[i],'misc/blank.png',inksBlack[i],maskBlack_PR[i]]})
+  stimuli2_GR.push({stimuli:[otherstim[i],'misc/blank.png',inksOther[i],maskOther_PR[i]]})
+}
+stimuli2_GR=jsPsych.randomization.shuffle(stimuli2_GR)
+
+
+/* generate the randomized lists of stimuli- BLOCK 3: no. 34-50 = 16 trials*/
+var stimuli3_GL=[];
+for (var i=2; i<3; i++){
+  stimuli3_GL.push({stimuli:[whitestim[i],'misc/blank.png',inksWhite[i],maskWhite_PL[i]]})
+  stimuli3_GL.push({stimuli:[blackstim[i],'misc/blank.png',inksBlack[i],maskBlack_PL[i]]})
+  stimuli3_GL.push({stimuli:[otherstim[i],'misc/blank.png',inksOther[i],maskOther_PL[i]]})
+}
+stimuli3_GL=jsPsych.randomization.shuffle(stimuli3_GL)
+
+var stimuli3_GR=[];
+for (var i=2; i<3; i++){
+  stimuli3_GR.push({stimuli:[whitestim[i],'misc/blank.png',inksWhite[i],maskWhite_PR[i]]})
+  stimuli3_GR.push({stimuli:[blackstim[i],'misc/blank.png',inksBlack[i],maskBlack_PR[i]]})
+  stimuli3_GR.push({stimuli:[otherstim[i],'misc/blank.png',inksOther[i],maskOther_PR[i]]})
+}
+stimuli3_GR=jsPsych.randomization.shuffle(stimuli3_GR)
+
+
+
+/*set up welcome block*/
+var welcome_block = {
+  type: "text",
+  text: "<p><strong>Welcome to the experiment! This is Task 1 out of 5 and will take less than 5 minutes to complete.</strong></p><p><em>Press the ENTER key to continue.</em></p>",
+	cont_key: [13],
+};
+var handsetup={
+	type: "text",
+	text: "<div class='header'><small>Task 1 of 5</small></div><p style='margin-top:20%'>Place your left index finger on the E key and your right index finger on the I key.</p>"+
+	"<p>Press ENTER to continue.</p>",
+    cont_key: [13]
+}
+/* instructions*/
+var instructions_GL={
+	type: "text",
+	text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; </small></div>"+"<p>You will make 150 evaluative judgments of images. For each trial, you will first see a real-life picture of a face. Then you will see an image of an inkblot drawing, followed by an image of black and white noise.</p>"+ "<center><img src='taskinstrux2.png'></img></center>"+'<p>Finally, you will make an evaluative judgment as to whether '+
+	' the inkblot drawing that you saw was "pleasant" or "unpleasant".</p><p>It is important to note that the real-life pictures can sometimes bias people\'s judgments of the drawings. Because we are interested in how '+
+	'people can avoid being biased, <strong>please try your absolute best not to let the real-life picture bias your judgment of the drawings!</strong> Give us an honest assessment of the inkblot drawings, regardless of the images that precede them.</p>' + 
+	// '<p><strong>only categorize the inkblot </strong> images.</p>'+
+	'<p style="text-align:center;">Press <strong>E</strong> with your left index finger if the inkblot was <strong>pleasant</strong>.</p><p style="text-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Press <strong>I</strong> with your right index finger if the inkblot was <strong>unpleasant</strong>.</p>'+
+    '<p>Press ENTER to continue.</p>'],
+    cont_key: [13],
+};
+var instructions_GR={
+	type: "text",
+	text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; </small></div>"+"<p>You will make 150 evaluative judgments of images. For each trial, you will first see a real-life picture of a face. Then you will see an image of an inkblot drawing, followed by an image of black and white noise.</p>"+ "<center><img src='taskinstrux2.png'></img></center>"+'<p>Finally, you will make an evaluative judgment as to whether '+
+	' the inkblot drawing that you saw was "pleasant" or "unpleasant".</p><p>It is important to note that the real-life pictures can sometimes bias people\'s judgments of the drawings. Because we are interested in how '+
+	'people can avoid being biased, <strong>please try your absolute best not to let the real-life pictures bias your judgment of the drawings!</strong> Give us an honest assessment of the inkblot drawings, regardless of the images that precede them.</p>' + 
+	// '<p><strong>only categorize the inkblot </strong> images.</p>'+
+	'<p style="text-align:center;">Press <strong>E</strong> with your left index finger if the inkblot was <strong>unpleasant</strong>.</p><p style="text-align:center;">Press <strong>I</strong> with your right index finger if the inkblot was <strong>pleasant</strong>.</p>'+
+   '<p>Press ENTER to begin.</p>'],
+    cont_key: [13],
+};
+
+
+var practice_instructions={
+  type: "text",
+  text: "<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Practice Block</small></div>"+ '<p>You will now begin three practice trials of the task.</p>' +
+   '<p>Press ENTER to begin.</p>',
+    cont_key: [13],
+};
+
+var prblock_GL = {
+  type: 'multi-stim-multi-response',
+timeline: pr_stimuli_GL, 
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+var prblock_GR = {
+  type: 'multi-stim-multi-response',
+timeline: pr_stimuli_GR, 
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+var begin_exp_GR={
+  type: "text",
+  text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Block 1 of 3</small></div>"+'<p>You have finished the practice trials and will now begin the actual task.</p>' + 
+	//'<p>Remember to categorize the inkblots as <strong>quickly</strong> as you can.</p>' + 
+  '<p style="text-align:center;"> Press <strong>E</strong> with your left index finger if the inkblot was <strong>unpleasant</strong>.</p><p style="text-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Press <strong>I</strong>  with your right index finger if the inkblot was <strong>pleasant</strong>.</p>'+
+    '<p>Press ENTER to begin.</p>'],
+    cont_key: [13],
+};
+
+
+var begin_exp_GL={
+  type: "text",
+  text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Block 1 of 3</small></div>"+'<p>You have finished the practice trials and will now begin the actual task.</p>' + 
+	// '<p>Remember to categorize the inkblots as <strong>quickly</strong> as you can.</p>' +
+  '<p style="text-align:center;"> Press <strong>E</strong> with your left index finger if the inkblot was <strong>pleasant</strong>.</p><p style="text-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Press <strong>I</strong>  with your right index finger if the inkblot was <strong>unpleasant</strong>.</p>'+
+    '<p>Press ENTER to begin.</p>'],
+    cont_key: [13],
+};
+
+/*create blocks with 18 trials each for a total of 72 trials */
+var block1_GL = {
+  type: 'multi-stim-multi-response',
+timeline: stimuli1_GL,
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+var block1_GR = {
+  type: 'multi-stim-multi-response',
+timeline: stimuli1_GR,
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+
+var interblock12_GR={
+	type: "text",
+	text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Block 2 of 3</small></div>"+'<p>You have finished Block 1 of 3.' + //' Remember to categorize the inkblots as <strong>quickly</strong>  as you can.</p>'+
+	'<p style="text-align:center;"> Press <strong>E</strong> with your left index finger if the inkblot was <strong>unpleasant</strong>.</p><p style="text-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Press <strong>I</strong>  with your right index finger if the inkblot was <strong>pleasant</strong>.</p>'+
+    '<p>Press ENTER to continue the experiment.</p>'],
+    cont_key: [13],
+};
+
+
+var interblock12_GL={
+	type: "text",
+	text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Block 1 of 3</small></div>"+'<p>You have finished Block 1 of 3.' + //' Remember to categorize the inkblots as <strong>quickly</strong>  as you can.</p>'+
+  '<p style="text-align:center;"> Press <strong>E</strong> with your left index finger if the inkblot was <strong>pleasant</strong>.</p><p style="text-align:center;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Press <strong>I</strong>  with your right index finger if the inkblot was <strong>unpleasant</strong>.</p>'+
+    '<p>Press ENTER to continue the experiment.</p>'],
+    cont_key: [13],
+};
+
+
+var block2_GL = {
+  type: 'multi-stim-multi-response',
+timeline: stimuli2_GL,
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+var block2_GR = {
+  type: 'multi-stim-multi-response',
+timeline: stimuli2_GR,
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+var interblock23_GR={
+  type: "text",
+  text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Block 3 of 3</small></div>"+'<p>You have finished Block 2 of 3.' + //' Remember to categorize the inkblots as <strong>quickly</strong>  as you can.</p>'+
+  '<p style="text-align:center;"> Press <strong>E</strong> with your left index finger if the inkblot was <strong>unpleasant</strong>.</p><p style="text-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Press <strong>I</strong>  with your right index finger if the inkblot was <strong>pleasant</strong>.</p>'+
+    '<p>Press ENTER to continue the experiment.</p>'],
+    cont_key: [13],
+};
+
+
+var interblock23_GL={
+  type: "text",
+  text: ["<div class='header'><small>Task 1 of 5 &nbsp; &nbsp; &nbsp; &nbsp; Block 3 of 3</small></div>"+'<p>You have finished Block 2 of 3.' + //' Remember to categorize the inkblots as <strong>quickly</strong>  as you can.</p>'+
+  '<p style="text-align:center;"> Press <strong>E</strong> with your left index finger if the inkblot was <strong>pleasant</strong>.</p><p style="text-align:center;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Press <strong>I</strong>  with your right index finger if the inkblot was <strong>unpleasant</strong>.</p>'+
+    '<p>Press ENTER to continue the experiment.</p>'],
+    cont_key: [13],
+};
+
+
+var block3_GL = {
+  type: 'multi-stim-multi-response',
+timeline: stimuli3_GL,
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+var block3_GR = {
+  type: 'multi-stim-multi-response',
+timeline: stimuli3_GR,
+  choices: [
+    [69, 73]
+  ], // E or I
+  timing_stim: timing_stim,
+timing_post_trial: 500,
+}
+
+
+  var display_data_block = {
+    type: "text",
+    text: function() {
+  	  start_time = jsPsych.startTime(); //displayed in Greenwich Mean Time
+  	  total_time = jsPsych.totalTime(); //displayed in milliseconds
+  	  jsPsych.data.addProperties({subject_id: sid});
+  	  jsPsych.data.addProperties({start_time: start_time});
+  	  jsPsych.data.addProperties({total_time: total_time});
+	  jsPsych.data.addProperties({preshand: preshand});
+ 	  // saveData(descript, jsPsych.data.dataAsCSV());
+  	  return "<p>Thank you for completing Task 1 out of 5!</p><em>Press the enter key to exit</em></p>";
+    },
+    cont_key: [13]
+  };
+  function getUrlVars() {
+  var vars = {};
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+  vars[key] = value;
+  });
+  return vars;
+  }
+  // var sid = getUrlVars()["MID"];
+  // var preshand = getUrlVars()["PRESHAND"]
+  // var task = getUrlVars()["TASK"]
+  // var postshand=getUrlVars()["POSTSHAND"]
+  // var iatname=getUrlVars()["IAT"]
+
+  // for debugging and programing I have added the following
+  var preshand="GL"
+  var sid="testing"
+  var task="otg"
+
+
+  descript= "AMP_pres_"+preshand+"_"+task+"_"+sid;
+    
+   function goToOTG(otgname){
+   	var OTGURL = "http://nigiri.caltech.edu/~dstanley/otg/?MID=" + sid + "&TASK=" + otgname + "&POSTSHAND=" + postshand + "&IAT=" + iatname;
+   	window.location = OTGURL;
+   }
+  function saveData(filename, filedata){
+  	$.ajax({
+  		type: 'post',
+  		cache: false,
+  		url: 'save_data.php',
+  		data:{filename: filename, filedata: filedata}
+  	});
+  }
+
+
+  var experiment=[];
+  switch(preshand){
+  case "GL":
+	  experiment.push(welcome_block);
+	  experiment.push(handsetup);
+	  experiment.push(instructions_GL);
+    experiment.push(practice_instructions);
+    experiment.push(prblock_GL);
+    experiment.push(begin_exp_GL);
+	  experiment.push(block1_GL);
+	  experiment.push(interblock12_GL);
+    experiment.push(block2_GL);
+    experiment.push(interblock23_GL);
+    experiment.push(block3_GL);
+	  experiment.push(display_data_block);
+  break;
+  case "GR":
+	  experiment.push(welcome_block);
+	  experiment.push(handsetup);
+	  experiment.push(instructions_GR);
+    experiment.push(practice_instructions);
+    experiment.push(prblock_GR);
+    experiment.push(begin_exp_GR);
+	  experiment.push(block1_GR);
+	  experiment.push(interblock12_GR);
+    experiment.push(block2_GR);
+    experiment.push(interblock23_GR);
+    experiment.push(block3_GR);
+	  experiment.push(display_data_block);
+  break;
+  default: ;
+  break;
+  }
+  
+  
+  jsPsych.init({
+	timeline: experiment,
+	//  	on_finish: function(data) {goToOTG(task)
+	//      }
+		 on_finish: function() {
+		     jsPsych.data.displayData();
+		   }
+  });
+</script>
+</html>

@@ -1,0 +1,9 @@
+SUBJECT ID	CONDITION	BLOCK	TRIAL NUM	CUMULATIVE TRIAL NUM	STIM	INK	MASK	STIM RACE	RESPONSE	RT	START TIME
+xxx	1	80	01	01	black_mb014.bmp	pd_sm_inkblot_170816_1750_046.png	pdPR_noiseMask_170814_1952_037.png	1	0	1.021897	21291.635227
+xxx	1	80	02	02	white_00874_940307_fa_edt.bmp	pd_sm_inkblot_170816_1750_018.png	pdPR_noiseMask_170814_1952_055.png	0	0	3.290310	21292.934762
+xxx	1	80	03	03	other_00588_940928_fa_edt.bmp	pd_sm_inkblot_170816_1750_090.png	pdPR_noiseMask_170814_1952_005.png	2	0	0.452835	21296.500228
+xxx	1	1	01	01	white_mw024.bmp	pd_sm_inkblot_170816_1750_097.png	pdPR_noiseMask_170814_1952_066.png	0	1	0.519715	21305.297218
+xxx	1	1	02	02	other_00610_940928_fa_edt.bmp	pd_sm_inkblot_170816_1750_014.png	pdPR_noiseMask_170814_1952_038.png	2	1	0.393889	21306.046973
+xxx	1	1	03	03	black_00453_940422_fb_edt.bmp	pd_sm_inkblot_170816_1750_062.png	pdPR_noiseMask_170814_1952_010.png	1	0	0.873513	21306.663424
+xxx	1	1	04	04	other_00261_940128_fb_edt.bmp	pd_sm_inkblot_170816_1750_032.png	pdPR_noiseMask_170814_1952_042.png	2	0	0.470083	21307.763046
+xxx	1	1	05	05	black_00801_941205_fa_edt.bmp	pd_sm_inkblot_170816_1750_059.png	pdPR_noiseMask_170814_1952_032.png	1	1	0.153958	21308.462891

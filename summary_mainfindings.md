@@ -1,21 +1,41 @@
 # Summary of Main BST Findings
 Based on `main_analysis.R`
 
-## BASIC ANALYSES
+# BASIC ANALYSES ####
 
-## Stressors
 
-### Acute stressor
+## Stressors #########################
+
+### Acute stressor ####
+
+_Cold Pressor Task (Unpleasantness Rating)_
 
 It worked: the cold water bath was significantly more unpleasant (+4.1 on a scale of 1-7; t(38) = 13.7, p = 3e-16).
 
 Mean control (lukewarm) bath rating was 2.0 (s.d. 1.0), while mean stress (cold) bath was 6.1 (s.d. 1.3).
 
-_(Ratings did not appear to be affected by day, nor was the difference in ratings affected by the task order)_
+> Key take-away: Ratings did not appear to be affected by day, nor was the difference in ratings affected by the task order.
 
-### Chronic stressor
+_Cortisol_
 
-Roughly normally-distributed, with mean of 15.9 (s.d. = 5.7; range 3-27, median 16.5) on a scale of 0-40. **Mild-to-moderate chronic stress is present**.
+Day Effects (Control): People enter Day 2 with greater cortisol than day 1, however the 4 cortisol readings across days under the control condition are not significant (for any of the 4 readings). 
+
+> Key take-away: Day does not seem to affect cortisol readings.
+
+Cortisol reading 3 minus 1 (& 4 minus 1) visual distributions show positive skew under stress vs. a distribution hugging zero under the control condition. 
+
+t-tests of cortisol reading 1 to 3 differences (p = 0.0007266), as well as 1 to 4 (p = 0.006921), under stress v. control indicate significant differences between the conditions.  
+
+> Key take-away: The stress condition does seem to have an impact on cortisol levels at reading 3 with some continued impact until reading 4.
+
+
+### Chronic stressor ####
+
+_PSS_
+
+Scores are roughly normally-distributed, with mean of 15.9 (s.d. = 5.7; range 3-27, median 16.5) on a scale of 0-40. 
+
+**Mild-to-moderate chronic stress is present**.
 
 > 11 **low** chronic stress (0-13 PSS)
 >
@@ -23,11 +43,13 @@ Roughly normally-distributed, with mean of 15.9 (s.d. = 5.7; range 3-27, median 
 >
 > 1 **high** chronic stress (27-40)
 
-_(Not affected by whether the acute stressor was on the day the PSS was filled out)_
+_PSS scores do not appear to be affected by whether the acute stressor was on the day the PSS was filled out._
 
-## Trust assessments
 
-### Trust ratings
+
+## Trust assessments #########################
+
+### Trust ratings ####
 
 Average rating of 4.7 on a scale from 1-9.
 
@@ -41,7 +63,7 @@ If the previous rating given was 'untrustworthy', the current rating is predicte
 
 Using the actual previous rating, the pattern remains the same, although the effect appears to be stronger
 
-### Trust game
+### Trust game ####
 
 Average amount sent of $2.53 (from $0-$5).
 
@@ -51,17 +73,20 @@ A simple regression with day & stress suggests there may be a day effect in whic
 1. Previous **ACTION**: After choosing to share, people share more (+0.22, p = 2e-16) on the next trial. Acute stress reduces this effect (-0.14, p = 6e-11).
 2. Previous **OUTCOME**: After sharing is reciprocated, people share less (-0.046, p = 0.005) on the next trial (conversely, if sharing is _not_ reciprocated, people share _more_ on the next trial). Stress does not affect this (p = 0.5).
 
-### Interrelation btwn ratings & sharing
+### Interrelation btwn ratings & sharing ####
 
 Ratings & choices were made about different people, but **average behavior in the two domains is correlated**. The average rating of trust and the average amount shared in the game are correlated (r(37) = .36, p = 0.02, spearman's rho). This suggests that there are consistent individual baseline differences in the average perception of trustworthiness.
 
-## Attitude assessments
 
-### Implicit Attitudes
+## Attitude assessments #########################
 
-IAT
 
-**AMP:**
+### Implicit Attitudes ####
+
+
+#### IAT ####
+
+#### AMP ####
 
 Strong main effect of judgment type (pleasant is faster than unpleasant), no main effects of stimulus race or interactions between stimulus race & judgment type (pleasant or unpleasant).
 
@@ -74,7 +99,7 @@ There is a strong main effects of judgment type (pleasant is faster) and stresse
 AMP score was not significantly effected by presence of acute stressor (either absolutely or in comparison to control), however there appears to be an overall effect of stress on AMP reaction times ABOVE & BEYOND the main effects of day & measurement number.
 
 
-### Explicit Attitudes
+### Explicit Attitudes ####
 
 CM
 
@@ -84,11 +109,12 @@ SRS
 
 IMS-EMS
 
-## Post-Study Surveys
+
+## Post-Study Surveys ####
 
 ---
 
-## INTERACTION ANALYSES
+# INTERACTION ANALYSES ####
 
 ## STRESS AND TRUST
 

@@ -1,0 +1,304 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Trust Game</title>
+  <script src="js/jquery.min.js"></script>
+  <script src="../jspsych.js"></script>
+  <script src="../plugins/jspsych-text.js"></script>
+  <script src="../plugins/jspsych-single-stim.js"></script>
+  <link rel="stylesheet" href="../css/jspsych.css"></link>
+  <style>
+    img {
+      height: 300px;
+	  align:center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="jspsych-target"></div>
+</body>
+<script>
+
+//create the order of agents such that each 6 trials is a shuffled order of the 6 players
+agents=[0,1,2,3,4,5]
+agentorder=[];
+for (i=0; i<30; i++){
+	agorder=jsPsych.randomization.shuffle(agents,1);
+	agentorder=agentorder.concat(agorder)
+}
+//define and randomize the outcomes
+outcomes=[
+	[0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+	[1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0],
+	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+]
+outcomeorder=jsPsych.randomization.shuffle(outcomes,1);
+
+//deterimnes the number of trial for each player (i.e. trial 5 is the first for player__)
+outcomenum=[];
+for (i=0; i<180; i++){
+outcomenum[i]=Math.floor(i/6)
+}
+
+//adds the outcome for the player on that trial so that the outcome history remains in the right order
+trialoutcome=[];
+for (i=0; i<180; i++){
+trialoutcome[i]=(outcomeorder[agentorder[i]][outcomenum[i]])
+}
+
+//shuffle the names and assign 6 to the player As and the remaining 30 to the playerBs
+var names=[
+	'Andrew',
+	'Ben',
+	'Bob',
+	'Brian',
+	'Charlie',
+	'Chris',
+	'Daniel',
+	'David',
+	'Edward',
+	'Eric',
+	'Fred',
+	'George',
+	'Greg',
+	'Henry',
+	'Ian',
+	'Jack',
+	'Jason',
+	'Jim',
+	'John',
+	'Josh',
+	'Kevin',
+	'Mark',
+	'Matt',
+	'Mike',
+	'Nathan',
+	'Nick',
+	'Noah',
+	'Patrick',
+	'Paul',
+	'Peter',
+	'Ryan',
+	'Sam',
+	'Scott',
+	'Steven',
+	'Tom',
+	'Will',
+]
+names_shuffled=jsPsych.randomization.shuffle(names,1);
+playera=names_shuffled.slice(0,6)
+playerb=names_shuffled.slice(6,36)
+
+//randomize the faces and add the text wrap so that they can be used as stimuli
+var faces=[
+'playera/white1_',
+'playera/white2_',
+'playera/other1_',
+'playera/other2_',
+'playera/black1_',
+'playera/black2_',
+]
+faces=jsPsych.randomization.shuffle(faces);
+var playeraface=[];
+for (i=0; i<faces.length; i++) {
+  playeraface.push('<img src='+faces[i]+'.png'+'></img>') 	
+}
+
+//generate an array of the name arrays shuffled for the 6 different player As
+playerborder=[];
+for (i=0; i<6; i++){
+playerbnames=jsPsych.randomization.shuffle(playerb,1);
+playerborder[i]=playerbnames
+}
+
+//assign player Bs based on the outcome number for the player A 
+trialplayerb=[];
+for (i=0; i<180; i++){
+trialplayerb[i]=(playerborder[agentorder[i]][outcomenum[i]])
+}
+
+//change the binary outcomes into the actual stimuli--using index into an array instead
+//for (var i=0; i<trialoutcome.length; i++) {
+//if (trialoutcome[i]==1) {trialoutcome[i]="<div class='center-content'><img src='outcomes/trust_shared.png'></img>"}
+//else {trialoutcome[i]= "<div class='center-content'><img src='outcomes/trust_kept.png'></img>"}
+//}
+
+//define an array of the outcomes so that you can index into the array based on the trial outcomes of 1s and 0s
+trustoutcome= [
+	"<p style='margin-top:20%'><center>He kept all of the money.</p>",
+	"<p style='margin-top:20%'><center>He shared some of the money.</p>"
+]
+
+dictatoroutcome= [
+	"<p style='margin-top:20%'><center>He kept all of the money.</p>",
+	"<p style='margin-top:20%'><center>He gave some of the money.</p>"
+]
+
+deceitoutcome= [
+	"<p style='margin-top:20%'><center>He stole some of the money.</p>",
+	"<p style='margin-top:20%'><center>He gave all of the money.</p>"
+]
+
+//this changes the order of player As into a prompt that can be used in the trials
+var trustprompt=[];
+for (var i=0; i<agentorder.length; i++){
+	trustprompt.push("<p><center>Will "+playera[agentorder[i]]+" return some of the money to "+trialplayerb[i]+"?</p>"+playeraface[agentorder[i]])
+}
+
+var dictatorprompt=[];
+for (var i=0; i<agentorder.length; i++){
+	dictatorprompt.push("<p><center>Will "+playera[agentorder[i]]+" give some of the money to "+trialplayerb[i]+"?</p>"+playeraface[agentorder[i]])
+}
+
+var deceitprompt=[];
+for (var i=0; i<agentorder.length; i++){
+	trustprompt.push("<p><center>Will "+playera[agentorder[i]]+" steal some of the money from "+trialplayerb[i]+"?</p>"+playeraface[agentorder[i]])
+}
+
+//Below is setting up the timeline of the experiment including welcome page, instructions, and the trials
+var welcome_block = {
+  type: "text",
+  text: "<p style='margin-top:20%' class='center-content'>Welcome to the experiment. Press any key to begin.</p>"
+};
+
+var instructions_block1={
+	type: "text",
+	text: "<p style='margin-top:20%'>In the game, you will be asked to prediction the behaviors of the following six people.</p>"
+}
+
+var timeline_trust=[];
+timeline_trust.push(welcome_block)
+timeline_trust.push(instructions_block1)
+
+var timeline_dictator=[];
+timeline_dictator.push(welcome_block)
+timeline_dictator.push(instructions_block1)
+
+var timeline_deceit=[];
+timeline_deceit.push(welcome_block)
+timeline_deceit.push(instructions_block1)
+
+//this introduces the player As to the participants; each Player A is shown on a single page
+for (var i=0; i<playeraface.length; i++){
+var instructions_block2={
+	type: "text",
+	text: "<p><center>This is "+playera[i]+".</p>"+playeraface[i]+"<p>Press any key to continue.</p>"
+}
+timeline_trust.push(instructions_block2)
+timeline_dictator.push(instructions_block2)
+timeline_deceit.push(instructions_block2)
+}
+
+var explain_trustgame={
+	type: "text",
+	text: "<p><center>During each trial, these people have been entrusted money by another player."+
+	" You will be predicting whether the person returns some money or keeps all of the money given to them.</p>"+
+	'<p style="text-align:center;">Press E if you think he will keep the money.</p>'+
+	'<p style="text-align:center;">Press I if you think he will return the money.</p>'
+}
+
+var explain_dictatorgame={
+	type: "text",
+	text: "<p><center>During each trial, these people have been provided $10.00."+
+	" You will be predicting whether the person will give some of the money to another player or keep all to themselves.</p>"+
+	'<p style="text-align:center;">Press E if you think he will keep all of the money.</p>'+
+	'<p style="text-align:center;">Press I if you think he will give some of the money to the other player.</p>'
+}
+
+var explain_deceitgame={
+	type: "text",
+	text: "<p><center>During each trial, these people have been given a sum of money that"+
+	" they are instructed to give to another player, who does not know the exact amount of money."+
+	" You will be predicting whether the person will give all of the money to the other player or"+
+	" steal some of the money for themselves.</p>"+
+	'<p style="text-align:center;">Press E if you think he will give all of the money.</p>'+
+	'<p style="text-align:center;">Press I if you think he will steal some of the money from the other player.</p>'
+}
+
+var begin_prompt = {
+  type: "text",
+  text: "<p style='margin-top:20%' ><center>Press any key to begin the experiment.</p>"
+}
+
+timeline_trust.push(explain_trustgame)
+timeline_trust.push(begin_prompt)
+
+timeline_dictator.push(explain_dictatorgame)
+timeline_dictator.push(begin_prompt)
+
+timeline_deceit.push(explain_deceitgame)
+timeline_deceit.push(begin_prompt)
+
+//this allows for feedback because the trials alternate between the question trials in which subjects enter input and feedback trials that give the outcome for the trial
+for (var i=0; i<agentorder.length; i++){
+	var stimulus= {
+        type: 'single-stim',
+    	stimulus: "<p><center>Will "+playera[agentorder[i]]+" return some money to "+trialplayerb[i]+"?</p>"+playeraface[agentorder[i]],
+  	    is_html: true,
+		choices: [69, 73], // E or I
+		response_ends_trial: true,
+		}  
+	 var feedback= {
+	    type: 'single-stim',
+	  	stimulus: trustoutcome[trialoutcome[i]],
+		is_html: true,
+		choices: [69, 73], // E or I
+	    timing_response: 1000,
+	    }  
+		timeline_trust.push(stimulus)
+		timeline_trust.push(feedback)
+}
+
+for (var i=0; i<agentorder.length; i++){
+	var stimulus= {
+        type: 'single-stim',
+    	stimulus: "<p><center>Will "+playera[agentorder[i]]+" give some money to "+trialplayerb[i]+"?</p>"+playeraface[agentorder[i]],
+  	    is_html: true,
+		choices: [69, 73], // E or I
+		response_ends_trial: true,
+		}  
+	 var feedback= {
+	    type: 'single-stim',
+	  	stimulus: dictatoroutcome[trialoutcome[i]],
+		is_html: true,
+		choices: [69, 73], // E or I
+	    timing_response: 1000,
+	    }  
+		timeline_dictator.push(stimulus)
+		timeline_dictator.push(feedback)
+}
+
+for (var i=0; i<agentorder.length; i++){
+	var stimulus= {
+        type: 'single-stim',
+    	stimulus: "<p><center>Will "+playera[agentorder[i]]+" steal some of the money from "+trialplayerb[i]+"?</p>"+playeraface[agentorder[i]],
+  	    is_html: true,
+		choices: [69, 73], // E or I
+		response_ends_trial: true,
+		}  
+	 var feedback= {
+	    type: 'single-stim',
+	  	stimulus: deceitoutcome[trialoutcome[i]],
+		is_html: true,
+		choices: [69, 73], // E or I
+	    timing_response: 1000,
+	    }  
+		timeline_deceit.push(stimulus)
+		timeline_deceit.push(feedback)
+}
+
+
+  jsPsych.init({
+    	timeline: timeline_deceit,
+    	on_finish: function() { jsPsych.data.displayData('csv');
+        }
+      });
+
+  </script>
+  </html>
