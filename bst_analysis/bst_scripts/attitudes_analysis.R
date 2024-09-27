@@ -74,6 +74,71 @@ prop.table(table(amp$stimulusRace_0w_1b_2o, amp$amp_unPleasant0_Pleasant1),1)*10
 
 ### Subject-level Analyses AMP ####
 
+#### AMP d-scores ####
+
+# Calculating BST AMP Score = (Positive judgments after white faces/Total white prime trials) - (Positive judgments after black faces/Total black prime trials).
+
+# Create a function that calculates a standard, AMP d-score for each subject
+get_amp_score <- function(amp) {
+  amp %>%
+    group_by(subjectID) %>%
+    summarise(
+      # total trial counts by category
+      total_white_trials = sum(stimulusRace_0w_1b_2o == 0, na.rm = TRUE),
+      total_black_trials = sum(stimulusRace_0w_1b_2o == 1, na.rm = TRUE),
+      
+      # proportion of pleasant responses after white (0) and black (1) stimuli
+      white_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 0], na.rm = TRUE),
+      black_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 1], na.rm = TRUE)
+    ) %>%
+    mutate(
+      subj_amp_score = white_pleasant_amp - black_pleasant_amp
+    ) 
+}
+
+subj_level_amp_scores <- get_amp_score(amp) %>%
+  select(subjectID, white_pleasant_amp, black_pleasant_amp, subj_amp_score)
+
+#subject-level amp d-score characterizations
+amp_score_summary <- subj_level_amp_scores %>%
+  summarise(
+    mean_amp_d = mean(subj_amp_score, na.rm = TRUE),
+    sd_amp_d = sd(subj_amp_score, na.rm = TRUE),
+    min_amp_d = min(subj_amp_score, na.rm = TRUE),
+    max_amp_d = max(subj_amp_score, na.rm = TRUE)
+  )
+
+# Across subjects, mean AMP score was close to zero, indicating that overall subjects were
+# not biased towards black or white stimuli in the amp
+# M = -0.00846 
+# amp scores indicate moderate variability across subjects
+# sd = 0.0879 
+# min = -0.4 (someone with strong, neg black bias?)
+# max = 0.155
+
+hist(subj_level_amp_scores$subj_amp_score,
+     main = "Subject-level AMP scores",
+     xlab = "AMP Score (D-score)",
+     ylab = "Frequency",
+     col = "lightblue",  
+     border = "black",   
+     breaks = 10)    
+
+plot(subj_level_amp_scores$subjectID, subj_level_amp_scores$subj_amp_score,
+     main = "AMP scores by subject",
+     xlab = "Subject ID",
+     ylab = "AMP Score (D-score)",
+     pch = 19,          
+     col = "darkblue") 
+
+# Note: one participant shows strong, negative bias toward black vs. white stimuli
+
+subj_level_amp_scores %>%
+  filter(subj_amp_score == min(subj_amp_score, na.rm = TRUE))
+# subject 16 had strong negative bias towards black race (d-score = -0.4)
+#   > 4 SD below the mean (-4.4543)
+#   (-0.4--0.00846)/0.0879
+
 #### Fix RT Outliers ####
 # Set acceptable bounds for RTs to correct RT outliers
 lower_RT_bound = 50/1000; # Written in milliseconds, converted to seconds.
@@ -122,38 +187,7 @@ amp_summary_stats
 # BST012, 030, and 035 have meaningful numbers of trials that are either excessively fast or slow (esp. 030 and 035).
 # Judgments don't appear to be singular (i.e. all one response or one button).
 
-
-
-# Calculating BST AMP Score = (Positive judgments after white faces/Total white prime trials) - (Positive judgments after black faces/Total black prime trials).
-
-# Create a function that calculates a standard, AMP d-score for each subject
-
-get_amp_score <- function(amp) {
-  amp %>%
-    group_by(subjectID) %>%
-    summarise(
-      # Count total trials for each category
-      total_white_trials = sum(stimulusRace_0w_1b_2o == 0, na.rm = TRUE),
-      total_black_trials = sum(stimulusRace_0w_1b_2o == 1, na.rm = TRUE),
-      
-      # proportion of pleasant responses after white (0) and black (1) stimuli
-      white_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 0], na.rm = TRUE),
-      black_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 1], na.rm = TRUE)
-    ) %>%
-    mutate(
-      subj_amp_score = white_pleasant_amp - black_pleasant_amp
-    ) 
-}
-
-subj_level_amp_scores <- get_amp_score(amp) %>%
-  select(subjectID, white_pleasant_amp, black_pleasant_amp, subj_amp_score)
-
-
-# BST AMP Score = (Positive judgments after white faces/Total white prime trials) - (Positive judgments after black faces/Total black prime trials).
-
-# Create subject-level score for prop of amp judgements per face - % pos/total B & W
-
-# Create a d-score for each subject's AMP-score
+# Examine AMP RTs more closely
 
 amp$amp_unPleasant0_Pleasant1[amp$responseTime < lower_RT_bound] = NA
 amp$amp_unPleasant0_Pleasant1[amp$responseTime > upper_RT_bound] = NA
