@@ -1,8 +1,8 @@
 
 # --- Bias (Race Attitudes) Only Base Level Analysis Script --- #
 
-setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
-#setwd("~/Documents/GitHub/bst") #laptop
+#setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
+setwd("~/Documents/GitHub/bst") #laptop
 
 #NOTE: Run this script while connected to the shlab drive, 
 # where the script's data sources are under /Volumes
@@ -121,6 +121,39 @@ for (s in 1:number_of_AMP_subjects){
 amp_summary_stats 
 # BST012, 030, and 035 have meaningful numbers of trials that are either excessively fast or slow (esp. 030 and 035).
 # Judgments don't appear to be singular (i.e. all one response or one button).
+
+
+
+# Calculating BST AMP Score = (Positive judgments after white faces/Total white prime trials) - (Positive judgments after black faces/Total black prime trials).
+
+# Create a function that calculates a standard, AMP d-score for each subject
+
+get_amp_score <- function(amp) {
+  amp %>%
+    group_by(subjectID) %>%
+    summarise(
+      # Count total trials for each category
+      total_white_trials = sum(stimulusRace_0w_1b_2o == 0, na.rm = TRUE),
+      total_black_trials = sum(stimulusRace_0w_1b_2o == 1, na.rm = TRUE),
+      
+      # proportion of pleasant responses after white (0) and black (1) stimuli
+      white_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 0], na.rm = TRUE),
+      black_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 1], na.rm = TRUE)
+    ) %>%
+    mutate(
+      subj_amp_score = white_pleasant_amp - black_pleasant_amp
+    ) 
+}
+
+subj_level_amp_scores <- get_amp_score(amp) %>%
+  select(subjectID, white_pleasant_amp, black_pleasant_amp, subj_amp_score)
+
+
+# BST AMP Score = (Positive judgments after white faces/Total white prime trials) - (Positive judgments after black faces/Total black prime trials).
+
+# Create subject-level score for prop of amp judgements per face - % pos/total B & W
+
+# Create a d-score for each subject's AMP-score
 
 amp$amp_unPleasant0_Pleasant1[amp$responseTime < lower_RT_bound] = NA
 amp$amp_unPleasant0_Pleasant1[amp$responseTime > upper_RT_bound] = NA
@@ -417,7 +450,7 @@ t.test(amp_scores$change_amp_stress) # n.s.
 #ANSWER: AMP scores do not significantly change at the group level between measurements on Day 1, on Day 2,
 # on the control day, or on the stress day.
 
-
+#TO - DO :
 
 # 5. Re-organize AMP scores into a long (not wide) matrix, with columns indicating day 1 or 2, measurement 1 or 2, control or stress, etc.
 #   to facilitate regression on *scores* should we wish to do that (not just regression on choices).

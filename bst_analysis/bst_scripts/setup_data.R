@@ -6,7 +6,7 @@
 library(plyr)
 library(dplyr)
 library(car)
-library(IATanalytics)
+#library(IATanalytics)
 
 #Color Blind Palette for graphing
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
