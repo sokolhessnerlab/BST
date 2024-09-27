@@ -1,9 +1,9 @@
-#  Github/bst/data/bst_analysis/bst_scripts README 
+#  Github/bst/data/bst_analysis/stress_and_trust/README_files/readme_data_scoring
 
-**Last updated: 2024.08.07**
+**Last updated: 2024.09.27**
 
 
-### Folder Contents
+### Contents
 
 The primary function of this Read Me file is to outline the methods for compiling the BST data and provide additional helpful information and references on the data compiling methods.
 
@@ -35,15 +35,13 @@ Overall, this "Current_Dataframes" folder contains the most up-to-date compiled 
 ### Data Descriptions, Scoring Procedures, References
 
 - **AMP Data** - allAMPData_20200626.csv - Contains all the affect misattribution procedure (AMP) data.
-    - Description: The AMP examines a subject's sensitivity to favorable and unfavorable evaluations. AMP is a measure of responses that are activated automatically due to misattributions a person makes about the source of the cognition or affect.  In the AMP task, participants see black and white faces, followed by images of an inkplot then noise. Participants are then asked to rate the noise as pleasant or unpleasant.
+    - Description: The AMP examines a subject's sensitivity to favorable and unfavorable evaluations. AMP is a measure of responses that are activated automatically due to misattributions a person makes about the source of the cognition or affect.  In the AMP task, participants see black and white faces, followed by images of an inkblot then noise. Participants are then asked to rate the noise as pleasant or unpleasant.
    
-    - Scoring Procedures: Scoring the AMP in BST:
-Subjects respond as “pleasant” and “unpleasant” to images of static preceded by the faces of individuals of black or white race.  These responses are categorized as “0” for “unpleasant” and “1” for “pleasant”.  We then created a subject-level response average for black and white prime ratings across trials.
+    **AMP Scoring Procedures:** Scoring the AMP in BST: Subjects respond as “pleasant” and “unpleasant” to images of static preceded by the faces of individuals of black or white race.  These responses are categorized as “0” for “unpleasant” and “1” for “pleasant”.  We then created a subject-level response average for black and white prime ratings across trials.
 
-      Standard AMP “score” is calculated by subtracting the proportion of incongruent trials from congruent trials.  For the BST, the standard AMP score would be: BST AMP Score = (Positive judgments after white faces/Total white prime trials) - (Positive judgments after black faces/Total black prime trials).
+  -Standard AMP “score” is calculated by subtracting the proportion of incongruent trials from congruent trials.  For the BST, the standard AMP score would be: BST AMP Score = (Positive judgments after white faces/Total white prime trials) - (Positive judgments after black faces/Total black prime trials).
 
-    
-    - References: 
+  -References: 
     (1) Payne, B. K., Cheng, C. M., Govorun, O., & Stewart, B. D. (2005). An inkblot for attitudes: affect misattribution as implicit measurement. Journal of personality and social psychology, 89(3), 277–293.
     (2) Kurdi, B., Melnikoff, D. E., Hannay, J. W., Korkmaz, A., Lee, K. M., Ritchie, E., Surdel, N., Vuletich, H. A., Yang, X., Payne, B. K., & Ferguson, M. J. (2024). Testing the automaticity features of the affect misattribution procedure: The roles of awareness and intentionality. Behavior research methods, 56(4), 3161–3194. https://doi.org/10.3758/s13428-023-02291-2
     (3) Payne, K., & Lundberg, K.B. (2014). The Affect Misattribution Procedure: Ten Years of Evidence on Reliability, Validity, and Mechanisms. Social and Personality Psychology Compass, 8, 672-686.
@@ -62,7 +60,7 @@ Subjects respond as “pleasant” and “unpleasant” to images of static prec
 (Greenwald et al., 2003; Sriram, Nosek, & Greenwald, 2007)." (Sriram & Greeenwald, 2009)
 
     
-    - References:
+  -References:
     (1) Greenwald, A.G., McGhee,D.E., & Schwartz, J.L.K. (1998). Measuring Individual Differences in Implicit Cognition: ThenImplicit Association Test. Journal of Personality and Social Psychology, 74, 1464-1480. *(Used in Stanley, 2011)
     (2) Sriram, N., & Greenwald, A. G. (2009). The brief implicit association test. Experimental Psychology, 56(4), 283–294. https://doi.org/10.1027/1618-3169.56.4.283
     (3) Nosek, B. A., Bar-Anan, Y., Sriram, N., Axt, J., & Greenwald, A. G. (2014). Understanding and using the brief Implicit Association Test: recommended scoring procedures. PloS one, 9(12), e110938. https://doi.org/10.1371/journal.pone.0110938
@@ -129,7 +127,7 @@ Subjects respond as “pleasant” and “unpleasant” to images of static prec
     (c) To compensate for the differences in the number of response alternatives, one could recode each of the items on a 0 to 1 scale, so for item #3, a 1 = 1, 2 = 0, and 3 = .50, and for the other items the high response is a 1, the next a .66, the next a .33, and the low response is a 0. (This third technique is the one used in Henry & Sears, 2002.) 
     (d) To equate the variability across items, one could create standardized (z) scores for each of the items in the scale, then average the responses.
     
-    - References:
+  -References:
     (1) Henry, P. J., & Sears, D. O.  (2002).  The symbolic racism 2000 scale.  Political Psychology, 23, 253-283.
     (2) Sears, D. O., & Henry, P. J.  (2005).  Over thirty years later: A contemporary look at symbolic racism and its critics.  Advances in Experimental Social Psychology. 37,  95-150.
 

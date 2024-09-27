@@ -1,9 +1,9 @@
-#  Github/bst/data/bst_analysis/stress_and_trust README 
+#  Github/bst/data/bst_analysis/stress_and_trust/README_files/readme_vars_of_interest_references
 
-**Last updated: 2024.08.29**
+**Last updated: 2024.09.27**
 
 
-### Folder Contents
+### Contents
 
 The primary function of this ReadMe file is to document important references for the main variables of interest: stress, attitudes, trust.
 
@@ -62,6 +62,15 @@ The primary function of this ReadMe file is to document important references for
     Stress can affect the potency of implicit attitudes we hold towards others. ER study demonstrated that cognitive stressors (overcrowding and patient load) were associated with increased implicit bias. 
       Reference:  Johnson, T. J., Hickey, R. W., Switzer, G. E., Miller, E., Winger, D. G., Nguyen, M., Saladino, R. A., & Hausmann, L. R. (2016). The Impact of Cognitive Stressors in the Emergency Department on Physician Implicit Racial Bias. Academic emergency medicine : official journal of the Society for Academic Emergency Medicine, 23(3), 297–305. https://doi.org/10.1111/acem.12901 
       
+      
+**AMP Procedures**
+
+  -The Affect Misattribution Procedure (AMP) is a psychological task for measuring implicit attitudes toward various stimuli (i.e., groups based on race or gender) by assessing a subject's response to a prime category (i.e., black or white faces) through evalutation of the subject’s response to a neutral stimuli (i.e., static and/or pattern) that follows. In the case of the AMP used in this study, subjects were briefly presented with a prime of black or white faces for a length of time to recognize the stimulus without evaluation (<100 ms).  Following the prime, participants were consecutively shown two neutral stimuli, an ink blot then static. Subjects were then asked to ignore the prime and the inkblot and make a judgment of “pleasant” or “unpleasant” about the static.
+
+  -The main premise behind the “misattribution of affect” in the AMP is that though participants are told to ignore the prime and have two subsequent images to maintain in visual working memory, resulting in negligible maintenance of the initial primed stimuli (i.e., black versus white face), the emotional response to the prime remains.  Therefore, implicit attitudes of a subject are inferred from differences of their judgments of “static” before seeing the different categories of the prime.  The AMP allows an indirect view into biases a subject carries towards a category of which the subject may not be aware.
+
+
+ 
 - **TRUST**
 
 - (1) The extent to which an individual invests in and trusts others with different racial backgrounds is related to the magnitude of that individual's implicit race bias. The core dimension of social trust can be shaped, to some degree, by attitudes that reside outside conscious awareness and intention.
