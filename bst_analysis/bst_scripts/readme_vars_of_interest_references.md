@@ -31,6 +31,12 @@ The primary function of this Read Me file is to document important references fo
       Reference:  Clayton, K., Horrillo, J., & Sniderman, P. M. (2023). The BIAT and the AMP as measures of racial prejudice in political science: A methodological assessment. Political Science Research and Methods, 11(2), 363–373. doi:10.1017/psrm.2022.56
 
 
+**AMP Procedure Write-Up**
+
+The Affect Misattribution Procedure (AMP) is a psychological task for measuring implicit attitudes toward various stimuli (i.e., groups based on race or gender) by assessing a subject's response to a prime category (i.e., black or white faces) through evalutation of the subject’s response to a neutral stimuli (i.e., static and/or pattern) that follows. In the case of the AMP used in this study, subjects were briefly presented with a prime of black or white faces for a length of time to recognize the stimulus without evaluation (<100 ms).  Following the prime, participants were consecutively shown two neutral stimuli, an ink blot then static. Subjects were then asked to ignore the prime and the inkblot and make a judgment of “pleasant” or “unpleasant” about the static.
+The main premise behind the “missatribution of affect” in the AMP is that though participants are told to ignore the prime and have two subsequent images to maintain in visual working memory, resulting in negligible maintenance of the initial primed stimuli (i.e., black versus white face), the emotional response to the prime remains.  Therefore, implicit attitudes of a subject are inferred from differences of their judgments of “static” before seeing the different categories of the prime.  The AMP allows an indirect view into biases a subject carries towards a category of which the subject may not be aware.
+
+
 
 
 

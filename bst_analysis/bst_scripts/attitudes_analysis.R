@@ -2,7 +2,7 @@
 # --- Bias (Race Attitudes) Only Base Level Analysis Script --- #
 
 #setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
-#setwd("~/Documents/GitHub/bst") #laptop
+setwd("~/Documents/GitHub/bst") #laptop
 
 #NOTE: Run this script while connected to the shlab drive, 
 # where the script's data sources are under /Volumes
@@ -419,6 +419,17 @@ t.test(amp_scores$change_amp_stress) # n.s.
 # on the control day, or on the stress day.
 
 
+#TO _ DO :
+
+# 1 - Calculate "standard" AMP score according to lit: 
+
+#For the BST, the standard AMP score would be: BST AMP Score = 
+# (Positive judgments after white faces/Total white prime trials) - (Positive judgments after black faces/Total black prime trials).
+
+
+
+
+
 
 # 5. Re-organize AMP scores into a long (not wide) matrix, with columns indicating day 1 or 2, measurement 1 or 2, control or stress, etc.
 #   to facilitate regression on *scores* should we wish to do that (not just regression on choices).
@@ -446,7 +457,7 @@ prop.table(table(iat$cattype, iat$corrans),1)*100
 #CONGRUENT    25.0     25.0       25.0  25.0
 #INCONGRUENT  25.0     25.0       25.0  25.0
 #SINGLE       12.5     37.5       37.5  12.5
-# even trial bins for congruent/incongruint stimuli (words/images)
+# even trial bins for congruent/incongruent stimuli (words/images)
 
 #Factoring for use in ggplot
 iat$stimulus.F <- factor(iat$stimulus)

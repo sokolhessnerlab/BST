@@ -1,4 +1,4 @@
-#  Github/bst/data/bst_analysis/stress_and_trust README 
+#  Github/bst/data/bst_analysis/bst_scripts README 
 
 **Last updated: 2024.08.07**
 
@@ -9,9 +9,9 @@ The primary function of this Read Me file is to outline the methods for compilin
 
 Overall, this "Current_Dataframes" folder contains the most up-to-date compiled dataframes, which are directly used in the BST setup_data.R script and subsequent scripts for analyses. These data are created from the "Create_Dataframes" and "scannedpaperdocs" folders. Note: this section will be updated as new data is compiled and readied for analysis.
 
-** NOTE: These folders specifically compile COMPLETE participant data for participants who completed both sessions 1 and 2 of the study. For all participant data, regardless of state/completion, see the "output" sub-folder in "tasks".**
+** NOTE:** These folders specifically compile COMPLETE participant data for participants who completed both sessions 1 and 2 of the study. For all participant data, regardless of state/completion, see the "output" in the Shlab server sub-folder labeled "task" (shlab/Projects/BST/task).
 
-- **.cvs file descriptions** - Data from the BST experiment has been converted into csv files:
+- **.cvs file descriptions** - Data from the BST experiment has been converted into csv files that can be found in the Shlab server under the BST project folder (shlab/Projects/BST/data/Current_Dataframes):
     - allAMPData_20200626 contains all the AMP data (both sessions included).
     - allIATData_20200626.csv contains all the IAT data.
     - allTGData_20200626.csv contains the Trust Game data.
@@ -24,6 +24,12 @@ Overall, this "Current_Dataframes" folder contains the most up-to-date compiled 
     - BST_SymbolicRacismScale_Data.csv contains data from Symbolic Racism Scale survey data.
     - BST_Data_CPTRating_PostTaskSurvey_D1.csv contains data from Day 1 post-task survey.
     - BST_Data_CPTRating_PostTaskSurvey_D2.csv contains data from Day 2 post-task survey.
+    - In CortisolData subfolder:
+        -Cortisol_Data.csv - contains all cortisol data without assay processing notes (used in setup and stress analysis scripts)
+        -Cortisol_w_Notes.csv - contains all cortisol data with assay processing notes
+    - In SurveyData subfolder:
+        -PSSData_noVarDescrip.csv - contains all PSS data without notes
+        -PSSData.csv - contains all PSS data with notes
     
 
 ### Data Descriptions, Scoring Procedures, References
@@ -31,7 +37,11 @@ Overall, this "Current_Dataframes" folder contains the most up-to-date compiled 
 - **AMP Data** - allAMPData_20200626.csv - Contains all the affect misattribution procedure (AMP) data.
     - Description: The AMP examines a subject's sensitivity to favorable and unfavorable evaluations. AMP is a measure of responses that are activated automatically due to misattributions a person makes about the source of the cognition or affect.  In the AMP task, participants see black and white faces, followed by images of an inkplot then noise. Participants are then asked to rate the noise as pleasant or unpleasant.
    
-    - Scoring Procedures: ADD
+    - Scoring Procedures: Scoring the AMP in BST:
+Subjects respond as “pleasant” and “unpleasant” to images of static preceded by the faces of individuals of black or white race.  These responses are categorized as “0” for “unpleasant” and “1” for “pleasant”.  We then created a subject-level response average for black and white prime ratings across trials.
+
+      Standard AMP “score” is calculated by subtracting the proportion of incongruent trials from congruent trials.  For the BST, the standard AMP score would be: BST AMP Score = (Positive judgments after white faces/Total white prime trials) - (Positive judgments after black faces/Total black prime trials).
+
     
     - References: 
     (1) Payne, B. K., Cheng, C. M., Govorun, O., & Stewart, B. D. (2005). An inkblot for attitudes: affect misattribution as implicit measurement. Journal of personality and social psychology, 89(3), 277–293.
