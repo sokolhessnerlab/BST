@@ -1,10 +1,12 @@
+#  Github/bst/bst_analysis/bst_scripts/README_files/readme_df_var_descrip
+
+**Last updated: 2024.09.27**
+
 # BST Data Frame and Variable Descriptions
 
-**Last updated: 2024.07.10**
+# Note: When data frames are merged for analysis, columns are carried over. For a description of a column, go to the "original" DF
 
-# Note: When data frames were merged for analysis, columns are carried over. For a description of a column, go to the "original" DF
-
-### Names of dataframes/variables are marked with **xyz**
+# Names of dataframes/variables are marked with **xyz**
 
 
 
@@ -22,7 +24,7 @@
 
 - **pss** -
   -contains each participant's PSS data (who had it)
-    $unexpectedUpset/unableControl/nervous/$personalProblemConfidence/goingYourWay/couldNotCope/irritationControl/onTopOfThings/outsideOfControl/diffPilingUp: each of these is associated with a specific question in the PSS
+  $unexpectedUpset/unableControl/nervous/$personalProblemConfidence/goingYourWay/couldNotCope/irritationControl/onTopOfThings/outsideOfControl/diffPilingUp: each of these is associated with a specific question in the PSS
     $(*)Recode: any of the aforementioned questions with a Recode on the end is simply a reverse scored version of the question, used in calculating the PSS score
     $pssSum: PSS score (0-40)
     $pssSumCategorical: using the "low" "moderate" "high" scoreing, a 3 way categorical version of the pssSum
@@ -136,9 +138,7 @@
 
 - **BST_Subj_Level_DF** -
   -comprehensive, subject-level data frame of most pertinent BST data.
-  -contains subjectID, diffUnPleasantnessRating, day2bool_0control_1stress, pssSum, pssCat_0low_1mod_2high, pssMedianSplit, cortisol_mean_nmol_to_l, 
-      cort_coeff_of_variance_as_percent, mrsSum, mrsMean, srsSum, srsMean, EmsSum, ImsSum, EmsImsSumDiff, EmsMean, ImsMean, EmsImsMeanDiff,
-      unPleasant0_Pleasant1, responseTime_AMP, w0_his1_as2_bl3_birac4_mult5
+  -contains subjectID, diffUnPleasantnessRating, day2bool_0control_1stress, pssSum, pssCat_0low_1mod_2high, pssMedianSplit, cortisol_mean_nmol_to_l, cort_coeff_of_variance_as_percent, mrsSum, mrsMean, srsSum, srsMean, EmsSum, ImsSum, EmsImsSumDiff, EmsMean, ImsMean, EmsImsMeanDiff, unPleasant0_Pleasant1, responseTime_AMP, w0_his1_as2_bl3_birac4_mult5
 
 
   

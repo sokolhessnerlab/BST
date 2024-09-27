@@ -1,4 +1,4 @@
-#  Github/bst/data/bst_analysis/stress_and_trust/README_files/readme_vars_of_interest_references
+#  Github/bst/bst_analysis/bst_scripts/README_files/readme_vars_of_interest_references
 
 **Last updated: 2024.09.27**
 

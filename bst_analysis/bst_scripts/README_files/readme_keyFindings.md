@@ -1,10 +1,12 @@
+#  Github/bst/bst_analysis/bst_scripts/README_files/readme_keyFindings
+
+**Last updated: 2024.09.27**
+
 ## BST Data Processing & Key Findings ####
 
-# Updated 8/29/2024
+# This file is used to document note-worthy findings that arise during the process of wrangling and analyzing the BST data. The most pertinent key findings are then entered into summary_mainfindings.md (Github/bst/bst_analysis/summary_mainfindings.md).
 
-# This document is used to document note-worthy findings that arise during the process of wrangling and analyzing the BST data.  Key findings are then entered into summary_mainfindings.md found in the main Github/bst folder.
-
-# Note: the data wrangling and data analyzing sections are separate here.  Those can be combined/reconciled once all data has been wrangled.
+# Note: the data wrangling and data analyzing sections are separate here and can be combined/reconciled once all of the study's data has been wrangled.
 
 
 #### DATA WRANGLING ####
