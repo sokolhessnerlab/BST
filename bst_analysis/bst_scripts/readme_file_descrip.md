@@ -1,9 +1,9 @@
-#  Github/bst/data/bst_analysis/stress_and_trust README 
+#  Github/bst/bst_analysis/bst_scripts/
+
+**Last updated: 2024.09.30**
 
 
 -- BST File Descriptions--
-
-**Last updated: 2024.07.12**
 
 
 ### R Scripts
@@ -27,20 +27,22 @@
 - **interactive_analysis.R** -
 > script for analysis of interactions amongs stress, attitudes, and trust data.
 
-
     
 ### Read Me Files
 
 - **readme_file_desrip.md** -
 > (current file) contains descriptions of the scripts and files contained within this main BST analysis folder.
 
-- **readme_df_var_desrip.md** -
+### Description of files within the sub-folder README 
+#  Github/bst/bst_analysis/bst_scripts/README
+
+- **README/readme_df_var_desrip.md** -
 > contains descriptions of the dataframes and columns within dataframes created by setup_data.R  script.
 
-- **readme_data_scoring.md** -
+- **README/readme_data_scoring.md** -
 > contains descriptions of how individual meausures are scored and the references of those scoring procedures for subsequent use in the setup_data.R script. 
 
-- **readme_vars_of_interest_references.md** -
+- **README/readme_vars_of_interest_references.md** -
 > contains a list of references/key findings related to the variables of interest in the BST study.
 
 

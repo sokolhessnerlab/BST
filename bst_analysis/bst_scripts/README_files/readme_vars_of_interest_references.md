@@ -1,11 +1,11 @@
 #  Github/bst/bst_analysis/bst_scripts/README_files/readme_vars_of_interest_references
 
-**Last updated: 2024.09.27**
+**Last updated: 2024.09.30**
 
 
 ### Contents
 
-The primary function of this ReadMe file is to document important references and descriptions of the main variables of interest in the BST stufy: stress, attitudes, trust.
+The primary function of this ReadMe file is to document important references and descriptions of the main variables of interest in the BST study: stress, attitudes, trust.
 
 ### Principal Variables of Interest
 
@@ -60,7 +60,6 @@ The primary function of this ReadMe file is to document important references and
     - (4)  The Impact of Cognitive Stressors in the Emergency Department on Physician Implicit Racial Bias. Academic emergency medicine.
     Stress can affect the potency of implicit attitudes we hold towards others. ER study demonstrated that cognitive stressors (overcrowding and patient load) were associated with increased implicit bias. 
       Reference:  Johnson, T. J., Hickey, R. W., Switzer, G. E., Miller, E., Winger, D. G., Nguyen, M., Saladino, R. A., & Hausmann, L. R. (2016). The Impact of Cognitive Stressors in the Emergency Department on Physician Implicit Racial Bias. Academic emergency medicine : official journal of the Society for Academic Emergency Medicine, 23(3), 297–305. https://doi.org/10.1111/acem.12901 
-      
       
   **AMP Procedure**
   -The Affect Misattribution Procedure (AMP) is a psychological task for measuring implicit attitudes toward various stimuli (i.e., groups based on race or gender) by assessing a subject's response to a prime category (i.e., black or white faces) through evaluation of the subject’s response to a neutral stimuli (i.e., static and/or pattern) that follows. In the case of the AMP used in this study, subjects were briefly presented with a prime of black or white faces for a length of time to recognize the stimulus without evaluation (<100 ms).  Following the prime, participants were consecutively shown two neutral stimuli, an ink blot then static. Subjects were then asked to ignore the prime and the inkblot and make a judgment of “pleasant” or “unpleasant” about the static.

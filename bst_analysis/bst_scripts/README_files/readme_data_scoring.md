@@ -69,7 +69,6 @@ Overall, this "Current_Dataframes" folder contains the most up-to-date compiled 
     
     
     
-    
 - **Trust Game Data** - allTGData_20200626.csv  - contains all the trust game (TG) data.
     - Description
     - Scoring Procedures

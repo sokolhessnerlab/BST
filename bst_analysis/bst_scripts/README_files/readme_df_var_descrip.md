@@ -1,13 +1,12 @@
 #  Github/bst/bst_analysis/bst_scripts/README_files/readme_df_var_descrip
 
-**Last updated: 2024.09.27**
+**Last updated: 2024.09.30**
 
 # BST Data Frame and Variable Descriptions
 
-# Note: When data frames are merged for analysis, columns are carried over. For a description of a column, go to the "original" DF
+# This file contains the names of the BST dataframes and descriptions of the variables within the dataframe. 
 
-# Names of dataframes/variables are marked with **xyz**
-
+# Note: When data frames are merged for analysis, columns are carried over. For a description of a column, go to the "original" DF.  Names of dataframes/variables are marked with **xyz**
 
 
 > STRESS <
@@ -16,7 +15,7 @@
   - The df merges the two bath DF's into one AND removes bath orders of participants who do not have an bath rating score
   - The df contains the combined bath pleasantness rating data, as well as the bath order data for each individual participant
     $(control/stress)PleasantnessRating: the rating on a 1-7 scale of how pleasant to unpleasant the bath was
-    $bathRecievedDay(1/2): what bath type a participant recieved on a given day (word format)
+    $bathReceivedDay(1/2): what bath type a participant recieved on a given day (word format)
     $Run.: incomplete data on whether a participant was run? *Don't Use*
     $bdiffPleasantnessRating: the pleasantness rating after the cold bath minus the pleasantess rating after the lukewarm bath
     $day2StressedBool: whether a participant was given the cold bath or the lukewarm bath on day 2 (1=true, they were stressed, 
