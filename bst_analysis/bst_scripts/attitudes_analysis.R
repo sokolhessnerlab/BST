@@ -136,7 +136,7 @@ plot(subj_level_amp_scores$subjectID, subj_level_amp_scores$subj_amp_score,
 subj_level_amp_scores %>%
   filter(subj_amp_score == min(subj_amp_score, na.rm = TRUE))
 # subject 16 had strong negative bias towards black race (d-score = -0.4)
-#   > 4 SD below the mean (-4.4543) group amp score
+#   > 4 SD below the mean (-0.00846) group amp score
 #   (-0.4--0.00846)/0.0879
 
 #### Fix RT Outliers ####
@@ -512,26 +512,21 @@ t.test(amp_scores$change_amp_stress) # n.s.
 #       Due to a programming error, "condition" was not randomized as intended, resulting in non-randomized "condition" blocks across participants
 
 tapply(proc_IAT_Data$condition, proc_IAT_Data$subjectID, max)
-# Subject 3, nor anyone after subject 11, had incongruent on day 1
-# 7 participants had congruent first, 32 participats had incongruent first
+# Subject 3, and subject 12+, had incongruent first on both days.
 
 tapply(proc_IAT_Data$condition, proc_IAT_Data$subjectID, min)
-# Subject 6 had ONLY congruent-first blocks on both days
+# Subject 6 had congruent-first on both days
 
 tapply(proc_IAT_Data$condition, proc_IAT_Data$subjectID, mean)
+tapply(proc_IAT_Data$condition, list(proc_IAT_Data$subjectID, proc_IAT_Data$day), FUN = mean, na.rm = TRUE)
+# Take-away: 6 participants IAT incongruent-congruent blocks were randomized, 33 participants were not randomized.
 
-# Addressing 2 issues with IAT block randomization:
+#Summary of key issues with IAT block randomization:
 # (1) subjects 2, 5, 6, 7, 8, 10, 11 had congruent first on day 1, and incongruent first on day 2
-# (2a) 2, 5, 7, 8, 10, and 11 had congruent first on day 1, and incongruent first on day 2.
-# (2b) 6 had congruent first on both days.
-# (2c) 3 and 12+ had incongruent first on both days.
+# (2) subject 6 had congruent first on both days.
+# (3) 3 and 12+ had incongruent first on both days.
 
-table(proc_IAT_Data$cattype, proc_IAT_Data$condition)
-#              0    1
-#CONGRUENT   4200  480
-#INCONGRUENT 4200  480
-#SINGLE      5600  640 
-# uneven trial bins for congruent/incongruent-first blocks
+
 
 
 #IAT descriptives
