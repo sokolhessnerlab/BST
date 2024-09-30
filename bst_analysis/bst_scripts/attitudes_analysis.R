@@ -1,8 +1,8 @@
 
 # --- Bias (Race Attitudes) Only Base Level Analysis Script --- #
 
-#setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
-setwd("~/Documents/GitHub/bst") #laptop
+setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
+#setwd("~/Documents/GitHub/bst") #laptop
 
 #NOTE: Run this script while connected to the shlab drive, 
 # where the script's data sources are under /Volumes
@@ -136,7 +136,7 @@ plot(subj_level_amp_scores$subjectID, subj_level_amp_scores$subj_amp_score,
 subj_level_amp_scores %>%
   filter(subj_amp_score == min(subj_amp_score, na.rm = TRUE))
 # subject 16 had strong negative bias towards black race (d-score = -0.4)
-#   > 4 SD below the mean (-4.4543)
+#   > 4 SD below the mean (-4.4543) group amp score
 #   (-0.4--0.00846)/0.0879
 
 #### Fix RT Outliers ####
@@ -492,6 +492,48 @@ t.test(amp_scores$change_amp_stress) # n.s.
 
 ## IAT ########################################
 
+# IAT was administered near the end of each day (1 & 2) of the experiment in multiple blocks.
+
+# In the IAT data, blockNum is the identifier for block categorization
+#   1 (pleasant/unpleasant)
+#   2 (black/white)
+#   3 (Black/pleasant & White/unpleasant) (INCONGRUENT)
+#   4 (Black/Unpleasant & White/pleasant) (CONGRUENT)
+#   5-7 insects & flowers (NOT USED HERE)
+#   8 (unpleasant/pleasant)
+
+# In IAT, "condition" referred to whether the participant had the "congruent" or "incongruent" block first.
+
+# Condition represents whether participants had "congruent" or "incongruent" first on day 
+#   0 = Day 1 is INCONGRUENT first (Block 3 first; Black/pleasant & White/unpleasant) 
+#   1 = Day 1 is CONGRUENT first (Block 4 first; Black/Unpleasant & White/pleasant) 
+
+# NOTE: The starting "condition" of congruent-first (1) or incongruent-first (0) was meant to be randomized across participants
+#       Due to a programming error, "condition" was not randomized as intended, resulting in non-randomized "condition" blocks across participants
+
+tapply(proc_IAT_Data$condition, proc_IAT_Data$subjectID, max)
+# Subject 3, nor anyone after subject 11, had incongruent on day 1
+# 7 participants had congruent first, 32 participats had incongruent first
+
+tapply(proc_IAT_Data$condition, proc_IAT_Data$subjectID, min)
+# Subject 6 had ONLY congruent-first blocks on both days
+
+tapply(proc_IAT_Data$condition, proc_IAT_Data$subjectID, mean)
+
+# Addressing 2 issues with IAT block randomization:
+# (1) subjects 2, 5, 6, 7, 8, 10, 11 had congruent first on day 1, and incongruent first on day 2
+# (2a) 2, 5, 7, 8, 10, and 11 had congruent first on day 1, and incongruent first on day 2.
+# (2b) 6 had congruent first on both days.
+# (2c) 3 and 12+ had incongruent first on both days.
+
+table(proc_IAT_Data$cattype, proc_IAT_Data$condition)
+#              0    1
+#CONGRUENT   4200  480
+#INCONGRUENT 4200  480
+#SINGLE      5600  640 
+# uneven trial bins for congruent/incongruent-first blocks
+
+
 #IAT descriptives
 summary(proc_IAT_Data)
 str(proc_IAT_Data)
@@ -512,22 +554,8 @@ prop.table(table(proc_IAT_Data$cattype, proc_IAT_Data$corrans),1)*100
 #CONGRUENT    25.0     25.0       25.0  25.0
 #INCONGRUENT  25.0     25.0       25.0  25.0
 #SINGLE       12.5     37.5       37.5  12.5
-# even trial bins for congruent/incongruint stimuli (words/images)
+# even trial bins for congruent/incongruent stimuli (words/images)
 
-#Factoring for use in ggplot
-proc_IAT_Data$stimulus.F <- factor(proc_IAT_Data$stimulus)
-proc_IAT_Data$corrans.F <- factor(proc_IAT_Data$corrans)
-
-#Response Times by stimulus & correct answers
-ggplot(proc_IAT_Data, aes(x = factor(corrans.F), y = RT, fill = stimulus.F, colour = stimulus.F)) +
-  labs(x="Correct Answer", y="Response Time", fill = "Stimulus") +
-  geom_bar(stat = "identity", position = "dodge") +
-  ggtitle("Response Time by Stimulus Type & Correct Answer") +
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-# When responding correctly to black stimuli, RTs are longer than when correctly responding to white stimuli
-# When responding correctly to pleasant vs unpleasant words, RTs seem fairly equally dispersed.
-
-#NOTE: Need to categorize and code all pos stim vs neg stim (words), all black faces, all white faces
 
 
 # EXPLICIT Bias Measures ######################
