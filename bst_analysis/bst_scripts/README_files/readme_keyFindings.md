@@ -1,85 +1,85 @@
 #  Github/bst/bst_analysis/bst_scripts/README_files/readme_keyFindings
 
-**Last updated: 2024.09.27**
+**Last updated: 2024.09.30**
 
 ## BST Data Processing & Key Findings ####
 
-# This file is used to document note-worthy findings that arise during the process of wrangling and analyzing the BST data. The most pertinent key findings are then entered into summary_mainfindings.md (Github/bst/bst_analysis/summary_mainfindings.md).
+This file is used to document note-worthy findings (and issues) that arise during the process of wrangling and analyzing the BST data. The most pertinent key findings are then entered into summary_mainfindings.md (Github/bst/bst_analysis/summary_mainfindings.md).
 
-# Note: the data wrangling and data analyzing sections are separate here and can be combined/reconciled once all of the study's data has been wrangled.
+Note: the data wrangling and data analyzing sections are separate here and can be combined/reconciled once all of the study's data has been wrangled.
 
 
-#### DATA WRANGLING ####
 
-**STRESS:** 
+#### Key Take-aways from Data Characterization ####
 
-Acute **stress**
+> STRESS: 
 
-✅ CPT (stress condition) unpleasantness rating  
-**𝤿**  Cortisol - - Cortisol levels peak at reading 3, as expected. Reading 4 is higher than readings 1 and 2, indicating the stressor is still effective in latter parts of the experimental tasks.
+**Acute stress**
 
-Chronic **stress**
+✅ CPT (stress condition) unpleasantness rating and cortisol readings
 
-**𝤿**  PSS Scores
+** Cortisol ** - Cortisol levels peak at reading 3, as expected. Reading 4 is higher than readings 1 and 2, indicating the stressor is still effective in latter parts of the experimental tasks.
 
-* Coded Correctly  
-  * Reference(s)  
+** Unpleasantness Ratings ** - Participants rated the stressor (Cold bath water) as far more unpleasant than the control condition (Lukewarm bath water).
+
+**Chronic stress**
+
+✅ PSS (Perceived Stress Scale) - Participants in our study had low to moderate chronic stress levels.
+
+Note: The first 3 participants did not complete a PSS.
+
+
+> TRUST:
+
+**Trust Behavior**
+
+
+**Trust Ratings**
+
+
+> ATTITUDES:
+
+**Implicit attitudes**
+
+ ** AMP **
+
+Across subjects, mean AMP score was close to zero, indicating that our sample across subjects was not biased towards black or white AMP stimuli (M = -0.00846)
+
+NOTE: Overall, AMP d-score was normally distributed, however one subject had a very strong negative black bias (AMP d-score = -4.45), which is 4 SD below the mean (-0.00846) group amp score
+
+
+
+ ** IAT **
+
+NOTE: Due to a programming error, the order of participants’ IAT congruent vs. incongruent blocks were not fully randomized.Participants completed an equal number of congruent and incongruent blocks, however the order was randomized for only 6 participants and not randomized for 33 participants.  
+
+Subject 3 and subjects 12 and greater received incongruent-first on both days, while subject 6 had congruent-first on both days. Consequently, 32 participants had incongruent-first on both days while 1 participant had congruent-first on both days.
+
+Since this programming error resulted in a greater number of incongruent-first blocks, the result in absolute levels of bias for participants will likely be less trustworthy with a lower IAT score overall compared to if randomization of congruent/incongruent blocks had occurred.  
+
+In addition, the standard IAT is given multiple times with multiple flips between incongruent- and congruent-first blocks to lessen unsystematic variance  due to factors like practice and presentation order. The IAT modification used in this study was a simplified version geared to capture switching versus mapping, which likely results in an exacerbation of the underestimation of implicit bias.
+
+
+**Explicit attitudes**
+
+** MRS **
+
 * Processed
 
-**TRUST:** 
+** SRS **
 
-Behavioral **trust**
-
-**𝤿** Trust Game
-
-Perceptual **trust**
-
-**𝤿** Trust Perception
-
-**ATTITUDES:** 
-
-Implicit **attitudes**
-
-**𝤿** AMP
-
-* Coded Correctly  
-  * Reference(s)  
 * Processed
 
-**𝤿** IAT
+** IMS-EMS **
 
-* Processed  
-* D-Score
-
-Explicit **attitudes**
-
-**𝤿** MRS
-
-* Coded Correctly  
-  * Reference(s)  
 * Processed
 
-**𝤿** SRS
+** Contact Measures (CM) **
 
-* Coded Correctly  
-  * Reference(s)  
-* Processed
-
-**𝤿** IMS-EMS
-
-* Coded Correctly  
-  * Reference(s)  
-* Processed
-
-**𝤿** Contact Measures
-
-* Coded Correctly  
-  * Reference(s)  
 * Processed
 
 
 #### KEY FINDINGS ####
-
 
 BST main premise: Does stress impact trust?  What role do attitudes play in outcomes?
 
