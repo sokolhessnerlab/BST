@@ -31,8 +31,8 @@ options(scipen=999)
 summary(amp)
 
 #Examine Response Times
-mean(amp$responseTime) #0.912
-sd(amp$responseTime) #0.7649 High compared to mean
+mean(amp$responseTime) # 0.912
+sd(amp$responseTime)   # 0.7649 High compared to mean
 max(amp$responseTime)  # 23.598
 min(amp$responseTime)  # 0.005
 
@@ -68,11 +68,9 @@ prop.table(table(amp$stimulusRace_0w_1b_2o, amp$amp_unPleasant0_Pleasant1),1)*10
 
 #### Main Take-Aways AMP ####
 # Average pleasant/unpleasant judgments are similar btwn races at the group-level, 
-# though RTs may be different.
-# TO-DO: There are excessively fast RTs and excessively slow RTs, which we will need to remove 
-# at least some trials and/or participants.
+#    though RTs may be different.
 
-### Subject-level Analyses AMP ####
+### Subject-level Analyses AMP d-score ####
 
 #### AMP d-scores ####
 
@@ -158,6 +156,65 @@ subj_level_amp_scores %>%
 #   (-0.4--0.00846)/0.0879
 #   Out of 200 total black trials, they rated black stimuli as positive 127 times
 #   While out of 200 total white trials, they rated white stimuli as positive 47 times.
+
+#Plotting participant 16's amp by day and amp number revealed distribution "pleasant", "unpleasant" day 1 and day 2 amp tasks (1 & 2)
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (amp$day == 1) & (amp$amp1_amp2 == 1)])
+title(main = "day 1, amp 1")
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (amp$day == 1) & (amp$amp1_amp2 == 2)])
+title(main = "day 1, amp 2")
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (amp$day == 2) & (amp$amp1_amp2 == 1)])
+title(main = "day 2, amp 1")
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (amp$day == 2) & (amp$amp1_amp2 == 2)])
+title(main = "day 2, amp 2")
+
+#Plotting participant 16's amp by day and amp number AND race revealed distribution "pleasant", "unpleasant" day 1 and day 2 amp tasks (1 & 2)
+#Day 1 (subject 16)
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (amp$day == 1) & (amp$amp1_amp2 == 1) & amp$stimulusRace_0w_1b_2o == 0])
+title(main = "day 1, amp 1, white-only trials")
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (amp$day == 1) & (amp$amp1_amp2 == 1) & amp$stimulusRace_0w_1b_2o == 1])
+title(main = "day 1, amp 1, black-only trials")
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (amp$day == 1) & (amp$amp1_amp2 == 2) & amp$stimulusRace_0w_1b_2o == 0])
+title(main = "day 1, amp 2, white-only trials")
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (amp$day == 1) & (amp$amp1_amp2 == 2) & amp$stimulusRace_0w_1b_2o == 1])
+title(main = "day 1, amp 2, black-only trials")
+# In general, across both black and white races, subject is giving more "Unpleasant" responses on day 1, amp 1
+# day 1, amp 2 shows much more frequent negative responses for white vs. black trial judgments
+
+#Day 2 (subject 16)
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (amp$day == 2) & (amp$amp1_amp2 == 1) & amp$stimulusRace_0w_1b_2o == 0])
+title(main = "day 2, amp 1, white-only trials")
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (amp$day == 2) & (amp$amp1_amp2 == 1) & amp$stimulusRace_0w_1b_2o == 1])
+title(main = "day 2, amp 1, black-only trials")  # Lots of positive, black responses
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (amp$day == 2) & (amp$amp1_amp2 == 2) & amp$stimulusRace_0w_1b_2o == 0])
+title(main = "day 2, amp 2, white-only trials")
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (amp$day == 2) & (amp$amp1_amp2 == 2) & amp$stimulusRace_0w_1b_2o == 1])
+title(main = "day 2, amp 2, black-only trials")
+# subject 16 gave pleasant and unpleasant responses to both races for both amps on day 2, 
+# however there is an exceptionally high frequency of positive responses for black trial judgments on day 2, amp 2
+
+# AMP Stress vs. Non-stress black responses amp 1
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (bath$day2bool_0control_1stress == 1) & (amp$amp1_amp2 == 1) & amp$stimulusRace_0w_1b_2o == 1])
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (bath$day2bool_0control_1stress == 0) & (amp$amp1_amp2 == 1) & amp$stimulusRace_0w_1b_2o == 1])
+# Not huge difference stress v non-stress
+
+# AMP Stress vs. Non-stress white responses amp 1
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (bath$day2bool_0control_1stress == 1) & (amp$amp1_amp2 == 1) & amp$stimulusRace_0w_1b_2o == 0])
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (bath$day2bool_0control_1stress == 0) & (amp$amp1_amp2 == 1) & amp$stimulusRace_0w_1b_2o == 0])
+# Not huge difference stress v non-stress
+
+# AMP Stress vs. Non-stress black responses amp 2
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (bath$day2bool_0control_1stress == 1) & (amp$amp1_amp2 == 2) & amp$stimulusRace_0w_1b_2o == 1])
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (bath$day2bool_0control_1stress == 0) & (amp$amp1_amp2 == 2) & amp$stimulusRace_0w_1b_2o == 1])
+# multiple consecutive pos responses for stress v non-stress
+
+# AMP Stress vs. Non-stress white responses amp 2
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (bath$day2bool_0control_1stress == 1) & (amp$amp1_amp2 == 2) & amp$stimulusRace_0w_1b_2o == 0])
+plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (bath$day2bool_0control_1stress == 0) & (amp$amp1_amp2 == 2) & amp$stimulusRace_0w_1b_2o == 0])
+# multiple consecutive neg responses for stress v non-stress
+
+# Participant 16 is giving multiple consecutive responses during the amp 2 when stressed and not stressed, but their overall behavior is
+  # not consistent with button-smashing, as their responses are not 100% consistent overall (nor excessively fast or slow)
+
 
 #### Fix RT Outliers ####
 # Set acceptable bounds for RTs to correct RT outliers
@@ -253,9 +310,13 @@ summary(rt_model)
 # Strong main effect of judgment type (pleasant is faster than unpleasant), no main effects of stimulus race
 # or interactions between stimulus race & judgment type (pleasant or unpleasant).
 
+
 ### Attitudes when Stressed ####
 # TO-DO: move the stress/amp to "interactive analysis" script 
-# Where is the best place to put the different loops?
+# (1) Where is the best place to put the different loops?
+# (2) Should we remove any participants due to excessively fast or slow AMP RTs?  
+#     There are excessively fast RTs and excessively slow RTs, which we will need to remove 
+#     at least some trials and/or participants.
 
 # Add acute & chronic stress indicators
 amp$pss = NA;
