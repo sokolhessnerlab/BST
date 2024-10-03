@@ -92,8 +92,8 @@ get_amp_score <- function(amp) {
       total_black_positive_judgments = sum(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 1 & amp_unPleasant0_Pleasant1 == 1], na.rm = TRUE),
       
       # mean AMP responses after white (0) and black (1) stimuli
-      #white_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 0], na.rm = TRUE),
-      #black_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 1], na.rm = TRUE),
+      white_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 0], na.rm = TRUE),
+      black_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 1], na.rm = TRUE),
       
     ) %>%
     mutate(
@@ -102,7 +102,7 @@ get_amp_score <- function(amp) {
 }
 
 subj_level_amp_scores <- get_amp_score(amp) %>%
-  select(subjectID,  total_white_trials,  total_black_trials, total_white_positive_judgments, total_black_positive_judgments, subj_amp_score)
+  select(subjectID,  total_white_trials,  total_black_trials, total_white_positive_judgments, total_black_positive_judgments, white_pleasant_amp, black_pleasant_amp, subj_amp_score)
 
 # 200 black and 200 white trials for each participant without exception
 # Mean White Positive Judgments - 114.5641 - across participants
@@ -149,6 +149,7 @@ plot(subj_level_amp_scores$subjectID, subj_level_amp_scores$subj_amp_score,
 
 # Note: one participant shows strong, positive bias toward black vs. white stimuli
 
+#### AMP Outlier Characterization ####
 subj_level_amp_scores %>%
   filter(subj_amp_score == min(subj_amp_score, na.rm = TRUE))
 # subject 16 had strong positive bias towards black race (d-score = -0.4)
@@ -215,8 +216,46 @@ plot(amp$amp_unPleasant0_Pleasant1[(amp$subjectID == 16) & (bath$day2bool_0contr
 # Participant 16 is giving multiple consecutive responses during the amp 2 when stressed and not stressed, but their overall behavior is
   # not consistent with button-smashing, as their responses are not 100% consistent overall (nor excessively fast or slow)
 
+#### AMP, Race, Stress Analyses ####
+
+#What are the amp d-scores across subjects when stressed vs. non-stress for black & white stimuli
+
+#Non-stress means (white & black)
+mean_amp_pos_notstress_white <- mean(subj_level_amp_scores$white_pleasant_amp[bath$day2bool_0control_1stress == 0 & amp$stimulusRace_0w_1b_2o == 0], na.rm = T)
+# Average amp (pos response/total trials) for white stimuli when subjects are NOT stressed (M = 0.66)
+mean_amp_pos_notstress_black <-mean(subj_level_amp_scores$black_pleasant_amp[bath$day2bool_0control_1stress == 0 & amp$stimulusRace_0w_1b_2o == 1], na.rm = T)
+# Average amp (pos response/total trials) for black stimuli when subjects are NOT stressed (M = 0.59)
+
+#Stress means (white & black)
+mean_amp_pos_stress_white <- mean(subj_level_amp_scores$white_pleasant_amp[bath$day2bool_0control_1stress == 1 & amp$stimulusRace_0w_1b_2o == 0], na.rm = T)
+# Average amp (pos response/total trials) for white stimuli when subjects are stressed (M = 0.53)
+mean_amp_pos_stress_black <- mean(subj_level_amp_scores$black_pleasant_amp[bath$day2bool_0control_1stress == 1 & amp$stimulusRace_0w_1b_2o == 1], na.rm = T)
+# Average amp (pos response/total trials) for black stimuli when subjects are stressed (M = 0.62)
+
+# Question: How are people responding to pictures of static that follow black vs. white stimuli?
+hist(subj_level_amp_scores$white_pleasant_amp)
+hist(subj_level_amp_scores$black_pleasant_amp)
+# Take-away: amp response after black stimuli seems to be somewhat bimodal, where as white responses are more normally distributed
+#   White responses peak at approx. 50% positive for all white trials
+#   Black responses peak at approx. 50% positive for all black trials, as well, but also have a high frequency of >50% responses
+
+t.test(subj_level_amp_scores$white_pleasant_amp, subj_level_amp_scores$black_pleasant_amp, paired = T)
+# There is NOT a difference in % of positive amp ratings for white vs. black stimuli t(38) = -0.65, p = 0.52
+plot(subj_level_amp_scores$white_pleasant_amp, subj_level_amp_scores$black_pleasant_amp, xlim = c(0, 1), ylim = c(0, 1))
+lines(x = c(0, 1), y = c(0,1), col = 'red')
+# Take-away: a similar number of subjects rated black vs. white stimuli as more pleasant
+
+
+wilcox.test(subj_level_amp_scores$white_pleasant_amp, subj_level_amp_scores$black_pleasant_amp)  # p = .90
+# Answer: there does not seem to be a main effect of race on amp scores
+
+
+# Question: How are people responding to pictures of static that follow black vs. white stimuli when stressed vs. not stressed?
+# t.test(mean_amp_pos_stress_white, mean_amp_pos_stress_black, paired = T)
+
 
 #### Fix RT Outliers ####
+
 # Set acceptable bounds for RTs to correct RT outliers
 lower_RT_bound = 50/1000; # Written in milliseconds, converted to seconds.
 upper_RT_bound = 6000/1000; # Written in milliseconds, converted to seconds.
@@ -459,7 +498,6 @@ prop.table(table(amp_bath$day2StressedBool, amp_bath$amp_unPleasant0_Pleasant1),
 #               CPT 1   41.64% 58.36%
 # participants rated AMP stimuli pleasant more often than unpleasant for both control and experimental (CPT) conditions
 
-#xtabs(~day2StressedBool + amp_unPleasant0_Pleasant1, data = amp_bath)
 
 hist(amp_scores$change_amp_stress)
 hist(amp_scores$change_amp_control)
