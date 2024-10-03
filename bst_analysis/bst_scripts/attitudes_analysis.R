@@ -87,17 +87,36 @@ get_amp_score <- function(amp) {
       total_white_trials = sum(stimulusRace_0w_1b_2o == 0, na.rm = TRUE),
       total_black_trials = sum(stimulusRace_0w_1b_2o == 1, na.rm = TRUE),
       
-      # proportion of pleasant responses after white (0) and black (1) stimuli
-      white_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 0], na.rm = TRUE),
-      black_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 1], na.rm = TRUE)
+      # positive judgement counts 
+      #positive judgments after white faces (Count all "pleasant" AMP for white stimuli)
+      total_white_positive_judgments = sum(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 0 & amp_unPleasant0_Pleasant1 == 1], na.rm = TRUE),
+      #positive judgments after black faces (Count all "pleasant" AMP for black stimuli) 
+      total_black_positive_judgments = sum(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 1 & amp_unPleasant0_Pleasant1 == 1], na.rm = TRUE),
+      
+      # mean AMP responses after white (0) and black (1) stimuli
+      #white_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 0], na.rm = TRUE),
+      #black_pleasant_amp = mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 1], na.rm = TRUE),
+      
     ) %>%
     mutate(
-      subj_amp_score = white_pleasant_amp - black_pleasant_amp
+      subj_amp_score = (total_white_positive_judgments/total_white_trials) - (total_black_positive_judgments/total_black_trials)
     ) 
 }
 
 subj_level_amp_scores <- get_amp_score(amp) %>%
-  select(subjectID, white_pleasant_amp, black_pleasant_amp, subj_amp_score)
+  select(subjectID,  total_white_trials,  total_black_trials, total_white_positive_judgments, total_black_positive_judgments, subj_amp_score)
+
+# 200 black and 200 white trials for each participant without exception
+# Mean White Positive Judgments - 114.5641 - across participants
+# Mean Black Positive Judgments - 116.2564 - across participants
+
+# NOTE: the AMP d-score can be calculated using mean
+#   since the amp_unPleasant0_Pleasant1 is an integer value,
+#   the total pleasant are summed "1" while "0" unpleasant are not summed
+#   mean gives you total positive / total trials per race.
+#   i.e., mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 0], na.rm = TRUE)
+#   calculates sum positive for white over total white trials
+
 
 #subject-level amp d-score characterizations
 amp_score_summary <- subj_level_amp_scores %>%
@@ -110,9 +129,9 @@ amp_score_summary <- subj_level_amp_scores %>%
 
 # Across subjects, mean AMP score was close to zero, indicating that overall subjects were
 # not biased towards black or white stimuli in the amp
-# M = -0.00846 
-# amp scores indicate moderate variability across subjects
-# sd = 0.0879 
+    # M = -0.00846 
+# amp scores indicate relatively low variability across subjects
+    # sd = 0.0879 
 # min = -0.4 (someone with strong, neg black bias?)
 # max = 0.155
 
