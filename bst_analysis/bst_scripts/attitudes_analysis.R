@@ -117,7 +117,6 @@ subj_level_amp_scores <- get_amp_score(amp) %>%
 #   i.e., mean(amp_unPleasant0_Pleasant1[stimulusRace_0w_1b_2o == 0], na.rm = TRUE)
 #   calculates sum positive for white over total white trials
 
-
 #subject-level amp d-score characterizations
 amp_score_summary <- subj_level_amp_scores %>%
   summarise(
@@ -132,7 +131,7 @@ amp_score_summary <- subj_level_amp_scores %>%
     # M = -0.00846 
 # amp scores indicate relatively low variability across subjects
     # sd = 0.0879 
-# min = -0.4 (someone with strong, neg black bias?)
+# min = -0.4 (someone with strong, pos black bias?)
 # max = 0.155
 
 hist(subj_level_amp_scores$subj_amp_score,
@@ -150,13 +149,15 @@ plot(subj_level_amp_scores$subjectID, subj_level_amp_scores$subj_amp_score,
      pch = 19,          
      col = "darkblue") 
 
-# Note: one participant shows strong, negative bias toward black vs. white stimuli
+# Note: one participant shows strong, positive bias toward black vs. white stimuli
 
 subj_level_amp_scores %>%
   filter(subj_amp_score == min(subj_amp_score, na.rm = TRUE))
-# subject 16 had strong negative bias towards black race (d-score = -0.4)
+# subject 16 had strong positive bias towards black race (d-score = -0.4)
 #   > 4 SD below the mean (-0.00846) group amp score
 #   (-0.4--0.00846)/0.0879
+#   Out of 200 total black trials, they rated black stimuli as positive 127 times
+#   While out of 200 total white trials, they rated white stimuli as positive 47 times.
 
 #### Fix RT Outliers ####
 # Set acceptable bounds for RTs to correct RT outliers
