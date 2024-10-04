@@ -5,7 +5,7 @@
 #NOTE: Run this script while connected to the shlab drive,
 # script's data sources are under /Volumes
 # and set working directory via shlab Github
-#setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
+setwd("/Users/shlab/Documents/GitHub/bst/") #desktop
 #setwd("~/Documents/GitHub/bst") #laptop
 
 
@@ -322,14 +322,14 @@ by(data = trustGame$shared, INDICES = trustGame$taskOrder, FUN = sd, na.rm = T)
 # Task Order 1: 2.722(1.640), Task Order 2: 2.272(1.477)
 #(subject-level)
 tmpvectG1 = aggregate(shared ~ subjectID + taskOrder, data = trustGame, FUN=mean);
-by(data = tmpvectG1$shared, INDICES = tmpvect$taskOrder, FUN = mean) # order 1 = 2.60, order 2 = 2.30
+by(data = tmpvectG1$shared, INDICES = tmpvectG1$taskOrder, FUN = mean) # order 1 = 2.60, order 2 = 2.30
 # Task Order 1: 2.600, Task Order 2: 2.304
 t.test(tmpvectG1$shared[tmpvectG1$taskOrder=='1'], tmpvectG1$shared[tmpvectR$taskOrder=='2'], paired = F)
 #A: Participants are NOT sharing more when task order is 1 vs. 2 (p-value = 0.4171)
 
 # Trust Game Stress Effects
 # Q: Were participants stressed before doing the trust task?
-# Cortisol levels at reading 3 - immediately preceding the trust tasks - showed a significantly elevated mean cortical response.
+# Yes, cortisol levels at reading 3 - immediately preceding the trust tasks - showed a significantly elevated mean cortical response.
 
 # Q: What are the effects of stress on peoples' trust behaviors? 
 tmpvectG2 = aggregate(shared ~ subjectID + stressedBool, data = trustGame, FUN=mean);
@@ -343,7 +343,7 @@ t.test(tmpvectG2$shared[tmpvectG2$stressedBool=='0'], tmpvectG2$shared[tmpvectG2
 
 ## TG: Averages & Variances in Offers & RTs #######################################################
 ### Subject-Level Loop ##########################################################################
-tr_sub_level_colnames = c(
+tg_sub_level_colnames = c(
   'tg_mean_shared',
   'tg_mean_sharedW',
   'tg_mean_sharedB',
@@ -411,6 +411,8 @@ legend(x = 4, y = .675, c('Overall','White','Black','Other'), lwd = 2, col = c('
 t.test(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedB, paired = T) # p = 0.00000000287  B > W
 t.test(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedO, paired = T) # p = 0.000311       O > W
 t.test(tg_sub_level$tg_mean_sharedB, tg_sub_level$tg_mean_sharedO, paired = T) # p = 0.00000959     B > O
+# People are sharing more with B than W partners & more with O than W partners and more with B than O partners
+# Sharing with B partners > than with O partners > than with W partners
 
 par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
 plot(tg_sub_level$tg_mean_sharedW, tg_sub_level$tg_mean_sharedB, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4,
@@ -454,7 +456,7 @@ legend(x = 8.25, y = .375, c('Overall','White','Black','Other'), lwd = 2, col = 
 t.test(tg_sub_level$tg_rt_sharedW, tg_sub_level$tg_rt_sharedB, paired = T) # p = 0.20   B = W
 t.test(tg_sub_level$tg_rt_sharedW, tg_sub_level$tg_rt_sharedO, paired = T) # p = 0.27   O = W
 t.test(tg_sub_level$tg_rt_sharedB, tg_sub_level$tg_rt_sharedO, paired = T) # p = 0.98   B = O
-
+# People did not take longer by race to make a share offer
 
 par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
 plot(tg_sub_level$tg_rt_sharedW, tg_sub_level$tg_rt_sharedB, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4,
@@ -501,26 +503,26 @@ lines(var_sharedO_hist$mids, var_sharedO_hist$density, col = rgb(0,0,1), lwd = 3
 legend(x = 3.7, y = .6, c('Overall','White','Black','Other'), lwd = 2, col = c('black','red','green','blue'))
 
 #t-tests for Offer Variances
-t.test(tg_sub_level$tg_var_sharedW, tg_sub_level$tg_var_sharedB, paired = T) # p = 0.33      B = W
-t.test(tg_sub_level$tg_var_sharedW, tg_sub_level$tg_var_sharedO, paired = T) # p = 0.025   W > O
+t.test(tg_sub_level$tg_var_sharedW, tg_sub_level$tg_var_sharedB, paired = T) # p = 0.33     B = W
+t.test(tg_sub_level$tg_var_sharedW, tg_sub_level$tg_var_sharedO, paired = T) # p = 0.025    W > O
 t.test(tg_sub_level$tg_var_sharedB, tg_sub_level$tg_var_sharedO, paired = T) # p = 0.18     B = O
-#A: Participants vary significantly on trust for white vs. other partners, showing greater variance for other vs. white partners in shared amounts
-#A: Interestingly, this difference in variance for partner trust is not significant when comparing shares for black vs. other partners or black vs. white partners.
-#RQ: Is there a different model of sharing depending on partner race (black vs. white) and when partner is "other" race, participants are more varied in how they share?
+# A: Participants vary significantly on trust for white vs. other partners, showing greater variance for other vs. white partners in shared amounts
+# A: Interestingly, this difference in variance for partner trust is not significant when comparing shares for black vs. other partners or black vs. white partners.
+# RQ: Is there a different model of sharing depending on partner race (black vs. white) and when partner is "other" race, participants are more varied in how they share?
 
 par(mfrow = c(1,3)) # Returning graphs to plot 1 at a time
 plot(tg_sub_level$tg_var_sharedW, tg_sub_level$tg_var_sharedB, bg = rgb(.6, .3, 0, .5), pch = 21, cex = 4,
      xlab = 'White', ylab = 'Black', main = 'Variance in Shared $', xlim = c(0,6), ylim = c(0,6))
 abline(a = 0, b = 1, col = 'black')
-points(x = var(tg_sub_level$tg_var_sharedW), y = var(tg_sub_level$tg_var_sharedB), pch = 18, cex = 6)
+points(x = mean(tg_sub_level$tg_var_sharedW), y = mean(tg_sub_level$tg_var_sharedB), pch = 18, cex = 6)
 plot(tg_sub_level$tg_var_sharedW, tg_sub_level$tg_var_sharedO, bg = rgb(.6, .13, .94, .5), pch = 21, cex = 4,
      xlab = 'White', ylab = 'Other', main = 'Variance in Shared $', xlim = c(0,6), ylim = c(0,6))
 abline(a = 0, b = 1, col = 'black')
-points(x = var(tg_sub_level$tg_var_sharedW), y = var(tg_sub_level$tg_var_sharedO), pch = 18, cex = 6)
+points(x = mean(tg_sub_level$tg_var_sharedW), y = mean(tg_sub_level$tg_var_sharedO), pch = 18, cex = 6)
 plot(tg_sub_level$tg_var_sharedB, tg_sub_level$tg_var_sharedO, bg = rgb(.5, 1, .83, .5), pch = 21, cex = 4,
      xlab = 'Black', ylab = 'Other', main = 'Variance in Shared $', xlim = c(0,6), ylim = c(0,6))
 abline(a = 0, b = 1, col = 'black')
-points(x = var(tg_sub_level$tg_var_sharedB), y = var(tg_sub_level$tg_var_sharedO), pch = 18, cex = 6)
+points(x = mean(tg_sub_level$tg_var_sharedB), y = mean(tg_sub_level$tg_var_sharedO), pch = 18, cex = 6)
 par(mfrow = c(1,1)) # Returning graphs to plot 1 at a time
 
 # Offers to White partners are most variable, then offers to black partners, then offers to other partners.
